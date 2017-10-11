@@ -42,7 +42,8 @@ h1 {
 }
 .log-input:focus {
   outline-width: 0;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.75);
+  border-color: #5bd;
+  box-shadow: 0 0 0 1px #5bd;
 }
 .log-input::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.5);
