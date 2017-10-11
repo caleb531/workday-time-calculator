@@ -1,0 +1,19 @@
+{
+  "name": "workday-time-calculator",
+  "version": "0.1.0",
+  "description": "Calculates my total hours (per client, as well as overall) for a workday",
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/caleb531/workday-time-calculator.git"
+  },
+  "author": "Caleb Evans",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/caleb531/workday-time-calculator/issues"
+  },
+  "homepage": "https://gitlab.com/caleb531/workday-time-calculator#README",
+  "dependencies": {
+    "mithril": "^1.1.4",
+    "moment": "^2.19.0"
+  }
+}
