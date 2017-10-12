@@ -124,8 +124,7 @@ class AppComponent {
       m('div.app-content', [
 
         m('textarea.log-input', {
-          // TODO: uncomment this
-          // autofocus: true,
+          autofocus: true,
           placeholder: 'Paste your time log here',
           oninput: (event) => {
             this.logText = event.target.value;
