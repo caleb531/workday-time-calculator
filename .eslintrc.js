@@ -20,13 +20,6 @@ module.exports = {
   },
 
   /**
-   * Allowed global variables
-   */
-  globals: {
-    'chrome': true
-  },
-
-  /**
    * Supported JavaScript language options
    */
 

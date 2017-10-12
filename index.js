@@ -1,4 +1,5 @@
-(function (m, moment) {
+/* global m, moment */
+(function () {
 
 let logTimeFormat = 'h:mma';
 
@@ -154,4 +155,4 @@ class AppComponent {
 
 m.mount(document.body, AppComponent);
 
-}(window.m, window.moment));
+}());
