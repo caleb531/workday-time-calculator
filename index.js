@@ -7,9 +7,7 @@ class AppComponent {
 
   constructor() {
     this.logText = localStorage.getItem('logText');
-    if (this.logText) {
-      this.log = this.parseTextLog(this.logText);
-    }
+    this.log = this.parseTextLog(this.logText);
   }
 
   getLineDepth(logLine) {
@@ -55,9 +53,12 @@ class AppComponent {
           // This is a top-level category (e.g. Tyme, Internal, etc.)
           currentCategory = {
             name: this.getLineContent(logLine),
-            timeRanges: []
+            timeRanges: [],
+            descriptions: []
           };
-          categories.push(currentCategory);
+          if (currentCategory.name !== null) {
+            categories.push(currentCategory);
+          }
         } else if (lineDepth === 1) {
           // This is a time range string
           let timeStrs = this.parseLineTimes(logLine);
@@ -65,6 +66,9 @@ class AppComponent {
             startTime: moment(timeStrs[0], logTimeFormat),
             endTime: moment(timeStrs[1], logTimeFormat)
           });
+        } else if (lineDepth === 2) {
+          // This is a description
+          currentCategory.descriptions.push(this.getLineContent(logLine));
         }
       }
     });
@@ -130,21 +134,24 @@ class AppComponent {
           },
         }, this.logText),
 
-        this.log ?
+        this.log.categories.length > 0 ?
         m('div.log-calculations', [
+          this.log.totalDuration.asMinutes() !== 0 ?
+          m('div.log-total', [
+            m('div.log-total-time-name.log-label', 'Total:'),
+            m('div.log-total-time.log-value', this.getFormattedDuration(this.log.totalDuration))
+          ]) : null,
           this.log.categories.map((category) => {
             return m('div.log-category', category.totalDuration.asMinutes() !== 0 ? [
               m('div.log-category-name.log-label', `${category.name}:`),
-              ' ',
               m('div.log-category-total-time.log-value', [
                 this.getFormattedDuration(category.totalDuration)
-              ])
+              ]),
+              m('ul.log-category-descriptions', category.descriptions.map((description) => {
+                return m('li', description);
+              }))
             ] : null);
-          }),
-          m('div.log-total', [
-            m('div.log-total-time-name.log-label', 'Total'),
-            m('div.log-total-time.log-value', this.getFormattedDuration(this.log.totalDuration))
-          ])
+          })
         ]) : null
 
       ])

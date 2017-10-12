@@ -3,7 +3,7 @@
 }
 
 body {
-  max-width: 600px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 0;
   font-family: 'Open Sans', sans-serif;
@@ -29,7 +29,7 @@ h1 {
 }
 
 .log-input {
-  width: 50%;
+  width: 320px;
   height: 300px;
   padding: 10px 15px;
   border: solid 1px rgba(255, 255, 255, 0.5);
@@ -53,22 +53,25 @@ h1 {
 .log-calculations {
   flex-grow: 1;
   padding: 0 20px;
-  text-align: right;
   font-size: 20px;
 }
 .log-category {
-  padding-bottom: 10px;
+  padding-top: 10px;
 }
 .log-label {
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 0.3em;
 }
 .log-value {
   display: inline-block;
   font-weight: bold;
 }
+.log-category-descriptions {
+  font-size: 16px;
+}
 
 .log-total {
-  border-top: solid 2px #fff;
-  padding-top: 10px;
+  border-bottom: solid 2px #fff;
+  padding-bottom: 0.5em;
+  font-size: 28px;
 }
