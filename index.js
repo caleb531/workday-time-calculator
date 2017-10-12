@@ -123,13 +123,13 @@ class AppComponent {
         this.log ?
         m('div.log-calculations', [
           this.log.categories.map((category) => {
-            return m('div.log-category', [
+            return m('div.log-category', category.totalDuration.asMinutes() !== 0 ? [
               m('div.log-category-name.log-label', `${category.name}:`),
               ' ',
               m('div.log-category-total-time.log-value', [
                 this.getFormattedDuration(category.totalDuration)
               ])
-            ]);
+            ] : null);
           }),
           m('div.log-total', [
             m('div.log-total-time-name.log-label', 'Total'),
