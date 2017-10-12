@@ -1,4 +1,4 @@
-(function (m, moment, leftPad) {
+(function (m, moment) {
 
 let logTimeFormat = 'h:mma';
 
@@ -85,9 +85,18 @@ class AppComponent {
     });
   }
 
+  // Pad the given time value with zeroes if necessary
+  padWithZeroes(time) {
+    if (Number(time) < 10) {
+      return '0' + time;
+    } else {
+      return time;
+    }
+  }
+
   getFormattedDuration(duration) {
     let hours = duration.hours();
-    let minutes = leftPad(duration.minutes(), 2, '0');
+    let minutes = this.padWithZeroes(duration.minutes(), 2, '0');
     return `${hours}:${minutes}`;
   }
 
@@ -145,4 +154,4 @@ class AppComponent {
 
 m.mount(document.body, AppComponent);
 
-}(window.m, window.moment, window.leftPad));
+}(window.m, window.moment));
