@@ -15,7 +15,7 @@ class AppComponent {
   }
 
   getLineContent(logLine) {
-    let matches = logLine.match(/^\s*\d+\. (.*?)$/);
+    let matches = logLine.match(/^\s*\d+\.\s*(.*?)$/);
     if (matches) {
       return matches[1];
     } else {
