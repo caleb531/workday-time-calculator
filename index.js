@@ -150,7 +150,7 @@ class AppComponent {
                 this.getFormattedDuration(category.totalDuration)
               ]),
               m('ul.log-category-descriptions', category.descriptions.map((description) => {
-                return m('li', description);
+                return m('li.log-category-description', `- ${description}`);
               }))
             ] : null);
           })

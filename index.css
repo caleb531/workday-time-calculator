@@ -65,7 +65,9 @@ h1 {
 }
 .log-category-descriptions {
   margin-top: 0.5em;
+  padding-left: 1.5em;
   font-size: 16px;
+  list-style-type: none;
 }
 
 .log-total {
