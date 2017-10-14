@@ -19,7 +19,7 @@ class AppComponent {
     if (matches) {
       return matches[1];
     } else {
-      return null;
+      return '';
     }
   }
 
@@ -106,6 +106,9 @@ class AppComponent {
   }
 
   parseTextLog(logText) {
+    if (typeof logText !== 'string') {
+      logText = '';
+    }
     this.log = {};
     this.log.categories = this.getCategories(logText);
     this.calculateTotals(this.log);
