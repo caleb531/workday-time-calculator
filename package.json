@@ -13,6 +13,7 @@
   },
   "homepage": "https://gitlab.com/caleb531/workday-time-calculator#README",
   "dependencies": {
+    "lodash": "^4.17.4",
     "mithril": "^1.1.4",
     "moment": "^2.19.0"
   }

@@ -1,4 +1,4 @@
-/* global m, moment */
+/* global _, m, moment */
 (function () {
 
 let logTimeFormat = 'h:mma';
@@ -53,7 +53,7 @@ class AppComponent {
           // This is a top-level category (e.g. Tyme, Internal, etc.)
           currentCategory = {
             name: this.getLineContent(logLine),
-            timeRanges: [],
+            tasks: [],
             descriptions: []
           };
           if (currentCategory.name !== null) {
@@ -62,7 +62,7 @@ class AppComponent {
         } else if (lineDepth === 1) {
           // This is a time range string
           let timeStrs = this.parseLineTimes(logLine);
-          currentCategory.timeRanges.push({
+          currentCategory.tasks.push({
             startTime: moment(timeStrs[0], logTimeFormat),
             endTime: moment(timeStrs[1], logTimeFormat)
           });
@@ -81,13 +81,49 @@ class AppComponent {
     log.totalDuration = moment.duration(0);
     log.categories.forEach((category) => {
       category.totalDuration = moment.duration(0);
-      category.timeRanges.forEach((timeRange) => {
-        timeRange.totalDuration = moment.duration(
-          timeRange.endTime.diff(timeRange.startTime));
-        category.totalDuration.add(timeRange.totalDuration);
+      category.tasks.forEach((task) => {
+        task.totalDuration = moment.duration(
+          task.endTime.diff(task.startTime));
+        category.totalDuration.add(task.totalDuration);
       });
       log.totalDuration.add(category.totalDuration);
     });
+  }
+
+  getGaps(log) {
+    let tasks = [];
+    log.categories.forEach(function (category) {
+      tasks.push(...category.tasks);
+    });
+
+    let startTimes = tasks.map((task) => task.startTime);
+    let endTimes = tasks.map((task) => task.endTime);
+
+    let times = startTimes.concat(endTimes);
+    times = _.uniqBy(times, (time) => time.unix());
+    times = _.sortBy(times, (time) => time.unix());
+
+    let gapStartTimes = endTimes
+      .filter((endTime) => {
+        return !startTimes.some((startTime) => startTime.isSame(endTime));
+      })
+      .filter((endTime) => {
+        return times.findIndex((time) => time.isSame(endTime)) < (times.length - 1);
+      });
+
+    let gapEndTimes = gapStartTimes.map((startTime) => {
+      let nextIndex = times.findIndex((time) => time.isSame(startTime)) + 1;
+      return times[nextIndex];
+    });
+
+    let gaps = _.zip(gapStartTimes, gapEndTimes).map(([startTime, endTime]) => {
+      return {
+        startTime: startTime,
+        endTime: endTime
+      };
+    });
+    return gaps;
+
   }
 
   // Pad the given time value with zeroes if necessary
@@ -111,6 +147,7 @@ class AppComponent {
     }
     this.log = {};
     this.log.categories = this.getCategories(logText);
+    this.log.gaps = this.getGaps(this.log);
     this.calculateTotals(this.log);
     return this.log;
   }
@@ -139,11 +176,27 @@ class AppComponent {
         this.log.categories.length > 0 ?
         m('div.log-calculations', [
 
-          this.log.totalDuration.asMinutes() !== 0 ?
-          m('div.log-total', [
-            m('div.log-total-time-name.log-label', 'Total:'),
-            m('div.log-total-time.log-value', this.getFormattedDuration(this.log.totalDuration))
-          ]) : null,
+          m('div.log-summary', [
+
+            this.log.totalDuration.asMinutes() !== 0 ?
+            m('div.log-total', [
+              m('div.log-total-time-name.log-label', 'Total:'),
+              m('div.log-total-time.log-value', this.getFormattedDuration(this.log.totalDuration))
+            ]) : null,
+
+            this.log.gaps.length !== 0 ?
+            m('div.log-gaps', [
+              m('span.log-label', 'Gaps:'),
+              m('div.log-gap-times', this.log.gaps.map((gap) => {
+                return m('div.log-gap', [
+                  m('span.log-gap-start-time.log-value', gap.startTime.format('h:mm')),
+                  ' to ',
+                  m('span.log-gap-end-time.log-value', gap.endTime.format('h:mm'))
+                ]);
+              }))
+            ]) : null,
+
+          ]),
 
           this.log.categories.map((category) => {
             return m('div.log-category', category.totalDuration.asMinutes() !== 0 ? [

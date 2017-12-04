@@ -70,9 +70,19 @@ h1 {
   list-style-type: none;
 }
 
-.log-total {
+.log-summary {
   border-bottom: solid 2px #fff;
   padding-bottom: 0.5em;
   margin-bottom: 0.5em;
+}
+.log-total {
   font-size: 28px;
+}
+.log-gaps {
+  font-size: 16px;
+}
+.log-gap .log-label,
+.log-gap-times {
+  display: inline-block;
+  vertical-align: top;
 }
