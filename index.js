@@ -88,6 +88,8 @@ class AppComponent {
       });
       log.totalDuration.add(category.totalDuration);
     });
+    log.categories = _.sortBy(log.categories, (category) => category.totalDuration.asHours());
+    _.reverse(log.categories);
   }
 
   getGaps(log) {
