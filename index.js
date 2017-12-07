@@ -143,6 +143,10 @@ class AppComponent {
     return `${hours}:${minutes}`;
   }
 
+  getFormattedDescription(description) {
+    return `- ${description}`;
+  }
+
   parseTextLog(logText) {
     if (typeof logText !== 'string') {
       logText = '';
@@ -183,17 +187,19 @@ class AppComponent {
             this.log.totalDuration.asMinutes() !== 0 ?
             m('div.log-total', [
               m('div.log-total-time-name.log-label', 'Total:'),
+              ' ',
               m('div.log-total-time.log-value', this.getFormattedDuration(this.log.totalDuration))
             ]) : null,
 
             this.log.gaps.length !== 0 ?
             m('div.log-gaps', [
               m('span.log-label', 'Gaps:'),
+              ' ',
               m('div.log-gap-times', this.log.gaps.map((gap) => {
                 return m('div.log-gap', [
-                  m('span.log-gap-start-time.log-value', gap.startTime.format('h:mm')),
+                  m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format('h:mm') : '?'),
                   ' to ',
-                  m('span.log-gap-end-time.log-value', gap.endTime.format('h:mm'))
+                  m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format('h:mm') : '?')
                 ]);
               }))
             ]) : null,
@@ -203,14 +209,20 @@ class AppComponent {
           this.log.categories.map((category) => {
             return m('div.log-category', category.totalDuration.asMinutes() !== 0 ? [
 
-              m('div.log-category-name.log-label', `${category.name}:`),
+              m('div.log-category-header', [
 
-              m('div.log-category-total-time.log-value', [
-                this.getFormattedDuration(category.totalDuration)
+                  m('span.log-category-name.log-label', `${category.name}:`),
+                  ' ',
+                  m('span.log-category-total-time.log-value', [
+                    this.getFormattedDuration(category.totalDuration)
+                  ]),
+                  ' ',
+                  m('span.log-category-character-count', `(${_.sumBy(category.descriptions, (description) => this.getFormattedDescription(description).length) + (category.descriptions.length - 1)})`)
+
               ]),
 
               m('ul.log-category-descriptions', category.descriptions.map((description) => {
-                return m('li.log-category-description', `- ${description}`);
+                return m('li.log-category-description', this.getFormattedDescription(description));
               }))
 
             ] : null);

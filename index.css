@@ -57,17 +57,23 @@ h1 {
 }
 .log-label {
   display: inline-block;
-  margin-right: 0.3em;
+  vertical-align: middle;
 }
 .log-value {
   display: inline-block;
   font-weight: bold;
+  vertical-align: middle;
 }
 .log-category-descriptions {
   margin-top: 0.5em;
   padding-left: 1.5em;
   font-size: 16px;
   list-style-type: none;
+}
+.log-category-character-count {
+  margin-left: 0.3em;
+  font-size: 12px;
+  vertical-align: middle;
 }
 
 .log-summary {
