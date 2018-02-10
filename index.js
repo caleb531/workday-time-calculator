@@ -2,7 +2,7 @@
 (function () {
 
 let logTimeFormat = 'h:mma';
-let logDurationFormat = 'h:mm';
+let logGapFormat = 'h:mm';
 
 class AppComponent {
 
@@ -198,9 +198,9 @@ class AppComponent {
               ' ',
               m('div.log-gap-times', this.log.gaps.map((gap) => {
                 return m('div.log-gap', [
-                  m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(logDurationFormat) : '?'),
+                  m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(logGapFormat) : '?'),
                   ' to ',
-                  m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format(logDurationFormat) : '?')
+                  m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format(logGapFormat) : '?')
                 ]);
               }))
             ]) : null,
