@@ -84,11 +84,14 @@ h1 {
 .log-total {
   font-size: 28px;
 }
-.log-gaps {
+.log-gaps,
+.log-overlaps {
   font-size: 16px;
 }
 .log-gap .log-label,
-.log-gap-times {
+.log-overlap .log-label,
+.log-gap-times,
+.log-overlap-times {
   display: inline-block;
   vertical-align: top;
 }

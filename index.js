@@ -93,12 +93,17 @@ class AppComponent {
     _.reverse(log.categories);
   }
 
-  getGaps(log) {
+  getAllTasks(log) {
     let tasks = [];
     log.categories.forEach(function (category) {
       tasks.push(...category.tasks);
     });
+    return tasks;
+  }
 
+  getGaps(log) {
+
+    let tasks = this.getAllTasks(log);
     let startTimes = tasks.map((task) => task.startTime);
     let endTimes = tasks.map((task) => task.endTime);
 
@@ -129,6 +134,38 @@ class AppComponent {
 
   }
 
+  getOverlaps(log) {
+
+    let tasks = this.getAllTasks(log);
+    let startTimes = tasks.map((task) => task.startTime);
+    let endTimes = tasks.map((task) => task.endTime);
+
+    let ranges = _.zip(startTimes, endTimes).map((rangeArray) => {
+      return _.zipObject(['startTime', 'endTime'], rangeArray);
+    });
+
+    let overlaps = [];
+    let endTimeMap = {};
+    ranges.forEach((range) => {
+      let endTimeStr = range.endTime.format(logTimeFormat);
+      if (endTimeMap[endTimeStr] === undefined) {
+        endTimeMap[endTimeStr] = range;
+      } else {
+        overlaps.push({
+          startTime: endTimeMap[endTimeStr].startTime,
+          endTime: range.endTime
+        });
+        overlaps.push({
+          startTime: range.startTime,
+          endTime: range.endTime
+        });
+      }
+    });
+
+    return overlaps;
+
+  }
+
   // Pad the given time value with zeroes if necessary
   padWithZeroes(time) {
     if (Number(time) < 10) {
@@ -155,6 +192,7 @@ class AppComponent {
     this.log = {};
     this.log.categories = this.getCategories(logText);
     this.log.gaps = this.getGaps(this.log);
+    this.log.overlaps = this.getOverlaps(this.log);
     this.calculateTotals(this.log);
     return this.log;
   }
@@ -201,6 +239,19 @@ class AppComponent {
                   m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(logGapFormat) : '?'),
                   ' to ',
                   m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format(logGapFormat) : '?')
+                ]);
+              }))
+            ]) : null,
+
+            this.log.overlaps.length !== 0 ?
+            m('div.log-overlaps', [
+              m('span.log-label', 'Overlaps:'),
+              ' ',
+              m('div.log-overlap-times', this.log.overlaps.map((overlap) => {
+                return m('div.log-overlap', [
+                  m('span.log-overlap-start-time.log-value', overlap.startTime.isValid() ? overlap.startTime.format(logGapFormat) : '?'),
+                  ' to ',
+                  m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(logGapFormat) : '?')
                 ]);
               }))
             ]) : null,
