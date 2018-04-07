@@ -269,7 +269,7 @@ class AppComponent {
                     this.getFormattedDuration(category.totalDuration)
                   ]),
                   ' ',
-                  m('span.log-category-character-count', `(${_.sumBy(category.descriptions, (description) => this.getFormattedDescription(description).length) + (category.descriptions.length - 1)})`)
+                  m('span.log-category-character-count', `(${_.sumBy(category.descriptions, (description) => this.getFormattedDescription(description).length) + category.descriptions.length})`)
 
               ]),
 
