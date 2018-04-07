@@ -230,31 +230,35 @@ class AppComponent {
               m('div.log-total-time.log-value', this.getFormattedDuration(this.log.totalDuration))
             ]) : null,
 
-            this.log.gaps.length !== 0 ?
-            m('div.log-gaps', [
-              m('span.log-label', 'Gaps:'),
-              ' ',
-              m('div.log-gap-times', this.log.gaps.map((gap) => {
-                return m('div.log-gap', [
-                  m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(logGapFormat) : '?'),
-                  ' to ',
-                  m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format(logGapFormat) : '?')
-                ]);
-              }))
-            ]) : null,
+            m('.log-stats', [
 
-            this.log.overlaps.length !== 0 ?
-            m('div.log-overlaps', [
-              m('span.log-label', 'Overlaps:'),
-              ' ',
-              m('div.log-overlap-times', this.log.overlaps.map((overlap) => {
-                return m('div.log-overlap', [
-                  m('span.log-overlap-start-time.log-value', overlap.startTime.isValid() ? overlap.startTime.format(logGapFormat) : '?'),
-                  ' to ',
-                  m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(logGapFormat) : '?')
-                ]);
-              }))
-            ]) : null,
+              this.log.gaps.length !== 0 ?
+              m('div.log-gaps', [
+                m('span.log-label', 'Gaps:'),
+                ' ',
+                m('div.log-times.log-gap-times', this.log.gaps.map((gap) => {
+                  return m('div.log-gap', [
+                    m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(logGapFormat) : '?'),
+                    ' to ',
+                    m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format(logGapFormat) : '?')
+                  ]);
+                }))
+              ]) : null,
+
+              this.log.overlaps.length !== 0 ?
+              m('div.log-overlaps', [
+                m('span.log-label', 'Overlaps:'),
+                ' ',
+                m('div.log-times.log-overlap-times', this.log.overlaps.map((overlap) => {
+                  return m('div.log-overlap', [
+                    m('span.log-overlap-start-time.log-value', overlap.startTime.isValid() ? overlap.startTime.format(logGapFormat) : '?'),
+                    ' to ',
+                    m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(logGapFormat) : '?')
+                  ]);
+                }))
+              ]) : null
+
+            ])
 
           ]),
 
