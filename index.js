@@ -148,7 +148,9 @@ class AppComponent {
     let endTimeMap = {};
     ranges.forEach((range) => {
       let endTimeStr = range.endTime.format(logTimeFormat);
-      if (endTimeMap[endTimeStr] === undefined) {
+      if (range.endTime.isBefore(range.startTime)) {
+        overlaps.push(range);
+      } else if (endTimeMap[endTimeStr] === undefined) {
         endTimeMap[endTimeStr] = range;
       } else {
         overlaps.push({
