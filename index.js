@@ -157,10 +157,7 @@ class AppComponent {
           startTime: endTimeMap[endTimeStr].startTime,
           endTime: range.endTime
         });
-        overlaps.push({
-          startTime: range.startTime,
-          endTime: range.endTime
-        });
+        overlaps.push(range);
       }
     });
 
