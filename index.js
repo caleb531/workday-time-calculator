@@ -250,7 +250,7 @@ class AppComponent {
 
           m('textarea.log-input', {
             autofocus: true,
-            placeholder: 'Paste your time log here',
+            placeholder: 'Paste or enter your time log here',
             oninput: (event) => {
               this.logText = event.target.value;
               this.parseTextLog();
