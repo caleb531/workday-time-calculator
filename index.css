@@ -75,6 +75,14 @@ h1 {
 .log-date-control:hover:active {
   background-color: rgba(255, 255, 255, 0.25);
 }
+.log-date-control svg {
+  width: inherit;
+  height: inherit;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 .log-calculations {
   flex-grow: 1;

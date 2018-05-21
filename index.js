@@ -271,13 +271,17 @@ class AppComponent {
                   this.selectPrevDay();
                   this.saveTextLog();
                 }
-              }, '<'),
+              }, m('svg[viewBox="0 0 32 32"]', m('polyline', {
+                points: '18,10 10,16 18,22'
+              }))),
               m('span.log-date-control.log-next-day-control', {
                 onclick: () => {
                   this.selectNextDay();
                   this.saveTextLog();
                 }
-              }, '>')
+              }, m('svg[viewBox="0 0 32 32"]', m('polyline', {
+                points: '12,10 20,16 12,22'
+              })))
             ])
           ]),
 
