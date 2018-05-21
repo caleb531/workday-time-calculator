@@ -3,12 +3,15 @@
 
 let logTimeFormat = 'h:mma';
 let logGapFormat = 'h:mm';
+// The format of the date used for indexing each log
+let logDateIdFormat = 'l';
 
 class AppComponent {
 
   constructor() {
-    this.logText = localStorage.getItem('logText');
-    this.log = this.parseTextLog(this.logText);
+    this.selectedDate = this.getSelectedDate();
+    this.logText = this.getSelectedDateLog();
+    this.parseTextLog();
   }
 
   getLineDepth(logLine) {
@@ -184,20 +187,56 @@ class AppComponent {
     return `- ${description}`;
   }
 
-  parseTextLog(logText) {
-    if (typeof logText !== 'string') {
-      logText = '';
+  parseTextLog() {
+    if (typeof this.logText !== 'string') {
+      this.logText = '';
     }
     this.log = {};
-    this.log.categories = this.getCategories(logText);
+    this.log.categories = this.getCategories(this.logText);
     this.log.gaps = this.getGaps(this.log);
     this.log.overlaps = this.getOverlaps(this.log);
     this.calculateTotals(this.log);
-    return this.log;
   }
 
-  saveTextLog(logText) {
-    localStorage.setItem('logText', logText);
+  saveTextLog() {
+    localStorage.setItem(this.getSelectedDateStorageId(), this.logText);
+  }
+
+  getSelectedDateId() {
+    return this.selectedDate.format(logDateIdFormat);
+  }
+
+  getSelectedDateStorageId() {
+    return `wtc-date-${this.getSelectedDateId()}`;
+  }
+
+  getSelectedDate() {
+    let selectedDateStr = localStorage.getItem('selectedDate');
+    if (selectedDateStr) {
+      return moment(selectedDateStr);
+    } else {
+      return moment();
+    }
+  }
+
+  getSelectedDateLog() {
+
+    return localStorage.getItem(this.getSelectedDateStorageId()) || '';
+  }
+
+  parseSelectedDateLog() {
+    this.logText = this.getSelectedDateLog();
+    this.parseTextLog();
+  }
+
+  selectPrevDay() {
+    this.selectedDate.subtract(1, 'day');
+    this.parseSelectedDateLog();
+  }
+
+  selectNextDay() {
+    this.selectedDate.add(1, 'day');
+    this.parseSelectedDateLog();
   }
 
   view() {
@@ -207,15 +246,42 @@ class AppComponent {
       ]),
       m('div.app-content', [
 
-        m('textarea.log-input', {
-          autofocus: true,
-          placeholder: 'Paste your time log here',
-          oninput: (event) => {
-            this.logText = event.target.value;
-            this.parseTextLog(event.target.value);
-            this.saveTextLog(event.target.value);
-          },
-        }, this.logText),
+        m('div.log-area', [
+
+          m('textarea.log-input', {
+            autofocus: true,
+            placeholder: 'Paste your time log here',
+            oninput: (event) => {
+              this.logText = event.target.value;
+              this.parseTextLog();
+              this.saveTextLog();
+            },
+            // Focus log textbox when changing dates
+            onupdate: (vnode) => {
+              vnode.dom.focus();
+            }
+          }, this.logText),
+
+          m('div.log-date-area', [
+
+            m('span.log-selected-date', this.selectedDate.format('dddd, MMM DD, YYYY')),
+            m('div.log-date-controls', [
+              m('span.log-date-control.log-prev-day-control', {
+                onclick: () => {
+                  this.selectPrevDay();
+                  this.saveTextLog();
+                }
+              }, '<'),
+              m('span.log-date-control.log-next-day-control', {
+                onclick: () => {
+                  this.selectNextDay();
+                  this.saveTextLog();
+                }
+              }, '>')
+            ])
+          ]),
+
+        ]),
 
         this.log.categories.length > 0 ?
         m('div.log-calculations', [
