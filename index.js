@@ -264,7 +264,10 @@ class AppComponent {
 
           m('div.log-date-area', [
 
-            m('span.log-selected-date', this.selectedDate.format('dddd, MMM DD, YYYY')),
+            m('div.log-selected-date', [
+              m('div.log-selected-date-absolute', this.selectedDate.format('dddd, MMM DD, YYYY')),
+              m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.selectedDate.fromNow()}`),
+            ]),
             m('div.log-date-controls', [
               m('span.log-date-control.log-prev-day-control', {
                 onclick: () => {
