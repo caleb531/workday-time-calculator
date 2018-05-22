@@ -267,7 +267,10 @@ class AppComponent {
       console.log('change');
       this.logText = this.editor.getText();
       this.parseTextLog();
-      this.saveTextLog();
+      if (source === 'user') {
+        console.log('save');
+        this.saveTextLog();
+      }
     });
     this.setEditorText();
   }
