@@ -1,4 +1,4 @@
-/* global _, m, moment */
+/* global _, m, moment, Quill */
 (function () {
 
 let logTimeFormat = 'h:mma';
@@ -10,8 +10,7 @@ class AppComponent {
 
   constructor() {
     this.selectedDate = this.getSelectedDate();
-    this.logText = this.getSelectedDateLog();
-    this.parseTextLog();
+    this.parseSelectedDateLog();
   }
 
   getLineDepth(logLine) {
@@ -199,7 +198,9 @@ class AppComponent {
   }
 
   saveTextLog() {
-    localStorage.setItem(this.getSelectedDateStorageId(), this.logText);
+    if (this.editor) {
+      localStorage.setItem(this.getSelectedDateStorageId(), JSON.stringify(this.editor.getContents()));
+    }
   }
 
   getSelectedDateId() {
@@ -219,24 +220,56 @@ class AppComponent {
     }
   }
 
-  getSelectedDateLog() {
-
-    return localStorage.getItem(this.getSelectedDateStorageId()) || '';
+  loadSelectedDateLog() {
+    let dateStorageId = this.getSelectedDateStorageId();
+    let logContentsStr = localStorage.getItem(dateStorageId);
+    try {
+      this.logContents = JSON.parse(logContentsStr);
+      this.logText = this.logContents.ops.map((op) => op.insert).join('');
+    } catch (error) {
+      this.logContents = null;
+      this.logText = logContentsStr;
+    }
   }
 
   parseSelectedDateLog() {
-    this.logText = this.getSelectedDateLog();
+    this.loadSelectedDateLog();
     this.parseTextLog();
   }
 
   selectPrevDay() {
     this.selectedDate.subtract(1, 'day');
     this.parseSelectedDateLog();
+    this.setEditorText();
   }
 
   selectNextDay() {
     this.selectedDate.add(1, 'day');
     this.parseSelectedDateLog();
+    this.setEditorText();
+  }
+
+  setEditorText() {
+    this.editor.setContents(this.logContents);
+  }
+
+  initializeEditor(editorContainer) {
+    this.editor = new Quill(editorContainer, {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline'],
+          [{'list': 'ordered'}]
+        ]
+      }
+    });
+    this.editor.on('text-change', (delta, oldDelta, source) => {
+      console.log('change');
+      this.logText = this.editor.getText();
+      this.parseTextLog();
+      this.saveTextLog();
+    });
+    this.setEditorText();
   }
 
   view() {
@@ -248,19 +281,15 @@ class AppComponent {
 
         m('div.log-area', [
 
-          m('textarea.log-input', {
-            autofocus: true,
-            placeholder: 'Paste or enter your time log here',
-            oninput: (event) => {
-              this.logText = event.target.value;
-              this.parseTextLog();
-              this.saveTextLog();
+          m('div.log-editor', {
+            oncreate: (vnode) => {
+              this.initializeEditor(vnode.dom);
             },
             // Focus log textbox when changing dates
-            onupdate: (vnode) => {
-              vnode.dom.focus();
-            }
-          }, this.logText),
+            // onupdate: (vnode) => {
+            //   vnode.dom.focus();
+            // }
+          }),
 
           m('div.log-date-area', [
 
