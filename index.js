@@ -268,11 +268,12 @@ class AppComponent {
       }
     });
     this.editor.on('text-change', (delta, oldDelta, source) => {
-      this.logContents = this.editor.getText();
+      this.logContents = this.editor.getContents();
       this.parseTextLog();
       if (source === 'user') {
         console.log('save');
         this.saveTextLog();
+        m.redraw();
       }
       this.editor.focus();
     });
