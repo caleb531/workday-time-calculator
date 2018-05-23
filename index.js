@@ -17,17 +17,12 @@ class AppComponent {
     return Math.round(logLine.search(/\S/) / 4);
   }
 
-  getLineContent(logLine) {
-    let matches = logLine.match(/^\s*\d+\.\s*(.*?)$/);
-    if (matches) {
-      return matches[1];
-    } else {
-      return '';
-    }
+  isTimeRange(logLine) {
+    return !isNaN(parseInt(logLine, 10));
   }
 
   parseLineTimes(logLine) {
-    return this.getLineContent(logLine)
+    return logLine
       .split(/\s*to\s*/)
       .map((timeStr) => {
         return this.makeTimeStrAbsolute(timeStr);
@@ -43,36 +38,41 @@ class AppComponent {
     }
   }
 
-  getCategories(logText) {
+  getCategories(logContents) {
 
-    let logLines = logText.split('\n');
     let categories = [];
     let currentCategory = null;
 
-    logLines.forEach((logLine) => {
-      if (logLine.trim() !== '') {
-        let lineDepth = this.getLineDepth(logLine);
-        if (lineDepth === 0) {
-          // This is a top-level category (e.g. Tyme, Internal, etc.)
-          currentCategory = {
-            name: this.getLineContent(logLine),
-            tasks: [],
-            descriptions: []
-          };
-          if (currentCategory.name !== null) {
-            categories.push(currentCategory);
-          }
-        } else if (lineDepth === 1) {
-          // This is a time range string
-          let timeStrs = this.parseLineTimes(logLine);
-          currentCategory.tasks.push({
-            startTime: moment(timeStrs[0], logTimeFormat),
-            endTime: moment(timeStrs[1], logTimeFormat)
-          });
-        } else if (lineDepth === 2) {
-          // This is a description
-          currentCategory.descriptions.push(this.getLineContent(logLine));
-        }
+    let logText = logContents.ops.map((op) => op.insert).join('');
+    let logLines = logText.split('\n');
+
+    logLines.forEach((currentLine, l) => {
+      let nextLine = logLines[l + 1];
+      // If current line is not a time range, it's either a category or a
+      // description; if the next line *is* a time range, then that makes the
+      // current line a category (and not a description)
+      if (!this.isTimeRange(currentLine) && this.isTimeRange(nextLine)) {
+        console.log('Category:', currentLine);
+        currentCategory = {
+          name: currentLine,
+          tasks: [],
+          descriptions: []
+        };
+        categories.push(currentCategory);
+      }
+      // Time range
+      if (this.isTimeRange(currentLine) && currentCategory) {
+        console.log('Time:', currentLine);
+        let timeStrs = this.parseLineTimes(currentLine);
+        currentCategory.tasks.push({
+          startTime: moment(timeStrs[0], logTimeFormat),
+          endTime: moment(timeStrs[1], logTimeFormat)
+        });
+      }
+      // Task description
+      if (currentLine.trim() !== '' && !this.isTimeRange(currentLine) && !this.isTimeRange(nextLine) && currentCategory) {
+        console.log('Desc:', currentLine);
+        currentCategory.descriptions.push(currentLine);
       }
     });
 
@@ -187,11 +187,11 @@ class AppComponent {
   }
 
   parseTextLog() {
-    if (typeof this.logText !== 'string') {
-      this.logText = '';
+    if (typeof this.logContents !== 'object') {
+      this.logContents = this.getDefaultLogContents();
     }
     this.log = {};
-    this.log.categories = this.getCategories(this.logText);
+    this.log.categories = this.getCategories(this.logContents);
     this.log.gaps = this.getGaps(this.log);
     this.log.overlaps = this.getOverlaps(this.log);
     this.calculateTotals(this.log);
@@ -224,12 +224,16 @@ class AppComponent {
     let dateStorageId = this.getSelectedDateStorageId();
     let logContentsStr = localStorage.getItem(dateStorageId);
     try {
-      this.logContents = JSON.parse(logContentsStr);
-      this.logText = this.logContents.ops.map((op) => op.insert).join('');
+      this.logContents = JSON.parse(logContentsStr) || this.getDefaultLogContents();
     } catch (error) {
-      this.logContents = null;
-      this.logText = logContentsStr;
+      this.logContents = this.getDefaultLogContents();
     }
+  }
+
+  getDefaultLogContents() {
+    return {
+      ops: []
+    };
   }
 
   parseSelectedDateLog() {
@@ -264,13 +268,13 @@ class AppComponent {
       }
     });
     this.editor.on('text-change', (delta, oldDelta, source) => {
-      console.log('change');
-      this.logText = this.editor.getText();
+      this.logContents = this.editor.getText();
       this.parseTextLog();
       if (source === 'user') {
         console.log('save');
         this.saveTextLog();
       }
+      this.editor.focus();
     });
     this.setEditorText();
   }
@@ -288,10 +292,6 @@ class AppComponent {
             oncreate: (vnode) => {
               this.initializeEditor(vnode.dom);
             },
-            // Focus log textbox when changing dates
-            // onupdate: (vnode) => {
-            //   vnode.dom.focus();
-            // }
           }),
 
           m('div.log-date-area', [

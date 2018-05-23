@@ -29,8 +29,9 @@ h1 {
   align-items: flex-start;
 }
 
+.ql-snow .ql-fill,
 .ql-snow .ql-stroke {
-  stroke: #fff;
+  stroke: currentColor;
 }
 
 .ql-toolbar.ql-snow {
@@ -40,6 +41,22 @@ h1 {
 .ql-toolbar.ql-snow,
 .ql-container.ql-snow {
   border-color: rgba(255, 255, 255, 0.5);
+}
+
+.ql-snow.ql-toolbar button {
+  color: #fff;
+}
+.ql-snow.ql-toolbar button:hover {
+  color: #ddd;
+}
+.ql-snow.ql-toolbar button.ql-active {
+  color: #5bd;
+}
+.ql-snow.ql-toolbar button .ql-fill {
+  fill: currentColor !important;
+}
+.ql-snow.ql-toolbar button .ql-stroke {
+  stroke: currentColor !important;
 }
 
 .log-editor {
@@ -53,12 +70,12 @@ h1 {
   color: #fff;
   resize: none;
 }
-.log-input:focus {
+.ql-editor:focus {
   outline-width: 0;
   border-color: #5bd;
   box-shadow: 0 0 0 1px #5bd;
 }
-.log-input::-webkit-input-placeholder {
+.ql-editor::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.5);
   font-weight: 300;
 }
@@ -66,7 +83,7 @@ h1 {
 .log-date-area {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch;
   user-select: none;
   font-size: 0;
 }
@@ -87,7 +104,7 @@ h1 {
   justify-content: center;
   align-items: flex-start;
   width: 30px;
-  height: 30px;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
   cursor: pointer;
 }
@@ -97,7 +114,8 @@ h1 {
 .log-date-control svg {
   width: inherit;
   height: inherit;
-  stroke: currentColor;
+  stroke: #fff;
+  fill: none;
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
