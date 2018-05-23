@@ -97,6 +97,7 @@ h1 {
 }
 .log-selected-date-relative {
   font-size: 12px;
+  line-height: 1;
 }
 
 .log-date-control {
