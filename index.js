@@ -287,7 +287,7 @@ class AppComponent {
       this.logContents = this.editor.getContents();
       this.parseTextLog();
       if (source === 'user') {
-        console.log('save');
+        // console.log('save');
         this.saveTextLog();
         m.redraw();
       }
