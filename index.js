@@ -52,7 +52,7 @@ class AppComponent {
       // description; if the next line *is* a time range, then that makes the
       // current line a category (and not a description)
       if (!this.isTimeRange(currentLine) && this.isTimeRange(nextLine)) {
-        // console.log('Category:', currentLine);
+        console.log('Category:', currentLine);
         currentCategory = {
           name: currentLine,
           tasks: [],
@@ -62,7 +62,7 @@ class AppComponent {
       }
       // Time range
       if (this.isTimeRange(currentLine) && currentCategory) {
-        // console.log('Time:', currentLine);
+        console.log('Time:', currentLine);
         let timeStrs = this.parseLineTimes(currentLine);
         currentCategory.tasks.push({
           startTime: moment(timeStrs[0], logTimeFormat),
@@ -71,7 +71,7 @@ class AppComponent {
       }
       // Task description
       if (currentLine.trim() !== '' && !this.isTimeRange(currentLine) && !this.isTimeRange(nextLine) && currentCategory) {
-        // console.log('Desc:', currentLine);
+        console.log('Desc:', currentLine);
         currentCategory.descriptions.push(currentLine);
       }
     });
