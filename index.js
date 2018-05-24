@@ -305,18 +305,8 @@ class AppComponent {
 
         m('div.log-area', [
 
-          m('div.log-editor', {
-            oncreate: (vnode) => {
-              this.initializeEditor(vnode.dom);
-            },
-          }),
-
           m('div.log-date-area', [
 
-            m('div.log-selected-date', [
-              m('div.log-selected-date-absolute', this.selectedDate.format('dddd, MMM DD, YYYY')),
-              m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.selectedDate.fromNow()}`),
-            ]),
             m('div.log-date-controls', [
               m('span.log-date-control.log-prev-day-control', {
                 onclick: () => {
@@ -334,8 +324,18 @@ class AppComponent {
               }, m('svg[viewBox="0 0 32 32"]', m('polyline', {
                 points: '12,10 20,16 12,22'
               })))
+            ]),
+            m('div.log-selected-date', [
+              m('div.log-selected-date-absolute', this.selectedDate.format('dddd, MMM DD, YYYY')),
+              m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.selectedDate.fromNow()}`),
             ])
           ]),
+
+          m('div.log-editor', {
+            oncreate: (vnode) => {
+              this.initializeEditor(vnode.dom);
+            },
+          }),
 
         ]),
 
