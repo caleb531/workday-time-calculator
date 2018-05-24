@@ -59,6 +59,18 @@ h1 {
   stroke: currentColor !important;
 }
 
+.ql-editor ol li:not(.ql-direction-rtl),
+.ql-editor ul li:not(.ql-direction-rtl) {
+  padding-left: 0;
+}
+
+.ql-editor li.ql-indent-1:not(.ql-direction-rtl) {
+  padding-left: 2em;
+}
+.ql-editor li.ql-indent-2:not(.ql-direction-rtl) {
+  padding-left: 4em;
+}
+
 .log-editor {
   width: 380px;
   height: 300px;
