@@ -304,6 +304,12 @@ class AppComponent {
 
         m('div.log-area', [
 
+          m('div.log-editor', {
+            oncreate: (vnode) => {
+              this.initializeEditor(vnode.dom);
+            },
+          }),
+
           m('div.log-date-area', [
 
             m('div.log-date-controls', [
@@ -328,13 +334,7 @@ class AppComponent {
               m('div.log-selected-date-absolute', this.selectedDate.format('dddd, MMM DD, YYYY')),
               m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.selectedDate.fromNow()}`),
             ])
-          ]),
-
-          m('div.log-editor', {
-            oncreate: (vnode) => {
-              this.initializeEditor(vnode.dom);
-            },
-          }),
+          ])
 
         ]),
 
