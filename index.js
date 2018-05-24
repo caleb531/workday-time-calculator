@@ -47,11 +47,12 @@ class AppComponent {
     let logLines = logText.split('\n');
 
     logLines.forEach((currentLine, l) => {
+      let prevLine = logLines[l - 1];
       let nextLine = logLines[l + 1];
       // If current line is not a time range, it's either a category or a
       // description; if the next line *is* a time range, then that makes the
       // current line a category (and not a description)
-      if (!this.isTimeRange(currentLine) && this.isTimeRange(nextLine)) {
+      if (!this.isTimeRange(currentLine) && this.isTimeRange(nextLine) && !this.isTimeRange(prevLine)) {
         console.log('Category:', currentLine);
         currentCategory = {
           name: currentLine,
