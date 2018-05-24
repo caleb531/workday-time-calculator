@@ -264,8 +264,7 @@ class AppComponent {
         toolbar: [
           ['bold', 'italic', 'underline'],
           [{'list': 'ordered'}],
-          [{'indent': '-1'}],
-          [{'indent': '+1'}]
+          [{'indent': '-1'}, {'indent': '+1'}],
         ]
       }
     });
