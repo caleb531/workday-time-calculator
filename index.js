@@ -263,7 +263,7 @@ class AppComponent {
       modules: {
         toolbar: [
           ['bold', 'italic', 'underline'],
-          [{'list': 'ordered'}],
+          [{'list': 'bullet'}, {'list': 'ordered'}],
           [{'indent': '-1'}, {'indent': '+1'}],
         ]
       }
