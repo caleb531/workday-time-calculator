@@ -265,8 +265,26 @@ class AppComponent {
           ['bold', 'italic', 'underline'],
           [{'list': 'bullet'}, {'list': 'ordered'}],
           [{'indent': '-1'}, {'indent': '+1'}],
-        ]
-      }
+        ],
+        keyboard: {
+          bindings: {
+            // Use <tab> and shift-<tab> to indent/un-indent
+            tab: {
+              key: 9,
+              handler: (range) => {
+                this.editor.formatLine(range, {'indent': '+1'});
+              }
+            },
+            shiftTab: {
+              key: 9,
+              shiftKey: true,
+              handler: (range) => {
+                this.editor.formatLine(range, {'indent': '-1'});
+              }
+            }
+          }
+        }
+      },
     });
     this.editor.keyboard.addBinding({
       // 219 corresponds to left bracket ('[')
@@ -282,14 +300,11 @@ class AppComponent {
     }, (range) => {
       this.editor.formatLine(range, {'indent': '+1'});
     });
-    this.editor.on('text-change', (delta, oldDelta, source) => {
+    this.editor.on('text-change', () => {
       this.logContents = this.editor.getContents();
       this.parseTextLog();
-      if (source === 'user') {
-        // console.log('save');
-        this.saveTextLog();
-        m.redraw();
-      }
+      this.saveTextLog();
+      m.redraw();
       this.editor.focus();
     });
     this.setEditorText();
