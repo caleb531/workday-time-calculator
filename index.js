@@ -59,7 +59,7 @@ class AppComponent {
             descriptions: []
           };
           categories.push(currentCategory);
-        } else if (indent === 1) {
+        } else if (indent === 1 && this.isTimeRange(currentLine)) {
           // Time range
           console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimes(currentLine);
@@ -67,7 +67,7 @@ class AppComponent {
             startTime: moment(timeStrs[0], logTimeFormat),
             endTime: moment(timeStrs[1], logTimeFormat)
           });
-        } else if (indent === 2) {
+        } else if (indent >= 1 && !this.isTimeRange(currentLine)) {
           // Task description
           console.log('Desc:', currentLine);
           currentCategory.descriptions.push(currentLine);
