@@ -43,37 +43,36 @@ class AppComponent {
     let categories = [];
     let currentCategory = null;
 
-    let logText = logContents.ops.map((op) => op.insert).join('');
-    let logLines = logText.split('\n');
+    logContents.ops.forEach((currentOp, o) => {
+      let nextOp = logContents.ops[o + 1];
+      if (nextOp && nextOp.attributes) {
 
-    logLines.forEach((currentLine, l) => {
-      let prevLine = logLines[l - 1];
-      let nextLine = logLines[l + 1];
-      // If current line is not a time range, it's either a category or a
-      // description; if the next line *is* a time range, then that makes the
-      // current line a category (and not a description)
-      if (!this.isTimeRange(currentLine) && this.isTimeRange(nextLine) && !this.isTimeRange(prevLine)) {
-        console.log('Category:', currentLine);
-        currentCategory = {
-          name: currentLine,
-          tasks: [],
-          descriptions: []
-        };
-        categories.push(currentCategory);
-      }
-      // Time range
-      if (this.isTimeRange(currentLine) && currentCategory) {
-        console.log('Time:', currentLine);
-        let timeStrs = this.parseLineTimes(currentLine);
-        currentCategory.tasks.push({
-          startTime: moment(timeStrs[0], logTimeFormat),
-          endTime: moment(timeStrs[1], logTimeFormat)
-        });
-      }
-      // Task description
-      if (currentLine.trim() !== '' && !this.isTimeRange(currentLine) && !this.isTimeRange(nextLine) && currentCategory) {
-        console.log('Desc:', currentLine);
-        currentCategory.descriptions.push(currentLine);
+        let currentLine = currentOp.insert;
+        let indent = nextOp.attributes.indent || 0;
+
+        if (indent === 0) {
+          // Category
+          console.log('Category:', currentLine);
+          currentCategory = {
+            name: currentLine,
+            tasks: [],
+            descriptions: []
+          };
+          categories.push(currentCategory);
+        } else if (indent === 1) {
+          // Time range
+          console.log('Time:', currentLine);
+          let timeStrs = this.parseLineTimes(currentLine);
+          currentCategory.tasks.push({
+            startTime: moment(timeStrs[0], logTimeFormat),
+            endTime: moment(timeStrs[1], logTimeFormat)
+          });
+        } else if (indent === 2) {
+          // Task description
+          console.log('Desc:', currentLine);
+          currentCategory.descriptions.push(currentLine);
+        }
+
       }
     });
 
