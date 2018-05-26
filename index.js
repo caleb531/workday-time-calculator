@@ -198,9 +198,7 @@ class AppComponent {
   }
 
   saveTextLog() {
-    if (this.editor) {
-      localStorage.setItem(this.getSelectedDateStorageId(), JSON.stringify(this.editor.getContents()));
-    }
+    localStorage.setItem(this.getSelectedDateStorageId(), JSON.stringify(this.editor.getContents()));
   }
 
   getSelectedDateId() {
