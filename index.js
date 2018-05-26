@@ -52,7 +52,7 @@ class AppComponent {
 
         if (indent === 0) {
           // Category
-          console.log('Category:', currentLine);
+          // console.log('Category:', currentLine);
           currentCategory = {
             name: currentLine,
             tasks: [],
@@ -61,7 +61,7 @@ class AppComponent {
           categories.push(currentCategory);
         } else if (indent === 1 && this.isTimeRange(currentLine) && currentCategory) {
           // Time range
-          console.log('Time:', currentLine);
+          // console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimes(currentLine);
           currentCategory.tasks.push({
             startTime: moment(timeStrs[0], logTimeFormat),
@@ -69,7 +69,7 @@ class AppComponent {
           });
         } else if (indent >= 1 && !this.isTimeRange(currentLine) && currentCategory) {
           // Task description
-          console.log('Desc:', currentLine);
+          // console.log('Desc:', currentLine);
           currentCategory.descriptions.push(currentLine);
         }
 
