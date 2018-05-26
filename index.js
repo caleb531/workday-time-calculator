@@ -13,10 +13,6 @@ class AppComponent {
     this.parseSelectedDateLog();
   }
 
-  getLineDepth(logLine) {
-    return Math.round(logLine.search(/\S/) / 4);
-  }
-
   isTimeRange(logLine) {
     return !isNaN(parseInt(logLine, 10));
   }
