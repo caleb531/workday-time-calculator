@@ -97,7 +97,7 @@ h1 {
   font-style: normal;
 }
 
-.log-editor {
+.ql-container {
   width: 380px;
   height: 300px;
   border: solid 1px rgba(255, 255, 255, 0.5);
