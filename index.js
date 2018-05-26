@@ -260,6 +260,7 @@ class AppComponent {
   initializeEditor(editorContainer) {
     this.editor = new Quill(editorContainer, {
       theme: 'snow',
+      placeholder: 'Enter your time log here...',
       modules: {
         toolbar: [
           ['bold', 'italic', 'underline'],
