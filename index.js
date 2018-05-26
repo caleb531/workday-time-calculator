@@ -261,9 +261,9 @@ class AppComponent {
     this.editor = new Quill(editorContainer, {
       theme: 'snow',
       placeholder: 'Enter your time log here...',
+      formats: ['list', 'indent'],
       modules: {
         toolbar: [
-          ['bold', 'italic', 'underline'],
           [{'list': 'bullet'}, {'list': 'ordered'}],
           [{'indent': '-1'}, {'indent': '+1'}],
         ],
@@ -273,14 +273,14 @@ class AppComponent {
             tab: {
               key: 9,
               handler: (range) => {
-                this.editor.formatLine(range, {'indent': '+1'});
+                this.editor.formatLine(range, {'indent': '+1'}, 'user');
               }
             },
             shiftTab: {
               key: 9,
               shiftKey: true,
               handler: (range) => {
-                this.editor.formatLine(range, {'indent': '-1'});
+                this.editor.formatLine(range, {'indent': '-1'}, 'user');
               }
             }
           }
@@ -292,20 +292,22 @@ class AppComponent {
       key: 219,
       shortKey: true
     }, (range) => {
-      this.editor.formatLine(range, {'indent': '-1'});
+      this.editor.formatLine(range, {'indent': '-1'}, 'user');
     });
     this.editor.keyboard.addBinding({
       // 221 corresponds to right bracket (']')
       key: 221,
       shortKey: true
     }, (range) => {
-      this.editor.formatLine(range, {'indent': '+1'});
+      this.editor.formatLine(range, {'indent': '+1'}, 'user');
     });
-    this.editor.on('text-change', () => {
+    this.editor.on('text-change', (delta, oldDelta, source) => {
       this.logContents = this.editor.getContents();
       this.parseTextLog();
-      this.saveTextLog();
-      m.redraw();
+      if (source === 'user') {
+        this.saveTextLog();
+        m.redraw();
+      }
       this.editor.focus();
     });
     this.setEditorText();
