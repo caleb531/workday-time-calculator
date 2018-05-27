@@ -269,7 +269,10 @@ class AppComponent {
         ],
         keyboard: {
           bindings: {
-            // Use <tab> and shift-<tab> to indent/un-indent
+            // Use <tab> and shift-<tab> to indent/un-indent; these must be
+            // defined on editor initialization rather than via
+            // keyboard.addBinding (see
+            // <https://github.com/quilljs/quill/issues/1647>)
             tab: {
               key: 9,
               handler: (range) => {
