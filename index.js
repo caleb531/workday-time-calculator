@@ -285,24 +285,26 @@ class AppComponent {
               handler: (range) => {
                 this.editor.formatLine(range, {'indent': '-1'}, 'user');
               }
+            },
+            indent: {
+              // 221 corresponds to right bracket (']')
+              key: 221,
+              shortKey: true,
+              handler: (range) => {
+                this.editor.formatLine(range, {'indent': '+1'}, 'user');
+              }
+            },
+            unIndent: {
+              // 219 corresponds to left bracket ('[')
+              key: 219,
+              shortKey: true,
+              handler: (range) => {
+                this.editor.formatLine(range, {'indent': '-1'}, 'user');
+              }
             }
           }
         }
       },
-    });
-    this.editor.keyboard.addBinding({
-      // 219 corresponds to left bracket ('[')
-      key: 219,
-      shortKey: true
-    }, (range) => {
-      this.editor.formatLine(range, {'indent': '-1'}, 'user');
-    });
-    this.editor.keyboard.addBinding({
-      // 221 corresponds to right bracket (']')
-      key: 221,
-      shortKey: true
-    }, (range) => {
-      this.editor.formatLine(range, {'indent': '+1'}, 'user');
     });
     this.editor.on('text-change', (delta, oldDelta, source) => {
       this.logContents = this.editor.getContents();
