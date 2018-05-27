@@ -69,7 +69,7 @@ class AppComponent {
               endTime: endTime
             });
           }
-        } else if (indent >= 1 && !this.isTimeRange(currentLine) && currentCategory) {
+        } else if (indent >= 1 && !this.isTimeRange(currentLine) && currentCategory && currentLine.trim() !== '') {
           // Task description
           // console.log('Desc:', currentLine);
           currentCategory.descriptions.push(currentLine);
