@@ -18,11 +18,13 @@ class AppComponent {
   }
 
   parseLineTimes(logLine) {
-    return logLine
-      .split(/\s*to\s*/)
-      .map((timeStr) => {
-        return this.makeTimeStrAbsolute(timeStr);
-      });
+    let timeStrs = logLine.split(/\s*to\s*/);
+    if (timeStrs.length === 1 || timeStrs[1] === '') {
+      timeStrs[1] = timeStrs[0];
+    }
+    return timeStrs.map((timeStr) => {
+      return this.makeTimeStrAbsolute(timeStr);
+    });
   }
 
   makeTimeStrAbsolute(timeStr) {
@@ -59,10 +61,14 @@ class AppComponent {
           // Time range
           // console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimes(currentLine);
-          currentCategory.tasks.push({
-            startTime: moment(timeStrs[0], logTimeFormat),
-            endTime: moment(timeStrs[1], logTimeFormat)
-          });
+          let startTime = moment(timeStrs[0], logTimeFormat);
+          let endTime = moment(timeStrs[1], logTimeFormat);
+          if (!startTime.isSame(endTime)) {
+            currentCategory.tasks.push({
+              startTime: startTime,
+              endTime: endTime
+            });
+          }
         } else if (indent >= 1 && !this.isTimeRange(currentLine) && currentCategory) {
           // Task description
           // console.log('Desc:', currentLine);
