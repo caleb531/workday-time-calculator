@@ -46,8 +46,10 @@ h1 {
 .ql-snow.ql-toolbar button {
   color: #fff;
 }
-.ql-snow.ql-toolbar button:hover {
-  color: #ddd;
+.ql-snow.ql-toolbar button:hover,
+.ql-snow.ql-toolbar button:focus {
+  outline-width: 0;
+  color: #ccc;
 }
 .ql-snow.ql-toolbar button.ql-active {
   color: #5bd;
