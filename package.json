@@ -2,6 +2,10 @@
   "name": "workday-time-calculator",
   "version": "0.1.0",
   "description": "Calculates my total hours (per client, as well as overall) for a workday",
+  "scripts": {
+    "build": "rollup --config rollup.config.js",
+    "watch": "rollup --config rollup.config.js --watch"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/caleb531/workday-time-calculator.git"
@@ -17,5 +21,12 @@
     "mithril": "^1.1.4",
     "moment": "^2.19.0",
     "quill": "^1.3.6"
+  },
+  "devDependencies": {
+    "rollup": "^0.59.3",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-copy": "^0.2.3",
+    "rollup-plugin-json": "^3.0.0",
+    "rollup-plugin-node-resolve": "^3.3.0"
   }
 }

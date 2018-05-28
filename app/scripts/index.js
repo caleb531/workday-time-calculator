@@ -1,5 +1,7 @@
-/* global _, m, moment, Quill */
-(function () {
+import m from '../../node_modules/mithril/mithril.min.js';
+import _ from '../../node_modules/lodash/index.js';
+import moment from '../../node_modules/moment/min/moment.min.js';
+import Quill from '../../node_modules/quill/dist/quill.min.js';
 
 let logTimeFormat = 'h:mma';
 let logGapFormat = 'h:mm';
@@ -436,5 +438,3 @@ class AppComponent {
 }
 
 m.mount(document.body, AppComponent);
-
-}());
