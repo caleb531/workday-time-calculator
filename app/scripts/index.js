@@ -1,3 +1,4 @@
+import '../styles/index.scss';
 import m from '../../node_modules/mithril/mithril.min.js';
 import _ from '../../node_modules/lodash/index.js';
 import moment from '../../node_modules/moment/min/moment.min.js';
