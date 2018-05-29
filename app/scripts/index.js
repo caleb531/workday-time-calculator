@@ -324,7 +324,10 @@ class AppComponent {
   view() {
     return m('div.app', [
       m('header.app-header', [
-        m('h1', 'Workday Time Calculator')
+        m('h1', 'Workday Time Calculator'),
+        m('span#personal-site-link.nav-link.nav-link-right', [
+          'by ', m('a[href=https://calebevans.me/]', 'Caleb Evans')
+        ])
       ]),
       m('div.app-content', [
 

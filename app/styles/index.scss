@@ -23,6 +23,17 @@ h1 {
   font-weight: 400;
 }
 
+#personal-site-link {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 14px;
+}
+#personal-site-link a {
+  color: #9cf;
+  text-decoration: none;
+}
+
 .app-content {
   display: flex;
   justify-content: flex-start;
