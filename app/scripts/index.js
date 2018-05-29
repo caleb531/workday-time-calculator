@@ -263,7 +263,7 @@ class AppComponent {
   initializeEditor(editorContainer) {
     this.editor = new Quill(editorContainer, {
       theme: 'snow',
-      placeholder: '1. Category Name\n\ta. 9 to 5\n\t\ti. Description',
+      placeholder: '1. Client Name\n\ta. 9 to 5\n\t\ti. Description',
       formats: ['list', 'indent'],
       modules: {
         toolbar: [
