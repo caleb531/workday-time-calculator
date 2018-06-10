@@ -173,23 +173,20 @@ class AppComponent {
         }
         encounteredRanges.add(this.computeIndexHash(a, b));
 
-        // Case 1: SseE (TODO)
         if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
+          // Case 1: SseE (TODO)
           overlaps.push(rangeA);
           overlaps.push(rangeB);
-        }
-        // Case 2: sSEe (TODO)
-        if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
+        } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
+          // Case 2: sSEe (TODO)
           overlaps.push(rangeA);
           overlaps.push(rangeB);
-        }
-        // Case 3: SsEe (TODO)
-        if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
+        } else if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
+          // Case 3: SsEe (TODO)
           overlaps.push(rangeA);
           overlaps.push(rangeB);
-        }
-        // Case 4: sSeE (TODO)
-        if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
+        } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
+          // Case 4: sSeE (TODO)
           overlaps.push(rangeA);
           overlaps.push(rangeB);
         }
