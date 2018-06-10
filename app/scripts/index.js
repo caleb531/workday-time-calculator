@@ -195,6 +195,11 @@ class AppComponent {
         }
       });
     });
+    overlaps = _.uniq(overlaps);
+    overlaps = _.sortBy(overlaps, (overlap) => [
+      overlap.startTime,
+      overlap.endTime
+    ]);
 
     return overlaps;
 
