@@ -42,6 +42,7 @@ class AppComponent {
   getCategories(logContents) {
 
     let categories = [];
+    let categoryMap = {};
     let currentCategory = null;
 
     logContents.ops.forEach((currentOp, o) => {
@@ -54,12 +55,18 @@ class AppComponent {
         if (indent === 0) {
           // Category
           // console.log('Category:', currentLine);
-          currentCategory = {
-            name: currentLine,
-            tasks: [],
-            descriptions: []
-          };
-          categories.push(currentCategory);
+          let categoryName = currentLine.trim();
+          if (categoryMap[categoryName]) {
+            currentCategory = categoryMap[categoryName];
+          } else {
+            currentCategory = {
+              name: currentLine,
+              tasks: [],
+              descriptions: []
+            };
+            categoryMap[categoryName] = currentCategory;
+            categories.push(currentCategory);
+          }
         } else if (indent === 1 && this.isTimeRange(currentLine) && currentCategory) {
           // Time range
           // console.log('Time:', currentLine);
@@ -141,6 +148,10 @@ class AppComponent {
 
   }
 
+  computeIndexHash(a, b) {
+    return (Math.pow(a + 1, 2) * Math.pow(b + 1, 2)) + a + b;
+  }
+
   getOverlaps(log) {
 
     let tasks = this.getAllTasks(log);
@@ -152,21 +163,40 @@ class AppComponent {
     });
 
     let overlaps = [];
-    let endTimeMap = {};
-    ranges.forEach((range) => {
-      let endTimeStr = range.endTime.format(logTimeFormat);
-      if (range.endTime.isBefore(range.startTime)) {
-        overlaps.push(range);
-      } else if (endTimeMap[endTimeStr] === undefined) {
-        endTimeMap[endTimeStr] = range;
-      } else {
-        overlaps.push({
-          startTime: endTimeMap[endTimeStr].startTime,
-          endTime: range.endTime
-        });
-        overlaps.push(range);
-      }
+    let encounteredRanges = new Set();
+    ranges.forEach((rangeA, a) => {
+      ranges.forEach((rangeB, b) => {
+        // Skip if range A is crossed with itself, or if we've encountered this
+        // same pair of ranges already
+        if (a === b || encounteredRanges.has(this.computeIndexHash(a, b))) {
+          return;
+        }
+        encounteredRanges.add(this.computeIndexHash(a, b));
+
+        if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
+          // Case 1: SseE
+          overlaps.push(rangeA);
+          overlaps.push(rangeB);
+        } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
+          // Case 2: sSEe
+          overlaps.push(rangeA);
+          overlaps.push(rangeB);
+        } else if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
+          // Case 3: SsEe
+          overlaps.push(rangeA);
+          overlaps.push(rangeB);
+        } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
+          // Case 4: sSeE
+          overlaps.push(rangeA);
+          overlaps.push(rangeB);
+        }
+      });
     });
+    overlaps = _.uniq(overlaps);
+    overlaps = _.sortBy(overlaps, (overlap) => [
+      overlap.startTime,
+      overlap.endTime
+    ]);
 
     return overlaps;
 
