@@ -235,7 +235,9 @@ class AppComponent {
 
   getDefaultLogContents() {
     return {
-      ops: []
+      ops: [{
+        insert: '\n'
+      }]
     };
   }
 
