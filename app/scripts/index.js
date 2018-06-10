@@ -159,20 +159,30 @@ class AppComponent {
     });
 
     let overlaps = [];
-    let endTimeMap = {};
-    ranges.forEach((range) => {
-      let endTimeStr = range.endTime.format(logTimeFormat);
-      if (range.endTime.isBefore(range.startTime)) {
-        overlaps.push(range);
-      } else if (endTimeMap[endTimeStr] === undefined) {
-        endTimeMap[endTimeStr] = range;
-      } else {
-        overlaps.push({
-          startTime: endTimeMap[endTimeStr].startTime,
-          endTime: range.endTime
-        });
-        overlaps.push(range);
-      }
+    ranges.forEach((rangeA, a) => {
+      ranges.forEach((rangeB, b) => {
+        // Skip if range A is crossed with itself
+        if (a === b) {
+          return;
+        }
+        // Duplicate time ranges
+        if (rangeA.startTime.isSame(rangeB.startTime)) {
+          overlaps.push({
+            startTime: rangeA.startTime,
+            endTime: rangeA.endTime
+          });
+        }
+        if (rangeA.endTime.isSame(rangeB.endTime)) {
+          overlaps.push({
+            startTime: rangeA.startTime,
+            endTime: rangeA.endTime
+          });
+        }
+        // Case 1: SseE (TODO)
+        // Case 2: sSEe (TODO)
+        // Case 3: SsEe (TODO)
+        // Case 4: sSeE (TODO)
+      });
     });
 
     return overlaps;
