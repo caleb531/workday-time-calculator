@@ -148,6 +148,10 @@ class AppComponent {
 
   }
 
+  computeIndexHash(a, b) {
+    return (Math.pow(a + 1, 2) * Math.pow(b + 1, 2)) + a + b;
+  }
+
   getOverlaps(log) {
 
     let tasks = this.getAllTasks(log);
@@ -159,25 +163,36 @@ class AppComponent {
     });
 
     let overlaps = [];
+    let encounteredRanges = new Set();
     ranges.forEach((rangeA, a) => {
       ranges.forEach((rangeB, b) => {
-        // Skip if range A is crossed with itself
-        if (a === b) {
+        // Skip if range A is crossed with itself, or if we've encountered this
+        // same pair of ranges already
+        if (a === b || encounteredRanges.has(this.computeIndexHash(a, b))) {
           return;
         }
-        // Duplicate time ranges
-        if (rangeA.startTime.isSame(rangeB.startTime)) {
-          overlaps.push(rangeA);
-          overlaps.push(rangeB);
-        }
-        if (rangeA.endTime.isSame(rangeB.endTime)) {
-          overlaps.push(rangeA);
-          overlaps.push(rangeB);
-        }
+        encounteredRanges.add(this.computeIndexHash(a, b));
+
         // Case 1: SseE (TODO)
+        if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
+          overlaps.push(rangeA);
+          overlaps.push(rangeB);
+        }
         // Case 2: sSEe (TODO)
+        if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
+          overlaps.push(rangeA);
+          overlaps.push(rangeB);
+        }
         // Case 3: SsEe (TODO)
+        if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
+          overlaps.push(rangeA);
+          overlaps.push(rangeB);
+        }
         // Case 4: sSeE (TODO)
+        if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
+          overlaps.push(rangeA);
+          overlaps.push(rangeB);
+        }
       });
     });
 
