@@ -167,16 +167,12 @@ class AppComponent {
         }
         // Duplicate time ranges
         if (rangeA.startTime.isSame(rangeB.startTime)) {
-          overlaps.push({
-            startTime: rangeA.startTime,
-            endTime: rangeA.endTime
-          });
+          overlaps.push(rangeA);
+          overlaps.push(rangeB);
         }
         if (rangeA.endTime.isSame(rangeB.endTime)) {
-          overlaps.push({
-            startTime: rangeA.startTime,
-            endTime: rangeA.endTime
-          });
+          overlaps.push(rangeA);
+          overlaps.push(rangeB);
         }
         // Case 1: SseE (TODO)
         // Case 2: sSEe (TODO)
