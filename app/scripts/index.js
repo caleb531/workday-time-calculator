@@ -42,6 +42,7 @@ class AppComponent {
   getCategories(logContents) {
 
     let categories = [];
+    let categoryMap = {};
     let currentCategory = null;
 
     logContents.ops.forEach((currentOp, o) => {
@@ -54,12 +55,18 @@ class AppComponent {
         if (indent === 0) {
           // Category
           // console.log('Category:', currentLine);
-          currentCategory = {
-            name: currentLine,
-            tasks: [],
-            descriptions: []
-          };
-          categories.push(currentCategory);
+          let categoryName = currentLine.trim();
+          if (categoryMap[categoryName]) {
+            currentCategory = categoryMap[categoryName];
+          } else {
+            currentCategory = {
+              name: currentLine,
+              tasks: [],
+              descriptions: []
+            };
+            categoryMap[categoryName] = currentCategory;
+            categories.push(currentCategory);
+          }
         } else if (indent === 1 && this.isTimeRange(currentLine) && currentCategory) {
           // Time range
           // console.log('Time:', currentLine);
