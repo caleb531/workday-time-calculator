@@ -149,8 +149,8 @@ class AppComponent {
   }
 
   logRangeSet(label, rangeSet) {
-    console.log(`${label} { ${Object.keys(rangeSet).map((key) => {
-      return rangeSet[key].endTime.format(logGapFormat);
+    console.log(`${label} { ${Array.from(rangeSet).map((endTimeKey) => {
+      return moment(endTimeKey).format(logGapFormat);
     }).join(', ')} }`);
   }
 
@@ -167,28 +167,28 @@ class AppComponent {
     let firstStartTime = _.first(ranges).startTime;
     let lastEndTime = _.last(ranges).endTime;
     let currentTime = moment(firstStartTime);
-    let rangeSet = {};
+    let rangeSet = new Set();
     let gapStartTime = null;
     let gaps = [];
 
     while (currentTime.isBefore(lastEndTime)) {
       // console.log(currentTime.format(logGapFormat));
       // this.logRangeSet('initial', rangeSet);
-      if (rangeSet[currentTime]) {
-        delete rangeSet[currentTime];
+      if (rangeSet.has(currentTime.toString())) {
+        rangeSet.delete(currentTime.toString());
         // this.logRangeSet('pop', rangeSet);
       }
       if (rangeMap[currentTime]) {
         rangeMap[currentTime].forEach((range) => {
-          rangeSet[range.endTime] = range;
+          rangeSet.add(range.endTime.toString());
           // this.logRangeSet('push', rangeSet);
         });
       }
-      if (_.isEmpty(rangeSet) && !gapStartTime) {
+      if (rangeSet.size === 0 && !gapStartTime) {
         // console.log('gap start', currentTime.format(logGapFormat));
         gapStartTime = moment(currentTime);
       }
-      if (gapStartTime && !_.isEmpty(rangeSet)) {
+      if (gapStartTime && rangeSet.size !== 0) {
         // console.log('gap end', currentTime.format(logGapFormat));
         // console.log('GAP', this.getRangeStr({
         //   startTime: gapStartTime,
