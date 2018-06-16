@@ -126,7 +126,7 @@ class AppComponent {
     });
   }
 
-  getSortedTimeRanges(ranges) {
+  sortTimeRanges(ranges) {
     return _.sortBy(ranges, (range) => [
       range.startTime,
       range.endTime
@@ -156,7 +156,7 @@ class AppComponent {
 
   getGaps(log) {
 
-    let ranges = this.getSortedTimeRanges(this.getAllTimeRanges(log));
+    let ranges = this.sortTimeRanges(this.getAllTimeRanges(log));
 
     let rangeMap = this.getRangeMap(ranges);
 
@@ -214,7 +214,7 @@ class AppComponent {
 
   getOverlaps(log) {
 
-    let ranges = this.getAllTimeRanges(log);
+    let ranges = this.sortTimeRanges(this.getAllTimeRanges(log));
 
     let overlaps = [];
     let encounteredRanges = new Set();
@@ -247,10 +247,7 @@ class AppComponent {
       });
     });
     overlaps = _.uniq(overlaps);
-    overlaps = _.sortBy(overlaps, (overlap) => [
-      overlap.startTime,
-      overlap.endTime
-    ]);
+    overlaps = this.sortTimeRanges(overlaps);
 
     return overlaps;
 
