@@ -208,24 +208,17 @@ class AppComponent {
 
   }
 
-  computeIndexHash(a, b) {
-    return (Math.pow(a + 1, 2) * Math.pow(b + 1, 2)) + a + b;
-  }
-
   getOverlaps(log) {
 
     let ranges = this.sortTimeRanges(this.getAllTimeRanges(log));
 
     let overlaps = [];
-    let encounteredRanges = new Set();
     ranges.forEach((rangeA, a) => {
       ranges.forEach((rangeB, b) => {
-        // Skip if range A is crossed with itself, or if we've encountered this
-        // same pair of ranges already
-        if (a === b || encounteredRanges.has(this.computeIndexHash(a, b))) {
+        // Skip over redundant comparisons
+        if (b <= a) {
           return;
         }
-        encounteredRanges.add(this.computeIndexHash(a, b));
 
         if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
           // Case 1: SseE
