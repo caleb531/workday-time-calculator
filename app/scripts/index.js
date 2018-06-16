@@ -149,9 +149,9 @@ class AppComponent {
   }
 
   logRangeSet(rangeSet) {
-    console.log('set:', `{ ${Object.keys(rangeSet).map((key) => {
+    return `{ ${Object.keys(rangeSet).map((key) => {
       return rangeSet[key].endTime.format(logTimeFormat);
-    }).join(', ')} }`);
+    }).join(', ')} }`;
   }
 
   getGaps(log) {
@@ -172,19 +172,18 @@ class AppComponent {
     let gaps = [];
 
     while (currentTime.isBefore(lastEndTime)) {
-      console.log('TIME:', currentTime.format(logTimeFormat));
-      this.logRangeSet(rangeSet);
+      console.log(currentTime.format(logTimeFormat));
+      console.log('initial', this.logRangeSet(rangeSet));
       if (rangeSet[currentTime]) {
         let poppedRange = rangeSet[currentTime];
         delete rangeSet[currentTime];
-        console.log('pop', poppedRange.endTime.format(logTimeFormat));
-        this.logRangeSet(rangeSet);
+        console.log('pop', this.logRangeSet(rangeSet));
       }
       if (rangeMap[currentTime]) {
         rangeMap[currentTime].forEach((range) => {
-          console.log('push', range.startTime.format(logTimeFormat));
+          // console.log('push', range.startTime.format(logTimeFormat));
           rangeSet[range.endTime] = range;
-          this.logRangeSet(rangeSet);
+          console.log('push', this.logRangeSet(rangeSet));
         });
       }
       if (_.isEmpty(rangeSet) && !gapStartTime) {
