@@ -8,6 +8,8 @@ let logTimeFormat = 'h:mma';
 let logGapFormat = 'h:mm';
 // The format of the date used for indexing each log
 let logDateIdFormat = 'l';
+// The number of minutes to round each time to
+let logTimeIncrement = 15;
 
 class AppComponent {
 
@@ -115,35 +117,93 @@ class AppComponent {
     return tasks;
   }
 
-  getGaps(log) {
-
+  getAllTimeRanges(log) {
     let tasks = this.getAllTasks(log);
     let startTimes = tasks.map((task) => task.startTime);
     let endTimes = tasks.map((task) => task.endTime);
-
-    let times = startTimes.concat(endTimes);
-    times = _.uniqBy(times, (time) => time.unix());
-    times = _.sortBy(times, (time) => time.unix());
-
-    let gapStartTimes = endTimes
-      .filter((endTime) => {
-        return !startTimes.some((startTime) => startTime.isSame(endTime));
-      })
-      .filter((endTime) => {
-        return times.findIndex((time) => time.isSame(endTime)) < (times.length - 1);
-      });
-
-    let gapEndTimes = gapStartTimes.map((startTime) => {
-      let nextIndex = times.findIndex((time) => time.isSame(startTime)) + 1;
-      return times[nextIndex];
+    return _.zip(startTimes, endTimes).map((rangeArray) => {
+      return _.zipObject(['startTime', 'endTime'], rangeArray);
     });
+  }
 
-    let gaps = _.zip(gapStartTimes, gapEndTimes).map(([startTime, endTime]) => {
-      return {
-        startTime: startTime,
-        endTime: endTime
-      };
+  getSortedTimeRanges(ranges) {
+    return _.sortBy(ranges, (range) => [
+      range.startTime,
+      range.endTime
+    ]);
+  }
+
+  getRangeMap(ranges) {
+    let rangeMap = {};
+    ranges.forEach((range) => {
+      if (!rangeMap[range.startTime]) {
+        rangeMap[range.startTime] = [];
+      }
+      rangeMap[range.startTime].push(range);
     });
+    return rangeMap;
+  }
+
+  getRangeStr(range) {
+    return `${range.startTime.format(logGapFormat)}-${range.endTime.format(logGapFormat)}`;
+  }
+
+  logRangeSet(label, rangeSet) {
+    console.log(`${label} { ${Array.from(rangeSet).map((endTimeKey) => {
+      return moment(endTimeKey).format(logGapFormat);
+    }).join(', ')} }`);
+  }
+
+  getGaps(log) {
+
+    let ranges = this.getSortedTimeRanges(this.getAllTimeRanges(log));
+
+    let rangeMap = this.getRangeMap(ranges);
+
+    if (ranges.length === 0) {
+      return;
+    }
+
+    let firstStartTime = _.first(ranges).startTime;
+    let lastEndTime = _.last(ranges).endTime;
+    let currentTime = moment(firstStartTime);
+    let rangeSet = new Set();
+    let gapStartTime = null;
+    let gaps = [];
+
+    while (currentTime.isBefore(lastEndTime)) {
+      // console.log(currentTime.format(logGapFormat));
+      // this.logRangeSet('initial', rangeSet);
+      if (rangeSet.has(currentTime.toString())) {
+        rangeSet.delete(currentTime.toString());
+        // this.logRangeSet('pop', rangeSet);
+      }
+      if (rangeMap[currentTime]) {
+        rangeMap[currentTime].forEach((range) => {
+          rangeSet.add(range.endTime.toString());
+          // this.logRangeSet('push', rangeSet);
+        });
+      }
+      if (rangeSet.size === 0 && !gapStartTime) {
+        // console.log('gap start', currentTime.format(logGapFormat));
+        gapStartTime = moment(currentTime);
+      }
+      if (gapStartTime && rangeSet.size !== 0) {
+        // console.log('gap end', currentTime.format(logGapFormat));
+        // console.log('GAP', this.getRangeStr({
+        //   startTime: gapStartTime,
+        //   endTime: moment(currentTime)
+        // }));
+        gaps.push({
+          startTime: gapStartTime,
+          endTime: moment(currentTime)
+        });
+        gapStartTime = null;
+      }
+      currentTime.add(logTimeIncrement, 'minutes');
+      // console.log('');
+    }
+
     return gaps;
 
   }
@@ -154,13 +214,7 @@ class AppComponent {
 
   getOverlaps(log) {
 
-    let tasks = this.getAllTasks(log);
-    let startTimes = tasks.map((task) => task.startTime);
-    let endTimes = tasks.map((task) => task.endTime);
-
-    let ranges = _.zip(startTimes, endTimes).map((rangeArray) => {
-      return _.zipObject(['startTime', 'endTime'], rangeArray);
-    });
+    let ranges = this.getAllTimeRanges(log);
 
     let overlaps = [];
     let encounteredRanges = new Set();
