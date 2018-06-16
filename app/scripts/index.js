@@ -144,14 +144,14 @@ class AppComponent {
     return rangeMap;
   }
 
-  getRangeStrArray(range) {
+  getRangeStr(range) {
     return `${range.startTime.format(logGapFormat)}-${range.endTime.format(logGapFormat)}`;
   }
 
-  logRangeSet(rangeSet) {
-    return `{ ${Object.keys(rangeSet).map((key) => {
-      return rangeSet[key].endTime.format(logTimeFormat);
-    }).join(', ')} }`;
+  logRangeSet(label, rangeSet) {
+    console.log(`${label} { ${Object.keys(rangeSet).map((key) => {
+      return rangeSet[key].endTime.format(logGapFormat);
+    }).join(', ')} }`);
   }
 
   getGaps(log) {
@@ -172,35 +172,39 @@ class AppComponent {
     let gaps = [];
 
     while (currentTime.isBefore(lastEndTime)) {
-      console.log(currentTime.format(logTimeFormat));
-      console.log('initial', this.logRangeSet(rangeSet));
+      // console.log(currentTime.format(logGapFormat));
+      // this.logRangeSet('initial', rangeSet);
       if (rangeSet[currentTime]) {
-        let poppedRange = rangeSet[currentTime];
         delete rangeSet[currentTime];
-        console.log('pop', this.logRangeSet(rangeSet));
+        // this.logRangeSet('pop', rangeSet);
       }
       if (rangeMap[currentTime]) {
         rangeMap[currentTime].forEach((range) => {
-          // console.log('push', range.startTime.format(logTimeFormat));
           rangeSet[range.endTime] = range;
-          console.log('push', this.logRangeSet(rangeSet));
+          // this.logRangeSet('push', rangeSet);
         });
       }
       if (_.isEmpty(rangeSet) && !gapStartTime) {
-        gapStartTime = currentTime;
+        // console.log('gap start', currentTime.format(logGapFormat));
+        gapStartTime = moment(currentTime);
       }
       if (gapStartTime && !_.isEmpty(rangeSet)) {
+        // console.log('gap end', currentTime.format(logGapFormat));
+        // console.log('GAP', this.getRangeStr({
+        //   startTime: gapStartTime,
+        //   endTime: moment(currentTime)
+        // }));
         gaps.push({
           startTime: gapStartTime,
-          endTime: currentTime
+          endTime: moment(currentTime)
         });
         gapStartTime = null;
       }
       currentTime.add(logTimeIncrement, 'minutes');
-      console.log('');
+      // console.log('');
     }
 
-    return [];
+    return gaps;
 
   }
 
