@@ -254,13 +254,14 @@ class AppComponent {
               this.selectedDate = selectedDate;
               m.redraw();
             }
-          }),
-
-          m(SummaryComponent, {
-            log: this.logContents ? this.parseTextLog(this.logContents) : null
           })
 
-        ])
+        ]),
+
+        m(SummaryComponent, {
+          log: this.logContents ? this.parseTextLog(this.logContents) : null
+        })
+
       ])
 
     ]);

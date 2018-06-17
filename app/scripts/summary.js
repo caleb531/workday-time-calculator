@@ -37,7 +37,7 @@ class SummaryComponent {
           m('div.log-total-time.log-value', this.getFormattedDuration(attrs.log.totalDuration))
         ]) : null,
 
-        m('.log-summary-errors', [
+        m('.log-errors', [
 
           attrs.log.gaps.length !== 0 ?
           m('div.log-gaps', [
