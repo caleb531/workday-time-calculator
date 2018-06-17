@@ -4,12 +4,12 @@ import _ from '../../node_modules/lodash/index.js';
 import moment from '../../node_modules/moment/min/moment.min.js';
 import Quill from '../../node_modules/quill/dist/quill.min.js';
 
-let logTimeFormat = 'h:mma';
-let logGapFormat = 'h:mm';
+let timeFormat = 'h:mma';
+let timeFormatShort = 'h:mm';
 // The format of the date used for indexing each log
-let logDateIdFormat = 'l';
+let dateIdFormat = 'l';
 // The number of minutes to round each time to
-let logTimeIncrement = 15;
+let timeIncrement = 15;
 
 class AppComponent {
 
@@ -73,8 +73,8 @@ class AppComponent {
           // Time range
           // console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimes(currentLine);
-          let startTime = moment(timeStrs[0], logTimeFormat);
-          let endTime = moment(timeStrs[1], logTimeFormat);
+          let startTime = moment(timeStrs[0], timeFormat);
+          let endTime = moment(timeStrs[1], timeFormat);
           if (!startTime.isSame(endTime)) {
             currentCategory.tasks.push({
               startTime: startTime,
@@ -145,12 +145,12 @@ class AppComponent {
   }
 
   getRangeStr(range) {
-    return `${range.startTime.format(logGapFormat)}-${range.endTime.format(logGapFormat)}`;
+    return `${range.startTime.format(timeFormatShort)}-${range.endTime.format(timeFormatShort)}`;
   }
 
   logRangeSet(label, rangeSet) {
     console.log(`${label} { ${Array.from(rangeSet).map((endTimeKey) => {
-      return moment(endTimeKey).format(logGapFormat);
+      return moment(endTimeKey).format(timeFormatShort);
     }).join(', ')} }`);
   }
 
@@ -172,7 +172,7 @@ class AppComponent {
     let gaps = [];
 
     while (currentTime.isBefore(lastEndTime)) {
-      // console.log(currentTime.format(logGapFormat));
+      // console.log(currentTime.format(timeFormatShort));
       // this.logRangeSet('initial', rangeSet);
       if (rangeSet.has(currentTime.toString())) {
         rangeSet.delete(currentTime.toString());
@@ -185,11 +185,11 @@ class AppComponent {
         });
       }
       if (rangeSet.size === 0 && !gapStartTime) {
-        // console.log('gap start', currentTime.format(logGapFormat));
+        // console.log('gap start', currentTime.format(timeFormatShort));
         gapStartTime = moment(currentTime);
       }
       if (gapStartTime && rangeSet.size !== 0) {
-        // console.log('gap end', currentTime.format(logGapFormat));
+        // console.log('gap end', currentTime.format(timeFormatShort));
         // console.log('GAP', this.getRangeStr({
         //   startTime: gapStartTime,
         //   endTime: moment(currentTime)
@@ -200,7 +200,7 @@ class AppComponent {
         });
         gapStartTime = null;
       }
-      currentTime.add(logTimeIncrement, 'minutes');
+      currentTime.add(timeIncrement, 'minutes');
       // console.log('');
     }
 
@@ -281,7 +281,7 @@ class AppComponent {
   }
 
   getSelectedDateId() {
-    return this.selectedDate.format(logDateIdFormat);
+    return this.selectedDate.format(dateIdFormat);
   }
 
   getSelectedDateStorageId() {
@@ -463,9 +463,9 @@ class AppComponent {
                 ' ',
                 m('div.log-times.log-gap-times', this.log.gaps.map((gap) => {
                   return m('div.log-gap', [
-                    m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(logGapFormat) : '?'),
+                    m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(timeFormatShort) : '?'),
                     ' to ',
-                    m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format(logGapFormat) : '?')
+                    m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format(timeFormatShort) : '?')
                   ]);
                 }))
               ]) : null,
@@ -476,9 +476,9 @@ class AppComponent {
                 ' ',
                 m('div.log-times.log-overlap-times', this.log.overlaps.map((overlap) => {
                   return m('div.log-overlap', [
-                    m('span.log-overlap-start-time.log-value', overlap.startTime.isValid() ? overlap.startTime.format(logGapFormat) : '?'),
+                    m('span.log-overlap-start-time.log-value', overlap.startTime.isValid() ? overlap.startTime.format(timeFormatShort) : '?'),
                     ' to ',
-                    m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(logGapFormat) : '?')
+                    m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(timeFormatShort) : '?')
                   ]);
                 }))
               ]) : null
