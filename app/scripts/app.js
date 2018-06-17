@@ -149,12 +149,13 @@ class AppComponent {
 
   getGaps(log) {
 
-    let ranges = this.sortTimeRanges(this.getAllTimeRanges(log));
+    let gaps = [];
 
+    let ranges = this.sortTimeRanges(this.getAllTimeRanges(log));
     let rangeMap = this.getRangeMap(ranges);
 
     if (ranges.length === 0) {
-      return;
+      return gaps;
     }
 
     let firstStartTime = _.first(ranges).startTime;
@@ -162,7 +163,6 @@ class AppComponent {
     let currentTime = moment(firstStartTime);
     let rangeSet = new Set();
     let gapStartTime = null;
-    let gaps = [];
 
     while (currentTime.isBefore(lastEndTime)) {
       if (rangeSet.has(currentTime.toString())) {
