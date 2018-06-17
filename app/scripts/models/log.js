@@ -155,7 +155,7 @@ class Log {
 
     let firstStartTime = _.first(ranges).startTime;
     let lastEndTime = _.last(ranges).endTime;
-    let currentTime = moment(firstStartTime);
+    let currentTime = firstStartTime.clone();
     let rangeSet = new Set();
     let gapStartTime = null;
 
@@ -169,12 +169,12 @@ class Log {
         });
       }
       if (rangeSet.size === 0 && !gapStartTime) {
-        gapStartTime = moment(currentTime);
+        gapStartTime = currentTime.clone();
       }
       if (gapStartTime && rangeSet.size !== 0) {
         gaps.push({
           startTime: gapStartTime,
-          endTime: moment(currentTime)
+          endTime: currentTime.clone()
         });
         gapStartTime = null;
       }
