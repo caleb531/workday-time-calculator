@@ -4,6 +4,7 @@ import Quill from '../../node_modules/quill/dist/quill.min.js';
 class EditorComponent {
 
   oninit({attrs}) {
+    this.selectedDate = attrs.selectedDate;
     this.onSetContents = attrs.onSetContents;
   }
 
@@ -68,8 +69,8 @@ class EditorComponent {
     this.setEditorText();
   }
 
-  loadSelectedDateLog() {
-    let dateStorageId = this.getSelectedDateStorageId();
+  loadSelectedDateLog(selectedDate) {
+    let dateStorageId = this.getSelectedDateStorageId(selectedDate);
     let logContentsStr = localStorage.getItem(dateStorageId);
     try {
       this.logContents = JSON.parse(logContentsStr) || this.getDefaultLogContents();
@@ -82,8 +83,8 @@ class EditorComponent {
     this.editor.setContents(logContents);
   }
 
-  getSelectedDateStorageId() {
-    return `wtc-date-${this.selectedDate.format('l')}`;
+  getSelectedDateStorageId(selectedDate) {
+    return `wtc-date-${selectedDate.format('l')}`;
   }
 
   getDefaultLogContents() {
@@ -93,7 +94,6 @@ class EditorComponent {
       }]
     };
   }
-
 
   saveTextLog() {
     localStorage.setItem(this.getSelectedDateStorageId(), JSON.stringify(this.editor.getContents()));
