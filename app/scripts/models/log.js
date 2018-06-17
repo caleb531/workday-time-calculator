@@ -212,7 +212,9 @@ class Log {
         }
       });
     });
-    overlaps = _.uniq(overlaps);
+    overlaps = _.uniqBy(overlaps, (overlap) => {
+      return [overlap.startTime, overlap.endTime].join(',');
+    });
     overlaps = this.sortTimeRanges(overlaps);
 
     return overlaps;
