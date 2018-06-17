@@ -257,7 +257,7 @@ class AppComponent {
 
   getFormattedDuration(duration) {
     let hours = duration.hours();
-    let minutes = this.padWithZeroes(duration.minutes(), 2, '0');
+    let minutes = this.padWithZeroes(duration.minutes());
     return `${hours}:${minutes}`;
   }
 
