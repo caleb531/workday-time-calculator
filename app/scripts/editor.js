@@ -5,7 +5,15 @@ class EditorComponent {
 
   oninit({attrs}) {
     this.selectedDate = attrs.selectedDate;
-    this.onSetContents = attrs.onSetContents;
+    this.onSetLogContents = attrs.onSetLogContents;
+  }
+
+  onupdate({attrs}) {
+    if (!attrs.selectedDate.isSame(this.selectedDate)) {
+      this.selectedDate = attrs.selectedDate.clone();
+      let logContents = this.getLogContentsForSelectedDate();
+      this.setEditorText(logContents);
+    }
   }
 
   initializeEditor(editorContainer) {
@@ -60,31 +68,27 @@ class EditorComponent {
     this.editor.on('text-change', (delta, oldDelta, source) => {
       if (source === 'user') {
         let logContents = this.editor.getContents();
-        this.onSetContents(logContents);
+        this.onSetLogContents(logContents);
         this.saveTextLog(logContents);
         m.redraw();
       }
       this.editor.focus();
     });
-    this.setEditorText();
+    this.setEditorText(this.getLogContentsForSelectedDate());
   }
 
-  loadSelectedDateLog(selectedDate) {
-    let dateStorageId = this.getSelectedDateStorageId(selectedDate);
+  getLogContentsForSelectedDate() {
+    let dateStorageId = this.getSelectedDateStorageId();
     let logContentsStr = localStorage.getItem(dateStorageId);
     try {
-      this.logContents = JSON.parse(logContentsStr) || this.getDefaultLogContents();
+      return JSON.parse(logContentsStr) || this.getDefaultLogContents();
     } catch (error) {
-      this.logContents = this.getDefaultLogContents();
+      return this.getDefaultLogContents();
     }
   }
 
-  setEditorText(logContents) {
-    this.editor.setContents(logContents);
-  }
-
-  getSelectedDateStorageId(selectedDate) {
-    return `wtc-date-${selectedDate.format('l')}`;
+  getSelectedDateStorageId() {
+    return `wtc-date-${this.selectedDate.format('l')}`;
   }
 
   getDefaultLogContents() {
@@ -95,8 +99,13 @@ class EditorComponent {
     };
   }
 
-  saveTextLog() {
-    localStorage.setItem(this.getSelectedDateStorageId(), JSON.stringify(this.editor.getContents()));
+  setEditorText(logContents) {
+    this.editor.setContents(logContents);
+    this.onSetLogContents(logContents);
+  }
+
+  saveTextLog(logContents) {
+    localStorage.setItem(this.getSelectedDateStorageId(this.selectedDate), JSON.stringify(logContents));
   }
 
   view() {

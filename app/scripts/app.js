@@ -241,17 +241,17 @@ class AppComponent {
 
         m('div.log-area', [
 
-          m(EditorComponent, {
+          this.selectedDate ? m(EditorComponent, {
             selectedDate: this.selectedDate,
-            onSetContents: (logContents) => {
+            onSetLogContents: (logContents) => {
               this.logContents = logContents;
               m.redraw();
             }
-          }),
+          }) : null,
 
           m(DateComponent, {
             onSetSelectedDate: (selectedDate) => {
-              this.selectedDate = selectedDate;
+              this.selectedDate = selectedDate.clone();
               m.redraw();
             }
           })
