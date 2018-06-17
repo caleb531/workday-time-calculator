@@ -9,7 +9,8 @@ export default {
   output: {
     file: 'public/scripts/index.js',
     format: 'iife',
-    name: 'wtc'
+    name: 'wtc',
+    sourcemap: true
   },
   plugins: [
     resolve({
