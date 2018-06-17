@@ -258,9 +258,9 @@ class AppComponent {
 
         ]),
 
-        m(SummaryComponent, {
-          log: this.logContents ? this.parseTextLog(this.logContents) : null
-        })
+        this.logContents ? m(SummaryComponent, {
+          log: this.parseTextLog(this.logContents)
+        }) : null
 
       ])
 
