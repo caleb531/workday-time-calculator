@@ -200,20 +200,16 @@ class Log {
 
         if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
           // Case 1: SseE
-          overlaps.push(rangeA);
-          overlaps.push(rangeB);
+          overlaps.push(rangeA, rangeB);
         } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
           // Case 2: sSEe
-          overlaps.push(rangeA);
-          overlaps.push(rangeB);
+          overlaps.push(rangeA, rangeB);
         } else if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
           // Case 3: SsEe
-          overlaps.push(rangeA);
-          overlaps.push(rangeB);
+          overlaps.push(rangeA, rangeB);
         } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
           // Case 4: sSeE
-          overlaps.push(rangeA);
-          overlaps.push(rangeB);
+          overlaps.push(rangeA, rangeB);
         }
       });
     });
