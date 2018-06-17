@@ -179,7 +179,6 @@ class Log {
         gapStartTime = null;
       }
       currentTime.add(timeIncrement, 'minutes');
-      // console.log('');
     }
 
     return gaps;
