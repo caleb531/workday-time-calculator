@@ -88,7 +88,7 @@ class EditorComponent {
   }
 
   getSelectedDateStorageId() {
-    return `wtc-log-${this.selectedDate.format('l')}`;
+    return `wtc-date-${this.selectedDate.format('l')}`;
   }
 
   getDefaultLogContents() {
