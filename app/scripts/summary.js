@@ -1,5 +1,5 @@
 import _ from '../../node_modules/lodash/index.js';
-import m from '../../node_modules/mithril/mithril.min.js';
+import m from '../../node_modules/mithril/mithril.js';
 
 let timeFormatShort = 'h:mm';
 

@@ -1,5 +1,5 @@
-import m from '../../node_modules/mithril/mithril.min.js';
-import Quill from '../../node_modules/quill/dist/quill.min.js';
+import m from '../../node_modules/mithril/mithril.js';
+import Quill from '../../node_modules/quill/dist/quill.js';
 
 class EditorComponent {
 

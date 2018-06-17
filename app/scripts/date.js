@@ -1,5 +1,5 @@
-import m from '../../node_modules/mithril/mithril.min.js';
-import moment from '../../node_modules/moment/min/moment.min.js';
+import m from '../../node_modules/mithril/mithril.js';
+import moment from '../../node_modules/moment/moment.js';
 
 
 class DateComponent {

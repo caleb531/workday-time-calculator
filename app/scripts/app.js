@@ -1,6 +1,6 @@
 import _ from '../../node_modules/lodash/index.js';
-import m from '../../node_modules/mithril/mithril.min.js';
-import moment from '../../node_modules/moment/min/moment.min.js';
+import m from '../../node_modules/mithril/mithril.js';
+import moment from '../../node_modules/moment/moment.js';
 
 import EditorComponent from './editor.js';
 import DateComponent from './date.js';

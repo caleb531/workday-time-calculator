@@ -1,5 +1,5 @@
 import '../styles/index.scss';
-import m from '../../node_modules/mithril/mithril.min.js';
+import m from '../../node_modules/mithril/mithril.js';
 
 import AppComponent from './app.js';
 
