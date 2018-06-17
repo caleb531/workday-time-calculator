@@ -171,7 +171,7 @@ class Log {
       if (rangeSet.size === 0 && !gapStartTime) {
         gapStartTime = currentTime.clone();
       }
-      if (gapStartTime && rangeSet.size !== 0) {
+      if (gapStartTime && rangeSet.size > 0) {
         gaps.push({
           startTime: gapStartTime,
           endTime: currentTime.clone()

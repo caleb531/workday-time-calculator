@@ -30,7 +30,7 @@ class SummaryComponent {
 
       m('div.log-summary-overview', [
 
-        attrs.log.totalDuration.asMinutes() !== 0 ?
+        attrs.log.totalDuration.asMinutes() > 0 ?
         m('div.log-total', [
           m('div.log-total-time-name.log-label', 'Total:'),
           ' ',
@@ -39,7 +39,7 @@ class SummaryComponent {
 
         m('.log-errors', [
 
-          attrs.log.gaps.length !== 0 ?
+          attrs.log.gaps.length > 0 ?
           m('div.log-gaps', [
             m('span.log-label', 'Gaps:'),
             ' ',
@@ -52,7 +52,7 @@ class SummaryComponent {
             }))
           ]) : null,
 
-          attrs.log.overlaps.length !== 0 ?
+          attrs.log.overlaps.length > 0 ?
           m('div.log-overlaps', [
             m('span.log-label', 'Overlaps:'),
             ' ',
@@ -70,7 +70,7 @@ class SummaryComponent {
       ]),
 
       m('div.log-summary-details', attrs.log.categories.map((category) => {
-        return m('div.log-category', category.totalDuration.asMinutes() !== 0 ? [
+        return m('div.log-category', category.totalDuration.asMinutes() > 0 ? [
 
           m('div.log-category-header', [
 
