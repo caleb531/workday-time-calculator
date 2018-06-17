@@ -14,7 +14,7 @@ let timeIncrement = 15;
 class AppComponent {
 
   constructor() {
-    this.selectedDate = this.getSelectedDate();
+    this.selectedDate = moment();
     this.parseSelectedDateLog();
   }
 
@@ -286,15 +286,6 @@ class AppComponent {
 
   getSelectedDateStorageId() {
     return `wtc-date-${this.getSelectedDateId()}`;
-  }
-
-  getSelectedDate() {
-    let selectedDateStr = localStorage.getItem('selectedDate');
-    if (selectedDateStr) {
-      return moment(selectedDateStr);
-    } else {
-      return moment();
-    }
   }
 
   loadSelectedDateLog() {
