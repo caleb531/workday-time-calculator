@@ -8,12 +8,10 @@ let timeIncrement = 15;
 class Log {
 
   constructor(logContents) {
-    let log = {};
-    log.categories = this.getCategories(logContents);
-    log.gaps = this.getGaps(log);
-    log.overlaps = this.getOverlaps(log);
-    this.calculateTotals(log);
-    return log;
+    this.categories = this.getCategories(logContents);
+    this.gaps = this.getGaps();
+    this.overlaps = this.getOverlaps();
+    this.calculateTotals();
   }
 
   isTimeRange(logLine) {
@@ -92,23 +90,23 @@ class Log {
 
   }
 
-  calculateTotals(log) {
-    log.totalDuration = moment.duration(0);
-    log.categories.forEach((category) => {
+  calculateTotals() {
+    this.totalDuration = moment.duration(0);
+    this.categories.forEach((category) => {
       category.totalDuration = moment.duration(0);
       category.tasks.forEach((task) => {
         task.totalDuration = moment.duration(
           task.endTime.diff(task.startTime));
         category.totalDuration.add(task.totalDuration);
       });
-      log.totalDuration.add(category.totalDuration);
+      this.totalDuration.add(category.totalDuration);
     });
-    log.categories = _.orderBy(log.categories, (category) => category.totalDuration.asHours(), 'desc');
+    this.categories = _.orderBy(this.categories, (category) => category.totalDuration.asHours(), 'desc');
   }
 
-  getAllTasks(log) {
+  getAllTasks() {
     let tasks = [];
-    log.categories.forEach(function (category) {
+    this.categories.forEach(function (category) {
       tasks.push(...category.tasks);
     });
     return tasks;
