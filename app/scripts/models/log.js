@@ -58,7 +58,7 @@ class Log {
           let categoryName = currentLine.trim();
           if (categoryMap[categoryName]) {
             currentCategory = categoryMap[categoryName];
-          } else {
+          } else if (categoryName !== '') {
             currentCategory = {
               name: currentLine,
               tasks: [],
