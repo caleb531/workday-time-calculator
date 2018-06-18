@@ -103,8 +103,7 @@ class Log {
       });
       log.totalDuration.add(category.totalDuration);
     });
-    log.categories = _.sortBy(log.categories, (category) => category.totalDuration.asHours());
-    _.reverse(log.categories);
+    log.categories = _.orderBy(log.categories, (category) => category.totalDuration.asHours(), 'desc');
   }
 
   getAllTasks(log) {
