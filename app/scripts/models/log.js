@@ -153,22 +153,22 @@ class Log {
     let firstStartTime = _.first(ranges).startTime;
     let lastEndTime = _.last(ranges).endTime;
     let currentTime = firstStartTime.clone();
-    let rangeSet = new Set();
+    let endTimeSet = new Set();
     let gapStartTime = null;
 
     while (currentTime.isBefore(lastEndTime)) {
-      if (rangeSet.has(currentTime.toString())) {
-        rangeSet.delete(currentTime.toString());
+      if (endTimeSet.has(currentTime.toString())) {
+        endTimeSet.delete(currentTime.toString());
       }
       if (rangeMap[currentTime]) {
         rangeMap[currentTime].forEach((range) => {
-          rangeSet.add(range.endTime.toString());
+          endTimeSet.add(range.endTime.toString());
         });
       }
-      if (rangeSet.size === 0 && !gapStartTime) {
+      if (endTimeSet.size === 0 && !gapStartTime) {
         gapStartTime = currentTime.clone();
       }
-      if (gapStartTime && rangeSet.size > 0) {
+      if (gapStartTime && endTimeSet.size > 0) {
         gaps.push({
           startTime: gapStartTime,
           endTime: currentTime.clone()
