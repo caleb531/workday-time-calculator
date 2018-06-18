@@ -37,6 +37,11 @@ class Log {
     }
   }
 
+  roundTime(time) {
+    let nearestMinute = Math.round(time.minute() / timeIncrement) * timeIncrement;
+    return time.clone().minutes(nearestMinute);
+  }
+
   getCategories(logContents) {
 
     let categories = [];
@@ -69,8 +74,8 @@ class Log {
           // Time range
           // console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimes(currentLine);
-          let startTime = moment(timeStrs[0], timeFormat);
-          let endTime = moment(timeStrs[1], timeFormat);
+          let startTime = this.roundTime(moment(timeStrs[0], timeFormat));
+          let endTime = this.roundTime(moment(timeStrs[1], timeFormat));
           if (!startTime.isSame(endTime)) {
             currentCategory.tasks.push({
               startTime: startTime,
