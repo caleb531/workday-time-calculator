@@ -3,7 +3,7 @@ import moment from '../../../node_modules/moment/moment.js';
 
 let timeFormat = 'h:mma';
 // The number of minutes to round each time to
-let timeIncrement = 15;
+let minuteIncrement = 15;
 
 class Log {
 
@@ -38,7 +38,7 @@ class Log {
   }
 
   roundTime(time) {
-    let nearestMinute = Math.round(time.minute() / timeIncrement) * timeIncrement;
+    let nearestMinute = Math.round(time.minute() / minuteIncrement) * minuteIncrement;
     return time.clone().minutes(nearestMinute);
   }
 
@@ -180,7 +180,7 @@ class Log {
         });
         gapStartTime = null;
       }
-      currentTime.add(timeIncrement, 'minutes');
+      currentTime.add(minuteIncrement, 'minutes');
     }
 
     return gaps;
