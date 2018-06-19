@@ -32,7 +32,7 @@ gulp.task('sass:watch', () => {
 });
 
 gulp.task('rollup', () => {
-  return rollup.rollup(rollupConfig).then(bundle => {
+  return rollup.rollup(rollupConfig).then((bundle) => {
     return bundle.write(rollupConfig.output);
   });
 });
