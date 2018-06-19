@@ -25,7 +25,7 @@ class Log {
     return startTime.isValid() && endTime.isValid();
   }
 
-  parseLineTimes(logLine) {
+  parseLineTimeStrs(logLine) {
     let timeStrs = this.splitLineIntoTimeStrs(logLine);
     if (timeStrs.length === 1 || timeStrs[1] === '') {
       timeStrs[1] = timeStrs[0];
@@ -82,7 +82,7 @@ class Log {
         } else if (indent === 1 && this.isTimeRange(currentLine) && currentCategory) {
           // Time range
           // console.log('Time:', currentLine);
-          let timeStrs = this.parseLineTimes(currentLine);
+          let timeStrs = this.parseLineTimeStrs(currentLine);
           let startTime = this.roundTime(moment(timeStrs[0], timeFormat));
           let endTime = this.roundTime(moment(timeStrs[1], timeFormat));
           if (!startTime.isSame(endTime)) {
