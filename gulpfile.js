@@ -1,10 +1,6 @@
-// Core Gulp
 let gulp = require('gulp');
 let sourcemaps = require('gulp-sourcemaps');
-// Sass-to-CSS
 let sass = require('gulp-sass');
-
-// JavaScript
 let rollup = require('rollup');
 let rollupConfig = require('./rollup.config.js');
 
