@@ -14,12 +14,19 @@ class Log {
     this.calculateTotals();
   }
 
+  splitLineIntoTimeStrs(logLine) {
+    return logLine.split(/\s*to\s*|\s*-\s*/);
+  }
+
   isTimeRange(logLine) {
-    return !isNaN(parseInt(logLine, 10));
+    let timeStrs = this.splitLineIntoTimeStrs(logLine);
+    let startTime = moment(timeStrs[0], timeFormat);
+    let endTime = moment(timeStrs[1], timeFormat);
+    return startTime.isValid() && endTime.isValid();
   }
 
   parseLineTimes(logLine) {
-    let timeStrs = logLine.split(/\s*to\s*/);
+    let timeStrs = this.splitLineIntoTimeStrs(logLine);
     if (timeStrs.length === 1 || timeStrs[1] === '') {
       timeStrs[1] = timeStrs[0];
     }
