@@ -24,7 +24,7 @@ class DateComponent {
     return m('div.log-date-area', [
 
       m('div.log-date-controls', [
-        m('span.log-date-control.log-prev-day-control', {
+        m('button.log-date-control.log-prev-day-control', {
           onclick: () => {
             this.selectPrevDay();
           }
@@ -32,7 +32,7 @@ class DateComponent {
         m('svg[viewBox="0 0 32 32"]', m('polyline', {
           points: '18,10 10,16 18,22'
         }))),
-        m('span.log-date-control.log-next-day-control', {
+        m('button.log-date-control.log-next-day-control', {
           onclick: () => {
             this.selectNextDay();
           }

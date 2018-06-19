@@ -26,11 +26,15 @@
   align-items: flex-start;
   width: 30px;
   height: 100%;
+  border-width: 0;
+  padding: 0;
   background-color: rgba(#000, 0.75);
+  color: #fff;
   cursor: pointer;
 }
-.log-date-control:hover:active {
-  background-color: rgba(#fff, 0.25);
+.log-date-control:focus {
+  outline-width: 0;
+  background-color: $blue;
 }
 .log-date-control svg {
   width: inherit;
