@@ -54,6 +54,7 @@ class Log {
     let categories = [];
     let categoryMap = {};
     let currentCategory = null;
+    let lastTimeRange = null;
 
     logContents.ops.forEach((currentOp, o) => {
       let nextOp = logContents.ops[o + 1];
@@ -75,6 +76,7 @@ class Log {
               descriptions: []
             };
             categoryMap[categoryName] = currentCategory;
+            lastTimeRange = null;
             categories.push(currentCategory);
           }
         } else if (indent === 1 && this.isTimeRange(currentLine) && currentCategory) {
@@ -84,12 +86,14 @@ class Log {
           let startTime = this.roundTime(moment(timeStrs[0], timeFormat));
           let endTime = this.roundTime(moment(timeStrs[1], timeFormat));
           if (!startTime.isSame(endTime)) {
-            currentCategory.tasks.push({
+            let range = {
               startTime: startTime,
               endTime: endTime
-            });
+            };
+            currentCategory.tasks.push(range);
+            lastTimeRange = range;
           }
-        } else if (indent >= 1 && !this.isTimeRange(currentLine) && currentCategory && currentLine.trim() !== '') {
+        } else if (indent >= 1 && !this.isTimeRange(currentLine) && currentCategory && currentLine.trim() !== '' && lastTimeRange) {
           // Task description
           // console.log('Desc:', currentLine);
           currentCategory.descriptions.push(currentLine);
