@@ -49,7 +49,8 @@ gulp.task('build', [
   'sass',
   'rollup'
 ]);
-gulp.task('watch', [
+gulp.task('build:watch', [
+  'build',
   'assets:watch',
   'sass:watch',
   'rollup:watch'
