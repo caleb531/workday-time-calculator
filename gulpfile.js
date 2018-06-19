@@ -4,6 +4,22 @@ let sass = require('gulp-sass');
 let rollup = require('rollup');
 let rollupConfig = require('./rollup.config.js');
 
+gulp.task('assets', [
+  'assets:core',
+  'assets:quill'
+]);
+gulp.task('assets:core', () => {
+  return gulp.src('app/assets/**/*')
+    .pipe(gulp.dest('public'));
+});
+gulp.task('assets:quill', () => {
+  return gulp.src('node_modules/quill/dist/quill.snow.css')
+    .pipe(gulp.dest('public/styles'));
+});
+gulp.task('assets:watch', () => {
+	return gulp.watch('app/assets/**/*', ['assets']);
+});
+
 gulp.task('sass', () => {
 	return gulp.src('app/styles/index.scss')
 		.pipe(sourcemaps.init())
@@ -22,22 +38,6 @@ gulp.task('rollup', () => {
 });
 gulp.task('rollup:watch', () => {
 	return gulp.watch('app/scripts/**/*.js', ['rollup']);
-});
-
-gulp.task('assets', [
-  'assets:core',
-  'assets:quill'
-]);
-gulp.task('assets:core', () => {
-  return gulp.src('app/assets/**/*')
-    .pipe(gulp.dest('public'));
-});
-gulp.task('assets:quill', () => {
-  return gulp.src('node_modules/quill/dist/quill.snow.css')
-    .pipe(gulp.dest('public/styles'));
-});
-gulp.task('assets:watch', () => {
-	return gulp.watch('app/assets/**/*', ['assets']);
 });
 
 gulp.task('build', [
