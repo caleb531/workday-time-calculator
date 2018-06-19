@@ -7,7 +7,7 @@
 
 ```bash
 npm install
-npm run build
+gulp build:watch
 ```
 
 ## Usage

@@ -1,16 +1,14 @@
-import commonjs from 'rollup-plugin-commonjs';
-import resolve from 'rollup-plugin-node-resolve';
-import json from 'rollup-plugin-json';
-import copy from 'rollup-plugin-copy';
-import sass from 'rollup-plugin-sass';
+let commonjs = require('rollup-plugin-commonjs');
+let resolve = require('rollup-plugin-node-resolve');
+let json = require('rollup-plugin-json');
 
-export default {
+module.exports = {
   input: 'app/scripts/index.js',
   output: {
     file: 'public/scripts/index.js',
-    format: 'iife',
     name: 'wtc',
-    sourcemap: true
+    sourcemap: true,
+    format: 'iife'
   },
   plugins: [
     resolve({
@@ -18,13 +16,6 @@ export default {
       preferBuiltins: true
     }),
     commonjs(),
-    json(),
-    copy({
-      'app/assets': 'public',
-      'node_modules/quill/dist/quill.snow.css': 'public/styles/quill.snow.css'
-    }),
-    sass({
-      output: 'public/styles/index.css'
-    })
+    json()
   ]
 };
