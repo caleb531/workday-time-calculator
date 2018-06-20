@@ -3,6 +3,12 @@
 *Copyright 2018 Caleb Evans*  
 *Released under the MIT license*
 
+This application allows you to easily record and track what you've done (and
+when) throughout the day.
+
+You can view the app online at:  
+https://projects.calebevans.me/workday-time-calculator/
+
 ## Setup
 
 ```bash
