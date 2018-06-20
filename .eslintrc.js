@@ -19,6 +19,18 @@ module.exports = {
     'es6': true
   },
 
+  overrides: {
+
+    files: ['app/assets/service-worker.js'],
+    env: {
+      'serviceworker': true
+    },
+    globals: {
+      'workbox': true
+    }
+
+  },
+
   /**
    * Supported JavaScript language options
    */
