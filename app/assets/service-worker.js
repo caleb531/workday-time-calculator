@@ -3,7 +3,7 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox
 if (workbox) {
 
   workbox.routing.registerRoute(
-    /\.(?:html|js|css)$/,
+    /\/|\.(?:html|js|css)$/,
     workbox.strategies.staleWhileRevalidate()
   );
 
