@@ -1,5 +1,4 @@
 import {sumBy} from '../../node_modules/lodash-es';
-import m from '../../node_modules/mithril/mithril.js';
 
 let timeFormatShort = 'h:mm';
 

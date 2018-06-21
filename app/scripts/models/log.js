@@ -1,5 +1,4 @@
 import {first, last, orderBy, sortBy, uniqBy, zip, zipObject} from '../../../node_modules/lodash-es';
-import moment from '../../../node_modules/moment/moment.js';
 
 let timeFormat = 'h:mma';
 // The number of minutes to round each time to

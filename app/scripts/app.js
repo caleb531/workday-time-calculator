@@ -1,5 +1,3 @@
-import m from '../../node_modules/mithril/mithril.js';
-
 import Log from './models/log.js';
 
 import EditorComponent from './editor.js';

@@ -19,6 +19,16 @@ module.exports = {
     'es6': true
   },
 
+  /**
+   * Allowed JavaScript globals
+   */
+
+  globals: {
+    'm': true,
+    'moment': true,
+    'Quill': true
+  },
+
   overrides: {
 
     files: ['app/assets/service-worker.js'],

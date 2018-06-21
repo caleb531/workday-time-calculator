@@ -1,7 +1,3 @@
-import m from '../../node_modules/mithril/mithril.js';
-import moment from '../../node_modules/moment/moment.js';
-
-
 class DateComponent {
 
   oninit({attrs}) {
