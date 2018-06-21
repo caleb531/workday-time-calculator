@@ -1,4 +1,4 @@
-import _ from '../../node_modules/lodash/index.js';
+import {sumBy} from '../../node_modules/lodash-es';
 import m from '../../node_modules/mithril/mithril.js';
 
 let timeFormatShort = 'h:mm';
@@ -80,7 +80,7 @@ class SummaryComponent {
                 this.getFormattedDuration(category.totalDuration)
               ]),
               ' ',
-              m('span.log-category-character-count', `(${_.sumBy(category.descriptions, (description) => this.getFormattedDescription(description).length) + category.descriptions.length})`)
+              m('span.log-category-character-count', `(${sumBy(category.descriptions, (description) => this.getFormattedDescription(description).length) + category.descriptions.length})`)
 
           ]),
 

@@ -1,4 +1,4 @@
-import _ from '../../../node_modules/lodash/index.js';
+import {first, last, orderBy, sortBy, uniqBy, zip, zipObject} from '../../../node_modules/lodash-es';
 import moment from '../../../node_modules/moment/moment.js';
 
 let timeFormat = 'h:mma';
@@ -117,7 +117,7 @@ class Log {
       });
       this.totalDuration.add(category.totalDuration);
     });
-    this.categories = _.orderBy(this.categories, (category) => category.totalDuration.asHours(), 'desc');
+    this.categories = orderBy(this.categories, (category) => category.totalDuration.asHours(), 'desc');
   }
 
   getAllTasks() {
@@ -132,13 +132,13 @@ class Log {
     let tasks = this.getAllTasks(log);
     let startTimes = tasks.map((task) => task.startTime);
     let endTimes = tasks.map((task) => task.endTime);
-    return _.zip(startTimes, endTimes).map((rangeArray) => {
-      return _.zipObject(['startTime', 'endTime'], rangeArray);
+    return zip(startTimes, endTimes).map((rangeArray) => {
+      return zipObject(['startTime', 'endTime'], rangeArray);
     });
   }
 
   sortTimeRanges(ranges) {
-    return _.sortBy(ranges, (range) => [
+    return sortBy(ranges, (range) => [
       range.startTime,
       range.endTime
     ]);
@@ -166,8 +166,8 @@ class Log {
       return gaps;
     }
 
-    let firstStartTime = _.first(ranges).startTime;
-    let lastEndTime = _.last(ranges).endTime;
+    let firstStartTime = first(ranges).startTime;
+    let lastEndTime = last(ranges).endTime;
     let currentTime = firstStartTime.clone();
     let endTimeSet = new Set();
     let gapStartTime = null;
@@ -225,7 +225,7 @@ class Log {
         }
       });
     });
-    overlaps = _.uniqBy(overlaps, (overlap) => {
+    overlaps = uniqBy(overlaps, (overlap) => {
       return [overlap.startTime, overlap.endTime].join(',');
     });
     overlaps = this.sortTimeRanges(overlaps);
