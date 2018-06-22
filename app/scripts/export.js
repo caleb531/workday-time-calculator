@@ -5,7 +5,7 @@ class ExportComponent {
   }
 
   view() {
-    return m('a[href=#]', {
+    return m('span.app-control-export', {
       onclick: (event) => {
         event.preventDefault();
         this.exportAll();

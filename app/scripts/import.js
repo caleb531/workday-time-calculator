@@ -5,7 +5,7 @@ class ImportComponent {
   }
 
   view() {
-    return m('a[href=#]', {
+    return m('span.app-control-import', {
       onclick: (event) => {
         event.preventDefault();
         this.import();
