@@ -1,16 +1,27 @@
 class ImportComponent {
 
-  import() {
+  browseForJsonFile() {
     console.log('import!');
+  }
+
+  uploadJsonFiles(files) {
+    console.log(files);
   }
 
   view() {
     return m('span.app-control-import', {
-      onclick: (event) => {
-        event.preventDefault();
-        this.import();
+      onclick: () => {
+        this.browseForJsonFile();
       }
-    }, 'Import');
+    }, [
+      m('input[type="file"].app-control-import-input', {
+        accept: 'application/json',
+        onchange: (event) => {
+          this.uploadJsonFiles(event.target.files);
+        }
+      }),
+      'Import'
+    ]);
   }
 
 }
