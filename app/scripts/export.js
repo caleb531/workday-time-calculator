@@ -23,8 +23,7 @@ class ExportComponent {
 
   view() {
     return m('span.app-control-export', {
-      onclick: (event) => {
-        event.preventDefault();
+      onclick: () => {
         this.downloadExportedJson();
       }
     }, 'Export All');
