@@ -47,11 +47,12 @@
         content: '';
         display: inline-block;
         position: absolute;
-        top: -($menu-arrow-size * 2);
+        top: -$menu-arrow-size;
         left: $menu-padding-x;
         width: 0;
         height: 0;
         border: solid $menu-arrow-size transparent;
+        border-top-width: 0;
         border-bottom-color: #fff;
       }
     }
