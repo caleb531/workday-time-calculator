@@ -1,10 +1,10 @@
-.app-settings {
+.app-tools {
   display: inline-block;
   position: relative;
   margin-left: 20px;
 }
 
-.app-settings-menu-toggle {
+.app-tools-menu-toggle {
   display: inline-block;
   $icon-size: 20px;
   width: $icon-size;
@@ -17,7 +17,7 @@
   }
 }
 
-.app-settings-menu {
+.app-tools-menu {
   display: none;
   position: absolute;
   width: 100px;

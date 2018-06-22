@@ -9,13 +9,13 @@ class ControlsComponent {
   }
 
   view() {
-    return m('div.app-settings', [
-      m('div.app-settings-menu-toggle', {
+    return m('div.app-tools', [
+      m('div.app-tools-menu-toggle', {
         onclick: () => {
           this.menuIsOpen = !this.menuIsOpen;
         }
       }, m(WrenchIconComponent)),
-      m('ul.app-settings-menu', {
+      m('ul.app-tools-menu', {
         class: this.menuIsOpen ? 'open' : ''
       }, [
         m('li', m(ImportComponent)),

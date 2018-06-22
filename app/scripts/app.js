@@ -1,6 +1,6 @@
 import Log from './models/log.js';
 
-import SettingsComponent from './settings.js';
+import SettingsComponent from './tools.js';
 import EditorComponent from './editor.js';
 import DateComponent from './date.js';
 import SummaryComponent from './summary.js';
