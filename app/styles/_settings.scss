@@ -40,6 +40,7 @@
     display: block;
   }
   li {
+    position: relative;
     list-style-type: none;
     &:first-child {
       border-top-left-radius: inherit;
