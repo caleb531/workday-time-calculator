@@ -16,7 +16,11 @@ class ControlsComponent {
         }
       }, m(WrenchIconComponent)),
       m('ul.app-tools-menu', {
-        class: this.menuIsOpen ? 'open' : ''
+        class: this.menuIsOpen ? 'open' : '',
+        // Close menu when menu item is clicked
+        onclick: () => {
+          this.menuIsOpen = false;
+        }
       }, [
         m('li', m(ImportComponent)),
         m('li', m(ExportComponent)),
