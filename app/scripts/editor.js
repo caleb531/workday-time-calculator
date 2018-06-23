@@ -1,4 +1,3 @@
-
 class EditorComponent {
 
   oninit({attrs}) {

@@ -21,7 +21,8 @@ gulp.task('assets:js', () => {
   return gulp.src([
       'node_modules/mithril/mithril.min.js',
       'node_modules/moment/min/moment.min.js',
-      'node_modules/quill/dist/quill.min.js'
+      'node_modules/quill/dist/quill.min.js',
+      'node_modules/lodash/lodash.min.js'
     ])
     .pipe(gulp.dest('public/scripts'));
 });
