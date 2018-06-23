@@ -26,7 +26,8 @@ module.exports = {
   globals: {
     'm': true,
     'moment': true,
-    'Quill': true
+    'Quill': true,
+    '_': true
   },
 
   overrides: {
