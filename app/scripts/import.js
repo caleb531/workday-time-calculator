@@ -4,8 +4,16 @@ class ImportComponent {
     console.log('import!');
   }
 
-  uploadJsonFiles(files) {
-    console.log(files);
+  importJsonFile(jsonFile) {
+    let reader = new FileReader();
+    reader.onload = (event) => {
+      let importedData = JSON.parse(event.target.result);
+      Object.keys(importedData.logs).forEach((logDate) => {
+        let logContent = importedData.logs[logDate];
+        localStorage.setItem(`wtc-date-${logDate}`, JSON.stringify(logContent));
+      });
+    };
+    reader.readAsText(jsonFile);
   }
 
   view() {
@@ -17,7 +25,10 @@ class ImportComponent {
       m('input[type="file"].app-control-import-input', {
         accept: 'application/json',
         onchange: (event) => {
-          this.uploadJsonFiles(event.target.files);
+          if (event.target.files.length > 0) {
+            this.importJsonFile(event.target.files[0]);
+            window.location.reload();
+          }
         }
       }),
       'Import'

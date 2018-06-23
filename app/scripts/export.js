@@ -6,7 +6,7 @@ class ExportComponent {
       let logMatches = key.match(/^wtc-date-(\d{1,2}\/\d{1,2}\/\d{4})$/);
       if (logMatches) {
         let logDate = logMatches[1];
-        exportedData.logs[logDate] = localStorage.getItem(key);
+        exportedData.logs[logDate] = JSON.parse(localStorage.getItem(key));
       }
     });
     return exportedData;
