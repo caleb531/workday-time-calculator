@@ -52,6 +52,7 @@ class Log {
     let categoryMap = {};
     let currentCategory = null;
     let lastTimeRange = null;
+    let lastTimeRangeIndent = null;
 
     logContents.ops.forEach((currentOp, o) => {
       let nextOp = logContents.ops[o + 1];
@@ -76,7 +77,7 @@ class Log {
             lastTimeRange = null;
             categories.push(currentCategory);
           }
-        } else if (indent === 1 && this.isTimeRange(currentLine) && currentCategory) {
+        } else if (indent >= 1 && this.isTimeRange(currentLine) && currentCategory) {
           // Time range
           // console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimeStrs(currentLine);
@@ -90,7 +91,8 @@ class Log {
             currentCategory.tasks.push(range);
             lastTimeRange = range;
           }
-        } else if (indent >= 1 && !this.isTimeRange(currentLine) && currentCategory && currentLine.trim() !== '' && lastTimeRange) {
+          lastTimeRangeIndent = indent;
+        } else if (indent >= lastTimeRangeIndent && !this.isTimeRange(currentLine) && currentCategory && currentLine.trim() !== '' && lastTimeRange) {
           // Task description
           // console.log('Desc:', currentLine);
           currentCategory.descriptions.push(currentLine);
