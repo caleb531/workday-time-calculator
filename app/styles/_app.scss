@@ -18,9 +18,18 @@ body {
   padding: 0 30px;
 }
 
+.app-header {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 1em;
+}
+
 h1 {
+  margin-bottom: 0;
   text-align: center;
   font-weight: 400;
+  line-height: 1;
 }
 
 #personal-site-link {
@@ -39,4 +48,5 @@ h1 {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  text-align: left;
 }
