@@ -19,7 +19,9 @@
 }
 
 
-.ql-snow .ql-fill,
+.ql-snow .ql-fill {
+  fill: currentColor;
+}
 .ql-snow .ql-stroke {
   stroke: currentColor;
 }
