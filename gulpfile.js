@@ -3,12 +3,8 @@ let sourcemaps = require('gulp-sourcemaps');
 let sass = require('gulp-sass');
 let rollup = require('rollup');
 let rollupConfig = require('./rollup.config.js');
+let workboxBuild = require('workbox-build');
 
-gulp.task('assets', [
-  'assets:core',
-  'assets:css',
-  'assets:js'
-]);
 gulp.task('assets:core', () => {
   return gulp.src('app/assets/**/*')
     .pipe(gulp.dest('public'));
@@ -26,8 +22,13 @@ gulp.task('assets:js', () => {
     ])
     .pipe(gulp.dest('public/scripts'));
 });
+gulp.task('assets', gulp.parallel(
+  'assets:core',
+  'assets:css',
+  'assets:js'
+));
 gulp.task('assets:watch', () => {
-	return gulp.watch('app/assets/**/*', ['assets']);
+	return gulp.watch('app/assets/**/*', gulp.series('assets', 'sw'));
 });
 
 gulp.task('sass', () => {
@@ -38,7 +39,7 @@ gulp.task('sass', () => {
 		.pipe(gulp.dest('public/styles'));
 });
 gulp.task('sass:watch', () => {
-	return gulp.watch('app/styles/**/*.scss', ['sass']);
+	return gulp.watch('app/styles/**/*.scss', gulp.series('sass', 'sw'));
 });
 
 gulp.task('rollup', () => {
@@ -47,17 +48,32 @@ gulp.task('rollup', () => {
   });
 });
 gulp.task('rollup:watch', () => {
-	return gulp.watch('app/scripts/**/*.js', ['rollup']);
+	return gulp.watch('app/scripts/**/*.js', gulp.series('rollup', 'sw'));
 });
 
-gulp.task('build', [
-  'assets',
-  'sass',
-  'rollup'
-]);
-gulp.task('build:watch', [
+gulp.task('sw', () => {
+  return workboxBuild.generateSW({
+    globDirectory: 'public',
+    globPatterns: [
+      '**\/*.{html,js,css}'
+    ],
+    swDest: 'public/service-worker.js'
+  });
+});
+
+gulp.task('build', gulp.series(
+  gulp.parallel(
+    'assets',
+    'sass',
+    'rollup'
+  ),
+  'sw'
+));
+gulp.task('build:watch', gulp.series(
   'build',
-  'assets:watch',
-  'sass:watch',
-  'rollup:watch'
-]);
+  gulp.parallel(
+    'assets:watch',
+    'sass:watch',
+    'rollup:watch'
+  )
+));
