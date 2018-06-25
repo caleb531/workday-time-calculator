@@ -71,7 +71,9 @@ gulp.task('build', gulp.series(
 ));
 gulp.task('build:watch', gulp.series(
   'build',
-  'assets:watch',
-  'sass:watch',
-  'rollup:watch'
+  gulp.parallel(
+    'assets:watch',
+    'sass:watch',
+    'rollup:watch'
+  )
 ));
