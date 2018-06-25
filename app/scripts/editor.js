@@ -102,7 +102,13 @@ class EditorComponent {
   }
 
   saveTextLog(logContents) {
-    localStorage.setItem(this.getSelectedDateStorageId(this.selectedDate), JSON.stringify(logContents));
+    if (logContents.ops.length === 1 && logContents.ops[0].insert === '\n') {
+      // If the contents of the current log are empty, delete the entry from
+      // localStorage to conserve space
+      localStorage.removeItem(this.getSelectedDateStorageId(this.selectedDate));
+    } else {
+      localStorage.setItem(this.getSelectedDateStorageId(this.selectedDate), JSON.stringify(logContents));
+    }
   }
 
   view() {
