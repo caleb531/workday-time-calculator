@@ -38,7 +38,7 @@ class DateComponent {
         })))
       ]),
       m('div.log-selected-date', [
-        m('div.log-selected-date-absolute', this.selectedDate.format('dddd, MMM D, YYYY')),
+        m('div.log-selected-date-absolute', this.selectedDate.format('dddd, MMMM D, YYYY')),
         m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.selectedDate.fromNow()}`),
       ])
     ]);
