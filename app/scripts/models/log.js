@@ -129,10 +129,11 @@ class Log {
 
   getAllTimeRanges(log) {
     let tasks = this.getAllTasks(log);
-    let startTimes = tasks.map((task) => task.startTime);
-    let endTimes = tasks.map((task) => task.endTime);
-    return _.zip(startTimes, endTimes).map((rangeArray) => {
-      return _.zipObject(['startTime', 'endTime'], rangeArray);
+    return tasks.map((task) => {
+      return {
+        startTime: task.startTime,
+        endTime: task.endTime
+      };
     });
   }
 
