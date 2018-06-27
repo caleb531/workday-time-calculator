@@ -57,7 +57,9 @@ class SummaryComponent {
               return m('div.log-overlap', [
                 m('span.log-overlap-start-time.log-value', overlap.startTime.isValid() ? overlap.startTime.format(timeFormatShort) : '?'),
                 ' to ',
-                m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(timeFormatShort) : '?')
+                m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(timeFormatShort) : '?'),
+                ' ',
+                m('span.log-overlap-category', `(${overlap.category.name})`)
               ]);
             }))
           ]) : null

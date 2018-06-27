@@ -86,7 +86,8 @@ class Log {
           if (!startTime.isSame(endTime)) {
             let range = {
               startTime: startTime,
-              endTime: endTime
+              endTime: endTime,
+              category: currentCategory
             };
             currentCategory.tasks.push(range);
             lastTimeRange = range;
@@ -132,7 +133,8 @@ class Log {
     return tasks.map((task) => {
       return {
         startTime: task.startTime,
-        endTime: task.endTime
+        endTime: task.endTime,
+        category: task.category
       };
     });
   }
