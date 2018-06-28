@@ -45,7 +45,7 @@ class DateComponent {
       m(CalendarComponent, {
         selectedDate: this.selectedDate,
         onSetSelectedDate: (selectedDate) => {
-          this.selectedDate = selectedDate;
+          this.selectedDate = selectedDate.clone();
         }
       })
 
