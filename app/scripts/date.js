@@ -1,3 +1,7 @@
+import CalendarComponent from './calendar.js';
+import PrevIconComponent from './prev-icon.js';
+import NextIconComponent from './next-icon.js';
+
 class DateComponent {
 
   oninit({attrs}) {
@@ -25,22 +29,26 @@ class DateComponent {
             this.selectPrevDay();
           }
         },
-        m('svg[viewBox="0 0 32 32"]', m('polyline', {
-          points: '18,10 10,16 18,22'
-        }))),
+        m(PrevIconComponent)),
         m('button.log-date-control.log-next-day-control', {
           onclick: () => {
             this.selectNextDay();
           }
         },
-        m('svg[viewBox="0 0 32 32"]', m('polyline', {
-          points: '12,10 20,16 12,22'
-        })))
+        m(NextIconComponent))
       ]),
       m('div.log-selected-date', [
         m('div.log-selected-date-absolute', this.selectedDate.format('dddd, MMMM D, YYYY')),
         m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.selectedDate.fromNow()}`),
-      ])
+      ]),
+
+      m(CalendarComponent, {
+        selectedDate: this.selectedDate,
+        onSetSelectedDate: (selectedDate) => {
+          this.selectedDate = selectedDate;
+        }
+      })
+
     ]);
 
   }

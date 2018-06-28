@@ -1,0 +1,65 @@
+$calendar-date-size: 25px;
+$calendar-weekday-count: 7;
+$calendar-padding-x: 12px;
+$calendar-padding-y: 8px;
+
+.log-calendar {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  width: ($calendar-date-size * $calendar-weekday-count) + ($calendar-padding-x * 2);
+  background-color: #fff;
+  color: #234;
+  padding: $calendar-padding-y $calendar-padding-x;
+}
+
+.log-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.log-calendar-current-month-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.log-calendar-month-control {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  $icon-size: 24px;
+  width: $icon-size;
+  height: $icon-size;
+  border-width: 0;
+  padding: 0;
+  &:focus {
+    outline-width: 0;
+    background-color: $blue;
+    color: #fff;
+  }
+  svg {
+    width: inherit;
+    height: inherit;
+  }
+}
+
+.log-calendar-date {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: $calendar-date-size;
+  height: $calendar-date-size;
+  font-size: 12px;
+  font-weight: normal;
+  color: #999;
+  &.is-current-month {
+    color: #000;
+  }
+  &.is-selected {
+    border-radius: 50%;
+    background-color: $blue;
+    color: #fff;
+  }
+}
