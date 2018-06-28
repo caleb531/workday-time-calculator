@@ -52,10 +52,10 @@ $calendar-padding-y: 8px;
   width: $calendar-date-size;
   height: $calendar-date-size;
   font-size: 12px;
-  font-weight: normal;
   color: #999;
   &.is-current-month {
     color: #000;
+    font-weight: normal;
   }
   &.is-selected {
     border-radius: 50%;
