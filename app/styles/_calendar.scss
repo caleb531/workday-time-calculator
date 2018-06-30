@@ -10,9 +10,9 @@ $calendar-padding-y: 8px;
   bottom: 100%;
   left: 0;
   width: ($calendar-date-size * $calendar-weekday-count) + ($calendar-padding-x * 2);
+  padding: $calendar-padding-y $calendar-padding-x;
   background-color: #fff;
   color: #234;
-  padding: $calendar-padding-y $calendar-padding-x;
   &.log-calendar-open {
     display: block;
   }
