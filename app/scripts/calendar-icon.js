@@ -3,10 +3,10 @@ class CalendarIconComponent {
   view({attrs}) {
     return m('svg[viewBox="0 0 32 32"]', [
       m('path', {
-        d: 'M 9,9 L 9,23 L 23,23 L 23,9 Z M 9,11 L 23,11 M 11,9 L 11,7 M 21,9 L 21,7'
+        d: 'M 8,8 L 8,24 L 24,24 L 24,8 Z M 8,10 L 24,10 M 10,8 L 10,6 M 22,8 L 22,6'
       }),
       m('text', {
-        x: 16, y: 19.5,
+        x: 16, y: 20,
         'text-anchor': 'middle'
       }, attrs.selectedDate.format('D'))
     ]);
