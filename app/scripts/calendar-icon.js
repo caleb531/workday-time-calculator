@@ -1,10 +1,14 @@
 class CalendarIconComponent {
 
-  view() {
+  view({attrs}) {
     return m('svg[viewBox="0 0 32 32"]', [
       m('path', {
-        d: 'M 10,10 L 10,22 L 22,22 L 22,10 Z M 10,12 L 22,12 M 12,10 L 12,8 M 20,10 L 20,8'
-      })
+        d: 'M 9,9 L 9,23 L 23,23 L 23,9 Z M 9,11 L 23,11 M 11,9 L 11,7 M 21,9 L 21,7'
+      }),
+      m('text', {
+        x: 16, y: 19.5,
+        'text-anchor': 'middle'
+      }, attrs.selectedDate.format('D'))
     ]);
   }
 

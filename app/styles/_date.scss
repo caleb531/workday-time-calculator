@@ -45,4 +45,9 @@
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
+  text {
+    fill: currentColor;
+    stroke: none;
+    font-size: 8px;
+  }
 }
