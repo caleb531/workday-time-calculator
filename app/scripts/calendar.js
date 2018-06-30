@@ -63,8 +63,10 @@ class CalendarComponent {
     return values;
   }
 
-  view() {
-    return m('div.log-calendar', [
+  view({attrs}) {
+    return m('div.log-calendar', {
+      class: attrs.calendarOpen ? 'log-calendar-open' : ''
+    }, [
 
       m('div.log-calendar-header', [
         m('span.log-calendar-current-month-name', this.firstDayOfMonthInView.format('MMMM YYYY')),

@@ -4,6 +4,7 @@ $calendar-padding-x: 12px;
 $calendar-padding-y: 8px;
 
 .log-calendar {
+  display: none;
   position: absolute;
   top: -($calendar-date-size * $calendar-weekday-count);
   left: 0;
@@ -11,6 +12,9 @@ $calendar-padding-y: 8px;
   background-color: #fff;
   color: #234;
   padding: $calendar-padding-y $calendar-padding-x;
+  &.log-calendar-open {
+    display: block;
+  }
 }
 
 .log-calendar-header {

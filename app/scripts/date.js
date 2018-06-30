@@ -1,6 +1,7 @@
 import CalendarComponent from './calendar.js';
 import PrevIconComponent from './prev-icon.js';
 import NextIconComponent from './next-icon.js';
+import CalendarIconComponent from './calendar-icon.js';
 
 class DateComponent {
 
@@ -8,6 +9,7 @@ class DateComponent {
     this.selectedDate = moment();
     this.onSetSelectedDate = attrs.onSetSelectedDate;
     this.onSetSelectedDate(this.selectedDate);
+    this.calendarOpen = false;
   }
 
   selectPrevDay() {
@@ -20,6 +22,10 @@ class DateComponent {
     this.onSetSelectedDate(this.selectedDate);
   }
 
+  toggleCalendar() {
+    this.calendarOpen = !this.calendarOpen;
+  }
+
   view() {
     return m('div.log-date-area', [
 
@@ -30,6 +36,12 @@ class DateComponent {
           }
         },
         m(PrevIconComponent)),
+        m('button.log-date-control.log-calendar-control', {
+          onclick: () => {
+            this.toggleCalendar();
+          }
+        },
+        m(CalendarIconComponent)),
         m('button.log-date-control.log-next-day-control', {
           onclick: () => {
             this.selectNextDay();
@@ -44,6 +56,7 @@ class DateComponent {
 
       m(CalendarComponent, {
         selectedDate: this.selectedDate,
+        calendarOpen: this.calendarOpen,
         onSetSelectedDate: (selectedDate) => {
           this.selectedDate = selectedDate.clone();
         }
