@@ -70,8 +70,12 @@ class CalendarComponent {
       m('div.log-calendar-header', [
         m('span.log-calendar-current-month-name', this.firstDayOfMonthInView.format('MMMM YYYY')),
         m('div.log-calendar-month-controls', [
-          m('button.log-calendar-month-control.log-calendar-prev-month-control', {onclick: () => this.viewPrevMonth()}, m(PrevIconComponent)),
-          m('button.log-calendar-month-control.log-calendar-next-month-control', {onclick: () => this.viewNextMonth()}, m(NextIconComponent))
+          m('button.log-calendar-month-control.log-calendar-prev-month-control', {
+            onclick: () => this.viewPrevMonth()
+          }, m(PrevIconComponent)),
+          m('button.log-calendar-month-control.log-calendar-next-month-control', {
+            onclick: () => this.viewNextMonth()
+          }, m(NextIconComponent))
         ])
       ]),
 

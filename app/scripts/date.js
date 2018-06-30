@@ -31,23 +31,14 @@ class DateComponent {
 
       m('div.log-date-controls', [
         m('button.log-date-control.log-date-prev-control', {
-          onclick: () => {
-            this.selectPrevDay();
-          }
-        },
-        m(PrevIconComponent)),
+          onclick: () => this.selectPrevDay()
+        }, m(PrevIconComponent)),
         m('button.log-date-control.log-date-calendar-control', {
-          onclick: () => {
-            this.toggleCalendar();
-          }
-        },
-        m(CalendarIconComponent)),
+          onclick: () => this.toggleCalendar()
+        }, m(CalendarIconComponent)),
         m('button.log-date-control.log-date-next-control', {
-          onclick: () => {
-            this.selectNextDay();
-          }
-        },
-        m(NextIconComponent))
+          onclick: () => this.selectNextDay()
+        }, m(NextIconComponent))
       ]),
       m('div.log-selected-date', [
         m('div.log-selected-date-absolute', this.selectedDate.format('dddd, MMMM D, YYYY')),
