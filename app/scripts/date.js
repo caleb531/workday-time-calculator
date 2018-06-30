@@ -30,19 +30,19 @@ class DateComponent {
     return m('div.log-date-area', [
 
       m('div.log-date-controls', [
-        m('button.log-date-control.log-prev-day-control', {
+        m('button.log-date-control.log-date-prev-control', {
           onclick: () => {
             this.selectPrevDay();
           }
         },
         m(PrevIconComponent)),
-        m('button.log-date-control.log-calendar-control', {
+        m('button.log-date-control.log-date-calendar-control', {
           onclick: () => {
             this.toggleCalendar();
           }
         },
         m(CalendarIconComponent)),
-        m('button.log-date-control.log-next-day-control', {
+        m('button.log-date-control.log-date-next-control', {
           onclick: () => {
             this.selectNextDay();
           }
