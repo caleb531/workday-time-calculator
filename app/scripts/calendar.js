@@ -85,7 +85,7 @@ class CalendarComponent {
       })),
 
       m('div.log-calendar-dates', {
-        onclick: (event) => this.selectDate(event)
+        onmousedown: (event) => this.selectDate(event)
       }, this.mapDaysInView((currentDate) => {
         return m('div.log-calendar-date', {
           'data-date': currentDate.format('l'),
