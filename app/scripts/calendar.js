@@ -46,9 +46,8 @@ class CalendarComponent {
       this.selectedDate = moment(event.target.getAttribute('data-date'), 'l');
       this.firstDayOfMonthInView = this.getFirstDayOfMonth(this.selectedDate);
       this.onSetSelectedDate(this.selectedDate);
-    } else {
-      event.redraw = false;
     }
+    event.redraw = false;
   }
 
   mapDaysInView(callback) {
