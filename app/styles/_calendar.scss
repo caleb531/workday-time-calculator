@@ -9,7 +9,7 @@
   background-color: #fff;
   color: #234;
   box-shadow: $panel-shadow;
-  &.log-calendar-open {
+  &.open {
     display: block;
   }
   &:before {
@@ -47,10 +47,11 @@
   height: $icon-size;
   border-width: 0;
   padding: 0;
+  &:hover:active {
+    color: $blue;
+  }
   &:focus {
     outline-width: 0;
-    background-color: $blue;
-    color: #fff;
   }
   svg {
     width: inherit;
@@ -83,7 +84,10 @@
   }
   &.is-selected {
     border-radius: 50%;
-    background-color: $blue;
+    background-color: rgba($blue, 0.75);
     color: #fff;
+  }
+  &.is-current-month.is-selected {
+    background-color: $blue;
   }
 }

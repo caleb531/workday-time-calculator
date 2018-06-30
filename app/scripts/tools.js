@@ -10,7 +10,8 @@ class ControlsComponent {
 
   view() {
     return m('div.app-tools', [
-      m('div.app-tools-menu-toggle', {
+      m('button.app-tools-menu-toggle', {
+        class: this.menuIsOpen ? 'active' : '',
         onclick: () => {
           this.menuIsOpen = !this.menuIsOpen;
         }

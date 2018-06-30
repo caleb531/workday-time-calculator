@@ -34,6 +34,7 @@ class DateComponent {
           onclick: () => this.selectPrevDay()
         }, m(PrevIconComponent)),
         m('button.log-date-control.log-date-calendar-control', {
+          class: this.calendarOpen ? 'active' : '',
           onclick: () => this.toggleCalendar()
         }, m(CalendarIconComponent, {selectedDate: this.selectedDate})),
         m('button.log-date-control.log-date-next-control', {

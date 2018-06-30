@@ -32,10 +32,13 @@
   background-color: rgba(#000, 0.75);
   color: #fff;
   cursor: pointer;
-}
-.log-date-control:focus {
-  outline-width: 0;
-  background-color: $blue;
+  &:hover:active,
+  &.active {
+    color: $blue;
+  }
+  &:focus {
+    outline-width: 0;
+  }
 }
 .log-date-control svg {
   width: inherit;
