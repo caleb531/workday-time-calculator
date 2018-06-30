@@ -1,0 +1,89 @@
+.log-calendar {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: ($calendar-date-size * $calendar-weekday-count) + ($calendar-padding-x * 2);
+  margin-bottom: ($panel-arrow-size * 1.5);
+  padding: $calendar-padding-y $calendar-padding-x;
+  background-color: #fff;
+  color: #234;
+  box-shadow: $panel-shadow;
+  &.log-calendar-open {
+    display: block;
+  }
+  &:before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    bottom: -$panel-arrow-size;
+    left: ($date-control-width * 1.5) - $panel-arrow-size;
+    width: 0;
+    height: 0;
+    border: solid $panel-arrow-size transparent;
+    border-top-color: #fff;
+    border-bottom-width: 0;
+  }
+}
+
+.log-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.log-calendar-current-month-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.log-calendar-month-control {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  $icon-size: 24px;
+  width: $icon-size;
+  height: $icon-size;
+  border-width: 0;
+  padding: 0;
+  &:focus {
+    outline-width: 0;
+    background-color: $blue;
+    color: #fff;
+  }
+  svg {
+    width: inherit;
+    height: inherit;
+  }
+}
+
+.log-calendar-weekday-label {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: $calendar-date-size;
+  height: $calendar-date-size;
+  font-weight: bold;
+  font-size: $calendar-date-font-size;
+  color: #999;
+}
+
+.log-calendar-date {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: $calendar-date-size;
+  height: $calendar-date-size;
+  font-size: $calendar-date-font-size;
+  color: #999;
+  &.is-current-month {
+    color: #000;
+    font-weight: normal;
+  }
+  &.is-selected {
+    border-radius: 50%;
+    background-color: $blue;
+    color: #fff;
+  }
+}

@@ -2,6 +2,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: stretch;
+  position: relative;
   user-select: none;
   margin-top: 5px;
   margin-bottom: 10px;
@@ -24,7 +25,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: flex-start;
-  width: 30px;
+  width: $date-control-width;
   height: 100%;
   border-width: 0;
   padding: 0;
@@ -44,4 +45,9 @@
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
+  text {
+    fill: currentColor;
+    stroke: none;
+    font-size: 8px;
+  }
 }
