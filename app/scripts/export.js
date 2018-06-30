@@ -7,7 +7,7 @@ class ExportComponent {
       if (logMatches) {
         let logDate = logMatches[1];
         let logContents = JSON.parse(localStorage.getItem(key));
-      if (!(logContents.ops.length === 1 && logContents.ops[0].insert === '\n')) {
+        if (!(logContents.ops.length === 1 && logContents.ops[0].insert === '\n')) {
           exportedData.logs[logDate] = logContents;
         }
       }
