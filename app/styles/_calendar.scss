@@ -1,4 +1,5 @@
 $calendar-date-size: 25px;
+$calendar-date-font-size: 12px;
 $calendar-weekday-count: 7;
 $calendar-padding-x: 12px;
 $calendar-padding-y: 8px;
@@ -6,7 +7,7 @@ $calendar-padding-y: 8px;
 .log-calendar {
   display: none;
   position: absolute;
-  top: -($calendar-date-size * $calendar-weekday-count);
+  bottom: 100%;
   left: 0;
   width: ($calendar-date-size * $calendar-weekday-count) + ($calendar-padding-x * 2);
   background-color: #fff;
@@ -49,13 +50,24 @@ $calendar-padding-y: 8px;
   }
 }
 
+.log-calendar-weekday-label {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: $calendar-date-size;
+  height: $calendar-date-size;
+  font-weight: bold;
+  font-size: $calendar-date-font-size;
+  color: #999;
+}
+
 .log-calendar-date {
   display: inline-flex;
   justify-content: center;
   align-items: center;
   width: $calendar-date-size;
   height: $calendar-date-size;
-  font-size: 12px;
+  font-size: $calendar-date-font-size;
   color: #999;
   &.is-current-month {
     color: #000;

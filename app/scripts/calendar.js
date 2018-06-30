@@ -4,6 +4,7 @@ import NextIconComponent from './next-icon.js';
 class CalendarComponent {
 
   oninit({attrs}) {
+    this.weekdayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     this.onSetSelectedDate = attrs.onSetSelectedDate;
     this.onupdate({attrs});
   }
@@ -78,6 +79,10 @@ class CalendarComponent {
           }, m(NextIconComponent))
         ])
       ]),
+
+      m('div.log-calendar-weekday-labels', this.weekdayLabels.map((weekdayLabel) => {
+        return m('div.log-calendar-weekday-label', weekdayLabel);
+      })),
 
       m('div.log-calendar-dates', {
         onclick: (event) => this.selectDate(event)
