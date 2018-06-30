@@ -6,6 +6,7 @@ class CalendarComponent {
   oninit({attrs}) {
     this.weekdayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     this.onSetSelectedDate = attrs.onSetSelectedDate;
+    this.onCloseCalendar = attrs.onCloseCalendar;
     this.onupdate({attrs});
   }
 
@@ -51,6 +52,12 @@ class CalendarComponent {
     event.redraw = false;
   }
 
+  closeCalendarAfterDblClickDate(event) {
+    if (event.target.classList.contains('log-calendar-date')) {
+      this.onCloseCalendar();
+    }
+  }
+
   mapDaysInView(callback) {
     let firstDateInView = this.getFirstSundayInView(this.firstDayOfMonthInView);
     let lastDateInView = this.getLastSaturdayInView(this.firstDayOfMonthInView);
@@ -85,7 +92,8 @@ class CalendarComponent {
       })),
 
       m('div.log-calendar-dates', {
-        onmousedown: (event) => this.selectDate(event)
+        onmousedown: (event) => this.selectDate(event),
+        ondblclick: (event) => this.closeCalendarAfterDblClickDate(event)
       }, this.mapDaysInView((currentDate) => {
         return m('div.log-calendar-date', {
           'data-date': currentDate.format('l'),
