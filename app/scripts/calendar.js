@@ -64,7 +64,7 @@ class CalendarComponent {
   }
 
   view({attrs}) {
-    return m('div.log-calendar', {
+    return this.firstDayOfMonthInView ? m('div.log-calendar', {
       class: attrs.calendarOpen ? 'log-calendar-open' : ''
     }, [
 
@@ -97,7 +97,7 @@ class CalendarComponent {
         }, currentDate.date());
       }))
 
-    ]);
+    ]) : null;
   }
 
 }

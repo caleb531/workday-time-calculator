@@ -45,7 +45,7 @@ class DateComponent {
         m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.selectedDate.fromNow()}`),
       ]),
 
-      m(CalendarComponent, {
+      this.selectedDate ? m(CalendarComponent, {
         selectedDate: this.selectedDate,
         calendarOpen: this.calendarOpen,
         onSetSelectedDate: (selectedDate) => {
@@ -53,7 +53,7 @@ class DateComponent {
           this.onSetSelectedDate(this.selectedDate);
           m.redraw();
         }
-      })
+      }) : null
 
     ]);
 
