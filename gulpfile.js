@@ -28,7 +28,7 @@ gulp.task('assets', gulp.parallel(
   'assets:js'
 ));
 gulp.task('assets:watch', () => {
-	return gulp.watch('app/assets/**/*', gulp.series('assets', 'sw'));
+	return gulp.watch('app/assets/**/*', gulp.series('assets:core', 'sw'));
 });
 
 gulp.task('sass', () => {
