@@ -72,18 +72,16 @@
 
 .log-calendar-date {
   display: inline-block;
-  width: $calendar-date-size;
-  height: $calendar-date-size;
-  font-size: $calendar-date-font-size;
-  color: #999;
   .log-calendar-date-label {
     pointer-events: none;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: inherit;
-    height: inherit;
+    width: $calendar-date-size;
+    height: $calendar-date-size;
     border-radius: 50%;
+    font-size: $calendar-date-font-size;
+    color: #999;
   }
   &.is-current-month .log-calendar-date-label {
     color: #000;
