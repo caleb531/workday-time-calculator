@@ -102,7 +102,7 @@ class CalendarComponent {
             currentDate.isSame(this.selectedDate) ? 'is-selected' : '',
             currentDate.isSame(moment()) ? 'is-today' : ''
           ].join(' ')
-        }, currentDate.date());
+        }, m('div.log-calendar-date-label', currentDate.date()));
       }))
 
     ]) : null;

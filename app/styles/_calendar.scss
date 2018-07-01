@@ -71,23 +71,29 @@
 }
 
 .log-calendar-date {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+  display: inline-block;
   width: $calendar-date-size;
   height: $calendar-date-size;
   font-size: $calendar-date-font-size;
   color: #999;
-  &.is-current-month {
+  .log-calendar-date-label {
+    pointer-events: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: inherit;
+    height: inherit;
+    border-radius: 50%;
+  }
+  &.is-current-month .log-calendar-date-label {
     color: #000;
     font-weight: normal;
   }
-  &.is-selected {
-    border-radius: 50%;
+  &.is-selected .log-calendar-date-label {
     background-color: rgba($blue, 0.75);
     color: #fff;
   }
-  &.is-current-month.is-selected {
+  &.is-current-month.is-selected .log-calendar-date-label {
     background-color: $blue;
   }
 }
