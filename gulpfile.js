@@ -57,7 +57,20 @@ gulp.task('sw', () => {
     globPatterns: [
       '**\/*.{html,js,css}'
     ],
-    swDest: 'public/service-worker.js'
+    swDest: 'public/service-worker.js',
+    runtimeCaching: [{
+      urlPattern: new RegExp('^https://fonts.(?:googleapis|gstatic).com/(.*)'),
+      handler: 'cacheFirst',
+      options: {
+        cacheName: 'google-fonts',
+        expiration: {
+          maxEntries: 30
+        },
+        cacheableResponse: {
+          statuses: [0, 200]
+        }
+      }
+    }]
   });
 });
 
