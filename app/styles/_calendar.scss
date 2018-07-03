@@ -35,7 +35,7 @@
 .log-calendar-current-month-name {
   margin: 0;
   font-size: 14px;
-  font-weight: normal;
+  font-weight: 400;
 }
 
 .log-calendar-month-control {
@@ -65,7 +65,7 @@
   align-items: center;
   width: $calendar-date-size;
   height: $calendar-date-size;
-  font-weight: bold;
+  font-weight: 700;
   font-size: $calendar-date-font-size;
   color: #999;
 }
@@ -85,7 +85,7 @@
   }
   &.is-current-month .log-calendar-date-label {
     color: #000;
-    font-weight: normal;
+    font-weight: 400;
   }
   &.is-selected .log-calendar-date-label {
     background-color: rgba($blue, 0.75);
