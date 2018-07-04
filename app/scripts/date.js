@@ -6,9 +6,8 @@ import CalendarIconComponent from './calendar-icon.js';
 class DateComponent {
 
   oninit({attrs}) {
-    this.selectedDate = moment();
+    this.selectedDate = attrs.selectedDate.clone();
     this.onSetSelectedDate = attrs.onSetSelectedDate;
-    this.onSetSelectedDate(this.selectedDate);
     this.calendarOpen = false;
   }
 
@@ -56,7 +55,6 @@ class DateComponent {
         },
         onCloseCalendar: () => {
           this.calendarOpen = false;
-          m.redraw();
         }
       }) : null
 

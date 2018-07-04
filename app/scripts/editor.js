@@ -1,7 +1,7 @@
 class EditorComponent {
 
   oninit({attrs}) {
-    this.selectedDate = attrs.selectedDate;
+    this.selectedDate = attrs.selectedDate.clone();
     this.onSetLogContents = attrs.onSetLogContents;
   }
 

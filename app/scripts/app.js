@@ -7,6 +7,10 @@ import SummaryComponent from './summary.js';
 
 class AppComponent {
 
+  oninit() {
+    this.selectedDate = moment();
+  }
+
   view() {
     return m('div.app', [
       m('header.app-header', [
@@ -20,18 +24,18 @@ class AppComponent {
 
         m('div.log-area', [
 
-          this.selectedDate ? m(EditorComponent, {
+          m(EditorComponent, {
             selectedDate: this.selectedDate,
             onSetLogContents: (logContents) => {
               this.logContents = logContents;
               m.redraw();
             }
-          }) : null,
+          }),
 
           m(DateComponent, {
+            selectedDate: this.selectedDate,
             onSetSelectedDate: (selectedDate) => {
               this.selectedDate = selectedDate.clone();
-              m.redraw();
             }
           })
 

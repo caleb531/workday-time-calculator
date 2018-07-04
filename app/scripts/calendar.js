@@ -7,11 +7,11 @@ class CalendarComponent {
     this.weekdayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     this.onSetSelectedDate = attrs.onSetSelectedDate;
     this.onCloseCalendar = attrs.onCloseCalendar;
-    this.onupdate({attrs});
+    this.onbeforeupdate({attrs});
   }
 
-  onupdate({attrs}) {
-    if (!attrs.selectedDate.isSame(this.selectedDate)) {
+  onbeforeupdate({attrs}) {
+    if (!this.selectedDate || !attrs.selectedDate.isSame(this.selectedDate)) {
       this.selectedDate = attrs.selectedDate.clone();
       this.firstDayOfMonthInView = this.getFirstDayOfMonth(this.selectedDate);
     }
