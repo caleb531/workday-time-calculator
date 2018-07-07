@@ -71,6 +71,8 @@ gulp.task('sw', () => {
         }
       }
     }]
+  }).then(({warnings}) => {
+    warnings.forEach(console.warn);
   });
 });
 
