@@ -25,14 +25,13 @@ class SummaryComponent {
 
     return attrs.log && attrs.log.categories.length > 0 ? m('div.log-summary', [
 
-      m('div.log-summary-overview', [
+      attrs.log.totalDuration.asMinutes() > 0 ? m('div.log-summary-overview', [
 
-        attrs.log.totalDuration.asMinutes() > 0 ?
         m('div.log-total', [
           m('div.log-total-time-name.log-label', 'Total:'),
           ' ',
           m('div.log-total-time.log-value', this.getFormattedDuration(attrs.log.totalDuration))
-        ]) : null,
+        ]),
 
         m('.log-errors', [
 
@@ -66,7 +65,7 @@ class SummaryComponent {
 
         ])
 
-      ]),
+      ]) : null,
 
       m('div.log-summary-details', attrs.log.categories.map((category) => {
         return m('div.log-category', category.totalDuration.asMinutes() > 0 ? [
