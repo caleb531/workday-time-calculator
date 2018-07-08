@@ -228,7 +228,7 @@ class Log {
       });
     });
     overlaps = _.uniqBy(overlaps, (overlap) => {
-      return [overlap.startTime, overlap.endTime].join(',');
+      return [overlap.startTime, overlap.endTime, overlap.category.name].join(',');
     });
     overlaps = this.sortTimeRanges(overlaps);
 
