@@ -12,9 +12,10 @@ class SummaryComponent {
   }
 
   getFormattedDuration(duration) {
-    let hours = duration.hours();
-    let minutes = this.padWithZeroes(duration.minutes());
-    return `${hours}:${minutes}`;
+    let isNegative = duration.asMinutes() < 0;
+    let hours = Math.abs(duration.hours());
+    let minutes = this.padWithZeroes(Math.abs(duration.minutes()));
+    return `${isNegative ? '-' : ''}${hours}:${minutes}`;
   }
 
   getFormattedDescription(description) {
@@ -25,7 +26,7 @@ class SummaryComponent {
 
     return attrs.log && attrs.log.categories.length > 0 ? m('div.log-summary', [
 
-      attrs.log.totalDuration.asMinutes() > 0 ? m('div.log-summary-overview', [
+      m('div.log-summary-overview', [
 
         m('div.log-total', [
           m('div.log-total-time-name.log-label', 'Total:'),
@@ -65,7 +66,7 @@ class SummaryComponent {
 
         ])
 
-      ]) : null,
+      ]),
 
       m('div.log-summary-details', attrs.log.categories.map((category) => {
         return m('div.log-category', category.totalDuration.asMinutes() > 0 ? [
