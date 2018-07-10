@@ -55,7 +55,7 @@ gulp.task('sw', () => {
   return workboxBuild.generateSW({
     globDirectory: 'public',
     globPatterns: [
-      '**\/*.{html,js,css}'
+      '**\/*.{html,js,css,png}'
     ],
     swDest: 'public/service-worker.js',
     runtimeCaching: [{
