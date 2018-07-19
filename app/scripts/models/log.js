@@ -69,7 +69,7 @@ class Log {
             currentCategory = categoryMap[categoryName];
           } else if (categoryName !== '') {
             currentCategory = {
-              name: currentLine,
+              name: categoryName,
               tasks: [],
               descriptions: []
             };
