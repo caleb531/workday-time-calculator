@@ -5,7 +5,7 @@ class EditorComponent {
     this.onSetLogContents = attrs.onSetLogContents;
   }
 
-  onupdate({attrs}) {
+  onbeforeupdate({attrs}) {
     if (!attrs.selectedDate.isSame(this.selectedDate)) {
       this.selectedDate = attrs.selectedDate.clone();
       let logContents = this.getLogContentsForSelectedDate();
@@ -72,6 +72,7 @@ class EditorComponent {
       this.editor.focus();
     });
     this.setEditorText(this.getLogContentsForSelectedDate());
+    m.redraw();
   }
 
   getLogContentsForSelectedDate() {
