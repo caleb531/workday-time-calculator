@@ -78,8 +78,7 @@ class SummaryComponent {
               m('span.log-category-total-time.log-value', [
                 this.getFormattedDuration(category.totalDuration)
               ]),
-              ' ',
-              m('span.log-category-character-count', `(${_.sumBy(category.descriptions, (description) => this.getFormattedDescription(description).length) + category.descriptions.length})`)
+              ' '
 
           ]),
 
