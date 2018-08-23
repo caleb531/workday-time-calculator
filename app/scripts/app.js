@@ -28,6 +28,7 @@ class AppComponent {
             selectedDate: this.selectedDate,
             onSetLogContents: (logContents) => {
               this.logContents = logContents;
+              m.redraw();
             }
           }),
 
