@@ -99,6 +99,7 @@ class EditorComponent {
   setEditorText(logContents) {
     this.editor.setContents(logContents);
     this.onSetLogContents(logContents);
+    m.redraw();
   }
 
   saveTextLog(logContents) {
