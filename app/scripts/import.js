@@ -1,9 +1,5 @@
 class ImportComponent {
 
-  browseForJsonFile() {
-    console.log('import!');
-  }
-
   importJsonFile(jsonFile) {
     let reader = new FileReader();
     reader.onload = (event) => {
@@ -17,11 +13,7 @@ class ImportComponent {
   }
 
   view() {
-    return m('span.app-control-import', {
-      onclick: () => {
-        this.browseForJsonFile();
-      }
-    }, [
+    return m('span.app-control-import', [
       m('input[type="file"].app-control-import-input', {
         accept: 'application/json',
         onchange: (event) => {
