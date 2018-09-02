@@ -34,7 +34,20 @@ class SummaryComponent {
           m('div.log-total-time.log-value', this.getFormattedDuration(attrs.log.totalDuration))
         ]),
 
-        m('.log-errors', [
+        m('.log-stats', [
+
+          attrs.log.errors.length > 0 ?
+          m('div.log-errors', [
+            m('span.log-label', 'Errors:'),
+            ' ',
+            m('div.log-times.log-error-times', attrs.log.errors.map((error) => {
+              return m('div.log-error', [
+                m('span.log-error-start-time.log-value', error.startTime.isValid() ? error.startTime.format(timeFormatShort) : '?'),
+                ' to ',
+                m('span.log-error-end-time.log-value', error.endTime.isValid() ? error.endTime.format(timeFormatShort) : '?')
+              ]);
+            }))
+          ]) : null,
 
           attrs.log.gaps.length > 0 ?
           m('div.log-gaps', [

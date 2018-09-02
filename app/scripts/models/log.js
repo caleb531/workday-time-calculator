@@ -6,6 +6,7 @@ class Log {
 
   constructor(logContents) {
     this.categories = this.getCategories(logContents);
+    this.errors = this.getErrors();
     this.gaps = this.getGaps();
     this.overlaps = this.getOverlaps();
     this.calculateTotals();
@@ -155,6 +156,21 @@ class Log {
       rangeMap[range.startTime].push(range);
     });
     return rangeMap;
+  }
+
+  getErrors() {
+
+    let errors = [];
+    let ranges = this.sortTimeRanges(this.getAllTimeRanges());
+
+    ranges.forEach((range) => {
+      if (range.startTime.isSameOrAfter(range.endTime)) {
+        errors.push(range);
+      }
+    });
+
+    return errors;
+
   }
 
   getGaps() {
