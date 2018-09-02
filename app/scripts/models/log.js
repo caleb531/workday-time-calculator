@@ -128,8 +128,8 @@ class Log {
     return tasks;
   }
 
-  getAllTimeRanges(log) {
-    let tasks = this.getAllTasks(log);
+  getAllTimeRanges() {
+    let tasks = this.getAllTasks();
     return tasks.map((task) => {
       return {
         startTime: task.startTime,
@@ -157,11 +157,10 @@ class Log {
     return rangeMap;
   }
 
-  getGaps(log) {
+  getGaps() {
 
     let gaps = [];
-
-    let ranges = this.sortTimeRanges(this.getAllTimeRanges(log));
+    let ranges = this.sortTimeRanges(this.getAllTimeRanges());
     let rangeMap = this.getRangeMap(ranges);
 
     if (ranges.length === 0) {
@@ -200,9 +199,9 @@ class Log {
 
   }
 
-  getOverlaps(log) {
+  getOverlaps() {
 
-    let ranges = this.sortTimeRanges(this.getAllTimeRanges(log));
+    let ranges = this.sortTimeRanges(this.getAllTimeRanges());
 
     let overlaps = [];
     ranges.forEach((rangeA, a) => {
