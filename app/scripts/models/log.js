@@ -9,6 +9,7 @@ class Log {
     this.errors = this.getErrors();
     this.gaps = this.getGaps();
     this.overlaps = this.getOverlaps();
+    this.latestRange = this.getlatestRange();
     this.calculateTotals();
   }
 
@@ -249,6 +250,10 @@ class Log {
 
     return overlaps;
 
+  }
+
+  getlatestRange() {
+    return _.maxBy(this.getAllTimeRanges(), (range) => range.endTime);
   }
 
 }

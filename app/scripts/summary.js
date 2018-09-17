@@ -28,6 +28,17 @@ class SummaryComponent {
 
       m('div.log-summary-overview', [
 
+        attrs.log.latestRange ?
+        m('div.log-latest-time', [
+          m('span.log-label', 'Latest Time:'),
+          ' ',
+          m('span.log-latest-time-time', [
+            m('span.log-value', attrs.log.latestRange.endTime.format(timeFormatShort)),
+            ' ',
+            m('span.log-value-category', `(${attrs.log.latestRange.category.name})`)
+          ])
+        ]) : null,
+
         m('div.log-total', [
           m('div.log-total-time-name.log-label', 'Total:'),
           ' ',
@@ -72,7 +83,7 @@ class SummaryComponent {
                 ' to ',
                 m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(timeFormatShort) : '?'),
                 ' ',
-                m('span.log-overlap-category', `(${overlap.category.name})`)
+                m('span.log-value-category', `(${overlap.category.name})`)
               ]);
             }))
           ]) : null

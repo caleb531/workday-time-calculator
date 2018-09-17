@@ -28,6 +28,7 @@
   border-bottom: solid 2px #fff;
   padding-bottom: 0.5em;
   margin-bottom: 0.5em;
+  overflow: hidden;
 }
 .log-total {
   font-size: 28px;
@@ -51,6 +52,16 @@
 .log-stats .log-label {
   padding-top: 1px;
 }
-.log-overlap-category {
+.log-value-category {
   vertical-align: middle;
+}
+
+.log-latest-time {
+  float: right;
+  text-align: right;
+  font-size: 16px;
+  .log-label,
+  .log-latest-time-time {
+    display: block;
+  }
 }
