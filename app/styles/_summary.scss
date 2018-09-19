@@ -31,7 +31,14 @@
   overflow: hidden;
 }
 .log-total {
+  font-size: 0;
+}
+.log-total-time-name,
+.log-total-time {
   font-size: 28px;
+}
+.log-total-time-name {
+  margin-right: 8px;
 }
 .log-stats {
   display: table;
