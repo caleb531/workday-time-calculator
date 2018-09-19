@@ -66,9 +66,16 @@
 .log-latest-time {
   float: right;
   text-align: right;
-  font-size: 16px;
+  font-size: 0;
   .log-label,
   .log-latest-time-time {
     display: block;
+  }
+  .log-label,
+  .log-latest-time-time * {
+    font-size: 16px;
+  }
+  .log-value {
+    margin-right: 5px;
   }
 }
