@@ -25,6 +25,9 @@
 }
 
 .log-summary-overview {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   border-bottom: solid 2px #fff;
   padding-bottom: 0.5rem;
   margin-bottom: 0.5rem;
