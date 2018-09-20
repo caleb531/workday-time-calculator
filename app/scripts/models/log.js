@@ -14,7 +14,8 @@ class Log {
   }
 
   splitLineIntoTimeStrs(logLine) {
-    return logLine.split(/\s*to\s*|\s*-\s*/);
+    let parts = logLine.split(/\s*(to|ot|\-)\s*/);
+    return [parts[0], parts[2]];
   }
 
   isTimeRange(logLine) {
