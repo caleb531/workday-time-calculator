@@ -5,9 +5,9 @@ import CalendarIconComponent from './calendar-icon.js';
 
 class DateComponent {
 
-  oninit({attrs}) {
-    this.selectedDate = attrs.selectedDate.clone();
-    this.onSetSelectedDate = attrs.onSetSelectedDate;
+  oninit({attrs: {selectedDate, onSetSelectedDate}}) {
+    this.selectedDate = selectedDate.clone();
+    this.onSetSelectedDate = onSetSelectedDate;
     this.calendarOpen = false;
   }
 

@@ -22,36 +22,36 @@ class SummaryComponent {
     return `- ${description}`;
   }
 
-  view({attrs}) {
+  view({attrs: {log}}) {
 
-    return attrs.log && attrs.log.categories.length > 0 ? m('div.log-summary', [
+    return log && log.categories.length > 0 ? m('div.log-summary', [
 
       m('div.log-summary-overview', [
 
-        attrs.log.latestRange ?
+        log.latestRange ?
         m('div.log-latest-time', [
           m('span.log-label', 'Latest Time:'),
           ' ',
           m('span.log-latest-time-time', [
-            m('span.log-value', attrs.log.latestRange.endTime.format(timeFormatShort)),
+            m('span.log-value', log.latestRange.endTime.format(timeFormatShort)),
             ' ',
-            m('span.log-value-category', `(${attrs.log.latestRange.category.name})`)
+            m('span.log-value-category', `(${log.latestRange.category.name})`)
           ])
         ]) : null,
 
         m('div.log-total', [
           m('div.log-total-time-name.log-label', 'Total:'),
           ' ',
-          m('div.log-total-time.log-value', this.getFormattedDuration(attrs.log.totalDuration))
+          m('div.log-total-time.log-value', this.getFormattedDuration(log.totalDuration))
         ]),
 
         m('.log-stats', [
 
-          attrs.log.errors.length > 0 ?
+          log.errors.length > 0 ?
           m('div.log-errors', [
             m('span.log-label', 'Errors:'),
             ' ',
-            m('div.log-times.log-error-times', attrs.log.errors.map((error) => {
+            m('div.log-times.log-error-times', log.errors.map((error) => {
               return m('div.log-error', [
                 m('span.log-error-start-time.log-value', error.startTime.isValid() ? error.startTime.format(timeFormatShort) : '?'),
                 ' to ',
@@ -60,11 +60,11 @@ class SummaryComponent {
             }))
           ]) : null,
 
-          attrs.log.gaps.length > 0 ?
+          log.gaps.length > 0 ?
           m('div.log-gaps', [
             m('span.log-label', 'Gaps:'),
             ' ',
-            m('div.log-times.log-gap-times', attrs.log.gaps.map((gap) => {
+            m('div.log-times.log-gap-times', log.gaps.map((gap) => {
               return m('div.log-gap', [
                 m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(timeFormatShort) : '?'),
                 ' to ',
@@ -73,11 +73,11 @@ class SummaryComponent {
             }))
           ]) : null,
 
-          attrs.log.overlaps.length > 0 ?
+          log.overlaps.length > 0 ?
           m('div.log-overlaps', [
             m('span.log-label', 'Overlaps:'),
             ' ',
-            m('div.log-times.log-overlap-times', attrs.log.overlaps.map((overlap) => {
+            m('div.log-times.log-overlap-times', log.overlaps.map((overlap) => {
               return m('div.log-overlap', [
                 m('span.log-overlap-start-time.log-value', overlap.startTime.isValid() ? overlap.startTime.format(timeFormatShort) : '?'),
                 ' to ',
@@ -92,7 +92,7 @@ class SummaryComponent {
 
       ]),
 
-      m('div.log-summary-details', attrs.log.categories.map((category) => {
+      m('div.log-summary-details', log.categories.map((category) => {
         return m('div.log-category', category.totalDuration.asMinutes() > 0 ? [
 
           m('div.log-category-header', [

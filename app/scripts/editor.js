@@ -1,13 +1,13 @@
 class EditorComponent {
 
-  oninit({attrs}) {
-    this.selectedDate = attrs.selectedDate.clone();
-    this.onSetLogContents = attrs.onSetLogContents;
+  oninit({attrs: {selectedDate, onSetLogContents}}) {
+    this.selectedDate = selectedDate.clone();
+    this.onSetLogContents = onSetLogContents;
   }
 
-  onupdate({attrs}) {
-    if (!attrs.selectedDate.isSame(this.selectedDate)) {
-      this.selectedDate = attrs.selectedDate.clone();
+  onupdate({attrs: {selectedDate}}) {
+    if (!selectedDate.isSame(this.selectedDate)) {
+      this.selectedDate = selectedDate.clone();
       let logContents = this.getLogContentsForSelectedDate();
       this.setEditorText(logContents);
     }

@@ -3,16 +3,16 @@ import NextIconComponent from './next-icon.js';
 
 class CalendarComponent {
 
-  oninit({attrs}) {
+  oninit({attrs: {selectedDate, onSetSelectedDate, onCloseCalendar}}) {
     this.weekdayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-    this.onSetSelectedDate = attrs.onSetSelectedDate;
-    this.onCloseCalendar = attrs.onCloseCalendar;
-    this.onbeforeupdate({attrs});
+    this.onSetSelectedDate = onSetSelectedDate;
+    this.onCloseCalendar = onCloseCalendar;
+    this.onbeforeupdate({attrs: {selectedDate}});
   }
 
-  onbeforeupdate({attrs}) {
-    if (!this.selectedDate || !attrs.selectedDate.isSame(this.selectedDate)) {
-      this.selectedDate = attrs.selectedDate.clone();
+  onbeforeupdate({attrs: {selectedDate}}) {
+    if (!this.selectedDate || !selectedDate.isSame(this.selectedDate)) {
+      this.selectedDate = selectedDate.clone();
       this.firstDayOfMonthInView = this.getFirstDayOfMonth(this.selectedDate);
     }
   }
@@ -70,9 +70,9 @@ class CalendarComponent {
     return values;
   }
 
-  view({attrs}) {
+  view({attrs: {calendarOpen}}) {
     return this.firstDayOfMonthInView ? m('div.log-calendar', {
-      class: attrs.calendarOpen ? 'open' : ''
+      class: calendarOpen ? 'open' : ''
     }, [
 
       m('div.log-calendar-header', [
