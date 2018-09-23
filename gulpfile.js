@@ -18,7 +18,8 @@ gulp.task('assets:js', () => {
       'node_modules/mithril/mithril.min.js',
       'node_modules/moment/min/moment.min.js',
       'node_modules/quill/dist/quill.min.js',
-      'node_modules/lodash/lodash.min.js'
+      'node_modules/lodash/lodash.min.js',
+      'node_modules/sw-update-manager/sw-update-manager.js'
     ])
     .pipe(gulp.dest('public/scripts'));
 });
@@ -52,25 +53,13 @@ gulp.task('rollup:watch', () => {
 });
 
 gulp.task('sw', () => {
-  return workboxBuild.generateSW({
+  return workboxBuild.injectManifest({
     globDirectory: 'public',
     globPatterns: [
       '**\/*.{html,js,css,png}'
     ],
-    swDest: 'public/service-worker.js',
-    runtimeCaching: [{
-      urlPattern: new RegExp('^https://fonts.(?:googleapis|gstatic).com/(.*)'),
-      handler: 'cacheFirst',
-      options: {
-        cacheName: 'google-fonts',
-        expiration: {
-          maxEntries: 30
-        },
-        cacheableResponse: {
-          statuses: [0, 200]
-        }
-      }
-    }]
+    swSrc: 'app/scripts/service-worker.js',
+    swDest: 'public/service-worker.js'
   }).then(({warnings}) => {
     warnings.forEach(console.warn);
   });

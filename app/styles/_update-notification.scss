@@ -1,0 +1,37 @@
+.update-notification {
+  display: inline-block;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 400ms ease-in-out;
+  &.update-available {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.update-notification-bubble {
+  margin-top: 8px;
+  margin-right: 8px;
+  border-radius: 4px;
+  padding: 10px 15px;
+  background-color: $blue;
+  text-align: left;
+  color: #fff;
+  cursor: default;
+  user-select: none;
+}
+
+.update-notification-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.update-notification-subtitle {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+}

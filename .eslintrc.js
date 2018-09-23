@@ -27,7 +27,24 @@ module.exports = {
     'm': true,
     'moment': true,
     'Quill': true,
-    '_': true
+    '_': true,
+    'SWUpdateManager': true
+  },
+
+  /**
+   * Per-file ESlint rules to override
+   */
+
+  overrides: {
+
+    files: ['service-worker.js'],
+    env: {
+      'serviceworker': true
+    },
+    globals: {
+      'workbox': true
+    }
+
   },
 
   /**
