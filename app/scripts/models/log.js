@@ -14,8 +14,15 @@ class Log {
   }
 
   splitLineIntoTimeStrs(logLine) {
-    let parts = logLine.split(/\s*(to|ot|\-)\s*/);
-    return [parts[0], parts[2]];
+    let timePatt = /(\d+(?:\:\d+)?\s*(?:am?|pm?)?)/.source;
+    let sepPatt = /\s*(to|ot|\-)\s*/.source;
+    let rangeRegex = new RegExp(`^${timePatt}${sepPatt}${timePatt}$`, 'i');
+    let matches = logLine.match(rangeRegex);
+    if (!matches) {
+      return [];
+    } else {
+      return [matches[1], matches[3]];
+    }
   }
 
   isTimeRange(logLine) {
