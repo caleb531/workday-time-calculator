@@ -37,7 +37,7 @@ class AppComponent {
           m(EditorComponent, {
             selectedDate: this.selectedDate,
             onSetLogContents: (logContents) => {
-              this.logContents = logContents;
+              this.log = new Log(logContents);
             }
           }),
 
@@ -50,8 +50,8 @@ class AppComponent {
 
         ]),
 
-        this.logContents ? m(SummaryComponent, {
-          log: new Log(this.logContents)
+        this.log ? m(SummaryComponent, {
+          log: this.log
         }) : null
 
       ])
