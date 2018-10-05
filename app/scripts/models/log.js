@@ -132,7 +132,7 @@ class Log {
 
   getAllTasks() {
     let tasks = [];
-    this.categories.forEach(function (category) {
+    this.categories.forEach((category) => {
       tasks.push(...category.tasks);
     });
     return tasks;
