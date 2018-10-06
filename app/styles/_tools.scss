@@ -57,6 +57,7 @@
       border-top-left-radius: inherit;
       border-top-right-radius: inherit;
       &:before {
+        pointer-events: none;
         content: '';
         display: inline-block;
         position: absolute;
