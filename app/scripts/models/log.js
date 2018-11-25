@@ -98,15 +98,13 @@ class Log {
           if (startTime.hour() >= 12 && endTime.hour() < 12) {
             endTime.add(24, 'hours');
           }
-          if (!startTime.isSame(endTime)) {
-            let range = {
-              startTime: startTime,
-              endTime: endTime,
-              category: currentCategory
-            };
-            currentCategory.tasks.push(range);
-            lastTimeRange = range;
-          }
+          let range = {
+            startTime: startTime,
+            endTime: endTime,
+            category: currentCategory
+          };
+          currentCategory.tasks.push(range);
+          lastTimeRange = range;
           lastTimeRangeIndent = indent;
         } else if (indent >= lastTimeRangeIndent && !this.isTimeRange(currentLine) && currentCategory && currentLine.trim() !== '' && lastTimeRange) {
           // Task description
