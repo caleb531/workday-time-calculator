@@ -93,6 +93,11 @@ class Log {
           let timeStrs = this.parseLineTimeStrs(currentLine);
           let startTime = this.roundTime(moment(timeStrs[0], timeFormat));
           let endTime = this.roundTime(moment(timeStrs[1], timeFormat));
+          // If time range extends past midnight, count time range as overtime
+          // for same day
+          if (startTime.hour() >= 12 && endTime.hour() < 12) {
+            endTime.add(24, 'hours');
+          }
           if (!startTime.isSame(endTime)) {
             let range = {
               startTime: startTime,
