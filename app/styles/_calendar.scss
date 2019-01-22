@@ -7,6 +7,7 @@
   margin-bottom: ($panel-arrow-size * 1.5);
   padding: $calendar-padding-y $calendar-padding-x;
   background-color: #fff;
+  user-select: none;
   color: #234;
   box-shadow: $panel-shadow;
   &.open {
