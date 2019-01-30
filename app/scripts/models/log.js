@@ -16,7 +16,7 @@ class Log {
   splitLineIntoTimeStrs(logLine) {
     let timePatt = /(\d+(?:\s*[\:\;]+\s*\d*)?\s*(?:am?|pm?)?)/.source;
     let junkPatt = /[^a-z0-9]*/.source;
-    let sepPatt = /\s*(t|o|to|ot|tp|\-)\s*/.source;
+    let sepPatt = /\s*(t|o|to|ot|tp|ti|\-)\s*/.source;
     let rangeRegex = new RegExp(`^${junkPatt}${timePatt}${junkPatt}${sepPatt}${junkPatt}${timePatt}${junkPatt}$`, 'i');
     let matches = logLine.match(rangeRegex);
     if (!matches) {
