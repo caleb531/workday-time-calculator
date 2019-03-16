@@ -11,9 +11,9 @@ class CalendarComponent {
   }
 
   onbeforeupdate({attrs: {selectedDate}}) {
-    selectedDate = this.resetTime(selectedDate);
+    selectedDate = this.resetTime(selectedDate.clone());
     if (!this.selectedDate || !selectedDate.isSame(this.selectedDate)) {
-      this.selectedDate = this.resetTime(selectedDate.clone());
+      this.selectedDate = this.resetTime(selectedDate);
       this.firstDayOfMonthInView = this.getFirstDayOfMonth(this.selectedDate);
     }
   }
