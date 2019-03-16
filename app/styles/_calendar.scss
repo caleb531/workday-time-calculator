@@ -1,6 +1,18 @@
 .log-calendar {
   display: none;
+  &.open {
+    display: block;
+  }
+  .dismissable-overlay {
+    z-index: 10;
+  }
+}
+
+.log-calendar-panel {
+  display: flex;
+  flex-direction: column;
   position: absolute;
+  z-index: 100;
   bottom: 100%;
   left: 0;
   width: ($calendar-date-size * $calendar-weekday-count) + ($calendar-padding-x * 2);
@@ -10,9 +22,6 @@
   user-select: none;
   color: #234;
   box-shadow: $panel-shadow;
-  &.open {
-    display: block;
-  }
   &:before {
     content: '';
     display: inline-block;
@@ -30,6 +39,7 @@
 .log-calendar-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 }
 

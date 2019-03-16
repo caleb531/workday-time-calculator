@@ -75,35 +75,41 @@ class CalendarComponent {
       class: calendarOpen ? 'open' : ''
     }, [
 
-      m('div.log-calendar-header', [
-        m('span.log-calendar-current-month-name', this.firstDayOfMonthInView.format('MMMM YYYY')),
-        m('div.log-calendar-month-controls', [
-          m('button.log-calendar-month-control.log-calendar-prev-month-control', {
-            onclick: () => this.viewPrevMonth()
-          }, m(PrevIconComponent)),
-          m('button.log-calendar-month-control.log-calendar-next-month-control', {
-            onclick: () => this.viewNextMonth()
-          }, m(NextIconComponent))
-        ])
-      ]),
+      m('div.dismissable-overlay', {onclick: () => this.onCloseCalendar()}),
 
-      m('div.log-calendar-weekday-labels', this.weekdayLabels.map((weekdayLabel) => {
-        return m('div.log-calendar-weekday-label', weekdayLabel);
-      })),
+      m('div.log-calendar-panel', [
 
-      m('div.log-calendar-dates', {
-        onmousedown: (event) => this.selectDate(event),
-        ondblclick: (event) => this.closeCalendarAfterDblClickDate(event)
-      }, this.mapDaysInView((currentDate) => {
-        return m('div.log-calendar-date', {
-          'data-date': currentDate.format('l'),
-          class: [
-            currentDate.format('YYYY/MM') === this.firstDayOfMonthInView.format('YYYY/MM') ? 'is-current-month' : '',
-            currentDate.isSame(this.selectedDate) ? 'is-selected' : '',
-            currentDate.isSame(moment()) ? 'is-today' : ''
-          ].join(' ')
-        }, m('div.log-calendar-date-label', currentDate.date()));
-      }))
+        m('div.log-calendar-header', [
+          m('span.log-calendar-current-month-name', this.firstDayOfMonthInView.format('MMMM YYYY')),
+          m('div.log-calendar-month-controls', [
+            m('button.log-calendar-month-control.log-calendar-prev-month-control', {
+              onclick: () => this.viewPrevMonth()
+            }, m(PrevIconComponent)),
+            m('button.log-calendar-month-control.log-calendar-next-month-control', {
+              onclick: () => this.viewNextMonth()
+            }, m(NextIconComponent))
+          ])
+        ]),
+
+        m('div.log-calendar-weekday-labels', this.weekdayLabels.map((weekdayLabel) => {
+          return m('div.log-calendar-weekday-label', weekdayLabel);
+        })),
+
+        m('div.log-calendar-dates', {
+          onmousedown: (event) => this.selectDate(event),
+          ondblclick: (event) => this.closeCalendarAfterDblClickDate(event)
+        }, this.mapDaysInView((currentDate) => {
+          return m('div.log-calendar-date', {
+            'data-date': currentDate.format('l'),
+            class: [
+              currentDate.format('YYYY/MM') === this.firstDayOfMonthInView.format('YYYY/MM') ? 'is-current-month' : '',
+              currentDate.isSame(this.selectedDate) ? 'is-selected' : '',
+              currentDate.isSame(moment()) ? 'is-today' : ''
+            ].join(' ')
+          }, m('div.log-calendar-date-label', currentDate.date()));
+        }))
+
+      ])
 
     ]) : null;
   }
