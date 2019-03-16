@@ -12,9 +12,22 @@ class CalendarComponent {
 
   onbeforeupdate({attrs: {selectedDate}}) {
     if (!this.selectedDate || !selectedDate.isSame(this.selectedDate)) {
-      this.selectedDate = selectedDate.clone();
+      this.selectedDate = this.resetTime(selectedDate.clone());
       this.firstDayOfMonthInView = this.getFirstDayOfMonth(this.selectedDate);
     }
+  }
+
+  resetTime(date) {
+    return date.set({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0
+    });
+  }
+
+  getToday() {
+    return this.resetTime(moment());
   }
 
   getFirstDayOfMonth(date) {
@@ -67,10 +80,10 @@ class CalendarComponent {
     if (lastDateInView.diff(firstDateInView, 'days') < (CalendarComponent.daysInWeek * 5)) {
       lastDateInView.add(1, 'week');
     }
-    let currentDate = firstDateInView.clone();
+    let currentDate = this.resetTime(firstDateInView.clone());
     let values = [];
     while (currentDate.isSameOrBefore(lastDateInView)) {
-      values.push(callback(currentDate));
+      values.push(callback(currentDate.clone()));
       currentDate.add(1, 'day');
     }
     return values;
@@ -110,7 +123,7 @@ class CalendarComponent {
             class: [
               currentDate.format('YYYY/MM') === this.firstDayOfMonthInView.format('YYYY/MM') ? 'is-current-month' : '',
               currentDate.isSame(this.selectedDate) ? 'is-selected' : '',
-              currentDate.isSame(moment()) ? 'is-today' : ''
+              currentDate.isSame(this.getToday()) ? 'is-today' : ''
             ].join(' ')
           }, m('div.log-calendar-date-label', currentDate.date()));
         }))
