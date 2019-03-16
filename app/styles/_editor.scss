@@ -8,7 +8,7 @@
   resize: none;
 }
 .ql-editor {
-  color: lighten($light-gray, 25%);
+  color: lighten($dark-gray, 50%);
 }
 .ql-editor:focus {
   color: #fff;
@@ -64,6 +64,6 @@
 }
 
 .ql-editor.ql-blank::before {
-  color: $light-gray;
+  color: desaturate(lighten($dark-gray, 30%), 5%);
   font-style: normal;
 }
