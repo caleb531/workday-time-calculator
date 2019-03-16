@@ -1,7 +1,8 @@
 // Colors
 
-$blue: #5be;
-$light-gray: #def;
+$blue: #5ae;
+$dark-gray: #1c334c;
+$light-gray: desaturate(lighten($dark-gray, 25%), 20%);
 
 // Calendar
 $calendar-date-size: 25px;
