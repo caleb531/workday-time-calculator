@@ -61,6 +61,12 @@ class CalendarComponent {
   mapDaysInView(callback) {
     let firstDateInView = this.getFirstSundayInView(this.firstDayOfMonthInView);
     let lastDateInView = this.getLastSaturdayInView(this.firstDayOfMonthInView);
+    // Show an extra week (into the next month) if the current month only has
+    // four weeks; this is so the calendar panel in the UI is always exactly the
+    // same size
+    if (lastDateInView.diff(firstDateInView, 'days') < (CalendarComponent.daysInWeek * 5)) {
+      lastDateInView.add(1, 'week');
+    }
     let currentDate = firstDateInView.clone();
     let values = [];
     while (currentDate.isSameOrBefore(lastDateInView)) {
@@ -115,5 +121,6 @@ class CalendarComponent {
   }
 
 }
+CalendarComponent.daysInWeek = 7;
 
 export default CalendarComponent;
