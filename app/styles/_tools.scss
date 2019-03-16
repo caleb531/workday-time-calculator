@@ -4,10 +4,18 @@
   margin-left: 10px;
   user-select: none;
   cursor: default;
+  .dismissable-overlay {
+    display: none;
+    z-index: 10;
+  }
+  &.open .dismissable-overlay {
+    display: block;
+  }
 }
 
 .app-tools-menu-toggle {
   display: inline-block;
+  position: relative;
   $icon-size: 20px;
   width: $icon-size;
   height: $icon-size;
@@ -17,7 +25,8 @@
   background: none;
   color: #fff;
   &:hover:active,
-  &.active {
+  .app-tools.open & {
+    z-index: 100;
     color: $blue;
   }
   &:focus {
@@ -49,8 +58,9 @@
   box-shadow: $panel-shadow;
   font-weight: 400;
   font-size: 14px;
-  &.open {
+  .app-tools.open & {
     display: block;
+    z-index: 100;
   }
   li {
     position: relative;

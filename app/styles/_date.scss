@@ -37,7 +37,7 @@
   color: #fff;
   cursor: pointer;
   &:hover:active,
-  &.active {
+  &.open {
     color: $blue;
   }
   &:focus {
