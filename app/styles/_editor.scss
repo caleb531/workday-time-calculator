@@ -5,10 +5,11 @@
   font-family: inherit;
   font-size: 16px;
   font-weight: 300;
+  color: #fff;
   resize: none;
 }
 .ql-editor {
-  color: lighten($app-bg, 50%);
+  color: desaturate(lighten($app-bg, 40%), 30%);
 }
 .ql-editor:focus {
   color: #fff;
