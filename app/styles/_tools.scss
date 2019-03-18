@@ -42,7 +42,7 @@
 .app-tools-menu {
   display: none;
   position: absolute;
-  width: 100px;
+  min-width: 100px;
   top: 100%;
   z-index: 10;
   $menu-padding-x: 12px;
@@ -57,6 +57,7 @@
   box-shadow: $panel-shadow;
   font-weight: 400;
   font-size: 14px;
+  white-space: nowrap;
   .app-tools.open & {
     display: block;
     z-index: 100;
