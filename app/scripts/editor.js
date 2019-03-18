@@ -20,8 +20,14 @@ class EditorComponent {
       formats: ['list', 'indent'],
       modules: {
         toolbar: [
-          [{'list': 'bullet'}, {'list': 'ordered'}],
-          [{'indent': '-1'}, {'indent': '+1'}],
+          [
+            {'list': 'bullet'},
+            {'list': 'ordered'}
+          ],
+          [
+            {'indent': '-1'},
+            {'indent': '+1'}
+          ]
         ],
         keyboard: {
           bindings: {
