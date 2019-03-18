@@ -51,7 +51,6 @@ class DateComponent {
         onSetSelectedDate: (selectedDate) => {
           this.selectedDate = selectedDate.clone();
           this.onSetSelectedDate(this.selectedDate);
-          m.redraw();
         },
         onCloseCalendar: () => {
           this.calendarOpen = false;
