@@ -8,11 +8,7 @@
   color: #fff;
   resize: none;
 }
-.ql-editor {
-  color: desaturate(lighten($app-bg, 40%), 30%);
-}
 .ql-editor:focus {
-  color: #fff;
   outline-width: 0;
   box-shadow: inset 0 0 0 1px $blue;
 }
