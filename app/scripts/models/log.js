@@ -45,10 +45,10 @@ class Log {
 
   makeTimeStrAbsolute(timeStr) {
     let hour = parseInt(timeStr, 10);
-    if (hour > 11 || hour < 7) {
-      return `${timeStr}pm`;
-    } else {
+    if (hour <= 11 && hour >= 7) {
       return `${timeStr}am`;
+    } else {
+      return `${timeStr}pm`;
     }
   }
 
