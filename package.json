@@ -20,7 +20,7 @@
     "sw-update-manager": "^1.0.0"
   },
   "devDependencies": {
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.4",
     "rollup": "^0.59.4",
