@@ -27,8 +27,13 @@ class EditorComponent {
           [
             {'indent': '-1'},
             {'indent': '+1'}
-          ]
+          ],
         ],
+        history: {
+          // Do not add the editor contents to the Undo history when the app
+          // initially loads, or when the selected date changes
+          userOnly: true
+        },
         keyboard: {
           bindings: {
             // Use <tab> and shift-<tab> to indent/un-indent; these must be
