@@ -1,3 +1,4 @@
+import DismissableOverlayComponent from './dismissable-overlay.js';
 import ImportComponent from './import.js';
 import ExportComponent from './export.js';
 import WrenchIconComponent from './wrench-icon.js';
@@ -17,8 +18,8 @@ class ControlsComponent {
           this.menuIsOpen = !this.menuIsOpen;
         }
       }, m(WrenchIconComponent)),
-      m('div.dismissable-overlay', {
-        onclick: () => {
+      m(DismissableOverlayComponent, {
+        onDismiss: () => {
           this.menuIsOpen = false;
         }
       }),

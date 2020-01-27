@@ -1,3 +1,4 @@
+import DismissableOverlayComponent from './dismissable-overlay.js';
 import PrevIconComponent from './prev-icon.js';
 import NextIconComponent from './next-icon.js';
 
@@ -96,7 +97,7 @@ class CalendarComponent {
       class: calendarOpen ? 'open' : ''
     }, [
 
-      m('div.dismissable-overlay', {onclick: () => this.onCloseCalendar()}),
+      m(DismissableOverlayComponent, {onDismiss: () => this.onCloseCalendar()}),
 
       m('div.log-calendar-panel', [
 
