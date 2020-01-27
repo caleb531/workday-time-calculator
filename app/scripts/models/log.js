@@ -4,12 +4,14 @@ let minuteIncrement = 15;
 
 class Log {
 
-  constructor(logContents) {
+  constructor(logContents, {calculateStats} = {}) {
     this.categories = this.getCategories(logContents);
-    this.errors = this.getErrors();
-    this.gaps = this.getGaps();
-    this.overlaps = this.getOverlaps();
-    this.latestRange = this.getLatestRange();
+    if (calculateStats) {
+      this.errors = this.getErrors();
+      this.gaps = this.getGaps();
+      this.overlaps = this.getOverlaps();
+      this.latestRange = this.getLatestRange();
+    }
     this.calculateTotals();
   }
 

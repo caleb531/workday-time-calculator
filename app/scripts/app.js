@@ -37,7 +37,9 @@ class AppComponent {
           m(EditorComponent, {
             selectedDate: this.selectedDate,
             onSetLogContents: (logContents) => {
-              this.log = new Log(logContents);
+              // Instantiate a new Log object and automatically compute
+              // additional log statistics such as gaps and overlaps
+              this.log = new Log(logContents, {calculateStats: true});
             }
           }),
 

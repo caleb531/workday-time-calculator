@@ -38,7 +38,7 @@ class SummaryComponent {
 
           m('.log-stats', [
 
-            log.errors.length > 0 ?
+            log.errors && log.errors.length > 0 ?
             m('div.log-errors', [
               m('span.log-label', 'Errors:'),
               ' ',
@@ -51,7 +51,7 @@ class SummaryComponent {
               }))
             ]) : null,
 
-            log.gaps.length > 0 ?
+            log.gaps && log.gaps.length > 0 ?
             m('div.log-gaps', [
               m('span.log-label', 'Gaps:'),
               ' ',
@@ -64,7 +64,7 @@ class SummaryComponent {
               }))
             ]) : null,
 
-            log.overlaps.length > 0 ?
+            log.overlaps && log.overlaps.length > 0 ?
             m('div.log-overlaps', [
               m('span.log-label', 'Overlaps:'),
               ' ',
