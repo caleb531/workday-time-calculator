@@ -20,7 +20,7 @@ class ExportComponent {
     a.href = URL.createObjectURL(new Blob([
       JSON.stringify(this.getExportedJson())
     ], {type: 'application/json'}));
-    a.download = `wtc-logs-as-of-${moment().format('YYYY-MM-DD')}.json`;
+    a.download = `wtc-logs-thru-${moment().format('YYYY-MM-DD')}.json`;
     a.click();
   }
 
