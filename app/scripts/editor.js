@@ -1,3 +1,6 @@
+import m from 'mithril';
+import Quill from 'quill';
+
 class EditorComponent {
 
   oninit({attrs: {selectedDate, onSetLogContents}}) {

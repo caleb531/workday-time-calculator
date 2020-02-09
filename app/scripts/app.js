@@ -1,5 +1,9 @@
 import Log from './models/log.js';
 
+import m from 'mithril';
+import moment from 'moment';
+import SWUpdateManager from 'sw-update-manager';
+
 import SettingsComponent from './tools.js';
 import EditorComponent from './editor.js';
 import DateComponent from './date.js';

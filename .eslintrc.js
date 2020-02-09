@@ -20,18 +20,6 @@ module.exports = {
   },
 
   /**
-   * Allowed JavaScript globals
-   */
-
-  globals: {
-    'm': true,
-    'moment': true,
-    'Quill': true,
-    '_': true,
-    'SWUpdateManager': true
-  },
-
-  /**
    * Per-file ESlint rules to override
    */
 

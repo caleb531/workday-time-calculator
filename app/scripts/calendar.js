@@ -1,3 +1,5 @@
+import m from 'mithril';
+import moment from 'moment';
 import DismissableOverlayComponent from './dismissable-overlay.js';
 import PrevIconComponent from './prev-icon.js';
 import NextIconComponent from './next-icon.js';

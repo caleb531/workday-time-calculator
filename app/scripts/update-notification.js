@@ -1,3 +1,5 @@
+import m from 'mithril';
+
 class UpdateNotificationComponent {
 
   view({attrs: {updateManager}}) {

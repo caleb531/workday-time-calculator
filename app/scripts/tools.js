@@ -1,3 +1,4 @@
+import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
 import ImportComponent from './import.js';
 import ExportComponent from './export.js';

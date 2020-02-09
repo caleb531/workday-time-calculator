@@ -9,8 +9,22 @@ module.exports = {
     file: 'public/scripts/index.js',
     name: 'wtc',
     sourcemap: true,
-    format: 'iife'
+    format: 'iife',
+    globals: {
+      'mithril': 'm',
+      'moment': 'moment',
+      'quill': 'Quill',
+      'lodash': '_',
+      'sw-update-manager': 'SWUpdateManager'
+    }
   },
+  external: [
+    'mithril',
+    'moment',
+    'quill',
+    'lodash',
+    'sw-update-manager'
+  ],
   plugins: [
     resolve({
       browser: true,

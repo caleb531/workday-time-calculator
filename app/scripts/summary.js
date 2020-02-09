@@ -1,3 +1,5 @@
+import m from 'mithril';
+
 let timeFormatShort = 'h:mm';
 
 class SummaryComponent {
