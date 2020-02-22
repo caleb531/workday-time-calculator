@@ -96,7 +96,7 @@ class CalendarComponent {
 
   view({attrs: {calendarOpen}}) {
     return this.firstDayOfMonthInView ? m('div.log-calendar', {
-      class: calendarOpen ? 'open' : ''
+      class: calendarOpen ? 'log-calendar-open' : ''
     }, [
 
       m(DismissableOverlayComponent, {onDismiss: () => this.onCloseCalendar()}),
