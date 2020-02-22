@@ -15,7 +15,7 @@ class Preferences {
   }
 
   toJSON() {
-    return _.pluck(this, Object.keys(Preferences.defaults));
+    return _.pick(this, Object.keys(Preferences.defaults));
   }
 
 }

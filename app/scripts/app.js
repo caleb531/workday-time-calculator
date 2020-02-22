@@ -36,7 +36,7 @@ class AppComponent {
         m('span#personal-site-link.nav-link.nav-link-right', [
           'by ', m('a[href=https://calebevans.me/]', 'Caleb Evans')
         ]),
-        m(ToolsComponent)
+        m(ToolsComponent, {preferences: this.preferences})
       ]),
       m('div.app-content', [
 

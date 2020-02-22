@@ -12,7 +12,7 @@ class ToolsComponent {
     this.preferencesOpen = false;
   }
 
-  view() {
+  view({attrs: {preferences}}) {
     return m('div.app-tools', {
       class: this.toolsMenuOpen ? 'app-tools-open' : '',
     }, [
@@ -42,6 +42,7 @@ class ToolsComponent {
         }, m('span.app-control-preferences', 'Preferences'))
       ]),
       m(PreferencesComponent, {
+        preferences,
         preferencesOpen: this.preferencesOpen,
         onClosePreferences: () => {
           this.preferencesOpen = false;
