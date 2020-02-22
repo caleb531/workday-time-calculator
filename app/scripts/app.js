@@ -1,4 +1,5 @@
 import Log from './models/log.js';
+import ReminderManager from './models/reminder-manager.js';
 
 import m from 'mithril';
 import moment from 'moment';
@@ -14,6 +15,7 @@ class AppComponent {
 
   oninit() {
     this.selectedDate = moment();
+    this.reminderManager = new ReminderManager();
     if (navigator.serviceWorker) {
       let serviceWorker = navigator.serviceWorker.register('service-worker.js');
       this.updateManager = new SWUpdateManager(serviceWorker);
