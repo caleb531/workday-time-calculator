@@ -1,4 +1,5 @@
 import Log from './models/log.js';
+import Preferences from './models/preferences.js';
 import ReminderManager from './models/reminder-manager.js';
 
 import m from 'mithril';
@@ -14,6 +15,7 @@ import UpdateNotificationComponent from './update-notification.js';
 class AppComponent {
 
   oninit() {
+    this.preferences = new Preferences();
     this.selectedDate = moment();
     this.reminderManager = new ReminderManager();
     if (navigator.serviceWorker) {
