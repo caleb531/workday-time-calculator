@@ -4,7 +4,7 @@ import ImportComponent from './import.js';
 import ExportComponent from './export.js';
 import WrenchIconComponent from './wrench-icon.js';
 
-class ControlsComponent {
+class ToolsComponent {
 
   oninit() {
     this.menuIsOpen = false;
@@ -39,4 +39,4 @@ class ControlsComponent {
 
 }
 
-export default ControlsComponent;
+export default ToolsComponent;

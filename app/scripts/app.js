@@ -6,7 +6,7 @@ import m from 'mithril';
 import moment from 'moment';
 import SWUpdateManager from 'sw-update-manager';
 
-import SettingsComponent from './tools.js';
+import ToolsComponent from './tools.js';
 import EditorComponent from './editor.js';
 import DateComponent from './date.js';
 import SummaryComponent from './summary.js';
@@ -36,7 +36,7 @@ class AppComponent {
         m('span#personal-site-link.nav-link.nav-link-right', [
           'by ', m('a[href=https://calebevans.me/]', 'Caleb Evans')
         ]),
-        m(SettingsComponent)
+        m(ToolsComponent)
       ]),
       m('div.app-content', [
 
