@@ -1,11 +1,22 @@
 .app-preferences {
   display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  overflow-y: scroll;
   &.app-preferences-open {
     display: block;
   }
   .dismissable-overlay {
     display: none;
-    z-index: 10;
+    // Whereas we would normally would want the overlay to have a positive
+    // z-index, in this case, a negative z-index will allow the user to scroll
+    // the preferences panel by scrolling the overlay; if a positive z-index
+    // were used instead, the page would scroll instead of the panel
+    z-index: -10;
   }
   &.app-preferences-open .dismissable-overlay {
     display: block;
@@ -13,21 +24,18 @@
 }
 
 .app-preferences-panel {
-  display: none;
-  position: fixed;
+  position: absolute;
   top: 60px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
   width: 500px;
   padding: 40px;
+  margin-bottom: 20px;
   background-color: #fff;
   font-weight: 400;
   color: #000;
   box-shadow: $panel-shadow;
-  .app-preferences-open & {
-    display: block;
-  }
 }
 
 .app-preferences-heading {
