@@ -77,7 +77,7 @@ PreferencesComponent.preferences = [
       {label: 'Never', value: 0},
       {label: 'Every 15 minutes', value: 15},
       {label: 'Every half-hour', value: 30},
-      {label: 'Every hour', value: 60},
+      {label: 'Every hour', value: 60}
     ]
   }
 ];
