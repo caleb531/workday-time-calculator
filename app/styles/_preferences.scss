@@ -30,12 +30,16 @@
   }
 }
 
-.app-preference-heading {
+.app-preferences-heading {
   margin-top: 0;
   font-weight: normal;
   font-weight: 600;
   font-size: 24px;
   text-align: center;
+}
+
+.app-preference {
+  margin-top: 20px;
 }
 
 .app-preference-label {
@@ -59,4 +63,11 @@
 .app-preference-option-label {
   padding-left: 4px;
   font-size: 14px;
+}
+
+.app-preferences-notification-error {
+  margin-bottom: 0;
+  font-weight: 600;
+  font-size: 14px;
+  color: $red;
 }

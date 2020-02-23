@@ -32,7 +32,7 @@ class PreferencesComponent {
 
         m(CloseButtonComponent, {onDismiss: () => this.onClosePreferences()}),
 
-        m('h2.app-preference-heading', 'Preferences'),
+        m('h2.app-preferences-heading', 'Preferences'),
 
         PreferencesComponent.preferences.map((preference) => {
           return m('div.app-preference', [
@@ -52,9 +52,14 @@ class PreferencesComponent {
                   for: `${preference.id}-${option.value}`
                 }, option.label),
               ]);
-            }))
+            })),
+            preference.id === 'reminderInterval' && this.preferences.reminderInterval > 0 && Notification.permission === 'denied' ? m('p.app-preferences-notification-error', [
+              'Your web browser is currently blocking WTC reminder notifications. Please refer to ',
+              m('a[href="https://help.vwo.com/hc/en-us/articles/360007700494-How-To-Unblock-Notifications-From-A-Website-VWO-Help-"][target="_blank"]', 'this article'),
+              ' to fix this.'
+            ]) : null
           ]);
-        })
+        }),
 
       ])
 
