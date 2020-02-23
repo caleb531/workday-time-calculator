@@ -29,20 +29,29 @@ class PreferencesComponent {
 
       m('div.app-preferences-panel', [
 
-        m('h2', 'Preferences'),
+        m('h2.app-preference-heading', 'Preferences'),
 
-        m('div.app-preference', [
-          m('label', 'Reminder Interval'),
-          m('p', 'The frequency you receive reminders to update your time log'),
-          m('select[name=reminderInterval]', {
-            value: this.preferences.reminderInterval
-          }, [
-            m('option[value=0]', 'Never'),
-            m('option[value=15]', 'Every 15 minutes'),
-            m('option[value=30]', 'Every half hour'),
-            m('option[value=60]', 'Every hour')
-          ])
-        ])
+        PreferencesComponent.preferences.map((preference) => {
+          return m('div.app-preference', [
+            m('label.app-preference-label', preference.label),
+            m('p.app-preference-description', preference.description),
+            m('div.app-preference-options', preference.options.map((option) => {
+              // console.log(this.preferences[preference.id], option.value);
+              return m('div.app-preference-option', [
+                m('input.app-preference-option-value', {
+                  name: preference.id,
+                  id: `${preference.id}-${option.value}`,
+                  type: preference.type,
+                  value: option.value,
+                  checked: (this.preferences[preference.id] === option.value)
+                }),
+                m('label.app-preference-option-label', {
+                  for: `${preference.id}-${option.value}`
+                }, option.label),
+              ]);
+            }))
+          ]);
+        })
 
       ])
 
@@ -50,5 +59,19 @@ class PreferencesComponent {
   }
 
 }
+PreferencesComponent.preferences = [
+  {
+    id: 'reminderInterval',
+    label: 'Reminder Interval',
+    description: 'How often should WTC remind you to update your time log?',
+    type: 'radio',
+    options: [
+      {label: 'Never', value: 0},
+      {label: 'Every 15 minutes', value: 15},
+      {label: 'Every half-hour', value: 30},
+      {label: 'Every hour', value: 60},
+    ]
+  }
+];
 
 export default PreferencesComponent;
