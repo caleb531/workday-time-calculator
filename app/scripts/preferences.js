@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
 
@@ -11,7 +10,7 @@ class PreferencesComponent {
 
   savePreference(event) {
     let preferenceValue;
-    if (_.isNumber(event.target.value)) {
+    if (!isNaN(event.target.value)) {
       preferenceValue = Number(event.target.value);
     } else {
       preferenceValue = event.target.value;
