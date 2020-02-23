@@ -22,7 +22,7 @@ class ReminderManager {
     startTimer() {
       if (this.preferences.reminderInterval > 0 && Notification.permission === 'granted') {
         this.timer = setInterval(() => {
-          this.spawnNotification();
+          this.spawnReminder();
         }, moment.duration(this.preferences.reminderInterval, 'minutes').asMilliseconds());
       }
     }
@@ -32,7 +32,7 @@ class ReminderManager {
       this.startTimer();
     }
 
-    spawnNotification() {
+    spawnReminder() {
       /* eslint-disable-next-line no-new */
       new Notification('Workday Time Calculator', {
         body: 'Remember to update your log!',
