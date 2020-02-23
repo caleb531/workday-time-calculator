@@ -4,25 +4,28 @@ class ReminderManager {
 
     constructor({preferences}) {
       this.preferences = preferences;
-      if (Notification.permission === 'granted') {
-        this.startTimer();
-      } else if (Notification.permission === 'denied') {
-        // TODO: handle this case
-      }
+      this.startTimer();
       // Restart the reminder timer if the user has changed their preferred
       // interval in the Preferences UI (i.e. this listener will never run when
       // the preferences are initially loaded from disk)
       this.preferences.on('change:reminderInterval', () => {
         Notification.requestPermission().then(() => {
-          this.restartTimer();
+          if (this.isReminderEnabled()) {
+            this.spawnHelperNotification();
+            this.restartTimer();
+          }
         });
       });
     }
 
+    isReminderEnabled() {
+      return (this.preferences.reminderInterval > 0 && Notification.permission === 'granted');
+    }
+
     startTimer() {
-      if (this.preferences.reminderInterval > 0 && Notification.permission === 'granted') {
+      if (this.isReminderEnabled()) {
         this.timer = setInterval(() => {
-          this.spawnReminder();
+          this.spawnNotification();
         }, moment.duration(this.preferences.reminderInterval, 'minutes').asMilliseconds());
       }
     }
@@ -32,10 +35,22 @@ class ReminderManager {
       this.startTimer();
     }
 
+    spawnHelperNotification() {
+      this.spawnNotification({
+        body: `Reminder set to show every ${this.preferences.reminderInterval} minutes!`
+      });
+    }
+
     spawnReminder() {
+      this.spawnNotification({
+        body: 'Remember to update your log!',
+      });
+    }
+
+    spawnNotification({body}) {
       /* eslint-disable-next-line no-new */
       new Notification('Workday Time Calculator', {
-        body: 'Remember to update your log!',
+        body,
         icon: 'app-icon.png'
       });
     }
