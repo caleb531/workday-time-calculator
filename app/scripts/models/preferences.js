@@ -4,6 +4,7 @@ class Preferences {
 
   constructor() {
     this.load();
+    this.eventCallbacks = {};
   }
 
   load() {
@@ -12,6 +13,27 @@ class Preferences {
 
   save() {
     localStorage.setItem('wtc-prefs', JSON.stringify(this));
+  }
+
+  set(key, value) {
+    this[key] = value;
+    this.trigger(`change:${key}`, key, value);
+  }
+
+  on(eventName, eventCallback) {
+    if (!this.eventCallbacks[eventName]) {
+      this.eventCallbacks[eventName] = [];
+    }
+    this.eventCallbacks[eventName].push(eventCallback);
+  }
+
+  trigger(eventName, ...eventArgs) {
+    if (!this.eventCallbacks[eventName]) {
+      this.eventCallbacks[eventName] = [];
+    }
+    this.eventCallbacks[eventName].forEach((eventCallback) => {
+      eventCallback.apply(this, eventArgs);
+    });
   }
 
   toJSON() {

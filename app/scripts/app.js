@@ -17,7 +17,7 @@ class AppComponent {
   oninit() {
     this.preferences = new Preferences();
     this.selectedDate = moment();
-    this.reminderManager = new ReminderManager();
+    this.reminderManager = new ReminderManager({preferences: this.preferences});
     if (navigator.serviceWorker) {
       let serviceWorker = navigator.serviceWorker.register('service-worker.js');
       this.updateManager = new SWUpdateManager(serviceWorker);

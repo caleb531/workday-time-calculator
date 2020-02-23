@@ -2,18 +2,31 @@ import moment from 'moment';
 
 class ReminderManager {
 
-    constructor() {
+    constructor({preferences}) {
+      this.preferences = preferences;
       if (Notification.permission === 'granted') {
         this.startTimer();
       } else if (Notification.permission === 'denied') {
         // TODO: handle this case
       }
+      // Restart the reminder timer if the user has changed their preferred
+      // interval
+      this.preferences.on('change:reminderInterval', () => {
+        this.restartTimer();
+      });
     }
 
     startTimer() {
-      setInterval(() => {
-        this.spawnNotification();
-      }, moment.duration(30, 'minutes').asMilliseconds());
+      if (this.preferences.reminderInterval > 0) {
+        this.timer = setInterval(() => {
+          this.spawnNotification();
+        }, moment.duration(this.preferences.reminderInterval, 'minutes').asMilliseconds());
+      }
+    }
+
+    restartTimer() {
+      clearInterval(this.timer);
+      this.startTimer();
     }
 
     spawnNotification() {
