@@ -15,9 +15,9 @@
 .app-preferences-panel {
   display: none;
   position: fixed;
-  top: 50%;
+  top: 60px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   z-index: 10;
   width: 500px;
   padding: 40px;
