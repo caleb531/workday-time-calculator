@@ -1,5 +1,6 @@
 import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
+import CloseButtonComponent from './close-button.js';
 
 class PreferencesComponent {
 
@@ -28,6 +29,8 @@ class PreferencesComponent {
       m(DismissableOverlayComponent, {onDismiss: () => this.onClosePreferences()}),
 
       m('div.app-preferences-panel', [
+
+        m(CloseButtonComponent, {onDismiss: () => this.onClosePreferences()}),
 
         m('h2.app-preference-heading', 'Preferences'),
 
