@@ -13,12 +13,14 @@ class ReminderManager {
       // interval in the Preferences UI (i.e. this listener will never run when
       // the preferences are initially loaded from disk)
       this.preferences.on('change:reminderInterval', () => {
-        this.restartTimer();
+        Notification.requestPermission().then(() => {
+          this.restartTimer();
+        });
       });
     }
 
     startTimer() {
-      if (this.preferences.reminderInterval > 0) {
+      if (this.preferences.reminderInterval > 0 && Notification.permission === 'granted') {
         this.timer = setInterval(() => {
           this.spawnNotification();
         }, moment.duration(this.preferences.reminderInterval, 'minutes').asMilliseconds());
