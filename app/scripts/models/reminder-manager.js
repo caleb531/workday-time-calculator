@@ -10,7 +10,8 @@ class ReminderManager {
         // TODO: handle this case
       }
       // Restart the reminder timer if the user has changed their preferred
-      // interval
+      // interval in the Preferences UI (i.e. this listener will never run when
+      // the preferences are initially loaded from disk)
       this.preferences.on('change:reminderInterval', () => {
         this.restartTimer();
       });
