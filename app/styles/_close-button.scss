@@ -1,0 +1,25 @@
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  $button-size: 32px;
+  width: $button-size;
+  height: $button-size;
+  fill: currentColor;
+  border-width: 0;
+  margin: 0;
+  padding: 10px;
+  background: none;
+  box-sizing: content-box;
+  &:hover {
+    background-color: $blue;
+    color: #fff;
+  }
+  &:focus {
+    outline-width: 0;
+  }
+  svg {
+    width: inherit;
+    height: inherit;
+  }
+}

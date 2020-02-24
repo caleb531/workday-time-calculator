@@ -1,14 +1,14 @@
 .app-tools {
   display: inline-block;
   position: relative;
-  margin-left: 10px;
+  margin-left: 20px;
   user-select: none;
   cursor: default;
   .dismissable-overlay {
     display: none;
     z-index: 10;
   }
-  &.open .dismissable-overlay {
+  &.app-tools-open .dismissable-overlay {
     display: block;
   }
 }
@@ -25,7 +25,7 @@
   background: none;
   color: #fff;
   &:hover:active,
-  .app-tools.open & {
+  .app-tools-open & {
     z-index: 100;
     color: $blue;
   }
@@ -58,7 +58,7 @@
   font-weight: 400;
   font-size: 14px;
   white-space: nowrap;
-  .app-tools.open & {
+  .app-tools-open & {
     display: block;
     z-index: 100;
   }

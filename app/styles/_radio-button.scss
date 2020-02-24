@@ -1,0 +1,44 @@
+.radio-button {
+  display: inline-block;
+  vertical-align: middle;
+}
+.radio-button-input {
+  visibility: hidden;
+  position: absolute;
+}
+.radio-button-icon {
+  display: inline-block;
+  position: relative;
+  $icon-size: 16px;
+  width: $icon-size;
+  height: $icon-size;
+  background-color: $gray;
+  border-radius: 50%;
+  .radio-button-input:hover:active + &,
+  .radio-button-input:focus + & {
+    background-color: darken($gray, 10%);
+  }
+  .radio-button-input:checked + & {
+    background-color: $blue;
+  }
+  .radio-button-input:checked:hover:active + &,
+  .radio-button-input:checked:focus + & {
+    background-color: darken($blue, 10%);
+  }
+}
+
+.radio-button-icon-dot {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  $dot-size: 6px;
+  width: $dot-size;
+  height: $dot-size;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 50%;
+  .radio-button-input:checked + .radio-button-icon > & {
+    display: inline-block;
+  }
+}

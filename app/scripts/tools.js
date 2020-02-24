@@ -2,41 +2,56 @@ import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
 import ImportComponent from './import.js';
 import ExportComponent from './export.js';
+import PreferencesComponent from './preferences.js';
 import WrenchIconComponent from './wrench-icon.js';
 
-class ControlsComponent {
+class ToolsComponent {
 
   oninit() {
-    this.menuIsOpen = false;
+    this.toolsMenuOpen = false;
+    this.preferencesOpen = false;
   }
 
-  view() {
+  view({attrs: {preferences}}) {
     return m('div.app-tools', {
-      class: this.menuIsOpen ? 'open' : '',
+      class: this.toolsMenuOpen ? 'app-tools-open' : '',
     }, [
       m('button.app-tools-menu-toggle', {
         onclick: () => {
-          this.menuIsOpen = !this.menuIsOpen;
+          this.toolsMenuOpen = !this.toolsMenuOpen;
         }
       }, m(WrenchIconComponent)),
       m(DismissableOverlayComponent, {
         onDismiss: () => {
-          this.menuIsOpen = false;
+          this.toolsMenuOpen = false;
         }
       }),
       m('ul.app-tools-menu', {
-        class: this.menuIsOpen ? 'open' : '',
+        class: this.toolsMenuOpen ? 'app-tools-open' : '',
         // Close menu when menu item is clicked
         onclick: () => {
-          this.menuIsOpen = false;
+          this.toolsMenuOpen = false;
         }
       }, [
         m('li', m(ImportComponent)),
         m('li', m(ExportComponent)),
-      ])
+        m('li', {
+          onclick: () => {
+            this.preferencesOpen = true;
+          }
+        }, m('span.app-control-preferences', 'Preferences'))
+      ]),
+      m(PreferencesComponent, {
+        preferences,
+        preferencesOpen: this.preferencesOpen,
+        onClosePreferences: () => {
+          this.preferencesOpen = false;
+          m.redraw();
+        }
+      })
     ]);
   }
 
 }
 
-export default ControlsComponent;
+export default ToolsComponent;
