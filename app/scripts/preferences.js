@@ -1,6 +1,7 @@
 import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
 import CloseButtonComponent from './close-button.js';
+import RadioButtonComponent from './radio-button.js';
 
 class PreferencesComponent {
 
@@ -41,12 +42,10 @@ class PreferencesComponent {
             m('div.app-preference-options', preference.options.map((option) => {
               // console.log(this.preferences[preference.id], option.value);
               return m('div.app-preference-option', [
-                m('input.app-preference-option-value', {
-                  name: preference.id,
-                  id: `${preference.id}-${option.value}`,
-                  type: preference.type,
-                  value: option.value,
-                  checked: (this.preferences[preference.id] === option.value)
+                m(RadioButtonComponent, {
+                  preferences: this.preferences,
+                  preference,
+                  option
                 }),
                 m('label.app-preference-option-label', {
                   for: `${preference.id}-${option.value}`
@@ -72,7 +71,6 @@ PreferencesComponent.preferences = [
     id: 'reminderInterval',
     label: 'Reminder Interval',
     description: 'How often should WTC remind you to update your time log?',
-    type: 'radio',
     options: [
       {label: 'Never', value: 0},
       {label: 'Every 15 minutes', value: 15},
