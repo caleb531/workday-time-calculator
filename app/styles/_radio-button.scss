@@ -14,8 +14,16 @@
   height: $icon-size;
   background-color: $gray;
   border-radius: 50%;
+  .radio-button-input:hover:active + &,
+  .radio-button-input:focus + & {
+    background-color: darken($gray, 10%);
+  }
   .radio-button-input:checked + & {
     background-color: $blue;
+  }
+  .radio-button-input:checked:hover:active + &,
+  .radio-button-input:checked:focus + & {
+    background-color: darken($blue, 10%);
   }
 }
 
