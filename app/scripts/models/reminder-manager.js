@@ -29,14 +29,34 @@ class ReminderManager {
 
     startTimer() {
       if (this.isReminderEnabled()) {
-        this.timer = setInterval(() => {
-          this.spawnNotification();
-        }, moment.duration(this.preferences.reminderInterval, 'minutes').asMilliseconds());
+        this.queueCallbackOnNextInterval((callback) => {
+          this.spawnReminder();
+          this.queueCallbackOnNextInterval(callback);
+        });
       }
     }
 
+    queueCallbackOnNextInterval(callback) {
+      this.timer = setTimeout(() => {
+        callback(callback);
+      }, this.getTimeOfNextReminder().diff(Date.now()));
+    }
+
+    // Calculate the time of the next reminder, which should be rounded to the
+    // nearest multiple of the user's preferred interval (e.g. to the 15-minute,
+    // or to the half-hour)
+    getTimeOfNextReminder() {
+      let time = moment();
+      let nearestMinute = Math.ceil((time.minute() + 1) / this.preferences.reminderInterval) * this.preferences.reminderInterval;
+      return time.clone().set({
+        minute: nearestMinute,
+        second: 0,
+        millisecond: 0
+      });
+    }
+
     stopTimer() {
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
     }
 
     restartTimer() {
