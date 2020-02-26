@@ -13,7 +13,7 @@ class ReminderManager {
         this.stopTimer();
         if (this.preferences.reminderInterval > 0) {
           Notification.requestPermission().then(() => {
-            if (this.isReminderEnabled()) {
+            if (this.areRemindersEnabled()) {
               this.spawnHelperNotification();
               this.restartTimer();
             }
@@ -23,12 +23,12 @@ class ReminderManager {
       });
     }
 
-    isReminderEnabled() {
+    areRemindersEnabled() {
       return (this.preferences.reminderInterval > 0 && Notification.permission === 'granted');
     }
 
     startTimer() {
-      if (this.isReminderEnabled()) {
+      if (this.areRemindersEnabled()) {
         this.queueCallbackOnNextInterval((callback) => {
           this.spawnReminder();
           this.queueCallbackOnNextInterval(callback);
