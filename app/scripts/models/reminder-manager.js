@@ -72,7 +72,7 @@ class ReminderManager {
 
     spawnReminder() {
       this.spawnNotification({
-        body: 'Remember to update your log!',
+        body: 'Remember to update your log!'
       });
     }
 
