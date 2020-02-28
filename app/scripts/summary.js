@@ -76,7 +76,7 @@ class SummaryComponent {
                   ' to ',
                   m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(timeFormatShort) : '?'),
                   ' ',
-                  m('span.log-value-category', `(${overlap.category.name})`)
+                  m('span.log-value-categories', `(${overlap.categories.map((category) => category.name).join(', ')})`)
                 ]);
               }))
             ]) : null

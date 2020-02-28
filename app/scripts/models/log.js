@@ -240,23 +240,47 @@ class Log {
           return;
         }
 
+        // KEY
+        // rangeA: SE
+        // rangeB: se
+
         if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
           // Case 1: SseE
-          overlaps.push(rangeA, rangeB);
+          overlaps.push({
+            startTime: rangeB.startTime,
+            endTime: rangeB.endTime,
+            categories: _.uniqBy([rangeA.category, rangeB.category])
+          });
         } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
           // Case 2: sSEe
-          overlaps.push(rangeA, rangeB);
+          overlaps.push({
+            startTime: rangeA.startTime,
+            endTime: rangeA.endTime,
+            categories: _.uniqBy([rangeA.category, rangeB.category])
+          });
         } else if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
           // Case 3: SsEe
-          overlaps.push(rangeA, rangeB);
+          overlaps.push({
+            startTime: rangeB.startTime,
+            endTime: rangeA.endTime,
+            categories: _.uniqBy([rangeA.category, rangeB.category])
+          });
         } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
           // Case 4: sSeE
-          overlaps.push(rangeA, rangeB);
+          overlaps.push({
+            startTime: rangeA.startTime,
+            endTime: rangeB.endTime,
+            categories: _.uniqBy([rangeA.category, rangeB.category])
+          });
         }
       });
     });
     overlaps = _.uniqBy(overlaps, (overlap) => {
-      return [overlap.startTime, overlap.endTime, overlap.category.name].join(',');
+      return [
+        overlap.startTime,
+        overlap.endTime,
+        overlap.categories.map((category) => category.name).join(';')
+      ].join(',');
     });
     overlaps = this.sortTimeRanges(overlaps);
 
