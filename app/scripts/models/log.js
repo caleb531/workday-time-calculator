@@ -240,33 +240,29 @@ class Log {
           return;
         }
 
-        // KEY
-        // rangeA: SE
-        // rangeB: se
-
         if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
-          // Case 1: SseE
+          // Case 1: startA startB endB endA
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeB.endTime,
             categories: _.uniqBy([rangeA.category, rangeB.category])
           });
         } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
-          // Case 2: sSEe
+          // Case 2: startB startA endA endB
           overlaps.push({
             startTime: rangeA.startTime,
             endTime: rangeA.endTime,
             categories: _.uniqBy([rangeA.category, rangeB.category])
           });
         } else if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
-          // Case 3: SsEe
+          // Case 3: startA startB endA endB
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeA.endTime,
             categories: _.uniqBy([rangeA.category, rangeB.category])
           });
         } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
-          // Case 4: sSeE
+          // Case 4: startB startA endB endA
           overlaps.push({
             startTime: rangeA.startTime,
             endTime: rangeB.endTime,
