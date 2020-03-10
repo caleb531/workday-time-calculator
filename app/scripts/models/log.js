@@ -271,6 +271,9 @@ class Log {
         }
       });
     });
+    // Do not display duplicate overlaps; an overlap is considered a duplicate
+    // if it has the same start time, end time, *and* categories as an existing
+    // overlap
     overlaps = _.uniqBy(overlaps, (overlap) => {
       return [
         overlap.startTime,
