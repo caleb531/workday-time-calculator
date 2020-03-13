@@ -2,6 +2,10 @@ import m from 'mithril';
 
 class ImportComponent {
 
+  oninit({attrs: {preferences}}) {
+    this.preferences = preferences;
+  }
+
   importJsonFile(jsonFile) {
     let reader = new FileReader();
     reader.onload = (event) => {
@@ -10,6 +14,10 @@ class ImportComponent {
         let logContent = importedData.logs[logDate];
         localStorage.setItem(`wtc-date-${logDate}`, JSON.stringify(logContent));
       });
+      if (importedData.preferences) {
+        this.preferences.set(importedData.preferences, {trigger: false});
+        this.preferences.save();
+      }
     };
     reader.readAsText(jsonFile);
   }

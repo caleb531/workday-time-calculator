@@ -33,8 +33,8 @@ class ToolsComponent {
           this.toolsMenuOpen = false;
         }
       }, [
-        m('li', m(ImportComponent)),
-        m('li', m(ExportComponent)),
+        m('li', m(ImportComponent, {preferences})),
+        m('li', m(ExportComponent, {preferences})),
         m('li', {
           onclick: () => {
             this.preferencesOpen = true;

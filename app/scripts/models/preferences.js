@@ -15,9 +15,13 @@ class Preferences {
     localStorage.setItem('wtc-prefs', JSON.stringify(this));
   }
 
-  set(key, value) {
-    this[key] = value;
-    this.trigger(`change:${key}`, key, value);
+  set(props, {trigger = true} = {}) {
+    Object.keys(props).forEach((key) => {
+      this[key] = props[key];
+      if (trigger) {
+        this.trigger(`change:${key}`, key, props[key]);
+      }
+    });
   }
 
   on(eventName, eventCallback) {

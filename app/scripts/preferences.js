@@ -17,7 +17,9 @@ class PreferencesComponent {
     } else {
       preferenceValue = event.target.value;
     }
-    this.preferences.set(event.target.name, preferenceValue);
+    this.preferences.set({
+      [event.target.name]: preferenceValue
+    });
     this.preferences.save();
   }
 

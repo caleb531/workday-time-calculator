@@ -1,4 +1,3 @@
-import m from 'mithril';
 import moment from 'moment';
 
 class ReminderManager {
@@ -10,17 +9,23 @@ class ReminderManager {
       // interval in the Preferences UI (i.e. this listener will never run when
       // the preferences are initially loaded from disk)
       this.preferences.on('change:reminderInterval', () => {
-        this.stopTimer();
-        if (this.preferences.reminderInterval > 0) {
-          Notification.requestPermission().then(() => {
-            if (this.areRemindersEnabled()) {
-              this.spawnHelperNotification();
-              this.restartTimer();
-            }
-            m.redraw();
-          });
-        }
+        this.requestPermission();
       });
+      if (this.preferences.reminderInterval > 0 && Notification.permission === 'default') {
+        this.requestPermission();
+      }
+    }
+
+    requestPermission() {
+      this.stopTimer();
+      if (this.preferences.reminderInterval > 0) {
+        Notification.requestPermission().then(() => {
+          if (this.areRemindersEnabled()) {
+            this.spawnHelperNotification();
+            this.restartTimer();
+          }
+        });
+      }
     }
 
     areRemindersEnabled() {

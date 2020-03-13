@@ -3,8 +3,15 @@ import moment from 'moment';
 
 class ExportComponent {
 
+  oninit({attrs: {preferences}}) {
+    this.preferences = preferences;
+  }
+
   getExportedJson() {
-    let exportedData = {logs: {}};
+    let exportedData = {
+      logs: {},
+      preferences: this.preferences
+    };
     Object.keys(localStorage).forEach((key) => {
       let logMatches = key.match(/^wtc-date-(\d{1,2}\/\d{1,2}\/\d{4})$/);
       if (logMatches) {
