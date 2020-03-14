@@ -19,7 +19,7 @@ class ReminderManager {
     requestPermission() {
       this.stopTimer();
       if (this.preferences.reminderInterval > 0) {
-        Notification.requestPermission().then(() => {
+        Notification.requestPermission(() => {
           if (this.areRemindersEnabled()) {
             this.spawnHelperNotification();
             this.restartTimer();
