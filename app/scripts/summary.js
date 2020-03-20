@@ -47,7 +47,9 @@ class SummaryComponent {
               m('div.log-times.log-error-times', log.errors.map((error) => {
                 return m('div.log-error', [
                   m('span.log-error-start-time.log-value', error.startTime.isValid() ? error.startTime.format(timeFormatShort) : '?'),
-                  ' to ',
+                  ' ',
+                  m('span.log-error-separator.log-separator', 'to'),
+                  ' ',
                   m('span.log-error-end-time.log-value', error.endTime.isValid() ? error.endTime.format(timeFormatShort) : '?')
                 ]);
               }))
@@ -60,7 +62,9 @@ class SummaryComponent {
               m('div.log-times.log-gap-times', log.gaps.map((gap) => {
                 return m('div.log-gap', [
                   m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(timeFormatShort) : '?'),
-                  ' to ',
+                  ' ',
+                  m('span.log-gap-separator.log-separator', 'to'),
+                  ' ',
                   m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format(timeFormatShort) : '?')
                 ]);
               }))
@@ -73,7 +77,9 @@ class SummaryComponent {
               m('div.log-times.log-overlap-times', log.overlaps.map((overlap) => {
                 return m('div.log-overlap', [
                   m('span.log-overlap-start-time.log-value', overlap.startTime.isValid() ? overlap.startTime.format(timeFormatShort) : '?'),
-                  ' to ',
+                  ' ',
+                  m('span.log-overlap-separator.log-separator', 'to'),
+                  ' ',
                   m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(timeFormatShort) : '?'),
                   ' ',
                   m('span.log-value-categories', `(${overlap.categories.map((category) => category.name).join(', ')})`)
