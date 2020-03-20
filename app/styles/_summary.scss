@@ -33,6 +33,11 @@
   margin-bottom: 0.5rem;
   overflow: hidden;
 }
+.log-total {
+  // Vertically align top of "Total:" with top of "Latest Time:"
+  line-height: 1;
+  margin-bottom: 5px;
+}
 .log-total-time-name,
 .log-total-time {
   font-size: 28px;
