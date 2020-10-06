@@ -15,6 +15,7 @@ module.exports = {
       'moment': 'moment',
       'quill': 'Quill',
       'lodash': '_',
+      'clipboard': 'ClipboardJS',
       'sw-update-manager': 'SWUpdateManager'
     }
   },
@@ -23,6 +24,7 @@ module.exports = {
     'moment',
     'quill',
     'lodash',
+    'clipboard',
     'sw-update-manager'
   ],
   plugins: [

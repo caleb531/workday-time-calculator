@@ -19,6 +19,7 @@ gulp.task('assets:js', () => {
       'node_modules/moment/min/moment.min.js',
       'node_modules/quill/dist/quill.min.js',
       'node_modules/lodash/lodash.min.js',
+      'node_modules/clipboard/dist/clipboard.min.js',
       'node_modules/sw-update-manager/sw-update-manager.js'
     ])
     .pipe(gulp.dest('public/scripts'));
@@ -56,7 +57,8 @@ gulp.task('sw', () => {
   return workboxBuild.injectManifest({
     globDirectory: 'public',
     globPatterns: [
-      '**\/*.{js,css,png}'
+      '**\/*.{js,css,png}',
+      'icons/*.svg'
     ],
     // Precaching index.html using templatedUrls fixes a "Response served by
     // service worker has redirections" error on iOS 12; see

@@ -1,4 +1,5 @@
 import m from 'mithril';
+import ClipboardJS from 'clipboard';
 
 let timeFormatShort = 'h:mm';
 
@@ -18,6 +19,26 @@ class SummaryComponent {
     let hours = Math.abs(duration.hours());
     let minutes = this.padWithZeroes(Math.abs(duration.minutes()));
     return `${isNegative ? '-' : ''}${hours}:${minutes}`;
+  }
+
+  bindCopyToClipboardEvent(vnode, log) {
+    const clipboard = new ClipboardJS(vnode.dom);
+    clipboard.on('success', (copyEvent) => {
+      // In order for ClipboardJS to copy the text to the clipboard, it must
+      // first select it; this text remains selected after the copy is complete,
+      // so for a less-confusing UX, we clear the text selection after a
+      // successful copy
+      copyEvent.clearSelection();
+      // Briefly indicate that the copy was successful
+      const categoryIndex = vnode.dom.getAttribute('data-category-index');
+      const category = log.categories[categoryIndex];
+      category.copiedToClipboard = true;
+      m.redraw();
+      setTimeout(() => {
+        category.copiedToClipboard = false;
+        m.redraw();
+      }, this.clipboardCopySuccessDelay);
+    });
   }
 
   getFormattedDescription(description) {
@@ -104,7 +125,7 @@ class SummaryComponent {
 
       ]),
 
-      m('div.log-summary-details', log.categories.map((category) => {
+      m('div.log-summary-details', log.categories.map((category, c) => {
         return m('div.log-category', category.totalDuration.asMinutes() > 0 ? [
 
           m('div.log-category-header', [
@@ -118,12 +139,17 @@ class SummaryComponent {
 
           ]),
 
-          m('div.log-category-descriptions-container', [
+          m('div.log-category-descriptions-container', {
+            class: category.copiedToClipboard ? 'copied-to-clipboard' : ''
+          }, [
             m('img.log-category-descriptions-copy-button', {
-              src: 'icons/content-copy.svg',
-              alt: 'Copy to Clipboard'
+              src: category.copiedToClipboard ? 'icons/done.svg' : 'icons/content-copy.svg',
+              alt: 'Copy to Clipboard',
+              'data-clipboard-target': `#log-category-description-list-${c}`,
+              oncreate: (vnode) => this.bindCopyToClipboardEvent(vnode, log),
+              'data-category-index': c
             }),
-            m('ul.log-category-descriptions-list', category.descriptions.map((description) => {
+            m(`ul.log-category-descriptions-list#log-category-description-list-${c}`, category.descriptions.map((description) => {
               return m('li.log-category-description', this.getFormattedDescription(description));
             }))
           ])
@@ -136,5 +162,8 @@ class SummaryComponent {
   }
 
 }
+// The number of milliseconds to display a 'done' checkmark after a category's
+// description block has been successfully copied to the clipboard
+SummaryComponent.prototype.clipboardCopySuccessDelay = 1500;
 
 export default SummaryComponent;
