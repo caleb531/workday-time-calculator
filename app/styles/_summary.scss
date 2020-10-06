@@ -15,10 +15,37 @@
 .log-category-header {
   font-size: 20px;
 }
-.log-category-descriptions {
-  margin-top: 0.6rem;
-  margin-bottom: 1rem;
+.log-category-descriptions-container {
+  position: relative;
+  margin-top: 0.2rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.6rem;
   padding-left: 1.5rem;
+  &:hover {
+    border-radius: 5px;
+    background-color: rgba(#000, 0.1);
+  }
+}
+.log-category-descriptions-copy-button {
+  display: none;
+  position: absolute;
+  $icon-size: 16px;
+  $icon-padding: 4px;
+  width: ($icon-size + ($icon-padding * 2));
+  height: ($icon-size + ($icon-padding * 2));
+  border-radius: 50%;
+  padding: $icon-padding;
+  background-color: $blue;
+  top: $icon-padding;
+  left: -($icon-size / 2);
+  .log-category-descriptions-container:hover & {
+    display: block;
+  }
+}
+.log-category-descriptions-list {
+  margin: 0;
+  padding: 0;
   list-style-type: none;
 }
 .log-category-description {

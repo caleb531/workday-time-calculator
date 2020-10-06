@@ -118,9 +118,15 @@ class SummaryComponent {
 
           ]),
 
-          m('ul.log-category-descriptions', category.descriptions.map((description) => {
-            return m('li.log-category-description', this.getFormattedDescription(description));
-          }))
+          m('div.log-category-descriptions-container', [
+            m('img.log-category-descriptions-copy-button', {
+              src: 'icons/content-copy.svg',
+              alt: 'Copy to Clipboard'
+            }),
+            m('ul.log-category-descriptions-list', category.descriptions.map((description) => {
+              return m('li.log-category-description', this.getFormattedDescription(description));
+            }))
+          ])
 
         ] : null);
       }))
