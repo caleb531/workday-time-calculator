@@ -145,6 +145,7 @@ class SummaryComponent {
             m('img.log-category-descriptions-copy-button', {
               src: category.copiedToClipboard ? 'icons/done.svg' : 'icons/content-copy.svg',
               alt: 'Copy to Clipboard',
+              title: 'Copy to Clipboard',
               'data-clipboard-target': `#log-category-description-list-${c}`,
               oncreate: (vnode) => this.bindCopyToClipboardEvent(vnode, log),
               'data-category-index': c
