@@ -5,6 +5,14 @@ let timeFormatShort = 'h:mm';
 
 class SummaryComponent {
 
+  // Store a reference to the current log, and make sure it's always up-to-date
+  oninit({attrs: {log}}) {
+    this.log = log;
+  }
+  onupdate({attrs: {log}}) {
+    this.log = log;
+  }
+
   // Pad the given time value with zeroes if necessary
   padWithZeroes(time) {
     if (Number(time) < 10) {
@@ -21,7 +29,7 @@ class SummaryComponent {
     return `${isNegative ? '-' : ''}${hours}:${minutes}`;
   }
 
-  bindCopyToClipboardEvent(vnode, log) {
+  bindCopyToClipboardEvent(vnode) {
     const clipboard = new ClipboardJS(vnode.dom);
     clipboard.on('success', (copyEvent) => {
       // In order for ClipboardJS to copy the text to the clipboard, it must
@@ -31,7 +39,7 @@ class SummaryComponent {
       copyEvent.clearSelection();
       // Briefly indicate that the copy was successful
       const categoryIndex = vnode.dom.getAttribute('data-category-index');
-      const category = log.categories[categoryIndex];
+      const category = this.log.categories[categoryIndex];
       category.copiedToClipboard = true;
       m.redraw();
       setTimeout(() => {
@@ -147,7 +155,7 @@ class SummaryComponent {
               alt: 'Copy to Clipboard',
               title: 'Copy to Clipboard',
               'data-clipboard-target': `#log-category-description-list-${c}`,
-              oncreate: (vnode) => this.bindCopyToClipboardEvent(vnode, log),
+              oncreate: (vnode) => this.bindCopyToClipboardEvent(vnode),
               'data-category-index': c
             }),
             m(`ul.log-category-descriptions-list#log-category-description-list-${c}`, category.descriptions.map((description) => {
