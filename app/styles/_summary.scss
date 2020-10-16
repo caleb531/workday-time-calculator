@@ -29,25 +29,33 @@
   }
 }
 .log-category-descriptions-copy-button {
-  display: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
   position: absolute;
-  $icon-size: 16px;
-  $icon-padding: 4px;
-  width: ($icon-size + ($icon-padding * 2));
-  height: ($icon-size + ($icon-padding * 2));
+  $button-size: 26px;
+  $button-padding: 5px;
+  width: $button-size;
+  height: $button-size;
   border-radius: 50%;
-  padding: $icon-padding;
+  padding: $button-padding;
   background-color: $blue;
-  top: $icon-padding;
-  left: -($icon-size / 2);
-  .log-category-descriptions-container:hover &,
-  .copied-to-clipboard & {
-    display: block;
+  top: $button-padding;
+  left: -10px;
+  .log-category-descriptions-container:hover & {
+    opacity: 1;
   }
-  .copied-to-clipboard & {
+  .copied-to-clipboard &,
+  .copied-to-clipboard:hover & {
     opacity: 0.5;
   }
 }
+.log-category-descriptions-copy-button-icon {
+  width: 100%;
+  height: 100%;
+}
+
 .log-category-descriptions-list {
   margin: 0;
   padding: 0;
