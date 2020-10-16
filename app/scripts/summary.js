@@ -151,7 +151,7 @@ class SummaryComponent {
             class: category.copiedToClipboard ? 'copied-to-clipboard' : ''
           }, [
             m('img.log-category-descriptions-copy-button', {
-              src: category.copiedToClipboard ? 'icons/done.svg' : 'icons/content-copy.svg',
+              src: category.copiedToClipboard ? 'icons/done.svg' : 'icons/copy.svg',
               alt: 'Copy to Clipboard',
               title: 'Copy to Clipboard',
               'data-clipboard-target': `#log-category-description-list-${c}`,
