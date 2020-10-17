@@ -47,7 +47,12 @@
   z-index: 10;
   $menu-padding-x: 12px;
   $menu-padding-y: 8px;
-  left: -$menu-padding-x;
+  left: auto;
+  right: -$menu-padding-x;
+  @media (min-width: $app-hybrid-max-width) {
+    left: -$menu-padding-x;
+    right: auto;
+  }
   margin: 0;
   margin-top: $panel-arrow-size * 1.5;
   padding: 0;
@@ -74,7 +79,12 @@
         display: inline-block;
         position: absolute;
         top: -$panel-arrow-size;
-        left: $menu-padding-x;
+        left: auto;
+        right: $menu-padding-x;
+        @media (min-width: $app-hybrid-max-width) {
+          left: $menu-padding-x;
+          right: auto;
+        }
         width: 0;
         height: 0;
         border: solid $panel-arrow-size transparent;
