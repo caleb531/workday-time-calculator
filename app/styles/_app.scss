@@ -18,15 +18,21 @@ a {
 }
 
 .app {
-  padding: 0 30px;
+  padding: 0 15px;
+  @media (min-width: $app-hybrid-max-width) {
+    padding: 0 30px;
+  }
 }
 
 .app-header {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1.3rem;
+  margin-top: 2rem;
   margin-bottom: 1.3rem;
+  @media (min-width: $app-hybrid-max-width) {
+    margin-top: 1.3rem;
+  }
 }
 
 h1 {
@@ -51,9 +57,21 @@ h1 {
 
 .app-content {
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   text-align: left;
+  @media (min-width: $app-hybrid-max-width) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.log-area {
+  margin-bottom: 15px;
+  @media (min-width: $app-hybrid-max-width) {
+    margin-bottom: 0;
+  }
 }
 
 .dismissable-overlay {
