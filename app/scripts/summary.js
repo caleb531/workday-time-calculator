@@ -150,7 +150,7 @@ class SummaryComponent {
           m('div.log-category-descriptions-container', {
             class: category.copiedToClipboard ? 'copied-to-clipboard' : ''
           }, [
-            m('div.log-category-descriptions-copy-button', {
+            category.descriptions.length ? m('div.log-category-descriptions-copy-button', {
               'data-clipboard-target': `#log-category-description-list-${c}`,
               'data-category-index': c,
               oncreate: (vnode) => this.bindCopyToClipboardEvent(vnode),
@@ -160,7 +160,7 @@ class SummaryComponent {
                 alt: 'Copy to Clipboard',
                 title: 'Copy to Clipboard',
               })
-            ]),
+            ]) : null,
             m(`ul.log-category-descriptions-list#log-category-description-list-${c}`, category.descriptions.map((description) => {
               return m('li.log-category-description', this.getFormattedDescription(description));
             }))
