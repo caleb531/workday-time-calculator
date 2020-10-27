@@ -50,6 +50,7 @@
   .copied-to-clipboard &,
   .copied-to-clipboard:hover & {
     opacity: 0.5;
+    pointer-events: none;
   }
 }
 .log-category-descriptions-copy-button-icon {
