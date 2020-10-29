@@ -43,7 +43,7 @@
   background-color: $blue;
   top: $button-padding;
   left: -10px;
-  box-shadow: 0 0 3px #000;
+  box-shadow: 0 1px 3px rgba(#000, 0.5);
   .log-category-descriptions-container:hover & {
     opacity: 1;
   }
