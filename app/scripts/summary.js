@@ -154,11 +154,11 @@ class SummaryComponent {
               'data-clipboard-target': `#log-category-description-list-${c}`,
               'data-category-index': c,
               oncreate: (vnode) => this.bindCopyToClipboardEvent(vnode),
+              title: 'Copy to Clipboard'
             }, [
               m('img.log-category-descriptions-copy-button-icon', {
                 src: category.copiedToClipboard ? 'icons/done.svg' : 'icons/copy.svg',
-                alt: 'Copy to Clipboard',
-                title: 'Copy to Clipboard',
+                alt: 'Copy to Clipboard'
               })
             ]) : null,
             m(`ul.log-category-descriptions-list#log-category-description-list-${c}`, category.descriptions.map((description) => {
