@@ -1,13 +1,13 @@
 import m from 'mithril';
 import ClipboardJS from 'clipboard';
 
-let timeFormatShort = 'h:mm';
-
 class SummaryComponent {
 
   // Store a reference to the current log, and make sure it's always up-to-date
   oninit({attrs: {preferences, log}}) {
+    this.preferences = preferences;
     this.log = log;
+    this.setTimeFormat();
     // Ensure that time calculations are re-run when time system changes (e.g.
     // beyween 12-hour and 24-hour)
     preferences.on('change:timeSystem', () => {
@@ -16,6 +16,17 @@ class SummaryComponent {
   }
   onupdate({attrs: {log}}) {
     this.log = log;
+    this.setTimeFormat();
+  }
+
+  // Set the format of displayed times based on the user's preferred time system
+  // (e.g. 12-hour or 24-hour)
+  setTimeFormat() {
+    if (this.preferences.timeSystem === '24-hour') {
+      this.timeFormat = 'H:mm';
+    } else {
+      this.timeFormat = 'h:mm';
+    }
   }
 
   // Pad the given time value with zeroes if necessary
@@ -80,11 +91,11 @@ class SummaryComponent {
               ' ',
               m('div.log-times.log-error-times', log.errors.map((error) => {
                 return m('div.log-error', [
-                  m('span.log-error-start-time.log-value', error.startTime.isValid() ? error.startTime.format(timeFormatShort) : '?'),
+                  m('span.log-error-start-time.log-value', error.startTime.isValid() ? error.startTime.format(this.timeFormat) : '?'),
                   ' ',
                   m('span.log-error-separator.log-separator', 'to'),
                   ' ',
-                  m('span.log-error-end-time.log-value', error.endTime.isValid() ? error.endTime.format(timeFormatShort) : '?')
+                  m('span.log-error-end-time.log-value', error.endTime.isValid() ? error.endTime.format(this.timeFormat) : '?')
                 ]);
               }))
             ]) : null,
@@ -95,11 +106,11 @@ class SummaryComponent {
               ' ',
               m('div.log-times.log-gap-times', log.gaps.map((gap) => {
                 return m('div.log-gap', [
-                  m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(timeFormatShort) : '?'),
+                  m('span.log-gap-start-time.log-value', gap.startTime.isValid() ? gap.startTime.format(this.timeFormat) : '?'),
                   ' ',
                   m('span.log-gap-separator.log-separator', 'to'),
                   ' ',
-                  m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format(timeFormatShort) : '?')
+                  m('span.log-gap-end-time.log-value', gap.endTime.isValid() ? gap.endTime.format(this.timeFormat) : '?')
                 ]);
               }))
             ]) : null,
@@ -110,11 +121,11 @@ class SummaryComponent {
               ' ',
               m('div.log-times.log-overlap-times', log.overlaps.map((overlap) => {
                 return m('div.log-overlap', [
-                  m('span.log-overlap-start-time.log-value', overlap.startTime.isValid() ? overlap.startTime.format(timeFormatShort) : '?'),
+                  m('span.log-overlap-start-time.log-value', overlap.startTime.isValid() ? overlap.startTime.format(this.timeFormat) : '?'),
                   ' ',
                   m('span.log-overlap-separator.log-separator', 'to'),
                   ' ',
-                  m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(timeFormatShort) : '?'),
+                  m('span.log-overlap-end-time.log-value', overlap.endTime.isValid() ? overlap.endTime.format(this.timeFormat) : '?'),
                   ' ',
                   m('span.log-value-categories', `(${overlap.categories.map((category) => category.name).join(', ')})`)
                 ]);
@@ -130,7 +141,7 @@ class SummaryComponent {
           m('span.log-label', 'Latest Time:'),
           ' ',
           m('span.log-latest-time-time', [
-            m('span.log-value', log.latestRange.endTime.format(timeFormatShort)),
+            m('span.log-value', log.latestRange.endTime.format(this.timeFormat)),
             ' ',
             m('span.log-value-category', `(${log.latestRange.category.name})`)
           ])
