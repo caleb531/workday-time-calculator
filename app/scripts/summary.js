@@ -6,8 +6,13 @@ let timeFormatShort = 'h:mm';
 class SummaryComponent {
 
   // Store a reference to the current log, and make sure it's always up-to-date
-  oninit({attrs: {log}}) {
+  oninit({attrs: {preferences, log}}) {
     this.log = log;
+    // Ensure that time calculations are re-run when time system changes (e.g.
+    // beyween 12-hour and 24-hour)
+    preferences.on('change:timeSystem', () => {
+      this.log.regenerate();
+    });
   }
   onupdate({attrs: {log}}) {
     this.log = log;

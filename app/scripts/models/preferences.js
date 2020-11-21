@@ -49,7 +49,9 @@ class Preferences {
 Preferences.defaults = {
   // How often (in seconds) a reminder to update your log should be spawned; a
   // value of 0 indicates that no reminders are ever spawned
-  reminderInterval: 0
+  reminderInterval: 0,
+  // The time system used to parse out times that you enter
+  timeSystem: '12-hour'
 };
 
 export default Preferences;

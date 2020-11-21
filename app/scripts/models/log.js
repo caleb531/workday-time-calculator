@@ -1,15 +1,18 @@
 import moment from 'moment';
 import _ from 'lodash';
 
-let timeFormat = 'h:mma';
-// The number of minutes to round each time to
-let minuteIncrement = 15;
-
 class Log {
 
-  constructor(logContents, {calculateStats} = {}) {
-    this.categories = this.getCategories(logContents);
-    if (calculateStats) {
+  constructor(logContents, {preferences, calculateStats} = {}) {
+    this.preferences = preferences;
+    this.logContents = logContents;
+    this.calculateStats = calculateStats;
+    this.regenerate();
+  }
+
+  regenerate() {
+    this.categories = this.getCategories(this.logContents);
+    if (this.calculateStats) {
       this.errors = this.getErrors();
       this.gaps = this.getGaps();
       this.overlaps = this.getOverlaps();
@@ -33,8 +36,8 @@ class Log {
 
   isTimeRange(logLine) {
     let timeStrs = this.splitLineIntoTimeStrs(logLine);
-    let startTime = moment(timeStrs[0], timeFormat);
-    let endTime = moment(timeStrs[1], timeFormat);
+    let startTime = moment(timeStrs[0], this.timeFormat);
+    let endTime = moment(timeStrs[1], this.timeFormat);
     return startTime.isValid() && endTime.isValid();
   }
 
@@ -50,7 +53,9 @@ class Log {
 
   makeTimeStrAbsolute(timeStr) {
     let hour = parseInt(timeStr, 10);
-    if (hour <= 11 && hour >= 7) {
+    if (this.preferences.timeSystem === '24-hour') {
+      return timeStr;
+    } else if (hour <= 11 && hour >= 7) {
       return `${timeStr}am`;
     } else {
       return `${timeStr}pm`;
@@ -58,7 +63,7 @@ class Log {
   }
 
   roundTime(time) {
-    let nearestMinute = Math.round(time.minute() / minuteIncrement) * minuteIncrement;
+    let nearestMinute = Math.round(time.minute() / this.minuteIncrement) * this.minuteIncrement;
     return time.clone().minutes(nearestMinute);
   }
 
@@ -94,8 +99,8 @@ class Log {
           // Time range
           // console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimeStrs(currentLine);
-          let startTime = this.roundTime(moment(timeStrs[0], timeFormat));
-          let endTime = this.roundTime(moment(timeStrs[1], timeFormat));
+          let startTime = this.roundTime(moment(timeStrs[0], this.timeFormat));
+          let endTime = this.roundTime(moment(timeStrs[1], this.timeFormat));
           // If time range extends past midnight, count time range as overtime
           // for same day
           if (startTime.hour() >= 12 && endTime.hour() < 12) {
@@ -221,7 +226,7 @@ class Log {
         });
         gapStartTime = null;
       }
-      currentTime.add(minuteIncrement, 'minutes');
+      currentTime.add(this.minuteIncrement, 'minutes');
     }
 
     return gaps;
@@ -292,5 +297,10 @@ class Log {
   }
 
 }
+// The textual time format used for all entered times, as well as displayed
+// times
+Log.prototype.timeFormat = 'h:mma';
+// The number of minutes to round each time to
+Log.prototype.minuteIncrement = 15;
 
 export default Log;

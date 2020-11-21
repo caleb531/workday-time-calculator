@@ -43,15 +43,20 @@ class AppComponent {
         m('div.log-area', [
 
           m(EditorComponent, {
+            preferences: this.preferences,
             selectedDate: this.selectedDate,
             onSetLogContents: (logContents) => {
               // Instantiate a new Log object and automatically compute
               // additional log statistics such as gaps and overlaps
-              this.log = new Log(logContents, {calculateStats: true});
+              this.log = new Log(logContents, {
+                preferences: this.preferences,
+                calculateStats: true
+              });
             }
           }),
 
           m(DateComponent, {
+            preferences: this.preferences,
             selectedDate: this.selectedDate,
             onSetSelectedDate: (selectedDate) => {
               this.selectedDate = selectedDate.clone();
@@ -61,6 +66,7 @@ class AppComponent {
         ]),
 
         this.log ? m(SummaryComponent, {
+          preferences: this.preferences,
           log: this.log
         }) : null
 
