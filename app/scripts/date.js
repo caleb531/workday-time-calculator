@@ -27,6 +27,14 @@ class DateComponent {
     this.calendarOpen = !this.calendarOpen;
   }
 
+  formatRelativeMessage(message) {
+    const alternativeMessages = {
+      'a day ago': 'yesterday',
+      'in a day': 'tomorrow'
+    };
+    return alternativeMessages[message] || message;
+  }
+
   view() {
     return m('div.log-date-area', [
 
@@ -44,7 +52,7 @@ class DateComponent {
       ]),
       m('div.log-selected-date', [
         m('div.log-selected-date-absolute', this.selectedDate.format('dddd, MMMM D, YYYY')),
-        m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.selectedDate.fromNow()}`),
+        m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.formatRelativeMessage(this.selectedDate.fromNow())}`),
       ]),
 
       this.selectedDate ? m(CalendarComponent, {
