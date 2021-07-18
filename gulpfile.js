@@ -1,6 +1,6 @@
 let gulp = require('gulp');
 let sourcemaps = require('gulp-sourcemaps');
-let sass = require('gulp-sass');
+let sass = require('gulp-sass')(require('sass'));
 let rollup = require('rollup');
 let rollupConfig = require('./rollup.config.js');
 let workboxBuild = require('workbox-build');

@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .log-date-area {
   display: flex;
   justify-content: flex-start;
@@ -33,7 +35,7 @@
   height: 100%;
   border-width: 0;
   padding: 0;
-  background-color: rgba(#000, 2 / 3);
+  background-color: rgba(#000, math.div(2, 3));
   color: #fff;
   cursor: pointer;
   &:hover:active,
