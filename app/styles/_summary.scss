@@ -48,6 +48,9 @@
   .log-category-descriptions-container:hover & {
     opacity: 1;
   }
+  &:hover:active {
+    opacity: 0.8;
+  }
   .copied-to-clipboard &,
   .copied-to-clipboard:hover & {
     opacity: 0.5;
