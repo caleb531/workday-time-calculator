@@ -1,6 +1,18 @@
 .color-swatch-swatch {
   display: inline-block;
-  width: $color-swatch-size;
-  height: $color-swatch-size;
+  position: relative;
+  width: $color-swatch-swatch-size;
+  height: $color-swatch-swatch-size;
+  border-radius: 50%;
+}
+.app-preference-option-selected .color-swatch-swatch-dot {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: $color-swatch-swatch-dot-size;
+  height: $color-swatch-swatch-dot-size;
+  background-color: #fff;
   border-radius: 50%;
 }

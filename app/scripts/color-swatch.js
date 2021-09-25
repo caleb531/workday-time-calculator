@@ -6,7 +6,7 @@ class ColorSwatchComponent {
     return m('div.color-swatch', [
       m(`label.color-swatch-swatch.color-theme-${option.value}`, {
         for: `${preference.id}-${option.value}`
-      })
+      }, (preferences[preference.id] === option.value) ? m('div.color-swatch-swatch-dot') : null)
     ]);
   }
 
