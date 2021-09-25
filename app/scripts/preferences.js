@@ -83,7 +83,7 @@ PreferencesComponent.preferences = [
   {
     id: 'timeSystem',
     label: 'Time System',
-    description: 'What time system do you want to use when entering and displaying times?',
+    description: 'What time system do you prefer when entering and displaying times?',
     options: [
       {label: '12-hour', value: '12-hour'},
       {label: '24-hour / military time', value: '24-hour'}
