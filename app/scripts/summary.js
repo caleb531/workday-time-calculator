@@ -1,4 +1,5 @@
 import m from 'mithril';
+import _ from 'lodash';
 import ClipboardJS from 'clipboard';
 
 class SummaryComponent {

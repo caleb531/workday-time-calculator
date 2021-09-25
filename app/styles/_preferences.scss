@@ -52,6 +52,21 @@
 
 .app-preference {
   margin-top: 20px;
+  // Color Theme preference
+  &[data-preference-id="colorTheme"] {
+    .app-preference-option {
+      display: inline-block;
+      text-align: center;
+      padding-right: 20px;
+    }
+    .radio-button {
+      display: none;
+    }
+    .app-preference-option-label {
+      padding: 0;
+      padding-top: 2px;
+    }
+  }
 }
 
 .app-preference-label {

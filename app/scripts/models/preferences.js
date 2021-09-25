@@ -51,7 +51,9 @@ Preferences.defaults = {
   // value of 0 indicates that no reminders are ever spawned
   reminderInterval: 0,
   // The time system used to parse out times that you enter
-  timeSystem: '12-hour'
+  timeSystem: '12-hour',
+  // The color theme used to give the app a personal touch
+  colorTheme: 'blue'
 };
 
 export default Preferences;

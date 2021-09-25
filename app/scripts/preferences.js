@@ -2,6 +2,7 @@ import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
 import CloseButtonComponent from './close-button.js';
 import RadioButtonComponent from './radio-button.js';
+import ColorSwatchComponent from './color-swatch.js';
 
 class PreferencesComponent {
 
@@ -38,17 +39,26 @@ class PreferencesComponent {
         m('h2.app-preferences-heading', 'Preferences'),
 
         PreferencesComponent.preferences.map((preference) => {
-          return m('div.app-preference', [
+          return m('div.app-preference', {
+            'data-preference-id': preference.id
+          }, [
             m('label.app-preference-label', preference.label),
             m('p.app-preference-description', preference.description),
             m('div.app-preference-options', preference.options.map((option) => {
               // console.log(this.preferences[preference.id], option.value);
-              return m('div.app-preference-option', [
+              return m('div.app-preference-option', {
+                class: (this.preferences[preference.id] === option.value) ? 'app-preference-option-selected' : ''
+              }, [
                 m(RadioButtonComponent, {
                   preferences: this.preferences,
                   preference,
                   option
                 }),
+                preference.optionType === 'color' ? m(ColorSwatchComponent, {
+                  preferences: this.preferences,
+                  preference,
+                  option
+                }) : null,
                 m('label.app-preference-option-label', {
                   for: `${preference.id}-${option.value}`
                 }, option.label),
@@ -87,6 +97,19 @@ PreferencesComponent.preferences = [
     options: [
       {label: '12-hour', value: '12-hour'},
       {label: '24-hour / military time', value: '24-hour'}
+    ]
+  },
+  {
+    id: 'colorTheme',
+    label: 'Color Theme',
+    description: 'What color would you like as your WTC app\'s theme?',
+    optionType: 'color',
+    options: [
+      {label: 'Blue', value: 'blue'},
+      {label: 'Green', value: 'green'},
+      {label: 'Purple', value: 'purple'},
+      {label: 'Rose', value: 'rose'},
+      {label: 'Slate', value: 'slate'},
     ]
   }
 ];
