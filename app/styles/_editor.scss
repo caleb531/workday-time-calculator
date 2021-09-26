@@ -70,6 +70,6 @@
 }
 
 .ql-editor.ql-blank::before {
-  color: desaturate(lighten($app-bg, 20%), 20%);
+  color: rgba(#fff, 0.4);
   font-style: normal;
 }
