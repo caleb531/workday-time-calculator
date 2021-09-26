@@ -24,6 +24,19 @@ class AppComponent {
       this.updateManager.on('updateAvailable', () => m.redraw());
       this.updateManager.checkForUpdates();
     }
+    this.setColorThemeOnBody();
+  }
+
+  onupdate() {
+    this.setColorThemeOnBody();
+  }
+
+  // In order for the color theme's background color to infinitely repeat on
+  // the page, the color theme's background color MUST be set on the <body>
+  // element; however, since the <body> is not within the scope of the virtual
+  // DOM, we must query it manually
+  setColorThemeOnBody() {
+    document.body.className = `color-theme-${this.preferences.colorTheme}`;
   }
 
   view() {
