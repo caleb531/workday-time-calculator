@@ -1,15 +1,5 @@
-.color-theme-blue {
-  background-color: #113355;
-}
-.color-theme-green {
-  background-color: #115533;
-}
-.color-theme-purple {
-  background-color: #333355;
-}
-.color-theme-rose {
-  background-color: #553344;
-}
-.color-theme-slate {
-  background-color: #1c2127;
+@each $color-name, $color-code in $color-themes {
+  .color-theme-#{$color-name} {
+    background-color: $color-code;
+  }
 }

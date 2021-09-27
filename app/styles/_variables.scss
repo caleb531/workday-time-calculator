@@ -9,7 +9,16 @@ $app-border-radius: 5px;
 $blue: #5ae;
 $red: #c33;
 $gray: #bcd;
-$app-bg: #113355;
+
+// Color Themes
+
+$color-themes: (
+  'blue': #113355,
+  'green': #115533,
+  'purple': #333355,
+  'rose': #553344,
+  'slate': #1c2127
+);
 
 // Calendar
 $calendar-date-size: 25px;
