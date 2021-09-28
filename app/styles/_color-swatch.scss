@@ -4,6 +4,7 @@
   width: $color-swatch-swatch-size;
   height: $color-swatch-swatch-size;
   border-radius: 50%;
+  filter: brightness(1.75);
 }
 .app-preference-option-selected .color-swatch-swatch-dot {
   display: inline-block;
