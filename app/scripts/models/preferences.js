@@ -52,6 +52,8 @@ Preferences.defaults = {
   reminderInterval: 0,
   // The time system used to parse out times that you enter
   timeSystem: '12-hour',
+  // The sort order of category groupings
+  categorySortOrder: 'duration',
   // The color theme used to give the app a personal touch
   colorTheme: 'blue'
 };

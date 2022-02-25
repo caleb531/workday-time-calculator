@@ -136,7 +136,11 @@ class Log {
       });
       this.totalDuration.add(category.totalDuration);
     });
-    this.categories = _.orderBy(this.categories, (category) => category.totalDuration.asHours(), 'desc');
+    if (this.preferences.categorySortOrder === 'duration') {
+      this.categories = _.orderBy(this.categories, (category) => category.totalDuration.asHours(), 'desc');
+    } else if (this.preferences.categorySortOrder === 'title') {
+      this.categories = _.orderBy(this.categories, (category) => category.name);
+    }
   }
 
   getAllTasks() {

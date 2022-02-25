@@ -14,6 +14,9 @@ class SummaryComponent {
     preferences.on('change:timeSystem', () => {
       this.log.regenerate();
     });
+    preferences.on('change:categorySortOrder', () => {
+      this.log.regenerate();
+    });
   }
   onupdate({attrs: {log}}) {
     this.log = log;

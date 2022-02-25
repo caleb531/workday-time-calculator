@@ -100,6 +100,16 @@ PreferencesComponent.preferences = [
     ]
   },
   {
+    id: 'categorySortOrder',
+    label: 'Category Sort Order',
+    description: 'How should category groupings be sorted in the Summary view?',
+    options: [
+      {label: 'No sorting', value: 'none'},
+      {label: 'Title', value: 'title'},
+      {label: 'Duration', value: 'duration'}
+    ]
+  },
+  {
     id: 'colorTheme',
     label: 'Color Theme',
     description: 'What color would you like as your WTC app\'s theme?',
