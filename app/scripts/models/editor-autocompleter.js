@@ -1,13 +1,21 @@
 class EditorAutocompleter {
 
   constructor() {
-    this.isActive = false;
+    this.cancel();
     this.completions = [
       'internal',
       'training',
       'brown bag',
       'email correspondence'
     ];
+  }
+
+  enable() {
+    this.isActive = true;
+  }
+
+  cancel() {
+    this.isActive = false;
   }
 
   setEditor(editor) {

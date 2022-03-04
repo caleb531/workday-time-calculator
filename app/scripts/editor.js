@@ -52,10 +52,10 @@ class EditorComponent {
                 const completionPlaceholder = this.editorAutocompleter.getCompletionPlaceholder();
                 if (completionPlaceholder) {
                   this.editor.insertText(range.index, completionPlaceholder);
-                  this.editorAutocompleter.isActive = false;
+                  this.editorAutocompleter.cancel();
                 } else {
                   this.editor.formatLine(range, {'indent': '+1'}, 'user');
-                  this.editorAutocompleter.isActive = false;
+                  this.editorAutocompleter.cancel();
                 }
               }
             },
@@ -64,7 +64,7 @@ class EditorComponent {
               shiftKey: true,
               handler: (range) => {
                 this.editor.formatLine(range, {'indent': '-1'}, 'user');
-                this.editorAutocompleter.isActive = false;
+                this.editorAutocompleter.cancel();
               }
             },
             indent: {
@@ -73,7 +73,7 @@ class EditorComponent {
               shortKey: true,
               handler: (range) => {
                 this.editor.formatLine(range, {'indent': '+1'}, 'user');
-                this.editorAutocompleter.isActive = false;
+                this.editorAutocompleter.cancel();
               }
             },
             unIndent: {
@@ -82,14 +82,14 @@ class EditorComponent {
               shortKey: true,
               handler: (range) => {
                 this.editor.formatLine(range, {'indent': '-1'}, 'user');
-                this.editorAutocompleter.isActive = false;
+                this.editorAutocompleter.cancel();
               }
             },
             escape: {
               key: 27,
               handler: () => {
                 if (this.editorAutocompleter.getCompletionPlaceholder()) {
-                  this.editorAutocompleter.isActive = false;
+                  this.editorAutocompleter.cancel();
                   m.redraw();
                 }
               }
@@ -104,7 +104,7 @@ class EditorComponent {
         let logContents = this.editor.getContents();
         this.onSetLogContents(logContents);
         this.saveTextLog(logContents);
-        this.editorAutocompleter.isActive = true;
+        this.editorAutocompleter.enable();
         m.redraw();
       }
       this.editor.focus();
