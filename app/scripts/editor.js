@@ -52,8 +52,10 @@ class EditorComponent {
                 const completionPlaceholder = this.editorAutocompleter.getCompletionPlaceholder();
                 if (completionPlaceholder) {
                   this.editor.insertText(range.index, completionPlaceholder);
+                  this.editorAutocompleter.isActive = false;
                 } else {
                   this.editor.formatLine(range, {'indent': '+1'}, 'user');
+                  this.editorAutocompleter.isActive = false;
                 }
               }
             },
@@ -62,6 +64,7 @@ class EditorComponent {
               shiftKey: true,
               handler: (range) => {
                 this.editor.formatLine(range, {'indent': '-1'}, 'user');
+                this.editorAutocompleter.isActive = false;
               }
             },
             indent: {
@@ -70,6 +73,7 @@ class EditorComponent {
               shortKey: true,
               handler: (range) => {
                 this.editor.formatLine(range, {'indent': '+1'}, 'user');
+                this.editorAutocompleter.isActive = false;
               }
             },
             unIndent: {
@@ -78,6 +82,16 @@ class EditorComponent {
               shortKey: true,
               handler: (range) => {
                 this.editor.formatLine(range, {'indent': '-1'}, 'user');
+                this.editorAutocompleter.isActive = false;
+              }
+            },
+            escape: {
+              key: 27,
+              handler: () => {
+                if (this.editorAutocompleter.getCompletionPlaceholder()) {
+                  this.editorAutocompleter.isActive = false;
+                  m.redraw();
+                }
               }
             }
           }
@@ -90,6 +104,7 @@ class EditorComponent {
         let logContents = this.editor.getContents();
         this.onSetLogContents(logContents);
         this.saveTextLog(logContents);
+        this.editorAutocompleter.isActive = true;
         m.redraw();
       }
       this.editor.focus();

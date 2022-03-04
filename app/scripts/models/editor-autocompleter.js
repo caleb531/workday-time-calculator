@@ -1,6 +1,7 @@
 class EditorAutocompleter {
 
   constructor() {
+    this.isActive = false;
     this.completions = [
       'internal',
       'training',
@@ -31,6 +32,9 @@ class EditorAutocompleter {
   }
 
   getCompletionPlaceholder() {
+    if (!this.isActive) {
+      return '';
+    }
     const partialTerm = this.getPartialTerm().toLowerCase();
     if (!partialTerm) {
       return '';
