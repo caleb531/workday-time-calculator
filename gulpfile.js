@@ -1,6 +1,7 @@
 let gulp = require('gulp');
 let sourcemaps = require('gulp-sourcemaps');
 let sass = require('gulp-sass')(require('sass'));
+let rename = require('gulp-rename');
 let rollup = require('rollup');
 let rollupConfig = require('./rollup.config.js');
 let workboxBuild = require('workbox-build');
@@ -24,10 +25,18 @@ gulp.task('assets:js', () => {
     ])
     .pipe(gulp.dest('public/scripts'));
 });
+gulp.task('assets:idb-keyval', () => {
+  return gulp.src([
+      'node_modules/idb-keyval/dist/umd.js'
+    ])
+    .pipe(rename('idb-keyval.min.js'))
+    .pipe(gulp.dest('public/scripts'));
+});
 gulp.task('assets', gulp.parallel(
   'assets:core',
   'assets:css',
-  'assets:js'
+  'assets:js',
+  'assets:idb-keyval'
 ));
 gulp.task('assets:watch', () => {
 	return gulp.watch('app/assets/**/*', gulp.series('assets:core', 'sw'));

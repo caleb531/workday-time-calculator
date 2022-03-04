@@ -14,6 +14,7 @@ module.exports = {
       'mithril': 'm',
       'moment': 'moment',
       'quill': 'Quill',
+      'idb-keyval': 'idbKeyval',
       'lodash': '_',
       'clipboard': 'ClipboardJS',
       'sw-update-manager': 'SWUpdateManager'
@@ -23,6 +24,7 @@ module.exports = {
     'mithril',
     'moment',
     'quill',
+    'idb-keyval',
     'lodash',
     'clipboard',
     'sw-update-manager'
