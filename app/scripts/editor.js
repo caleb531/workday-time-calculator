@@ -135,7 +135,9 @@ class EditorComponent {
           this.initializeEditor(vnode.dom);
         }
       }),
-      m(EditorAutocomplete)
+      this.editor ? m(EditorAutocomplete, {
+        editor: this.editor
+      }) : null
     ];
   }
 
