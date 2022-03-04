@@ -2,6 +2,7 @@ import m from 'mithril';
 import Quill from 'quill';
 import EditorAutocompleter from './models/editor-autocompleter.js';
 import EditorAutocompleterComponent from './editor-autocompleter.js';
+import appStorage from './models/app-storage.js';
 
 class EditorComponent {
 
@@ -14,8 +15,9 @@ class EditorComponent {
   onupdate({attrs: {selectedDate}}) {
     if (!selectedDate.isSame(this.selectedDate)) {
       this.selectedDate = selectedDate.clone();
-      let logContents = this.getLogContentsForSelectedDate();
-      this.setEditorText(logContents);
+      this.getLogContentsForSelectedDate().then((logContents) => {
+        this.setEditorText(logContents);
+      });
     }
   }
 
@@ -109,17 +111,21 @@ class EditorComponent {
       }
       this.editor.focus();
     });
-    this.setEditorText(this.getLogContentsForSelectedDate());
+    this.getLogContentsForSelectedDate().then((logContents) => {
+      this.setEditorText(logContents);
+    });
     this.editorAutocompleter.setEditor(this.editor);
   }
 
   getLogContentsForSelectedDate() {
     let dateStorageId = this.getSelectedDateStorageId();
-    let logContentsStr = localStorage.getItem(dateStorageId);
+    let logContentsPromise = appStorage.get(dateStorageId);
     try {
-      return JSON.parse(logContentsStr) || this.getDefaultLogContents();
+      return logContentsPromise.then((logContents) => {
+        return logContents || this.getDefaultLogContents();
+      });
     } catch (error) {
-      return this.getDefaultLogContents();
+      return new Promise((resolve) => resolve(this.getDefaultLogContents()));
     }
   }
 
@@ -145,9 +151,9 @@ class EditorComponent {
     if (logContents.ops.length === 1 && logContents.ops[0].insert === '\n') {
       // If the contents of the current log are empty, delete the entry from
       // localStorage to conserve space
-      localStorage.removeItem(this.getSelectedDateStorageId(this.selectedDate));
+      appStorage.remove(this.getSelectedDateStorageId(this.selectedDate));
     } else {
-      localStorage.setItem(this.getSelectedDateStorageId(this.selectedDate), JSON.stringify(logContents));
+      appStorage.set(this.getSelectedDateStorageId(this.selectedDate), logContents);
     }
   }
 

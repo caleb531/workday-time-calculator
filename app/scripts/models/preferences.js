@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import appStorage from './app-storage.js';
 
 class Preferences {
 
@@ -8,11 +9,13 @@ class Preferences {
   }
 
   load() {
-    Object.assign(this, Preferences.defaults, JSON.parse(localStorage.getItem('wtc-prefs')));
+    appStorage.get('wtc-prefs').then((prefs) => {
+      Object.assign(this, Preferences.defaults, prefs);
+    });
   }
 
   save() {
-    localStorage.setItem('wtc-prefs', JSON.stringify(this));
+    appStorage.set('wtc-prefs', this);
   }
 
   set(props, {trigger = true} = {}) {

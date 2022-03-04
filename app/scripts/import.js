@@ -1,4 +1,5 @@
 import m from 'mithril';
+import appStorage from './models/app-storage.js';
 
 class ImportComponent {
 
@@ -12,7 +13,7 @@ class ImportComponent {
       let importedData = JSON.parse(event.target.result);
       Object.keys(importedData.logs).forEach((logDate) => {
         let logContent = importedData.logs[logDate];
-        localStorage.setItem(`wtc-date-${logDate}`, JSON.stringify(logContent));
+        appStorage.set(`wtc-date-${logDate}`, logContent);
       });
       if (importedData.preferences) {
         this.preferences.set(importedData.preferences, {trigger: false});

@@ -1,5 +1,6 @@
 import m from 'mithril';
 import moment from 'moment';
+import appStorage from './models/app-storage.js';
 
 class ExportComponent {
 
@@ -12,26 +13,31 @@ class ExportComponent {
       logs: {},
       preferences: this.preferences
     };
-    Object.keys(localStorage).forEach((key) => {
-      let logMatches = key.match(/^wtc-date-(\d{1,2}\/\d{1,2}\/\d{4})$/);
-      if (logMatches) {
-        let logDate = logMatches[1];
-        let logContents = JSON.parse(localStorage.getItem(key));
-        if (!(logContents.ops.length === 1 && logContents.ops[0].insert === '\n')) {
-          exportedData.logs[logDate] = logContents;
+    return appStorage.keys().then((keys) => {
+      return Promise.all(keys.map((key) => {
+        let logMatches = key.match(/^wtc-date-(\d{1,2}\/\d{1,2}\/\d{4})$/);
+        if (logMatches) {
+          let logDate = logMatches[1];
+          let logContents = appStorage.get(key);
+          if (!(logContents.ops.length === 1 && logContents.ops[0].insert === '\n')) {
+            exportedData.logs[logDate] = logContents;
+            return logContents;
+          }
         }
-      }
-    });
-    return exportedData;
+        return null;
+      }));
+    }).then(() => exportedData);
   }
 
   downloadExportedJson() {
-    let a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([
-      JSON.stringify(this.getExportedJson())
-    ], {type: 'application/json'}));
-    a.download = `wtc-logs-thru-${moment().format('YYYY-MM-DD')}.json`;
-    a.click();
+    this.getExportedJson().then((exportedJson) => {
+      let a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([
+        exportedJson
+      ], {type: 'application/json'}));
+      a.download = `wtc-logs-thru-${moment().format('YYYY-MM-DD')}.json`;
+      a.click();
+    });
   }
 
   view() {
