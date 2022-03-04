@@ -3,7 +3,7 @@ let sourcemaps = require('gulp-sourcemaps');
 let sass = require('gulp-sass')(require('sass'));
 let rename = require('gulp-rename');
 let rollup = require('rollup');
-let rollupConfig = require('./rollup.config.js');
+let rollupAppConfig = require('./rollup.config.app.js');
 let workboxBuild = require('workbox-build');
 
 gulp.task('assets:core', () => {
@@ -54,8 +54,8 @@ gulp.task('sass:watch', () => {
 });
 
 gulp.task('rollup', () => {
-  return rollup.rollup(rollupConfig).then((bundle) => {
-    return bundle.write(rollupConfig.output);
+  return rollup.rollup(rollupAppConfig).then((bundle) => {
+    return bundle.write(rollupAppConfig.output);
   });
 });
 gulp.task('rollup:watch', () => {
