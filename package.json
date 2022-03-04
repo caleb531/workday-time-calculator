@@ -21,6 +21,7 @@
     "sw-update-manager": "^1.0.0"
   },
   "devDependencies": {
+    "eslint": "^8.10.0",
     "gulp": "^4.0.2",
     "gulp-sass": "^5.0.0",
     "gulp-sourcemaps": "^2.6.5",

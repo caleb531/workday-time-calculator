@@ -1,7 +1,5 @@
 // Configured for ESLint 3.15.0
 
-'use strict';
-
 module.exports = {
 
   /**
@@ -23,17 +21,17 @@ module.exports = {
    * Per-file ESlint rules to override
    */
 
-  overrides: {
-
-    files: ['service-worker.js'],
-    env: {
-      'serviceworker': true
-    },
-    globals: {
-      'workbox': true
+  overrides: [
+    {
+      files: ['service-worker.js'],
+      env: {
+        'serviceworker': true
+      },
+      globals: {
+        'workbox': true
+      }
     }
-
-  },
+  ],
 
   /**
    * Supported JavaScript language options
