@@ -41,9 +41,7 @@ class EditorAutocompleterComponent {
         top: `${this.position.top}px`,
         left: `${this.position.left}px`
       } : null
-    }, [
-      m('div', this.editorAutocompleter.getCompletionPlaceholder())
-    ]);
+    }, this.editorAutocompleter.getCompletionPlaceholder());
   }
 
 }
