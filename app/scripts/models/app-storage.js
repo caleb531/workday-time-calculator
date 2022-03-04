@@ -1,24 +1,24 @@
-class appStorage {
+class AppStorage {
 
-  static get(key) {
+  get(key) {
     return new Promise((resolve) => {
       resolve(JSON.parse(localStorage.getItem(key)));
     });
   }
 
-  static set(key, value) {
+  set(key, value) {
     return new Promise((resolve) => {
       resolve(localStorage.setItem(key, JSON.stringify(value)));
     });
   }
 
-  static keys() {
+  keys() {
     return new Promise((resolve) => {
       resolve(Object.keys(localStorage));
     });
   }
 
-  static remove(key) {
+  remove(key) {
     return new Promise((resolve) => {
       resolve(localStorage.removeItem(key));
     });
@@ -26,4 +26,4 @@ class appStorage {
 
 }
 
-export default appStorage;
+export default new AppStorage();
