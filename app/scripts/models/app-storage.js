@@ -26,22 +26,22 @@ class AppStorage {
     }
   }
 
-  keys() {
-    if (this.usingIDB()) {
-      return idbKeyval.keys();
-    } else {
-      return new Promise((resolve) => {
-        resolve(Object.keys(localStorage));
-      });
-    }
-  }
-
   remove(key) {
     if (this.usingIDB()) {
       return idbKeyval.del(key);
     } else {
       return new Promise((resolve) => {
         resolve(localStorage.removeItem(key));
+      });
+    }
+  }
+
+  keys() {
+    if (this.usingIDB()) {
+      return idbKeyval.keys();
+    } else {
+      return new Promise((resolve) => {
+        resolve(Object.keys(localStorage));
       });
     }
   }
