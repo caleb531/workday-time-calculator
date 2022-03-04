@@ -1,27 +1,49 @@
+import idbKeyval from 'idb-keyval';
+
 class AppStorage {
 
+  usingIDB() {
+    return typeof indexedDB !== 'undefined' && localStorage.getItem('wtc-idb-enabled') === 'true';
+  }
+
   get(key) {
-    return new Promise((resolve) => {
-      resolve(JSON.parse(localStorage.getItem(key)));
-    });
+    if (this.usingIDB()) {
+      return idbKeyval.get(key);
+    } else {
+      return new Promise((resolve) => {
+        resolve(JSON.parse(localStorage.getItem(key)));
+      });
+    }
   }
 
   set(key, value) {
-    return new Promise((resolve) => {
-      resolve(localStorage.setItem(key, JSON.stringify(value)));
-    });
+    if (this.usingIDB()) {
+      return idbKeyval.set(key, value);
+    } else {
+      return new Promise((resolve) => {
+        resolve(localStorage.setItem(key, JSON.stringify(value)));
+      });
+    }
   }
 
   keys() {
-    return new Promise((resolve) => {
-      resolve(Object.keys(localStorage));
-    });
+    if (this.usingIDB()) {
+      return idbKeyval.keys();
+    } else {
+      return new Promise((resolve) => {
+        resolve(Object.keys(localStorage));
+      });
+    }
   }
 
   remove(key) {
-    return new Promise((resolve) => {
-      resolve(localStorage.removeItem(key));
-    });
+    if (this.usingIDB()) {
+      return idbKeyval.del(key);
+    } else {
+      return new Promise((resolve) => {
+        resolve(localStorage.removeItem(key));
+      });
+    }
   }
 
 }
