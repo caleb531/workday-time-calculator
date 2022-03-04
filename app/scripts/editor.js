@@ -53,8 +53,8 @@ class EditorComponent {
               handler: (range) => {
                 const completionPlaceholder = this.editorAutocompleter.getCompletionPlaceholder();
                 if (completionPlaceholder) {
-                  this.editor.insertText(range.index, completionPlaceholder, 'user');
-                  this.editor.setSelection(range.index + completionPlaceholder.length, 0, 'user');
+                  this.editor.insertText(range.index, completionPlaceholder + ' ', 'user');
+                  this.editor.setSelection(range.index + completionPlaceholder.length + 1, 0, 'user');
                   this.editorAutocompleter.cancel();
                 } else {
                   this.editor.formatLine(range, {'indent': '+1'}, 'user');
