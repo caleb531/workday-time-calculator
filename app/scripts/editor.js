@@ -1,5 +1,6 @@
 import m from 'mithril';
 import Quill from 'quill';
+import EditorAutocomplete from './editor-autocomplete.js';
 
 class EditorComponent {
 
@@ -76,6 +77,7 @@ class EditorComponent {
         }
       },
     });
+    this.editor.on('selection-change', () => m.redraw());
     this.editor.on('text-change', (delta, oldDelta, source) => {
       if (source === 'user') {
         let logContents = this.editor.getContents();
@@ -127,11 +129,14 @@ class EditorComponent {
   }
 
   view() {
-    return m('div.log-editor', {
-      oncreate: (vnode) => {
-        this.initializeEditor(vnode.dom);
-      }
-    });
+    return [
+      m('div.log-editor', {
+        oncreate: (vnode) => {
+          this.initializeEditor(vnode.dom);
+        }
+      }),
+      m(EditorAutocomplete)
+    ];
   }
 
 }

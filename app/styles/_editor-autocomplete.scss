@@ -1,0 +1,12 @@
+.log-editor-autocomplete {
+  display: none;
+  position: absolute;
+  min-width: 100px;
+  margin-top: 2px;
+  padding: 4px 6px;
+  background-color: #666;
+  font-size: 13px;
+  &.is-visible {
+    display: block;
+  }
+}
