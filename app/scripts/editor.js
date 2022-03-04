@@ -1,12 +1,14 @@
 import m from 'mithril';
 import Quill from 'quill';
-import EditorAutocomplete from './editor-autocomplete.js';
+import EditorAutocompleter from './models/editor-autocompleter.js';
+import EditorAutocompleterComponent from './editor-autocompleter.js';
 
 class EditorComponent {
 
   oninit({attrs: {selectedDate, onSetLogContents}}) {
     this.selectedDate = selectedDate.clone();
     this.onSetLogContents = onSetLogContents;
+    this.editorAutocompleter = new EditorAutocompleter();
   }
 
   onupdate({attrs: {selectedDate}}) {
@@ -47,7 +49,12 @@ class EditorComponent {
             tab: {
               key: 9,
               handler: (range) => {
-                this.editor.formatLine(range, {'indent': '+1'}, 'user');
+                const completionPlaceholder = this.editorAutocompleter.getCompletionPlaceholder();
+                if (completionPlaceholder) {
+                  this.editor.insertText(range.index, completionPlaceholder);
+                } else {
+                  this.editor.formatLine(range, {'indent': '+1'}, 'user');
+                }
               }
             },
             shiftTab: {
@@ -88,6 +95,7 @@ class EditorComponent {
       this.editor.focus();
     });
     this.setEditorText(this.getLogContentsForSelectedDate());
+    this.editorAutocompleter.setEditor(this.editor);
   }
 
   getLogContentsForSelectedDate() {
@@ -135,8 +143,8 @@ class EditorComponent {
           this.initializeEditor(vnode.dom);
         }
       }),
-      this.editor ? m(EditorAutocomplete, {
-        editor: this.editor
+      this.editor ? m(EditorAutocompleterComponent, {
+        editorAutocompleter: this.editorAutocompleter
       }) : null
     ];
   }
