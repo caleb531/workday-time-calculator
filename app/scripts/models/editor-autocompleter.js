@@ -31,7 +31,7 @@ class EditorAutocompleter {
     const characters = [];
     for (let i = editorSelection.index - 1; i >= 0; i -= 1) {
       const character = editorText[i];
-      if (character === '\n') {
+      if (character === ' ' || character === '\n') {
         break;
       }
       characters.unshift(editorText[i]);
