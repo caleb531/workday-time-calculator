@@ -2,6 +2,10 @@ class EditorAutocompleter {
 
   constructor() {
     this.cancel();
+    // TODO: replace the following (hardcoded) completions list with an
+    // instantiation of a Worker; the worker should automatically compute the
+    // list of available completions before the user tries to autocomplete
+    // anything
     this.completions = [
       'internal',
       'training',
@@ -47,6 +51,8 @@ class EditorAutocompleter {
     if (!partialTerm) {
       return '';
     }
+    // TODO: the following code should be moved to a Worker, and a postMessage
+    // call should replace the following code
     const matchingCompletion = this.completions.find((completion) => {
       return completion.indexOf(partialTerm) === 0;
     });
