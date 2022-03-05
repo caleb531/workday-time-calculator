@@ -108,6 +108,7 @@ class EditorComponent {
         this.onSetLogContents(logContents);
         this.saveTextLog(logContents);
         this.autocompleter.enable();
+        this.autocompleter.fetchCompletions();
         m.redraw();
       }
       this.editor.focus();

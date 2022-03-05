@@ -1,32 +1,44 @@
+import m from 'mithril';
+
 class EditorAutocompleter {
 
   constructor() {
     this.cancel();
-    // TODO: replace the following (hardcoded) completions list with an
-    // instantiation of a Worker; the worker should automatically compute the
-    // list of available completions before the user tries to autocomplete
-    // anything
-    this.completions = [
-      'internal',
-      'training',
-      'brown bag',
-      'email correspondence'
-    ];
+    // Use a web worker to perform the computationally-heavy work of processing
+    // terms, which may involve processing thousands of words within the user's
+    // log entries
+    this.worker = new Worker('scripts/web-worker.js');
+    this.worker.onmessage = (event) => {
+      this.receiveCompletionData(event);
+    };
   }
 
+  // If the autocompletions have been recently cancelled, allow completions to
+  // appear again once the user starts typing again
   enable() {
     this.isActive = true;
   }
 
+  // Dismiss the current completion suggestion
   cancel() {
     this.isActive = false;
+    this.matchingCompletion = '';
+    this.completionPlaceholder = '';
   }
 
+  // Since the Quill editor is loaded asynchronously apart from this
+  // autocomplete engine, we have a dedicated function to set the editor as
+  // soon as it is ready
   setEditor(editor) {
     this.editor = editor;
   }
 
+  // Compute the currently-typed term (can be more than one word) for which to
+  // show suggestions of what the user may be typing
   getPartialTerm() {
+    if (!this.editor) {
+      return '';
+    }
     const editorSelection = this.editor.getSelection();
     if (!editorSelection || editorSelection.length > 0) {
       return '';
@@ -43,7 +55,17 @@ class EditorAutocompleter {
     return characters.join('');
   }
 
-  getCompletionPlaceholder() {
+  // Receive the top suggestion of the autocompletion that best matches what
+  // the user is currently typing, and any other data that may be relevant for
+  // that purpose
+  receiveCompletionData(event) {
+    this.matchingCompletion = event.data.matchingCompletion;
+    this.completionPlaceholder = event.data.completionPlaceholder;
+    console.log('receive', this.matchingCompletion);
+    m.redraw();
+  }
+
+  fetchCompletions() {
     if (!this.isActive) {
       return '';
     }
@@ -51,16 +73,13 @@ class EditorAutocompleter {
     if (!partialTerm) {
       return '';
     }
-    // TODO: the following code should be moved to a Worker, and a postMessage
-    // call should replace the following code
-    const matchingCompletion = this.completions.find((completion) => {
-      return completion.indexOf(partialTerm) === 0;
-    });
-    if (matchingCompletion) {
-      return matchingCompletion.replace(partialTerm, '');
-    } else {
-      return '';
-    }
+    console.log('post message', partialTerm);
+    this.worker.postMessage({partialTerm});
+  }
+
+  getCompletionPlaceholder() {
+    console.log(2, this.completionPlaceholder);
+    return this.completionPlaceholder;
   }
 
 }
