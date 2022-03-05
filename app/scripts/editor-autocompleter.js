@@ -2,8 +2,8 @@ import m from 'mithril';
 
 class EditorAutocompleterComponent {
 
-  oninit({attrs: {editorAutocompleter}}) {
-    this.editorAutocompleter = editorAutocompleter;
+  oninit({attrs: {autocompleter}}) {
+    this.autocompleter = autocompleter;
   }
 
   onbeforeupdate(_, {dom}) {
@@ -41,7 +41,7 @@ class EditorAutocompleterComponent {
         top: `${this.position.top}px`,
         left: `${this.position.left}px`
       } : null
-    }, this.editorAutocompleter.getCompletionPlaceholder());
+    }, this.autocompleter.getCompletionPlaceholder());
   }
 
 }

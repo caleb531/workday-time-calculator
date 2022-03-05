@@ -9,7 +9,7 @@ class EditorComponent {
   oninit({attrs: {selectedDate, onSetLogContents}}) {
     this.selectedDate = selectedDate.clone();
     this.onSetLogContents = onSetLogContents;
-    this.editorAutocompleter = new EditorAutocompleter();
+    this.autocompleter = new EditorAutocompleter();
   }
 
   onupdate({attrs: {selectedDate}}) {
@@ -51,14 +51,14 @@ class EditorComponent {
             tab: {
               key: 9,
               handler: (range) => {
-                const completionPlaceholder = this.editorAutocompleter.getCompletionPlaceholder();
+                const completionPlaceholder = this.autocompleter.getCompletionPlaceholder();
                 if (completionPlaceholder) {
                   this.editor.insertText(range.index, completionPlaceholder + ' ', 'user');
                   this.editor.setSelection(range.index + completionPlaceholder.length + 1, 0, 'user');
-                  this.editorAutocompleter.cancel();
+                  this.autocompleter.cancel();
                 } else {
                   this.editor.formatLine(range, {'indent': '+1'}, 'user');
-                  this.editorAutocompleter.cancel();
+                  this.autocompleter.cancel();
                 }
               }
             },
@@ -67,7 +67,7 @@ class EditorComponent {
               shiftKey: true,
               handler: (range) => {
                 this.editor.formatLine(range, {'indent': '-1'}, 'user');
-                this.editorAutocompleter.cancel();
+                this.autocompleter.cancel();
               }
             },
             indent: {
@@ -76,7 +76,7 @@ class EditorComponent {
               shortKey: true,
               handler: (range) => {
                 this.editor.formatLine(range, {'indent': '+1'}, 'user');
-                this.editorAutocompleter.cancel();
+                this.autocompleter.cancel();
               }
             },
             unIndent: {
@@ -85,14 +85,14 @@ class EditorComponent {
               shortKey: true,
               handler: (range) => {
                 this.editor.formatLine(range, {'indent': '-1'}, 'user');
-                this.editorAutocompleter.cancel();
+                this.autocompleter.cancel();
               }
             },
             escape: {
               key: 27,
               handler: () => {
-                if (this.editorAutocompleter.getCompletionPlaceholder()) {
-                  this.editorAutocompleter.cancel();
+                if (this.autocompleter.getCompletionPlaceholder()) {
+                  this.autocompleter.cancel();
                   m.redraw();
                 }
               }
@@ -107,7 +107,7 @@ class EditorComponent {
         let logContents = this.editor.getContents();
         this.onSetLogContents(logContents);
         this.saveTextLog(logContents);
-        this.editorAutocompleter.enable();
+        this.autocompleter.enable();
         m.redraw();
       }
       this.editor.focus();
@@ -115,7 +115,7 @@ class EditorComponent {
     this.getLogContentsForSelectedDate().then((logContents) => {
       this.setEditorText(logContents);
     });
-    this.editorAutocompleter.setEditor(this.editor);
+    this.autocompleter.setEditor(this.editor);
   }
 
   getLogContentsForSelectedDate() {
@@ -166,7 +166,7 @@ class EditorComponent {
         }
       }),
       this.editor ? m(EditorAutocompleterComponent, {
-        editorAutocompleter: this.editorAutocompleter
+        autocompleter: this.autocompleter
       }) : null
     ]);
   }
