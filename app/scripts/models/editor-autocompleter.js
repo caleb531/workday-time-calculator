@@ -46,6 +46,10 @@ class EditorAutocompleter {
       return '';
     }
     const editorText = this.editor.getText();
+    // Do not attempt to autocomplete when text cursor is between letters
+    if (editorText[editorSelection.index] !== '\n') {
+      return '';
+    }
     const characters = [];
     for (let i = editorSelection.index - 1; i >= 0; i -= 1) {
       const character = editorText[i];
