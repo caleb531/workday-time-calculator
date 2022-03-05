@@ -1,4 +1,5 @@
 import m from 'mithril';
+import appStorage from './app-storage.js';
 
 class EditorAutocompleter {
 
@@ -7,10 +8,12 @@ class EditorAutocompleter {
     // Use a web worker to perform the computationally-heavy work of processing
     // terms, which may involve processing thousands of words within the user's
     // log entries
-    this.worker = new Worker('scripts/web-worker.js');
-    this.worker.onmessage = (event) => {
-      this.receiveCompletionData(event);
-    };
+    if (appStorage.usingIDB()) {
+      this.worker = new Worker('scripts/web-worker.js');
+      this.worker.onmessage = (event) => {
+        this.receiveCompletionData(event);
+      };
+    }
   }
 
   // If the autocompletions have been recently cancelled, allow completions to
@@ -83,7 +86,9 @@ class EditorAutocompleter {
       this.cancel();
       return;
     }
-    this.worker.postMessage({completionQuery});
+    if (this.worker) {
+      this.worker.postMessage({completionQuery});
+    }
   }
 
   getCompletionPlaceholder() {

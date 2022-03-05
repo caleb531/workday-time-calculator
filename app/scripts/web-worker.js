@@ -19,7 +19,7 @@ function processLogEntries() {
           .filter((op) => op.insert.trim())
           .map((op) => op.insert));
         return terms;
-      });
+      }, []);
   });
 }
 
