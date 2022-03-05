@@ -61,6 +61,11 @@ function buildCompletions(keywordStr, query) {
   const substringMatchGroups = substringRegexes.map((substringRegex) => {
     return keywordStr.match(substringRegex) || [];
   });
+  // We use a 'for' loop so we can short-circuit and return a proper result
+  // object as soon as we find a matching completion; we do this as opposed to
+  // using something like Array.prototype.find() so we can not only
+  // short-circuit, but also transform the value at the same time without
+  // having to re-process the matches
   for (let i = 0; i < substringMatchGroups.length; i += 1) {
     const matchGroup = substringMatchGroups[i];
     const querySubstring = querySubstrings[i];
