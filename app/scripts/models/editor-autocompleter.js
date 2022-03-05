@@ -40,6 +40,8 @@ class EditorAutocompleter {
       return '';
     }
     const editorSelection = this.editor.getSelection();
+    // Do not autocomplete anything if multiple characters of text are actually
+    // selected
     if (!editorSelection || editorSelection.length > 0) {
       return '';
     }
@@ -47,6 +49,8 @@ class EditorAutocompleter {
     const characters = [];
     for (let i = editorSelection.index - 1; i >= 0; i -= 1) {
       const character = editorText[i];
+      // Only search back to the previous space character, or the beginning of
+      // the line (whichever comes first)
       if (character === ' ' || character === '\n') {
         break;
       }
@@ -61,24 +65,24 @@ class EditorAutocompleter {
   receiveCompletionData(event) {
     this.matchingCompletion = event.data.matchingCompletion;
     this.completionPlaceholder = event.data.completionPlaceholder;
-    console.log('receive', this.matchingCompletion);
     m.redraw();
   }
 
   fetchCompletions() {
     if (!this.isActive) {
-      return '';
+      return;
     }
     const partialTerm = this.getPartialTerm().toLowerCase();
     if (!partialTerm) {
-      return '';
+      // Reset the current completion placeholder if we are at the start of the
+      // line, or if a space precedes the text cursor
+      this.cancel();
+      return;
     }
-    console.log('post message', partialTerm);
     this.worker.postMessage({partialTerm});
   }
 
   getCompletionPlaceholder() {
-    console.log(2, this.completionPlaceholder);
     return this.completionPlaceholder;
   }
 

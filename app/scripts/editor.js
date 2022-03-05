@@ -53,8 +53,19 @@ class EditorComponent {
               handler: (range) => {
                 const completionPlaceholder = this.autocompleter.getCompletionPlaceholder();
                 if (completionPlaceholder) {
-                  this.editor.insertText(range.index, completionPlaceholder + ' ', 'user');
+                  // In order to ensure that fetchCompletions() receives the
+                  // correct text cursor position (i.e. the selection), we must
+                  // call setSelection() before my text-change handler fires
+                  // (which itself triggers whenever insertText with
+                  // source:user is called); however, if we precede
+                  // setSelection() with a source:user insertText call, then
+                  // fetchCompletions() will receive the incorrect selection;
+                  // therefore, to solve, we insert the real text silently, set
+                  // the selection, *then* trigger a text-change event with
+                  // source:user
+                  this.editor.insertText(range.index, completionPlaceholder + ' ', 'silent');
                   this.editor.setSelection(range.index + completionPlaceholder.length + 1, 0, 'user');
+                  this.editor.insertText(range.index + completionPlaceholder.length + 1, '', 'user');
                   this.autocompleter.cancel();
                 } else {
                   this.editor.formatLine(range, {'indent': '+1'}, 'user');
@@ -143,8 +154,8 @@ class EditorComponent {
     };
   }
 
-  setEditorText(logContents) {
-    this.editor.setContents(logContents);
+  setEditorText(logContents, source = 'api') {
+    this.editor.setContents(logContents, source);
     this.onSetLogContents(logContents);
     m.redraw();
   }
