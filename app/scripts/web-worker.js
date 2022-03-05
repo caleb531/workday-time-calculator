@@ -72,6 +72,7 @@ function buildCompletions(keywordStr, query) {
       .value()
       .map(([word]) => word);
     if (matches.length) {
+      // TODO: remove this when we are ready to bring autocomplete live
       console.log(query, '=>', matches);
       return {
         matchingCompletion: matches[0],
