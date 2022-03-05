@@ -91,8 +91,32 @@ class EditorAutocompleter {
     }
   }
 
+  recalculatePosition() {
+    const selection = window.getSelection();
+    if (selection.type.toLowerCase() === 'none') {
+      return;
+    }
+    const selectionBounds = selection.getRangeAt(0).getBoundingClientRect();
+    this.position = {
+      top: selectionBounds.top + window.scrollY,
+      left: selectionBounds.left + window.scrollX
+    };
+  }
+
+  shouldAutocomplete() {
+    return (
+      this.position
+      &&
+      this.position.top
+      &&
+      this.position.left
+      &&
+      document.activeElement !== document.body
+    );
+  }
+
   getCompletionPlaceholder() {
-    return this.completionPlaceholder;
+    return this.shouldAutocomplete() ? this.completionPlaceholder : '';
   }
 
 }

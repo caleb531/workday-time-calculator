@@ -7,39 +7,15 @@ class EditorAutocompleterComponent {
   }
 
   onbeforeupdate(_, {dom}) {
-    this.recalculatePosition(dom);
-  }
-
-  recalculatePosition() {
-    const selection = window.getSelection();
-    if (selection.type.toLowerCase() === 'none') {
-      return;
-    }
-    const selectionBounds = selection.getRangeAt(0).getBoundingClientRect();
-    this.position = {
-      top: selectionBounds.top + window.scrollY,
-      left: selectionBounds.left + window.scrollX
-    };
-  }
-
-  shouldShow() {
-    return (
-      this.position
-      &&
-      this.position.top
-      &&
-      this.position.left
-      &&
-      document.activeElement !== document.body
-    );
+    this.autocompleter.recalculatePosition(dom);
   }
 
   view() {
     return m('div.log-editor-autocomplete', {
-      class: this.shouldShow() ? 'is-visible' : '',
-      style: this.shouldShow() ? {
-        top: `${this.position.top}px`,
-        left: `${this.position.left}px`
+      class: this.autocompleter.shouldAutocomplete() ? 'is-visible' : '',
+      style: this.autocompleter.shouldAutocomplete() ? {
+        top: `${this.autocompleter.position.top}px`,
+        left: `${this.autocompleter.position.left}px`
       } : null
     }, this.autocompleter.getCompletionPlaceholder());
   }
