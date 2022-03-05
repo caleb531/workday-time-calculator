@@ -50,7 +50,7 @@ class EditorAutocompleter {
       if (character === ' ' || character === '\n') {
         break;
       }
-      characters.unshift(editorText[i]);
+      characters.unshift(character);
     }
     return characters.join('');
   }
