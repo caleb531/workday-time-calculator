@@ -7,9 +7,13 @@ class StorageUpgraderComponent {
 
   oninit() {
     this.upgrader = new StorageUpgrader();
-    console.log(this.upgrader);
     if (this.upgrader.shouldUpgrade()) {
       this.isVisible = true;
+      // Show the upgrade panel for a minimum of 1000ms so the user has time to
+      // perceive what's happening
+      setTimeout(() => {
+        this.upgrader.upgrade();
+      }, 1000);
     }
   }
 
