@@ -1,11 +1,14 @@
 import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
+import StorageUpgrader from './models/storage-upgrader.js';
 import _ from 'lodash';
 
 class StorageUpgraderComponent {
 
   oninit() {
-    if (this.shouldUpgrade()) {
+    this.upgrader = new StorageUpgrader();
+    console.log(this.upgrader);
+    if (this.upgrader.shouldUpgrade()) {
       this.isVisible = true;
     }
   }
@@ -16,20 +19,6 @@ class StorageUpgraderComponent {
     _.defer(() => {
       dom.focus();
     });
-  }
-
-  // Only prompt to upgrade the data store format under certain conditions
-  shouldUpgrade() {
-    return (
-      // The browser must support IndexedDB
-      typeof indexedDB !== 'undefined'
-      &&
-      // The user has not already migrated from localStorage to IndexedDB
-      !localStorage.getItem('wtc-idb-enabled')
-      &&
-      // The user has at least one time log saved in the app
-      Object.keys(localStorage).find((key) => /^wtc-/.test(key))
-    );
   }
 
   view() {
