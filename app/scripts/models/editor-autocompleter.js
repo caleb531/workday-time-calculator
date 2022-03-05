@@ -35,7 +35,7 @@ class EditorAutocompleter {
 
   // Compute the currently-typed term (can be more than one word) for which to
   // show suggestions of what the user may be typing
-  getPartialTerm() {
+  getCompletionQuery() {
     if (!this.editor) {
       return '';
     }
@@ -72,14 +72,14 @@ class EditorAutocompleter {
     if (!this.isActive) {
       return;
     }
-    const partialTerm = this.getPartialTerm().toLowerCase();
-    if (!partialTerm) {
+    const completionQuery = this.getCompletionQuery().toLowerCase();
+    if (!completionQuery) {
       // Reset the current completion placeholder if we are at the start of the
       // line, or if a space precedes the text cursor
       this.cancel();
       return;
     }
-    this.worker.postMessage({partialTerm});
+    this.worker.postMessage({completionQuery});
   }
 
   getCompletionPlaceholder() {

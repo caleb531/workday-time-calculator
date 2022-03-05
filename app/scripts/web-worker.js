@@ -30,14 +30,14 @@ function processLogEntries() {
 // Build list of possible completions given the last few terms preceding the
 // user's cursor
 function buildCompletions(event) {
-  const partialTerm = event.data.partialTerm.trim().toLowerCase();
+  const completionQuery = event.data.completionQuery.trim().toLowerCase();
   const matchingCompletion = completions.find((completion) => {
-    return completion.indexOf(partialTerm) === 0;
+    return completion.indexOf(completionQuery) === 0;
   });
   if (matchingCompletion) {
     return {
       matchingCompletion: matchingCompletion,
-      completionPlaceholder: matchingCompletion.replace(partialTerm, '')
+      completionPlaceholder: matchingCompletion.replace(completionQuery, '')
     };
   } else {
     return '';
