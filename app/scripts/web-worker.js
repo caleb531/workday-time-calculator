@@ -61,7 +61,9 @@ function buildCompletions(keywordStr, query) {
   const substringMatchGroups = substringRegexes.map((substringRegex) => {
     return keywordStr.match(substringRegex) || [];
   });
-  for (const matchGroup of substringMatchGroups) {
+  for (let i = 0; i < substringMatchGroups.length; i += 1) {
+    const matchGroup = substringMatchGroups[i];
+    const querySubstring = querySubstrings[i];
     // Retrieve all phrases in the keyword string that match the given
     // autocomplete query
     const matches = _.chain(matchGroup)
@@ -76,7 +78,7 @@ function buildCompletions(keywordStr, query) {
       console.log(query, '=>', matches);
       return {
         matchingCompletion: matches[0],
-        completionPlaceholder: matches[0].replace(query, '')
+        completionPlaceholder: matches[0].replace(querySubstring, '')
       };
     }
   }
