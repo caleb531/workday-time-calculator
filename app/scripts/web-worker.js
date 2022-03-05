@@ -15,9 +15,8 @@ function processLogEntries() {
       .map(([key, value]) => {
         return value.ops
           .filter((op) => op.insert.trim())
-          .map((op) => {
-            return op.insert.toLowerCase();
-          }).join('\n');
+          .map((op) => op.insert.toLowerCase())
+          .join('\n');
       })
       .join('')
       // Remove certain extraneous special characters from keyword string
