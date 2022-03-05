@@ -17,8 +17,8 @@ class EditorAutocompleterComponent {
     }
     const selectionBounds = selection.getRangeAt(0).getBoundingClientRect();
     this.position = {
-      top: selectionBounds.top,
-      left: selectionBounds.left
+      top: selectionBounds.top + window.scrollY,
+      left: selectionBounds.left + window.scrollX
     };
   }
 
