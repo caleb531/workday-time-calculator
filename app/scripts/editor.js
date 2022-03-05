@@ -159,7 +159,7 @@ class EditorComponent {
   }
 
   view() {
-    return [
+    return m('div.log-editor-area', [
       m('div.log-editor', {
         oncreate: (vnode) => {
           this.initializeEditor(vnode.dom);
@@ -168,7 +168,7 @@ class EditorComponent {
       this.editor ? m(EditorAutocompleterComponent, {
         editorAutocompleter: this.editorAutocompleter
       }) : null
-    ];
+    ]);
   }
 
 }
