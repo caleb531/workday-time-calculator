@@ -1,6 +1,5 @@
 importScripts('idb-keyval.min.js');
 
-const logTerms = [];
 // TODO: this is just temporary hardcoded data for testing
 const completions = [
   'internal',
@@ -8,7 +7,6 @@ const completions = [
   'brown bag',
   'email correspondence',
 ];
-let entriesPromise;
 
 // Process all entered log entries and store the keywords into an array
 function processLogEntries() {
@@ -22,15 +20,13 @@ function processLogEntries() {
           .map((op) => op.insert));
         return terms;
       });
-  }).then((terms) => {
-    logTerms.push(...terms);
   });
 }
 
 // Build list of possible completions given the last few terms preceding the
 // user's cursor
-function buildCompletions(event) {
-  const completionQuery = event.data.completionQuery.trim().toLowerCase();
+function buildCompletions(terms, completionQuery) {
+  completionQuery = completionQuery.trim().toLowerCase();
   const matchingCompletion = completions.find((completion) => {
     return completion.indexOf(completionQuery) === 0;
   });
@@ -46,12 +42,12 @@ function buildCompletions(event) {
 
 // Process log entries as soon as the web worker is initially loaded (before
 // any messages are sent/received)
-entriesPromise = processLogEntries();
+let entriesPromise = processLogEntries();
 // Wait for all log entries to be processed before handling messages from the
 // main thread
 self.onmessage = (event) => {
-  return entriesPromise.then(() => {
-    self.postMessage(buildCompletions(event));
+  return entriesPromise.then((terms) => {
+    self.postMessage(buildCompletions(terms, event.data.completionQuery));
   });
 };
 
