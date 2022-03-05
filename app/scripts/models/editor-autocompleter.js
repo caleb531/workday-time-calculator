@@ -49,9 +49,9 @@ class EditorAutocompleter {
     const characters = [];
     for (let i = editorSelection.index - 1; i >= 0; i -= 1) {
       const character = editorText[i];
-      // Only search back to the previous space character, or the beginning of
-      // the line (whichever comes first)
-      if (character === ' ' || character === '\n') {
+      // Only search back to the beginning of the line (and let the worker
+      // decide which terms on that line are relevant for the autocompletion)
+      if (character === '\n') {
         break;
       }
       characters.unshift(character);
