@@ -5,7 +5,13 @@ class AppStorage {
   // Only use IndexedDB if the browser supports it and if the user has opted to
   // upgrade the data store to IndexedDB
   usingIDB() {
-    return typeof indexedDB !== 'undefined' && !Object.keys(localStorage).find((key) => /^wtc=/.test(key));
+    return Boolean(
+      // The browser must support IndexedDB
+      typeof indexedDB !== 'undefined'
+      &&
+      // The user does not have any data left in localStorage
+      !Object.keys(localStorage).find((key) => /^wtc=/.test(key))
+    );
   }
 
   get(key) {

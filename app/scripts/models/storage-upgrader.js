@@ -8,9 +8,6 @@ class StorageUpgrader {
       // The browser must support IndexedDB
       typeof indexedDB !== 'undefined'
       &&
-      // The user has not already migrated from localStorage to IndexedDB
-      !localStorage.getItem('wtc-idb-enabled')
-      &&
       // The user has at least one time log saved in the app
       Object.keys(localStorage).find((key) => /^wtc-/.test(key))
     );
@@ -25,7 +22,6 @@ class StorageUpgrader {
     })).then(function (setStatus) {
       if (setStatus.length === appKeys.length) {
         console.log('upgrade successful; reloading app...');
-        localStorage.setItem('wtc-idb-enabled', JSON.stringify(true));
         // Delete WTC localStorage keys if indexedDB migration was successful
         appKeys.forEach((key) => localStorage.removeItem(key));
         window.location.reload();
