@@ -32,7 +32,7 @@ class PreferencesComponent {
 
       m(DismissableOverlayComponent, {onDismiss: () => this.onClosePreferences()}),
 
-      m('div.app-preferences-panel', [
+      m('div.panel.app-preferences-panel', [
 
         m(CloseButtonComponent, {onDismiss: () => this.onClosePreferences()}),
 

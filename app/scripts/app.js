@@ -7,6 +7,7 @@ import moment from 'moment';
 import SWUpdateManager from 'sw-update-manager';
 
 import ToolsComponent from './tools.js';
+import StorageUpgraderComponent from './storage-upgrader.js';
 import EditorComponent from './editor.js';
 import DateComponent from './date.js';
 import SummaryComponent from './summary.js';
@@ -52,6 +53,8 @@ class AppComponent {
         m(ToolsComponent, {preferences: this.preferences})
       ]),
       m('div.app-content', [
+
+        m(StorageUpgraderComponent),
 
         m('div.log-area', [
 

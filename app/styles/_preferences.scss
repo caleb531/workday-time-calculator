@@ -23,33 +23,6 @@
   }
 }
 
-.app-preferences-panel {
-  position: absolute;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  width: 500px;
-  max-width: 100%;
-  border-radius: $app-border-radius;
-  padding: 30px 40px;
-  margin-bottom: 20px;
-  background-color: #fff;
-  font-weight: 400;
-  color: #000;
-  box-shadow: $panel-shadow;
-  overflow: hidden;
-}
-
-.app-preferences-heading {
-  margin-top: 0;
-  margin-bottom: 30px;
-  font-weight: normal;
-  font-weight: 600;
-  font-size: 24px;
-  text-align: center;
-}
-
 .app-preference {
   margin-top: 20px;
   // Color Theme preference
