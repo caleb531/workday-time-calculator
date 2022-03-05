@@ -17,7 +17,10 @@ function processLogEntries() {
       .reduce((terms, [key, value]) => {
         terms.push(...value.ops
           .filter((op) => op.insert.trim())
-          .map((op) => op.insert));
+          .reduce((subterms, op) => {
+            subterms.push(...op.insert.toLowerCase().split(' '));
+            return subterms;
+          }, []));
         return terms;
       }, []);
   });
