@@ -48,7 +48,7 @@ function getQuerySubstrings(query) {
 // be used to find matching completions within the keyword string
 function convertQuerySubstringsToRegexes(querySubstrings) {
   return querySubstrings.map((querySubstring) => {
-    return new RegExp(escapeRegExp(querySubstring) + '\\S*', 'gi');
+    return new RegExp('\\b' + escapeRegExp(querySubstring) + '\\S*\\b', 'gi');
   });
 }
 
