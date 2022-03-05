@@ -5,10 +5,8 @@ const logTerms = [];
 const completions = [
   'internal',
   'training',
-  'brown',
-  'bag',
-  'email',
-  'correspondence'
+  'brown bag',
+  'email correspondence',
 ];
 let entriesPromise;
 
