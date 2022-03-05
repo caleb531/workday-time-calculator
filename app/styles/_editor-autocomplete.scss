@@ -3,6 +3,8 @@
   position: absolute;
   min-width: 100px;
   font-size: $editor-font-size;
+  // Preserve leading whitespace in completion placeholder
+  white-space: pre;
   color: rgba(#fff, 0.5);
   &.is-visible {
     display: block;
