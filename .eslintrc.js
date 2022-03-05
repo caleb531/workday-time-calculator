@@ -28,7 +28,8 @@ module.exports = {
         'worker': true
       },
       globals: {
-        'idbKeyval': true
+        'idbKeyval': true,
+        '_': true
       }
     },
     {
