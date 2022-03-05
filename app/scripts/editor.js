@@ -112,7 +112,10 @@ class EditorComponent {
         }
       },
     });
-    this.editor.on('selection-change', () => m.redraw());
+    this.editor.on('selection-change', () => {
+      this.autocompleter.cancel();
+      m.redraw();
+    });
     this.editor.on('text-change', (delta, oldDelta, source) => {
       if (source === 'user') {
         let logContents = this.editor.getContents();
