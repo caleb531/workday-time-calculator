@@ -26,6 +26,8 @@ class StorageUpgrader {
       if (setStatus.length === appKeys.length) {
         console.log('upgrade successful; reloading app...');
         localStorage.setItem('wtc-idb-enabled', JSON.stringify(true));
+        // Delete WTC localStorage keys if indexedDB migration was successful
+        appKeys.forEach((key) => localStorage.removeItem(key));
         window.location.reload();
       } else {
         console.log('error while upgrading');
