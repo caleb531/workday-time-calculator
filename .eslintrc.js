@@ -23,6 +23,15 @@ module.exports = {
 
   overrides: [
     {
+      files: ['web-worker.js'],
+      env: {
+        'worker': true
+      },
+      globals: {
+        'idbKeyval': true
+      }
+    },
+    {
       files: ['service-worker.js'],
       env: {
         'serviceworker': true

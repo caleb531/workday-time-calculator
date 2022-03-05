@@ -16,6 +16,7 @@ gulp.task('assets:css', () => {
 });
 gulp.task('assets:js', () => {
   return gulp.src([
+      'app/scripts/web-worker.js',
       'node_modules/mithril/mithril.min.js',
       'node_modules/moment/min/moment.min.js',
       'node_modules/quill/dist/quill.min.js',
@@ -38,9 +39,16 @@ gulp.task('assets', gulp.parallel(
   'assets:js',
   'assets:idb-keyval'
 ));
-gulp.task('assets:watch', () => {
+gulp.task('assets:core:watch', () => {
 	return gulp.watch('app/assets/**/*', gulp.series('assets:core', 'sw'));
 });
+gulp.task('assets:js:watch', () => {
+	return gulp.watch('app/scripts/web-worker.js', gulp.series('assets:js', 'sw'));
+});
+gulp.task('assets:watch', gulp.parallel(
+  'assets:core:watch',
+  'assets:js:watch'
+));
 
 gulp.task('sass', () => {
 	return gulp.src('app/styles/index.scss')
