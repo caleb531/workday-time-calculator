@@ -1,4 +1,5 @@
 import m from 'mithril';
+import _ from 'lodash';
 import Quill from 'quill';
 import EditorAutocompleter from '../models/editor-autocompleter.js';
 import EditorAutocompleterComponent from './editor-autocompleter.js';
@@ -53,19 +54,8 @@ class EditorComponent {
               handler: (range) => {
                 const completionPlaceholder = this.autocompleter.getCompletionPlaceholder();
                 if (completionPlaceholder) {
-                  // In order to ensure that fetchCompletions() receives the
-                  // correct text cursor position (i.e. the selection), we must
-                  // call setSelection() before my text-change handler fires
-                  // (which itself triggers whenever insertText with
-                  // source:user is called); however, if we precede
-                  // setSelection() with a source:user insertText call, then
-                  // fetchCompletions() will receive the incorrect selection;
-                  // therefore, to solve, we insert the real text silently, set
-                  // the selection, *then* trigger a text-change event with
-                  // source:user
-                  this.editor.insertText(range.index, completionPlaceholder + ' ', 'silent');
+                  this.editor.insertText(range.index, completionPlaceholder + ' ', 'user');
                   this.editor.setSelection(range.index + completionPlaceholder.length + 1, 0, 'user');
-                  this.editor.insertText(range.index + completionPlaceholder.length + 1, '', 'user');
                   this.autocompleter.cancel();
                 } else {
                   this.editor.formatLine(range, {'indent': '+1'}, 'user');
@@ -116,7 +106,13 @@ class EditorComponent {
       this.autocompleter.cancel();
       m.redraw();
     });
-    this.editor.on('text-change', (delta, oldDelta, source) => {
+    // We need to asynchronously defer our text-change handler below with
+    // _.debounce() so that the earlier tab-completion handler (which cannot be
+    // performed in any less than two atomic operations) can complete before we
+    // attempt to fetch completions again; in the case of the tab-completion,
+    // this gives time for the selection to be set, just after inserting the
+    // completed text
+    this.editor.on('text-change', _.debounce((delta, oldDelta, source) => {
       if (source === 'user') {
         let logContents = this.editor.getContents();
         this.onSetLogContents(logContents);
@@ -126,7 +122,7 @@ class EditorComponent {
         m.redraw();
       }
       this.editor.focus();
-    });
+    }));
     this.getLogContentsForSelectedDate().then((logContents) => {
       this.setEditorText(logContents);
     });
