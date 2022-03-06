@@ -8,19 +8,22 @@ class ImportComponent {
   }
 
   importJsonFile(jsonFile) {
-    let reader = new FileReader();
-    reader.onload = (event) => {
-      let importedData = JSON.parse(event.target.result);
-      Object.keys(importedData.logs).forEach((logDate) => {
-        let logContent = importedData.logs[logDate];
-        appStorage.set(`wtc-date-${logDate}`, logContent);
-      });
-      if (importedData.preferences) {
-        this.preferences.set(importedData.preferences, {trigger: false});
-        this.preferences.save();
-      }
-    };
-    reader.readAsText(jsonFile);
+    return new Promise((resolve) => {
+      let reader = new FileReader();
+      reader.onload = (event) => {
+        let importedData = JSON.parse(event.target.result);
+        resolve(Promise.all(Object.keys(importedData.logs).map((logDate) => {
+          let logContent = importedData.logs[logDate];
+          return appStorage.set(`wtc-date-${logDate}`, logContent);
+        })).then(() => {
+          if (importedData.preferences) {
+            this.preferences.set(importedData.preferences, {trigger: false});
+            return this.preferences.save();
+          }
+        }));
+      };
+      reader.readAsText(jsonFile);
+    });
   }
 
   view() {
@@ -29,8 +32,9 @@ class ImportComponent {
         accept: 'application/json',
         onchange: (event) => {
           if (event.target.files.length > 0) {
-            this.importJsonFile(event.target.files[0]);
-            window.location.reload();
+            this.importJsonFile(event.target.files[0]).then(() => {
+              window.location.reload();
+            });
           }
         }
       }),
