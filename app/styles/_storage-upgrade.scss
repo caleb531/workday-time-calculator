@@ -20,8 +20,5 @@
   font-size: 16px;
 }
 .storage-upgrade-loading {
-  $icon-size: 100px;
-  width: $icon-size;
-  height: $icon-size;
-  animation: spin 1000ms linear infinite;
+  fill: $blue;
 }

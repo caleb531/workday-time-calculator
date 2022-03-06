@@ -1,5 +1,6 @@
 import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
+import LoadingComponent from './loading.js';
 import StorageUpgrader from '../models/storage-upgrader.js';
 import _ from 'lodash';
 
@@ -38,7 +39,7 @@ class StorageUpgraderComponent {
 
         m('p.storage-upgrade-message', 'Hang tight while we upgrade the database...'),
 
-        m('img.storage-upgrade-loading', {src: 'icons/loading.svg'})
+        m(LoadingComponent, {class: 'storage-uprade-loading'})
 
       ]),
 

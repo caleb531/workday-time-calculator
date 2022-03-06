@@ -6,6 +6,7 @@ import m from 'mithril';
 import moment from 'moment';
 import SWUpdateManager from 'sw-update-manager';
 
+import LoadingComponent from './loading.js';
 import ToolsComponent from './tools.js';
 import StorageUpgraderComponent from './storage-upgrader.js';
 import EditorComponent from './editor.js';
@@ -17,6 +18,11 @@ class AppComponent {
 
   oninit() {
     this.preferences = new Preferences();
+    this.preferencesLoaded = false;
+    this.preferences.load().then(() => {
+      this.preferencesLoaded = true;
+      m.redraw();
+    });
     this.selectedDate = moment();
     this.reminderManager = new ReminderManager({preferences: this.preferences});
     if (navigator.serviceWorker) {
@@ -52,7 +58,7 @@ class AppComponent {
         ]),
         m(ToolsComponent, {preferences: this.preferences})
       ]),
-      m('div.app-content', [
+      this.preferencesLoaded ? m('div.app-content', [
 
         m(StorageUpgraderComponent),
 
@@ -86,7 +92,7 @@ class AppComponent {
           log: this.log
         }) : null
 
-      ])
+      ]) : m(LoadingComponent, {class: 'app-loading'})
 
     ]);
 

@@ -4,13 +4,13 @@ import appStorage from './app-storage.js';
 class Preferences {
 
   constructor() {
-    this.load();
     this.eventCallbacks = {};
   }
 
   load() {
-    appStorage.get('wtc-prefs').then((prefs) => {
+    return appStorage.get('wtc-prefs').then((prefs) => {
       Object.assign(this, Preferences.defaults, prefs);
+      return this;
     });
   }
 
