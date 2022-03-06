@@ -1,5 +1,9 @@
 import idbKeyval from 'idb-keyval';
 
+// This is a storage API-agnostic class for accessing local data saved by the
+// app; it uses IndexedDB as the internal storage API, falling back to
+// localStorage if IndexedDB is unsupported by the user's browser, or if the
+// storage upgrade process could not be successfully completed
 class AppStorage {
 
   // Only use IndexedDB if the browser supports it and if the user has opted to
@@ -14,6 +18,7 @@ class AppStorage {
     );
   }
 
+  // Retrieve the contents of the storage entry at the given key
   get(key) {
     if (this.usingIDB()) {
       return idbKeyval.get(key);
@@ -24,6 +29,7 @@ class AppStorage {
     }
   }
 
+  // Set the contents of the storage entry at the given key
   set(key, value) {
     if (this.usingIDB()) {
       return idbKeyval.set(key, value);
@@ -34,6 +40,7 @@ class AppStorage {
     }
   }
 
+  // Remove an entry with the given key from the storage completely
   remove(key) {
     if (this.usingIDB()) {
       return idbKeyval.del(key);
@@ -44,6 +51,7 @@ class AppStorage {
     }
   }
 
+  // Return an array of keys for all entries in the storage
   keys() {
     if (this.usingIDB()) {
       return idbKeyval.keys();
