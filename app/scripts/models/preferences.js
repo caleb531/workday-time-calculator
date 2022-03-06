@@ -15,7 +15,7 @@ class Preferences {
   }
 
   save() {
-    appStorage.set('wtc-prefs', this);
+    appStorage.set('wtc-prefs', this.toJSON());
   }
 
   set(props, {trigger = true} = {}) {
