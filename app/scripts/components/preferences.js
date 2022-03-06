@@ -105,8 +105,8 @@ PreferencesComponent.preferences = [
     description: 'How should category groupings be sorted in the Summary view?',
     options: [
       {label: 'No sorting', value: 'none'},
-      {label: 'Title', value: 'title'},
-      {label: 'Duration', value: 'duration'}
+      {label: 'Title (ascending)', value: 'title'},
+      {label: 'Duration (descending)', value: 'duration'}
     ]
   },
   {
