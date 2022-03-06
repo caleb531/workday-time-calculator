@@ -23,7 +23,7 @@ module.exports = {
 
   overrides: [
     {
-      files: ['web-worker.js'],
+      files: ['autocompletion-worker.js'],
       env: {
         'worker': true
       },

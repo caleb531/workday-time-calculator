@@ -16,7 +16,7 @@ gulp.task('assets:css', () => {
 });
 gulp.task('assets:js', () => {
   return gulp.src([
-      'app/scripts/web-worker.js',
+      'app/scripts/autocompletion-worker.js',
       'node_modules/mithril/mithril.min.js',
       'node_modules/moment/min/moment.min.js',
       'node_modules/quill/dist/quill.min.js',
@@ -43,7 +43,7 @@ gulp.task('assets:core:watch', () => {
 	return gulp.watch('app/assets/**/*', gulp.series('assets:core', 'sw'));
 });
 gulp.task('assets:js:watch', () => {
-	return gulp.watch('app/scripts/web-worker.js', gulp.series('assets:js', 'sw'));
+	return gulp.watch('app/scripts/autocompletion-worker.js', gulp.series('assets:js', 'sw'));
 });
 gulp.task('assets:watch', gulp.parallel(
   'assets:core:watch',

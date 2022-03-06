@@ -9,7 +9,7 @@ class EditorAutocompleter {
     // terms, which may involve processing thousands of words within the user's
     // log entries
     if (appStorage.usingIDB()) {
-      this.worker = new Worker('scripts/web-worker.js');
+      this.worker = new Worker('scripts/autocompletion-worker.js');
       this.worker.onmessage = (event) => {
         this.receiveCompletionData(event);
       };
