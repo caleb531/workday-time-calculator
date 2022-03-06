@@ -79,8 +79,10 @@ function buildCompletions(keywordStr, query) {
     // Retrieve all phrases in the keyword string that match the given
     // autocomplete query
     const matches = _.chain(matchGroup)
+      // Map the number of occurrences of each match
       .countBy()
       .toPairs()
+      // Sort matches from most occurrences to least
       /* eslint-disable-next-line no-unused-vars */
       .sortBy(([word, count]) => -count)
       .value()
