@@ -79,7 +79,7 @@ class EditorAutocompleter {
     if (!this.isActive) {
       return;
     }
-    const completionQuery = this.getCompletionQuery().toLowerCase();
+    const completionQuery = this.getCompletionQuery();
     if (!completionQuery) {
       // Reset the current completion placeholder if we are at the start of the
       // line, or if a space precedes the text cursor

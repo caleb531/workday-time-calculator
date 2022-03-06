@@ -15,7 +15,7 @@ function processLogEntries() {
       .map(([key, value]) => {
         return value.ops
           .filter((op) => op.insert.trim())
-          .map((op) => op.insert.toLowerCase())
+          .map((op) => op.insert)
           .join('\n');
       })
       .join('')
@@ -51,10 +51,18 @@ function convertQuerySubstringsToRegexes(querySubstrings) {
   });
 }
 
+// Given a completion, subtract of the start of the completion (which should be
+// the same as the given query substring) and return the remaining part of the
+// string; the removal should ignore case so that the case of the original
+// completion is preserved
+function getCompletionPlaceholderFromQuery(completion, query) {
+  const substringReplacementRegex = new RegExp(escapeRegExp(query), 'i');
+  return completion.replace(substringReplacementRegex, '');
+}
+
 // Build list of possible completions given the last few words preceding the
 // user's cursor (what we call "the completion query", or simply "the query")
 function buildCompletions(keywordStr, query) {
-  query = query.toLowerCase();
   const querySubstrings = getQuerySubstrings(query);
   const substringRegexes = convertQuerySubstringsToRegexes(querySubstrings);
   const substringMatchGroups = substringRegexes.map((substringRegex) => {
@@ -82,7 +90,7 @@ function buildCompletions(keywordStr, query) {
       console.log(query, '=>', matches);
       return {
         matchingCompletion: matches[0],
-        completionPlaceholder: matches[0].replace(querySubstring, '')
+        completionPlaceholder: getCompletionPlaceholderFromQuery(matches[0], querySubstring)
       };
     }
   }
