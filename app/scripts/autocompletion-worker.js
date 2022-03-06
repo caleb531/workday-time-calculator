@@ -20,7 +20,7 @@ function processLogEntries() {
       })
       .join('\n')
       // Remove certain extraneous special characters from keyword string
-      .replace(/[^a-z0-9\-\:\/\s]/gi, ' ')
+      .replace(/[^a-z0-9\'\-\:\/\s]/gi, ' ')
       .replace(/ +/gi, ' ');
   });
 }
