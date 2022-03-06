@@ -26,6 +26,12 @@ gulp.task('assets:js', () => {
     ])
     .pipe(gulp.dest('public/scripts'));
 });
+gulp.task('assets:worker', () => {
+  return gulp.src([
+      'app/scripts/autocompletion-worker.js'
+    ])
+    .pipe(gulp.dest('public/scripts'));
+});
 gulp.task('assets:idb-keyval', () => {
   return gulp.src([
       'node_modules/idb-keyval/dist/umd.js'
@@ -37,13 +43,14 @@ gulp.task('assets', gulp.parallel(
   'assets:core',
   'assets:css',
   'assets:js',
+  'assets:worker',
   'assets:idb-keyval'
 ));
 gulp.task('assets:core:watch', () => {
 	return gulp.watch('app/assets/**/*', gulp.series('assets:core', 'sw'));
 });
 gulp.task('assets:js:watch', () => {
-	return gulp.watch('app/scripts/autocompletion-worker.js', gulp.series('assets:js', 'sw'));
+	return gulp.watch('app/scripts/autocompletion-worker.js', gulp.series('assets:worker', 'sw'));
 });
 gulp.task('assets:watch', gulp.parallel(
   'assets:core:watch',
