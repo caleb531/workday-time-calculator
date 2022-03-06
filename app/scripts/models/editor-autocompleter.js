@@ -104,7 +104,7 @@ class EditorAutocompleter {
   }
 
   shouldAutocomplete() {
-    return (
+    return Boolean(
       this.position
       &&
       this.position.top
