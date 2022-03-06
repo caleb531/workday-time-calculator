@@ -1,6 +1,6 @@
-import Log from './models/log.js';
-import Preferences from './models/preferences.js';
-import ReminderManager from './models/reminder-manager.js';
+import Log from '../models/log.js';
+import Preferences from '../models/preferences.js';
+import ReminderManager from '../models/reminder-manager.js';
 
 import m from 'mithril';
 import moment from 'moment';

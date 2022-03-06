@@ -1,4 +1,4 @@
 import m from 'mithril';
-import AppComponent from './app.js';
+import AppComponent from './components/app.js';
 
 m.mount(document.body.querySelector('main'), AppComponent);

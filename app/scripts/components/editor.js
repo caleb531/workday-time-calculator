@@ -1,8 +1,8 @@
 import m from 'mithril';
 import Quill from 'quill';
-import EditorAutocompleter from './models/editor-autocompleter.js';
+import EditorAutocompleter from '../models/editor-autocompleter.js';
 import EditorAutocompleterComponent from './editor-autocompleter.js';
-import appStorage from './models/app-storage.js';
+import appStorage from '../models/app-storage.js';
 
 class EditorComponent {
 

@@ -1,6 +1,6 @@
 import m from 'mithril';
 import moment from 'moment';
-import appStorage from './models/app-storage.js';
+import appStorage from '../models/app-storage.js';
 
 class ExportComponent {
 

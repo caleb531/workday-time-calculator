@@ -1,5 +1,5 @@
 import m from 'mithril';
-import appStorage from './models/app-storage.js';
+import appStorage from '../models/app-storage.js';
 
 class ImportComponent {
 

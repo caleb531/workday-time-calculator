@@ -1,6 +1,6 @@
 import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
-import StorageUpgrader from './models/storage-upgrader.js';
+import StorageUpgrader from '../models/storage-upgrader.js';
 import _ from 'lodash';
 
 class StorageUpgraderComponent {
