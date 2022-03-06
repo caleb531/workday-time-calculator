@@ -75,6 +75,8 @@ class EditorAutocompleter {
     m.redraw();
   }
 
+  // Fetch autocompletion matches for the currently-typed line of text (the
+  // query)
   fetchCompletions() {
     if (!this.isActive) {
       return;
@@ -91,8 +93,11 @@ class EditorAutocompleter {
     }
   }
 
+  // Recalculate the coordinates of the completion placeholder on-screen
   recalculatePosition() {
     const selection = window.getSelection();
+    // Do not calculate anything if the text cursor is not active inside the
+    // editor
     if (selection.type.toLowerCase() === 'none') {
       return;
     }
@@ -103,6 +108,9 @@ class EditorAutocompleter {
     };
   }
 
+  // Return true if the user should be able to autocomplete when pressing the
+  // TAB key; this also controls whether or not the completion placeholder will
+  // show
   shouldAutocomplete() {
     return Boolean(
       this.position
@@ -115,6 +123,8 @@ class EditorAutocompleter {
     );
   }
 
+  // If the user can currently autocomplete something, return the last-fetched
+  // placeholder text to indicate that the current text can be autocompleted
   getCompletionPlaceholder() {
     return this.shouldAutocomplete() ? this.completionPlaceholder : '';
   }
