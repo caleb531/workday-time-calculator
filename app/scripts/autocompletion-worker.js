@@ -19,8 +19,7 @@ function processLogEntries() {
           .join('\n');
       })
       .join('\n')
-      // Remove certain extraneous special characters from keyword string
-      .replace(/[^a-z0-9\'\-\:\/\s]/gi, ' ')
+      // Collapse consecutive sequences of spaces
       .replace(/ +/gi, ' ');
   });
 }
