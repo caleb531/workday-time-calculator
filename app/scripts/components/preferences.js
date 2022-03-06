@@ -91,6 +91,15 @@ PreferencesComponent.preferences = [
     ]
   },
   {
+    id: 'autocompleteMode',
+    label: 'Autocomplete Suggestions',
+    description: 'Would you like WTC to suggest words as you type in the editor? These suggestions are based on your log history, and no information ever leaves your local device.',
+    options: [
+      {label: 'Enabled', value: 'on'},
+      {label: 'Disabled', value: 'off'}
+    ]
+  },
+  {
     id: 'timeSystem',
     label: 'Time System',
     description: 'Which time system do you prefer when entering and displaying times?',

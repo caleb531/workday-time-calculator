@@ -3,28 +3,31 @@ import appStorage from './app-storage.js';
 
 class EditorAutocompleter {
 
-  constructor() {
+  constructor({isEnabled} = {}) {
     this.cancel();
     // Use a web worker to perform the computationally-heavy work of processing
     // terms, which may involve processing thousands of words within the user's
     // log entries
-    if (appStorage.usingIDB()) {
+    this.setIsEnabled(isEnabled);
+  }
+
+  // Evaluates whether or not the autocomplete functionality should be enabled
+  setIsEnabled(isEnabled) {
+    if (appStorage.usingIDB() && isEnabled) {
+      this.isEnabled = true;
       this.worker = new Worker('scripts/autocompletion-worker.js');
       this.worker.onmessage = (event) => {
         this.receiveCompletionData(event);
       };
+    } else {
+      this.isEnabled = false;
+      delete this.worker;
     }
-  }
-
-  // If the autocompletions have been recently cancelled, allow completions to
-  // appear again once the user starts typing again
-  enable() {
-    this.isActive = true;
   }
 
   // Dismiss the current completion suggestion
   cancel() {
-    this.isActive = false;
+    this.isReady = false;
     this.matchingCompletion = '';
     this.completionPlaceholder = '';
   }
@@ -78,9 +81,6 @@ class EditorAutocompleter {
   // Fetch autocompletion matches for the currently-typed line of text (the
   // query)
   fetchCompletions() {
-    if (!this.isActive) {
-      return;
-    }
     const completionQuery = this.getCompletionQuery();
     if (!completionQuery) {
       // Reset the current completion placeholder if we are at the start of the
@@ -88,7 +88,8 @@ class EditorAutocompleter {
       this.cancel();
       return;
     }
-    if (this.worker) {
+    if (this.worker && this.isEnabled) {
+      this.isReady = true;
       this.worker.postMessage({completionQuery});
     }
   }

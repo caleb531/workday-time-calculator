@@ -7,10 +7,16 @@ import appStorage from '../models/app-storage.js';
 
 class EditorComponent {
 
-  oninit({attrs: {selectedDate, onSetLogContents}}) {
+  oninit({attrs: {preferences, selectedDate, onSetLogContents}}) {
+    this.preferences = preferences;
     this.selectedDate = selectedDate.clone();
     this.onSetLogContents = onSetLogContents;
-    this.autocompleter = new EditorAutocompleter();
+    this.autocompleter = new EditorAutocompleter({
+      isEnabled: this.preferences.autocompleteMode === 'on'
+    });
+    this.preferences.on('change:autocompleteMode', (key, newMode) => {
+      this.autocompleter.setIsEnabled(newMode === 'on');
+    });
   }
 
   onupdate({attrs: {selectedDate}}) {
@@ -117,7 +123,6 @@ class EditorComponent {
         let logContents = this.editor.getContents();
         this.onSetLogContents(logContents);
         this.saveTextLog(logContents);
-        this.autocompleter.enable();
         this.autocompleter.fetchCompletions();
         m.redraw();
       }
@@ -176,7 +181,7 @@ class EditorComponent {
           this.initializeEditor(vnode.dom);
         }
       }),
-      this.editor ? m(EditorAutocompleterComponent, {
+      this.editor && this.autocompleter.isEnabled ? m(EditorAutocompleterComponent, {
         autocompleter: this.autocompleter
       }) : null
     ]);

@@ -53,6 +53,10 @@ Preferences.defaults = {
   // How often (in seconds) a reminder to update your log should be spawned; a
   // value of 0 indicates that no reminders are ever spawned
   reminderInterval: 0,
+  // Whether or not the word autocomplete functionality is enabled (although
+  // this may option may be expanded in the future with additional autocomplete
+  // behaviors, hence the name "Autocomplete Mode")
+  autocompleteMode: 'on',
   // The time system used to parse out times that you enter
   timeSystem: '12-hour',
   // The sort order of category groupings
