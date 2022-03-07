@@ -6,8 +6,8 @@ class EditorAutocompleterComponent {
     this.autocompleter = autocompleter;
   }
 
-  onbeforeupdate(_, {dom}) {
-    this.autocompleter.recalculatePosition(dom);
+  onbeforeupdate() {
+    this.autocompleter.recalculatePosition();
   }
 
   view() {
