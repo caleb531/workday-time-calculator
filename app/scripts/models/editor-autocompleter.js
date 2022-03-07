@@ -1,9 +1,9 @@
-import m from 'mithril';
 import appStorage from './app-storage.js';
 
 class EditorAutocompleter {
 
-  constructor({isEnabled} = {}) {
+  constructor({isEnabled, onReceiveCompletions} = {}) {
+    this.onReceiveCompletions = onReceiveCompletions;
     this.cancel();
     // Use a web worker to perform the computationally-heavy work of processing
     // terms, which may involve processing thousands of words within the user's
@@ -17,7 +17,7 @@ class EditorAutocompleter {
       this.isEnabled = true;
       this.worker = new Worker('scripts/autocompletion-worker.js');
       this.worker.onmessage = (event) => {
-        this.receiveCompletionData(event);
+        this.receiveCompletions(event);
       };
     } else {
       this.isEnabled = false;
@@ -72,10 +72,12 @@ class EditorAutocompleter {
   // Receive the top suggestion of the autocompletion that best matches what
   // the user is currently typing, and any other data that may be relevant for
   // that purpose
-  receiveCompletionData(event) {
+  receiveCompletions(event) {
     this.matchingCompletion = event.data.matchingCompletion;
     this.completionPlaceholder = event.data.completionPlaceholder;
-    m.redraw();
+    if (this.onReceiveCompletions) {
+      this.onReceiveCompletions();
+    }
   }
 
   // Fetch autocompletion matches for the currently-typed line of text (the
