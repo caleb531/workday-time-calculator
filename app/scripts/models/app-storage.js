@@ -14,7 +14,7 @@ class AppStorage {
       typeof indexedDB !== 'undefined'
       &&
       // The user does not have any data left in localStorage
-      !Object.keys(localStorage).find((key) => /^wtc=/.test(key))
+      !Object.keys(localStorage).find((key) => /^wtc-/.test(key))
     );
   }
 
