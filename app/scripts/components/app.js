@@ -25,7 +25,7 @@ class AppComponent {
     });
     this.selectedDate = moment();
     this.reminderManager = new ReminderManager({preferences: this.preferences});
-    if (navigator.serviceWorker) {
+    if (navigator.serviceWorker && window.location.hostname !== 'localhost') {
       let serviceWorker = navigator.serviceWorker.register('service-worker.js');
       this.updateManager = new SWUpdateManager(serviceWorker);
       this.updateManager.on('updateAvailable', () => m.redraw());

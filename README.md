@@ -13,8 +13,10 @@ https://projects.calebevans.me/workday-time-calculator/
 
 ```bash
 npm install
-gulp build:watch
+gulp serve
 ```
+
+The app will then be accessible at http://localhost:8080.
 
 ## Usage
 
