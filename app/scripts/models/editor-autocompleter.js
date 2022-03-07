@@ -21,7 +21,10 @@ class EditorAutocompleter {
       };
     } else {
       this.isEnabled = false;
-      delete this.worker;
+      if (this.worker) {
+        this.worker.terminate();
+        delete this.worker;
+      }
     }
   }
 
