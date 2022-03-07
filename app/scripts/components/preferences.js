@@ -80,6 +80,19 @@ class PreferencesComponent {
 }
 PreferencesComponent.preferences = [
   {
+    id: 'colorTheme',
+    label: 'Color Theme',
+    description: 'What color would you like as your WTC app\'s theme?',
+    optionType: 'color',
+    options: [
+      {label: 'Blue', value: 'blue'},
+      {label: 'Green', value: 'green'},
+      {label: 'Purple', value: 'purple'},
+      {label: 'Rose', value: 'rose'},
+      {label: 'Slate', value: 'slate'},
+    ]
+  },
+  {
     id: 'reminderInterval',
     label: 'Reminder Interval',
     description: 'How often should WTC remind you to update your time log?',
@@ -116,19 +129,6 @@ PreferencesComponent.preferences = [
       {label: 'No sorting', value: 'none'},
       {label: 'Title (ascending)', value: 'title'},
       {label: 'Duration (descending)', value: 'duration'}
-    ]
-  },
-  {
-    id: 'colorTheme',
-    label: 'Color Theme',
-    description: 'What color would you like as your WTC app\'s theme?',
-    optionType: 'color',
-    options: [
-      {label: 'Blue', value: 'blue'},
-      {label: 'Green', value: 'green'},
-      {label: 'Purple', value: 'purple'},
-      {label: 'Rose', value: 'rose'},
-      {label: 'Slate', value: 'slate'},
     ]
   }
 ];
