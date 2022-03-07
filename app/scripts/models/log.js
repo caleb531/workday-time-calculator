@@ -27,10 +27,10 @@ class Log {
     let sepPatt = /\s*([a-z]+?|\-|–|—)\s*/.source;
     let rangeRegex = new RegExp(`^${junkPatt}${timePatt}${junkPatt}${sepPatt}${junkPatt}${timePatt}${junkPatt}$`, 'i');
     let matches = logLine.match(rangeRegex);
-    if (!matches) {
-      return [];
-    } else {
+    if (matches) {
       return [matches[1], matches[3]];
+    } else {
+      return [];
     }
   }
 
