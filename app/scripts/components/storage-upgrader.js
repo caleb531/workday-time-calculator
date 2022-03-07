@@ -10,12 +10,28 @@ class StorageUpgraderComponent {
     this.upgrader = new StorageUpgrader();
     if (this.upgrader.shouldUpgrade()) {
       this.isVisible = true;
-      // Show the upgrade panel for a minimum of 1000ms so the user has time to
-      // perceive what's happening
-      setTimeout(() => {
-        this.upgrader.upgrade();
-      }, 1000);
+      this.upgrade();
     }
+  }
+
+  upgrade() {
+    // Show the upgrade panel for a minimum of 1000ms so the user has time to
+    // perceive what's happening
+    setTimeout(() => {
+      try {
+        this.upgrader.upgrade().catch((error) => {
+          this.handleError(error);
+        });
+      } catch (error) {
+        this.handleError(error);
+      }
+    }, 1000);
+  }
+
+  handleError(error) {
+    console.error(error);
+    this.isVisible = false;
+    m.redraw();
   }
 
   // When the Storage Upgrade prompt shows, blur the editor by focusing the
