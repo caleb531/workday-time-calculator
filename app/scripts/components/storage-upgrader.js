@@ -39,7 +39,7 @@ class StorageUpgraderComponent {
 
         m('p.storage-upgrade-message', 'Hang tight while we upgrade the database...'),
 
-        m(LoadingComponent, {class: 'storage-uprade-loading'})
+        m(LoadingComponent, {class: 'storage-upgrade-loading'})
 
       ]),
 
