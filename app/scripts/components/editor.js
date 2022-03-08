@@ -29,6 +29,19 @@ class EditorComponent {
     }
   }
 
+  // Autocomplete the shown completion, if there is one; if not, run the
+  // designated callback as a fallback
+  autocomplete(range, options = {}) {
+    const completionPlaceholder = this.autocompleter.getCompletionPlaceholder();
+    if (completionPlaceholder) {
+      this.editor.insertText(range.index, completionPlaceholder + ' ', 'user');
+      this.editor.setSelection(range.index + completionPlaceholder.length + 1, 0, 'user');
+      this.autocompleter.cancel();
+    } else if (options.fallbackBehavior) {
+      options.fallbackBehavior();
+    }
+  }
+
   initializeEditor(editorContainer) {
     this.editor = new Quill(editorContainer, {
       theme: 'snow',
@@ -59,15 +72,26 @@ class EditorComponent {
             tab: {
               key: 9,
               handler: (range) => {
-                const completionPlaceholder = this.autocompleter.getCompletionPlaceholder();
-                if (completionPlaceholder) {
-                  this.editor.insertText(range.index, completionPlaceholder + ' ', 'user');
-                  this.editor.setSelection(range.index + completionPlaceholder.length + 1, 0, 'user');
-                  this.autocompleter.cancel();
-                } else {
-                  this.editor.formatLine(range, {'indent': '+1'}, 'user');
-                  this.autocompleter.cancel();
-                }
+                this.autocomplete(range, {
+                  fallbackBehavior: () => {
+                    this.editor.formatLine(range, {'indent': '+1'}, 'user');
+                    this.autocompleter.cancel();
+                  }
+                });
+              }
+            },
+            arrowRight: {
+              key: 39,
+              handler: (range) => {
+                this.autocomplete(range, {
+                  fallbackBehavior: () => {
+                    if (range.length) {
+                      this.editor.setSelection(range.index + range.length, 0, 'user');
+                    } else {
+                      this.editor.setSelection(range.index + range.length + 1, 0, 'user');
+                    }
+                  }
+                });
               }
             },
             shiftTab: {
