@@ -35,11 +35,9 @@ function processLogEntries() {
 // "correspondence to", "correspondence"])
 function getQuerySubstrings(query) {
   const queryWords = query.split(' ');
-  const substrings = [];
-  for (let i = 0; i < queryWords.length; i += 1) {
-    substrings.push(queryWords.slice(i).join(' '));
-  }
-  return substrings;
+  return queryWords.map((queryWord, i) => {
+    return queryWords.slice(i).join(' ');
+  });
 }
 
 // Convert the above array of query substrings to regular expressions that can
