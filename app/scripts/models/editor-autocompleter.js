@@ -2,30 +2,33 @@ import appStorage from './app-storage.js';
 
 class EditorAutocompleter {
 
-  constructor({isEnabled, onReceiveCompletions} = {}) {
+  constructor({autocompleteMode, onReceiveCompletions} = {}) {
+    this.mode = autocompleteMode;
     this.onReceiveCompletions = onReceiveCompletions;
     this.cancel();
     // Use a web worker to perform the computationally-heavy work of processing
     // terms, which may involve processing thousands of words within the user's
     // log entries
-    this.setIsEnabled(isEnabled);
+    this.setMode(autocompleteMode);
   }
 
-  // Evaluates whether or not the autocomplete functionality should be enabled
-  setIsEnabled(isEnabled) {
-    if (appStorage.usingIDB() && isEnabled) {
-      this.isEnabled = true;
+  setMode(newMode) {
+    this.mode = newMode;
+    if (appStorage.usingIDB() && newMode !== 'off') {
       this.worker = new Worker('scripts/autocompletion-worker.js');
       this.worker.onmessage = (event) => {
         this.receiveCompletions(event);
       };
     } else {
-      this.isEnabled = false;
       if (this.worker) {
         this.worker.terminate();
         delete this.worker;
       }
     }
+  }
+
+  get isEnabled() {
+    return this.mode !== 'off';
   }
 
   // Dismiss the current completion suggestion
@@ -95,7 +98,10 @@ class EditorAutocompleter {
     }
     if (this.worker && this.isEnabled) {
       this.isReady = true;
-      this.worker.postMessage({completionQuery});
+      this.worker.postMessage({
+        completionQuery,
+        autocompleteMode: this.mode
+      });
     }
   }
 

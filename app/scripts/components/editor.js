@@ -12,11 +12,11 @@ class EditorComponent {
     this.selectedDate = selectedDate.clone();
     this.onSetLogContents = onSetLogContents;
     this.autocompleter = new EditorAutocompleter({
-      isEnabled: this.preferences.autocompleteMode !== 'off',
+      autocompleteMode: this.preferences.autocompleteMode,
       onReceiveCompletions: () => m.redraw()
     });
     this.preferences.on('change:autocompleteMode', (key, newMode) => {
-      this.autocompleter.setIsEnabled(newMode !== 'off');
+      this.autocompleter.setMode(newMode);
     });
   }
 

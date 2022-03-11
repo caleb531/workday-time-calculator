@@ -3,6 +3,7 @@ import DismissableOverlayComponent from './dismissable-overlay.js';
 import CloseButtonComponent from './close-button.js';
 import RadioButtonComponent from './radio-button.js';
 import ColorSwatchComponent from './color-swatch.js';
+import Preferences from '../models/preferences.js';
 
 class PreferencesComponent {
 
@@ -38,7 +39,7 @@ class PreferencesComponent {
 
         m('h2.app-preferences-heading', 'Preferences'),
 
-        PreferencesComponent.preferences.map((preference) => {
+        Preferences.preferences.map((preference) => {
           return m('div.app-preference', {
             'data-preference-id': preference.id
           }, [
@@ -78,59 +79,5 @@ class PreferencesComponent {
   }
 
 }
-PreferencesComponent.preferences = [
-  {
-    id: 'colorTheme',
-    label: 'Color Theme',
-    description: 'What color would you like as your WTC app\'s theme?',
-    optionType: 'color',
-    options: [
-      {label: 'Blue', value: 'blue'},
-      {label: 'Green', value: 'green'},
-      {label: 'Purple', value: 'purple'},
-      {label: 'Rose', value: 'rose'},
-      {label: 'Slate', value: 'slate'},
-    ]
-  },
-  {
-    id: 'reminderInterval',
-    label: 'Reminder Interval',
-    description: 'How often should WTC remind you to update your time log?',
-    options: [
-      {label: 'Never', value: 0},
-      {label: 'Every 15 minutes', value: 15},
-      {label: 'Every half-hour', value: 30},
-      {label: 'Every hour', value: 60}
-    ]
-  },
-  {
-    id: 'autocompleteMode',
-    label: 'Autocomplete Suggestions',
-    description: 'Would you like WTC to suggest words as you type in the editor? These suggestions are based on your log history, and no information ever leaves your local device.',
-    options: [
-      {label: 'Enabled', value: 'on'},
-      {label: 'Disabled', value: 'off'}
-    ]
-  },
-  {
-    id: 'timeSystem',
-    label: 'Time System',
-    description: 'Which time system do you prefer when entering and displaying times?',
-    options: [
-      {label: '12-hour', value: '12-hour'},
-      {label: '24-hour / military time', value: '24-hour'}
-    ]
-  },
-  {
-    id: 'categorySortOrder',
-    label: 'Category Sort Order',
-    description: 'How should category groupings be sorted in the Summary view?',
-    options: [
-      {label: 'No sorting', value: 'none'},
-      {label: 'Title (ascending)', value: 'title'},
-      {label: 'Duration (descending)', value: 'duration'}
-    ]
-  }
-];
 
 export default PreferencesComponent;

@@ -1,5 +1,11 @@
 importScripts('idb-keyval.min.js', 'lodash.min.js');
 
+// A map of regular expressions for the different autocomplete modes
+const regexes = {
+  lazy: /\b{{querySubstring}}\S*\b/,
+  greedy: /\b{{querySubstring}}\S*( \S+){0,4}\b/
+};
+
 // Escape all characters that have special meaning in regular expressions
 function escapeRegExp(str) {
   return str.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -42,9 +48,13 @@ function getQuerySubstrings(query) {
 
 // Convert the above array of query substrings to regular expressions that can
 // be used to find matching completions within the keyword string
-function convertQuerySubstringsToRegexes(querySubstrings) {
+function convertQuerySubstringsToRegexes(querySubstrings, autocompleteMode) {
   return querySubstrings.map((querySubstring) => {
-    return new RegExp('\\b' + escapeRegExp(querySubstring) + '\\S*\\b', 'gi');
+    return new RegExp(
+      regexes[autocompleteMode].source
+        .replace(/{{querySubstring}}/gi, querySubstring),
+      regexes[autocompleteMode].flags
+    );
   });
 }
 
@@ -59,9 +69,9 @@ function getCompletionPlaceholderFromQuery(completion, query) {
 
 // Build list of possible completions given the last few words preceding the
 // user's cursor (what we call "the completion query", or simply "the query")
-function buildCompletions(keywordStr, query) {
-  const querySubstrings = getQuerySubstrings(query);
-  const substringRegexes = convertQuerySubstringsToRegexes(querySubstrings);
+function buildCompletions({keywordStr, completionQuery, autocompleteMode}) {
+  const querySubstrings = getQuerySubstrings(completionQuery);
+  const substringRegexes = convertQuerySubstringsToRegexes(querySubstrings, autocompleteMode);
   const substringMatchGroups = substringRegexes.map((substringRegex) => {
     return keywordStr.match(substringRegex) || [];
   });
@@ -86,7 +96,7 @@ function buildCompletions(keywordStr, query) {
       .map(([word]) => word);
     if (matches.length) {
       // TODO: remove this when we are ready to bring autocomplete live
-      console.log(query, '=>', matches);
+      console.log(completionQuery, '=>', matches);
       return {
         matchingCompletion: matches[0],
         completionPlaceholder: getCompletionPlaceholderFromQuery(matches[0], querySubstring)
@@ -106,7 +116,11 @@ let entriesPromise = processLogEntries();
 // main thread
 self.onmessage = (event) => {
   return entriesPromise.then((keywordStr) => {
-    self.postMessage(buildCompletions(keywordStr, event.data.completionQuery));
+    self.postMessage(buildCompletions({
+      keywordStr: keywordStr,
+      completionQuery: event.data.completionQuery,
+      autocompleteMode: event.data.autocompleteMode
+    }));
   });
 };
 
