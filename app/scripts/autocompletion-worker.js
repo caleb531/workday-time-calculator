@@ -2,8 +2,8 @@ importScripts('idb-keyval.min.js', 'lodash.min.js');
 
 // A map of regular expressions for the different autocomplete modes
 const regexes = {
-  lazy: /\b{{querySubstring}}\S*\b/,
-  greedy: /\b{{querySubstring}}\S*( \S+){0,4}\b/
+  lazy: /\b{{querySubstring}}\S*\b/g,
+  greedy: /\b{{querySubstring}}\S*( \S+){0,4}\b/g
 };
 
 // Escape all characters that have special meaning in regular expressions
