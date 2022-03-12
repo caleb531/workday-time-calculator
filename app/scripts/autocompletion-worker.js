@@ -1,9 +1,13 @@
 importScripts('idb-keyval.min.js', 'lodash.min.js');
 
-// A map of regular expressions for the different autocomplete modes
-const regexes = {
-  lazy: /\b{{querySubstring}}\S*\b/g,
-  greedy: /\b{{querySubstring}}\S*( \S+){0,4}\b/g
+// A map representing the various algorithms for the autocomplete; each key
+// name is the ID of a specific autocomplete mode, and each value is a function
+// which returns a dynamically-constructed regular expression for that mode;
+// each callback receives the (regex-escaped) current query substring as a
+// parameter
+const modeRegexes = {
+  lazy: (q) => new RegExp('\\b' + q + '\\S*\\b', 'g'),
+  greedy: (q) => new RegExp('\\b' + q + '\\S*( \\S+){0,4}\\b', 'g')
 };
 
 // Escape all characters that have special meaning in regular expressions
@@ -50,11 +54,7 @@ function getQuerySubstrings(query) {
 // be used to find matching completions within the keyword string
 function convertQuerySubstringsToRegexes(querySubstrings, autocompleteMode) {
   return querySubstrings.map((querySubstring) => {
-    return new RegExp(
-      regexes[autocompleteMode].source
-        .replace(/{{querySubstring}}/gi, querySubstring),
-      regexes[autocompleteMode].flags
-    );
+    return modeRegexes[autocompleteMode](escapeRegExp(querySubstring));
   });
 }
 
