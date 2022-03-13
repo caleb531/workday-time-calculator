@@ -7,7 +7,7 @@ importScripts('idb-keyval.min.js', 'lodash.min.js');
 // parameter
 const modeRegexes = {
   lazy: (q) => new RegExp('\\b' + q + '\\S*\\b', 'g'),
-  greedy: (q) => new RegExp('\\b' + q + '\\S*( \\S+)*\\b', 'g')
+  greedy: (q) => new RegExp('\\b' + q + '\\S*( \\S+){0,4}\\b', 'g')
 };
 
 // Escape all characters that have special meaning in regular expressions
