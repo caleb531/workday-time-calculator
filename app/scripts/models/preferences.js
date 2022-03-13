@@ -72,7 +72,7 @@ class Preferences {
   }
 
   toJSON() {
-    return _.pick(this, Preferences.preferences.map((preference) => preference.id));
+    return _.pick(this, _.map(Preferences.preferences, 'id'));
   }
 
 }
