@@ -113,7 +113,7 @@ Preferences.preferences = [
   {
     id: 'autocompleteMode',
     label: 'Autocomplete Suggestions',
-    description: 'Would you like WTC to suggest words as you type in the editor? These suggestions are based on your log history, and no information ever leaves your local device.',
+    description: 'Would you like WTC to suggest words as you type in the editor? These suggestions are based on your log history, and no data ever leaves your local device.',
     defaultValue: 'lazy',
     options: [
       {label: 'Disabled', value: 'off'},
