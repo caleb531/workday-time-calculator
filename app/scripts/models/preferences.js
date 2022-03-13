@@ -78,7 +78,6 @@ class Preferences {
 }
 
 Preferences.preferences = [
-  // The color theme used to give the app a personal touch
   {
     id: 'colorTheme',
     label: 'Color Theme',
@@ -93,8 +92,6 @@ Preferences.preferences = [
       {label: 'Slate', value: 'slate'},
     ]
   },
-  // How often (in seconds) a reminder to update your log should be spawned; a
-  // value of 0 indicates that no reminders are ever spawned
   {
     id: 'reminderInterval',
     label: 'Reminder Interval',
@@ -107,9 +104,6 @@ Preferences.preferences = [
       {label: 'Every hour', value: 60}
     ]
   },
-  // Whether or not the word autocomplete functionality is enabled (although
-  // this may option may be expanded in the future with additional autocomplete
-  // behaviors, hence the name "Autocomplete Mode")
   {
     id: 'autocompleteMode',
     label: 'Autocomplete Suggestions',
@@ -121,7 +115,6 @@ Preferences.preferences = [
       {label: 'Greedy Mode (autocompletes longer phrases)', value: 'greedy'}
     ]
   },
-  // The time system used to parse out times that you enter
   {
     id: 'timeSystem',
     label: 'Time System',
@@ -132,7 +125,6 @@ Preferences.preferences = [
       {label: '24-hour / military time', value: '24-hour'}
     ]
   },
-  // The sort order of category groupings
   {
     id: 'categorySortOrder',
     label: 'Category Sort Order',
