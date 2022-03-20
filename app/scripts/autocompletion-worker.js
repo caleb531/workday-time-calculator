@@ -15,6 +15,12 @@ function escapeRegExp(str) {
   return str.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
+// Retrieve the current date in YYYY-M-D format (e.g. 2022-3-4)
+function getCurrentDate() {
+  const date = new Date();
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
 // Process all entered log entries and store the keywords into a string, where
 // each line of text is separated by a newline
 function processLogEntries() {
@@ -112,9 +118,19 @@ function buildCompletions({keywordStr, completionQuery, autocompleteMode}) {
 // Process log entries as soon as the web worker is initially loaded (before
 // any messages are sent/received)
 let entriesPromise = processLogEntries();
+// Keep track of when we last ran an autocomplete search so we can update the
+// available autocomplete data as needed (see comment below)
+let lastAutocompleteDate = getCurrentDate();
 // Wait for all log entries to be processed before handling messages from the
 // main thread
 self.onmessage = (event) => {
+  // If the user never closes Workday Time Calculator, make sure the available
+  // autocomplete data still refreshes itself when the current date changes
+  const currentDate = getCurrentDate();
+  if (currentDate !== lastAutocompleteDate) {
+    lastAutocompleteDate = currentDate;
+    entriesPromise = processLogEntries();
+  }
   return entriesPromise.then((keywordStr) => {
     self.postMessage(buildCompletions({
       keywordStr: keywordStr,
