@@ -101,8 +101,6 @@ function buildCompletions({keywordStr, completionQuery, autocompleteMode}) {
       .value()
       .map(([word]) => word);
     if (matches.length) {
-      // TODO: remove this when we are ready to bring autocomplete live
-      console.log(completionQuery, '=>', matches);
       return {
         matchingCompletion: matches[0],
         completionPlaceholder: getCompletionPlaceholderFromQuery(matches[0], querySubstring)
