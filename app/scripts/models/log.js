@@ -99,8 +99,8 @@ class Log {
           // Time range
           // console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimeStrs(currentLine);
-          let startTime = moment(timeStrs[0], this.timeFormat);
-          let endTime = moment(timeStrs[1], this.timeFormat);
+          let startTime = this.roundTime(moment(timeStrs[0], this.timeFormat));
+          let endTime = this.roundTime(moment(timeStrs[1], this.timeFormat));
           // If time range extends past midnight, count time range as overtime
           // for same day
           if (startTime.hour() >= 12 && endTime.hour() < 12) {
@@ -230,7 +230,7 @@ class Log {
         });
         gapStartTime = null;
       }
-      currentTime.add(1, 'minute');
+      currentTime.add(this.minuteIncrement, 'minutes');
     }
 
     return gaps;
