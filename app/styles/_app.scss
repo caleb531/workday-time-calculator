@@ -75,8 +75,6 @@ h1 {
 .log-area {
   margin-bottom: 15px;
   @media (min-width: $app-hybrid-max-width) {
-    position: sticky;
-    top: 0;
     margin-bottom: 0;
   }
 }
