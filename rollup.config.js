@@ -55,7 +55,11 @@ export default {
       browser: true,
       preferBuiltins: true
     }),
-    scss({sourceMap: true, output: 'dist/styles/index.css'}),
+    scss({
+      sourceMap: true,
+      output: 'dist/styles/index.css',
+      outputStyle: 'compressed'
+    }),
     commonjs(),
     json(),
     process.env.NODE_ENV === 'production' ? terser() : null,
