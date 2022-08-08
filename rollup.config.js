@@ -64,7 +64,7 @@ export default {
     json(),
     process.env.NODE_ENV === 'production' ? terser() : null,
     injectManifest({
-      globDirectory: 'public',
+      globDirectory: 'dist',
       globPatterns: [
         '**\/*.{js,css,png}',
         'icons/*.svg'
