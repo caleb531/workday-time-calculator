@@ -11,8 +11,14 @@ https://projects.calebevans.me/workday-time-calculator/
 
 ## Setup
 
+This project uses [pnpm][pnpm] (instead of npm) for package installation and
+management.
+
+[pnpm]: https://pnpm.io/
+
 ```bash
-npm install
+npm install -g pnpm
+pnpm install
 gulp serve
 ```
 
