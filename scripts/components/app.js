@@ -15,7 +15,6 @@ import SummaryComponent from './summary.js';
 import UpdateNotificationComponent from './update-notification.js';
 
 class AppComponent {
-
   oninit() {
     this.preferences = new Preferences();
     this.preferencesLoaded = false;
@@ -24,8 +23,13 @@ class AppComponent {
       m.redraw();
     });
     this.selectedDate = moment();
-    this.reminderManager = new ReminderManager({preferences: this.preferences});
-    if (navigator.serviceWorker && (window.location.hostname !== 'localhost' || sessionStorage.getItem('sw'))) {
+    this.reminderManager = new ReminderManager({
+      preferences: this.preferences
+    });
+    if (
+      navigator.serviceWorker &&
+      (window.location.hostname !== 'localhost' || sessionStorage.getItem('sw'))
+    ) {
       let serviceWorker = navigator.serviceWorker.register('service-worker.js');
       this.updateManager = new SWUpdateManager(serviceWorker);
       this.updateManager.on('updateAvailable', () => m.redraw());
@@ -48,56 +52,56 @@ class AppComponent {
 
   view() {
     return m('div.app', [
-      this.updateManager ? m(UpdateNotificationComponent, {
-        updateManager: this.updateManager
-      }) : null,
+      this.updateManager
+        ? m(UpdateNotificationComponent, {
+            updateManager: this.updateManager
+          })
+        : null,
       m('header.app-header', [
         m('h1', 'Workday Time Calculator'),
         m('span#personal-site-link.nav-link.nav-link-right', [
-          'by ', m('a[href=https://calebevans.me/]', 'Caleb Evans')
+          'by ',
+          m('a[href=https://calebevans.me/]', 'Caleb Evans')
         ]),
-        m(ToolsComponent, {preferences: this.preferences})
+        m(ToolsComponent, { preferences: this.preferences })
       ]),
-      this.preferencesLoaded ? m('div.app-content', [
+      this.preferencesLoaded
+        ? m('div.app-content', [
+            m(StorageUpgraderComponent),
 
-        m(StorageUpgraderComponent),
-
-        m('div.log-area', [
-
-          m(EditorComponent, {
-            preferences: this.preferences,
-            selectedDate: this.selectedDate,
-            onSetLogContents: (logContents) => {
-              // Instantiate a new Log object and automatically compute
-              // additional log statistics such as gaps and overlaps
-              this.log = new Log(logContents, {
+            m('div.log-area', [
+              m(EditorComponent, {
                 preferences: this.preferences,
-                calculateStats: true
-              });
-            }
-          }),
+                selectedDate: this.selectedDate,
+                onSetLogContents: (logContents) => {
+                  // Instantiate a new Log object and automatically compute
+                  // additional log statistics such as gaps and overlaps
+                  this.log = new Log(logContents, {
+                    preferences: this.preferences,
+                    calculateStats: true
+                  });
+                }
+              }),
 
-          m(DateComponent, {
-            preferences: this.preferences,
-            selectedDate: this.selectedDate,
-            onSetSelectedDate: (selectedDate) => {
-              this.selectedDate = selectedDate.clone();
-            }
-          })
+              m(DateComponent, {
+                preferences: this.preferences,
+                selectedDate: this.selectedDate,
+                onSetSelectedDate: (selectedDate) => {
+                  this.selectedDate = selectedDate.clone();
+                }
+              })
+            ]),
 
-        ]),
-
-        this.log ? m(SummaryComponent, {
-          preferences: this.preferences,
-          log: this.log
-        }) : null
-
-      ]) : m(LoadingComponent, {class: 'app-loading'})
-
+            this.log
+              ? m(SummaryComponent, {
+                  preferences: this.preferences,
+                  log: this.log
+                })
+              : null
+          ])
+        : m(LoadingComponent, { class: 'app-loading' })
     ]);
-
   }
-
 }
 
 export default AppComponent;

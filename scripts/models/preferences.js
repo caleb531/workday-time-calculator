@@ -2,7 +2,6 @@ import _ from 'lodash';
 import appStorage from './app-storage.js';
 
 class Preferences {
-
   constructor() {
     this.eventCallbacks = {};
   }
@@ -18,9 +17,11 @@ class Preferences {
   // Get a map of default values, where the key is the preference ID and the
   // value is the default value for that preference
   getDefaultValueMap() {
-    return _.fromPairs(Preferences.preferences.map((preference) => {
-      return [preference.id, preference.defaultValue];
-    }));
+    return _.fromPairs(
+      Preferences.preferences.map((preference) => {
+        return [preference.id, preference.defaultValue];
+      })
+    );
   }
 
   // Validate each of the user's saved preferences; if a value is not a valid
@@ -46,7 +47,7 @@ class Preferences {
     return appStorage.set('wtc-prefs', this.toJSON());
   }
 
-  set(props, {trigger = true} = {}) {
+  set(props, { trigger = true } = {}) {
     Object.keys(props).forEach((key) => {
       this[key] = props[key];
       if (trigger) {
@@ -74,22 +75,21 @@ class Preferences {
   toJSON() {
     return _.pick(this, _.map(Preferences.preferences, 'id'));
   }
-
 }
 
 Preferences.preferences = [
   {
     id: 'colorTheme',
     label: 'Color Theme',
-    description: 'What color would you like as your WTC app\'s theme?',
+    description: "What color would you like as your WTC app's theme?",
     optionType: 'color',
     defaultValue: 'blue',
     options: [
-      {label: 'Blue', value: 'blue'},
-      {label: 'Green', value: 'green'},
-      {label: 'Purple', value: 'purple'},
-      {label: 'Rose', value: 'rose'},
-      {label: 'Slate', value: 'slate'}
+      { label: 'Blue', value: 'blue' },
+      { label: 'Green', value: 'green' },
+      { label: 'Purple', value: 'purple' },
+      { label: 'Rose', value: 'rose' },
+      { label: 'Slate', value: 'slate' }
     ]
   },
   {
@@ -98,31 +98,33 @@ Preferences.preferences = [
     description: 'How often should WTC remind you to update your time log?',
     defaultValue: 0,
     options: [
-      {label: 'Never', value: 0},
-      {label: 'Every 15 minutes', value: 15},
-      {label: 'Every half-hour', value: 30},
-      {label: 'Every hour', value: 60}
+      { label: 'Never', value: 0 },
+      { label: 'Every 15 minutes', value: 15 },
+      { label: 'Every half-hour', value: 30 },
+      { label: 'Every hour', value: 60 }
     ]
   },
   {
     id: 'autocompleteMode',
     label: 'Autocomplete Suggestions',
-    description: 'Would you like WTC to suggest words as you type in the editor? These suggestions are based on your log history, and no data ever leaves your local device.',
+    description:
+      'Would you like WTC to suggest words as you type in the editor? These suggestions are based on your log history, and no data ever leaves your local device.',
     defaultValue: 'lazy',
     options: [
-      {label: 'Disabled', value: 'off'},
-      {label: 'Lazy Mode (autocompletes one word at a time)', value: 'lazy'},
-      {label: 'Greedy Mode (autocompletes longer phrases)', value: 'greedy'}
+      { label: 'Disabled', value: 'off' },
+      { label: 'Lazy Mode (autocompletes one word at a time)', value: 'lazy' },
+      { label: 'Greedy Mode (autocompletes longer phrases)', value: 'greedy' }
     ]
   },
   {
     id: 'timeSystem',
     label: 'Time System',
-    description: 'Which time system do you prefer when entering and displaying times?',
+    description:
+      'Which time system do you prefer when entering and displaying times?',
     defaultValue: '12-hour',
     options: [
-      {label: '12-hour', value: '12-hour'},
-      {label: '24-hour / military time', value: '24-hour'}
+      { label: '12-hour', value: '12-hour' },
+      { label: '24-hour / military time', value: '24-hour' }
     ]
   },
   {
@@ -131,9 +133,9 @@ Preferences.preferences = [
     description: 'How should category groupings be sorted in the Summary view?',
     defaultValue: 'duration',
     options: [
-      {label: 'No sorting', value: 'none'},
-      {label: 'Title (ascending)', value: 'title'},
-      {label: 'Duration (descending)', value: 'duration'}
+      { label: 'No sorting', value: 'none' },
+      { label: 'Title (ascending)', value: 'title' },
+      { label: 'Duration (descending)', value: 'duration' }
     ]
   }
 ];

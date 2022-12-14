@@ -7,8 +7,7 @@ import EditorAutocompleterComponent from './editor-autocompleter.js';
 import appStorage from '../models/app-storage.js';
 
 class EditorComponent {
-
-  oninit({attrs: {preferences, selectedDate, onSetLogContents}}) {
+  oninit({ attrs: { preferences, selectedDate, onSetLogContents } }) {
     this.preferences = preferences;
     this.selectedDate = selectedDate.clone();
     this.onSetLogContents = onSetLogContents;
@@ -21,7 +20,7 @@ class EditorComponent {
     });
   }
 
-  onupdate({attrs: {selectedDate}}) {
+  onupdate({ attrs: { selectedDate } }) {
     if (!selectedDate.isSame(this.selectedDate)) {
       this.selectedDate = selectedDate.clone();
       this.getLogContentsForSelectedDate().then((logContents) => {
@@ -36,7 +35,11 @@ class EditorComponent {
     const completionPlaceholder = this.autocompleter.getCompletionPlaceholder();
     if (completionPlaceholder) {
       this.editor.insertText(range.index, completionPlaceholder + ' ', 'user');
-      this.editor.setSelection(range.index + completionPlaceholder.length + 1, 0, 'user');
+      this.editor.setSelection(
+        range.index + completionPlaceholder.length + 1,
+        0,
+        'user'
+      );
       this.autocompleter.cancel();
     } else if (options.fallbackBehavior) {
       options.fallbackBehavior();
@@ -46,18 +49,13 @@ class EditorComponent {
   initializeEditor(editorContainer) {
     this.editor = new Quill(editorContainer, {
       theme: 'snow',
-      placeholder: '1. Category One\n\t\ta. 9 to 12:15\n\t\t\t\ti. Did this\n2. Category Two\n\t\ta. 12:45 to 5\n\t\t\t\ti. Did that',
+      placeholder:
+        '1. Category One\n\t\ta. 9 to 12:15\n\t\t\t\ti. Did this\n2. Category Two\n\t\ta. 12:45 to 5\n\t\t\t\ti. Did that',
       formats: ['list', 'indent'],
       modules: {
         toolbar: [
-          [
-            {'list': 'bullet'},
-            {'list': 'ordered'}
-          ],
-          [
-            {'indent': '-1'},
-            {'indent': '+1'}
-          ]
+          [{ list: 'bullet' }, { list: 'ordered' }],
+          [{ indent: '-1' }, { indent: '+1' }]
         ],
         history: {
           // Do not add the editor contents to the Undo history when the app
@@ -75,7 +73,7 @@ class EditorComponent {
               handler: (range) => {
                 this.autocomplete(range, {
                   fallbackBehavior: () => {
-                    this.editor.formatLine(range, {'indent': '+1'}, 'user');
+                    this.editor.formatLine(range, { indent: '+1' }, 'user');
                     this.autocompleter.cancel();
                   }
                 });
@@ -87,9 +85,17 @@ class EditorComponent {
                 this.autocomplete(range, {
                   fallbackBehavior: () => {
                     if (range.length) {
-                      this.editor.setSelection(range.index + range.length, 0, 'user');
+                      this.editor.setSelection(
+                        range.index + range.length,
+                        0,
+                        'user'
+                      );
                     } else {
-                      this.editor.setSelection(range.index + range.length + 1, 0, 'user');
+                      this.editor.setSelection(
+                        range.index + range.length + 1,
+                        0,
+                        'user'
+                      );
                     }
                   }
                 });
@@ -99,7 +105,7 @@ class EditorComponent {
               key: 9,
               shiftKey: true,
               handler: (range) => {
-                this.editor.formatLine(range, {'indent': '-1'}, 'user');
+                this.editor.formatLine(range, { indent: '-1' }, 'user');
                 this.autocompleter.cancel();
               }
             },
@@ -108,7 +114,7 @@ class EditorComponent {
               key: 221,
               shortKey: true,
               handler: (range) => {
-                this.editor.formatLine(range, {'indent': '+1'}, 'user');
+                this.editor.formatLine(range, { indent: '+1' }, 'user');
                 this.autocompleter.cancel();
               }
             },
@@ -117,7 +123,7 @@ class EditorComponent {
               key: 219,
               shortKey: true,
               handler: (range) => {
-                this.editor.formatLine(range, {'indent': '-1'}, 'user');
+                this.editor.formatLine(range, { indent: '-1' }, 'user');
                 this.autocompleter.cancel();
               }
             },
@@ -144,16 +150,19 @@ class EditorComponent {
     // attempt to fetch completions again; in the case of the tab-completion,
     // this gives time for the selection to be set, just after inserting the
     // completed text
-    this.editor.on('text-change', _.debounce((delta, oldDelta, source) => {
-      if (source === 'user') {
-        let logContents = this.editor.getContents();
-        this.onSetLogContents(logContents);
-        this.saveTextLog(logContents);
-        this.autocompleter.fetchCompletions();
-        m.redraw();
-      }
-      this.editor.focus();
-    }));
+    this.editor.on(
+      'text-change',
+      _.debounce((delta, oldDelta, source) => {
+        if (source === 'user') {
+          let logContents = this.editor.getContents();
+          this.onSetLogContents(logContents);
+          this.saveTextLog(logContents);
+          this.autocompleter.fetchCompletions();
+          m.redraw();
+        }
+        this.editor.focus();
+      })
+    );
     this.getLogContentsForSelectedDate().then((logContents) => {
       this.setEditorText(logContents);
     });
@@ -178,9 +187,11 @@ class EditorComponent {
 
   getDefaultLogContents() {
     return {
-      ops: [{
-        insert: '\n'
-      }]
+      ops: [
+        {
+          insert: '\n'
+        }
+      ]
     };
   }
 
@@ -196,7 +207,10 @@ class EditorComponent {
       // localStorage to conserve space
       appStorage.remove(this.getSelectedDateStorageId(this.selectedDate));
     } else {
-      appStorage.set(this.getSelectedDateStorageId(this.selectedDate), logContents);
+      appStorage.set(
+        this.getSelectedDateStorageId(this.selectedDate),
+        logContents
+      );
     }
   }
 
@@ -207,12 +221,13 @@ class EditorComponent {
           this.initializeEditor(vnode.dom);
         }
       }),
-      this.editor && this.autocompleter.isEnabled ? m(EditorAutocompleterComponent, {
-        autocompleter: this.autocompleter
-      }) : null
+      this.editor && this.autocompleter.isEnabled
+        ? m(EditorAutocompleterComponent, {
+            autocompleter: this.autocompleter
+          })
+        : null
     ]);
   }
-
 }
 
 export default EditorComponent;

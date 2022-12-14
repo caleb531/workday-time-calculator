@@ -2,8 +2,7 @@ import moment from 'moment';
 import _ from 'lodash';
 
 class Log {
-
-  constructor(logContents, {preferences, calculateStats} = {}) {
+  constructor(logContents, { preferences, calculateStats } = {}) {
     this.preferences = preferences;
     this.logContents = logContents;
     this.calculateStats = calculateStats;
@@ -25,7 +24,10 @@ class Log {
     let timePatt = /(\d+(?:\s*[\:\;]+\s*\d*)?\s*(?:am?|pm?)?)/.source;
     let junkPatt = /[^a-z0-9]*/.source;
     let sepPatt = /\s*([a-z]+?|\-|–|—)\s*/.source;
-    let rangeRegex = new RegExp(`^${junkPatt}${timePatt}${junkPatt}${sepPatt}${junkPatt}${timePatt}${junkPatt}$`, 'i');
+    let rangeRegex = new RegExp(
+      `^${junkPatt}${timePatt}${junkPatt}${sepPatt}${junkPatt}${timePatt}${junkPatt}$`,
+      'i'
+    );
     let matches = logLine.match(rangeRegex);
     if (matches) {
       return [matches[1], matches[3]];
@@ -63,12 +65,12 @@ class Log {
   }
 
   roundTime(time) {
-    let nearestMinute = Math.round(time.minute() / this.minuteIncrement) * this.minuteIncrement;
+    let nearestMinute =
+      Math.round(time.minute() / this.minuteIncrement) * this.minuteIncrement;
     return time.clone().minutes(nearestMinute);
   }
 
   getCategories(logContents) {
-
     let categories = [];
     let categoryMap = {};
     let currentCategory = null;
@@ -76,7 +78,6 @@ class Log {
     logContents.ops.forEach((currentOp, o) => {
       let nextOp = logContents.ops[o + 1];
       if (nextOp && nextOp.attributes) {
-
         let currentLine = currentOp.insert;
         let indent = nextOp.attributes.indent || 0;
 
@@ -95,7 +96,11 @@ class Log {
             categoryMap[categoryName] = currentCategory;
             categories.push(currentCategory);
           }
-        } else if (indent >= 1 && this.isTimeRange(currentLine) && currentCategory) {
+        } else if (
+          indent >= 1 &&
+          this.isTimeRange(currentLine) &&
+          currentCategory
+        ) {
           // Time range
           // console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimeStrs(currentLine);
@@ -112,17 +117,20 @@ class Log {
             category: currentCategory
           };
           currentCategory.tasks.push(range);
-        } else if (indent >= 1 && !this.isTimeRange(currentLine) && currentCategory && currentLine.trim() !== '') {
+        } else if (
+          indent >= 1 &&
+          !this.isTimeRange(currentLine) &&
+          currentCategory &&
+          currentLine.trim() !== ''
+        ) {
           // Task description
           // console.log('Desc:', currentLine);
           currentCategory.descriptions.push(currentLine);
         }
-
       }
     });
 
     return categories;
-
   }
 
   calculateTotals() {
@@ -130,14 +138,17 @@ class Log {
     this.categories.forEach((category) => {
       category.totalDuration = moment.duration(0);
       category.tasks.forEach((task) => {
-        task.totalDuration = moment.duration(
-          task.endTime.diff(task.startTime));
+        task.totalDuration = moment.duration(task.endTime.diff(task.startTime));
         category.totalDuration.add(task.totalDuration);
       });
       this.totalDuration.add(category.totalDuration);
     });
     if (this.preferences.categorySortOrder === 'duration') {
-      this.categories = _.orderBy(this.categories, (category) => category.totalDuration.asHours(), 'desc');
+      this.categories = _.orderBy(
+        this.categories,
+        (category) => category.totalDuration.asHours(),
+        'desc'
+      );
     } else if (this.preferences.categorySortOrder === 'title') {
       this.categories = _.orderBy(this.categories, (category) => category.name);
     }
@@ -163,10 +174,7 @@ class Log {
   }
 
   sortTimeRanges(ranges) {
-    return _.sortBy(ranges, (range) => [
-      range.startTime,
-      range.endTime
-    ]);
+    return _.sortBy(ranges, (range) => [range.startTime, range.endTime]);
   }
 
   getRangeMap(ranges) {
@@ -181,7 +189,6 @@ class Log {
   }
 
   getErrors() {
-
     let errors = [];
     let ranges = this.sortTimeRanges(this.getAllTimeRanges());
 
@@ -192,11 +199,9 @@ class Log {
     });
 
     return errors;
-
   }
 
   getGaps() {
-
     let gaps = [];
     let ranges = this.sortTimeRanges(this.getAllTimeRanges());
     let rangeMap = this.getRangeMap(ranges);
@@ -234,11 +239,9 @@ class Log {
     }
 
     return gaps;
-
   }
 
   getOverlaps() {
-
     let ranges = this.sortTimeRanges(this.getAllTimeRanges());
 
     let overlaps = [];
@@ -249,28 +252,44 @@ class Log {
           return;
         }
 
-        if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
+        if (
+          rangeA.startTime.isSameOrBefore(rangeB.startTime) &&
+          rangeB.startTime.isBefore(rangeB.endTime) &&
+          rangeB.endTime.isSameOrBefore(rangeA.endTime)
+        ) {
           // Case 1: startA startB endB endA
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeB.endTime,
             categories: _.uniqBy([rangeA.category, rangeB.category])
           });
-        } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
+        } else if (
+          rangeB.startTime.isSameOrBefore(rangeA.startTime) &&
+          rangeA.startTime.isBefore(rangeA.endTime) &&
+          rangeA.endTime.isSameOrBefore(rangeB.endTime)
+        ) {
           // Case 2: startB startA endA endB
           overlaps.push({
             startTime: rangeA.startTime,
             endTime: rangeA.endTime,
             categories: _.uniqBy([rangeA.category, rangeB.category])
           });
-        } else if (rangeA.startTime.isSameOrBefore(rangeB.startTime) && rangeB.startTime.isBefore(rangeA.endTime) && rangeA.endTime.isSameOrBefore(rangeB.endTime)) {
+        } else if (
+          rangeA.startTime.isSameOrBefore(rangeB.startTime) &&
+          rangeB.startTime.isBefore(rangeA.endTime) &&
+          rangeA.endTime.isSameOrBefore(rangeB.endTime)
+        ) {
           // Case 3: startA startB endA endB
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeA.endTime,
             categories: _.uniqBy([rangeA.category, rangeB.category])
           });
-        } else if (rangeB.startTime.isSameOrBefore(rangeA.startTime) && rangeA.startTime.isBefore(rangeB.endTime) && rangeB.endTime.isSameOrBefore(rangeA.endTime)) {
+        } else if (
+          rangeB.startTime.isSameOrBefore(rangeA.startTime) &&
+          rangeA.startTime.isBefore(rangeB.endTime) &&
+          rangeB.endTime.isSameOrBefore(rangeA.endTime)
+        ) {
           // Case 4: startB startA endB endA
           overlaps.push({
             startTime: rangeA.startTime,
@@ -293,13 +312,11 @@ class Log {
     overlaps = this.sortTimeRanges(overlaps);
 
     return overlaps;
-
   }
 
   getLatestRange() {
     return _.maxBy(this.getAllTimeRanges(), (range) => range.endTime);
   }
-
 }
 // The textual time format used for all entered times, as well as displayed
 // times

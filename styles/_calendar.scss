@@ -14,7 +14,8 @@
   position: absolute;
   bottom: 100%;
   left: 0;
-  width: ($calendar-date-size * $calendar-weekday-count) + ($calendar-padding-x * 2);
+  width: ($calendar-date-size * $calendar-weekday-count) +
+    ($calendar-padding-x * 2);
   margin-bottom: ($panel-arrow-size * 1.5);
   padding: $calendar-padding-y $calendar-padding-x;
   border-radius: $app-border-radius;

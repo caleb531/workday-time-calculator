@@ -2,8 +2,7 @@ import appStorage from './app-storage.js';
 import AutocompletionWorker from '../autocompletion-worker.js?worker';
 
 class EditorAutocompleter {
-
-  constructor({autocompleteMode, onReceiveCompletions} = {}) {
+  constructor({ autocompleteMode, onReceiveCompletions } = {}) {
     this.mode = autocompleteMode;
     this.onReceiveCompletions = onReceiveCompletions;
     this.cancel();
@@ -126,13 +125,10 @@ class EditorAutocompleter {
   // show
   shouldAutocomplete() {
     return Boolean(
-      this.position
-      &&
-      this.position.top
-      &&
-      this.position.left
-      &&
-      document.activeElement !== document.body
+      this.position &&
+        this.position.top &&
+        this.position.left &&
+        document.activeElement !== document.body
     );
   }
 
@@ -141,7 +137,6 @@ class EditorAutocompleter {
   getCompletionPlaceholder() {
     return this.shouldAutocomplete() ? this.completionPlaceholder : '';
   }
-
 }
 
 export default EditorAutocompleter;

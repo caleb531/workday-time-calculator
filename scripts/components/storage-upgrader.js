@@ -5,7 +5,6 @@ import StorageUpgrader from '../models/storage-upgrader.js';
 import _ from 'lodash';
 
 class StorageUpgraderComponent {
-
   oninit() {
     this.upgrader = new StorageUpgrader();
     if (this.upgrader.shouldUpgrade()) {
@@ -36,32 +35,41 @@ class StorageUpgraderComponent {
 
   // When the Storage Upgrade prompt shows, blur the editor by focusing the
   // prompt
-  blurEditor({dom}) {
+  blurEditor({ dom }) {
     _.defer(() => {
       dom.focus();
     });
   }
 
   view() {
-    return this.isVisible ? m('div.storage-upgrade', {
-      tabindex: '1',
-      oncreate: this.blurEditor
-    }, [
+    return this.isVisible
+      ? m(
+          'div.storage-upgrade',
+          {
+            tabindex: '1',
+            oncreate: this.blurEditor
+          },
+          [
+            m(DismissableOverlayComponent, {
+              onDismiss: () => {
+                /* do nothing */
+              }
+            }),
 
-      m(DismissableOverlayComponent, {onDismiss: () => {/* do nothing */}}),
+            m('div.panel.storage-upgrade-panel', [
+              m('h2.storage-upgrade-heading', 'Upgrading Database...'),
 
-      m('div.panel.storage-upgrade-panel', [
-        m('h2.storage-upgrade-heading', 'Upgrading Database...'),
+              m(
+                'p.storage-upgrade-message',
+                'Hang tight while we upgrade the database...'
+              ),
 
-        m('p.storage-upgrade-message', 'Hang tight while we upgrade the database...'),
-
-        m(LoadingComponent, {class: 'storage-upgrade-loading'})
-
-      ])
-
-    ]) : null;
+              m(LoadingComponent, { class: 'storage-upgrade-loading' })
+            ])
+          ]
+        )
+      : null;
   }
-
 }
 
 export default StorageUpgraderComponent;

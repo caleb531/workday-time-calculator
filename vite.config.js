@@ -1,5 +1,5 @@
-import {defineConfig} from 'vite';
-import {injectManifest} from 'rollup-plugin-workbox';
+import { defineConfig } from 'vite';
+import { injectManifest } from 'rollup-plugin-workbox';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,10 +11,7 @@ export default defineConfig({
   plugins: [
     injectManifest({
       globDirectory: 'dist',
-      globPatterns: [
-        '**\/*.{js,css,png}',
-        'icons/*.svg'
-      ],
+      globPatterns: ['**/*.{js,css,png}', 'icons/*.svg'],
       // Precaching index.html using templatedUrls fixes a "Response served by
       // service worker has redirections" error on iOS 12; see
       // <https://github.com/v8/v8.dev/issues/4> and

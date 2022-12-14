@@ -5,16 +5,14 @@ import * as idbKeyval from 'idb-keyval';
 // localStorage if IndexedDB is unsupported by the user's browser, or if the
 // storage upgrade process could not be successfully completed
 class AppStorage {
-
   // Only use IndexedDB if the browser supports it and if the user has opted to
   // upgrade the data store to IndexedDB
   usingIDB() {
     return Boolean(
       // The browser must support IndexedDB
-      typeof indexedDB !== 'undefined'
-      &&
-      // The user does not have any data left in localStorage
-      !Object.keys(localStorage).find((key) => /^wtc-/.test(key))
+      typeof indexedDB !== 'undefined' &&
+        // The user does not have any data left in localStorage
+        !Object.keys(localStorage).find((key) => /^wtc-/.test(key))
     );
   }
 
@@ -61,7 +59,6 @@ class AppStorage {
       });
     }
   }
-
 }
 
 export default new AppStorage();

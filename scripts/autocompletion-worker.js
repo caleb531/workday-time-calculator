@@ -26,18 +26,20 @@ function getCurrentDate() {
 // each line of text is separated by a newline
 function processLogEntries() {
   return idbKeyval.entries().then((entries) => {
-    return entries
-      .filter(([key]) => /^wtc-date-/.test(key))
-      /* eslint-disable-next-line no-unused-vars */
-      .map(([key, value]) => {
-        return value.ops
-          .filter((op) => op.insert.trim())
-          .map((op) => op.insert)
-          .join('\n');
-      })
-      .join('\n')
-      // Collapse consecutive sequences of spaces
-      .replace(/ +/gi, ' ');
+    return (
+      entries
+        .filter(([key]) => /^wtc-date-/.test(key))
+        /* eslint-disable-next-line no-unused-vars */
+        .map(([key, value]) => {
+          return value.ops
+            .filter((op) => op.insert.trim())
+            .map((op) => op.insert)
+            .join('\n');
+        })
+        .join('\n')
+        // Collapse consecutive sequences of spaces
+        .replace(/ +/gi, ' ')
+    );
   });
 }
 
@@ -76,9 +78,12 @@ function getCompletionPlaceholderFromQuery(completion, query) {
 
 // Build list of possible completions given the last few words preceding the
 // user's cursor (what we call "the completion query", or simply "the query")
-function buildCompletions({keywordStr, completionQuery, autocompleteMode}) {
+function buildCompletions({ keywordStr, completionQuery, autocompleteMode }) {
   const querySubstrings = getQuerySubstrings(completionQuery);
-  const substringRegexes = convertQuerySubstringsToRegexes(querySubstrings, autocompleteMode);
+  const substringRegexes = convertQuerySubstringsToRegexes(
+    querySubstrings,
+    autocompleteMode
+  );
   const substringMatchGroups = substringRegexes.map((substringRegex) => {
     return keywordStr.match(substringRegex) || [];
   });
@@ -104,7 +109,10 @@ function buildCompletions({keywordStr, completionQuery, autocompleteMode}) {
     if (matches.length) {
       return {
         matchingCompletion: matches[0],
-        completionPlaceholder: getCompletionPlaceholderFromQuery(matches[0], querySubstring)
+        completionPlaceholder: getCompletionPlaceholderFromQuery(
+          matches[0],
+          querySubstring
+        )
       };
     }
   }
@@ -131,11 +139,12 @@ self.onmessage = (event) => {
     entriesPromise = processLogEntries();
   }
   return entriesPromise.then((keywordStr) => {
-    self.postMessage(buildCompletions({
-      keywordStr: keywordStr,
-      completionQuery: event.data.completionQuery,
-      autocompleteMode: event.data.autocompleteMode
-    }));
+    self.postMessage(
+      buildCompletions({
+        keywordStr: keywordStr,
+        completionQuery: event.data.completionQuery,
+        autocompleteMode: event.data.autocompleteMode
+      })
+    );
   });
 };
-

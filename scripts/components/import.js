@@ -2,8 +2,7 @@ import m from 'mithril';
 import appStorage from '../models/app-storage.js';
 
 class ImportComponent {
-
-  oninit({attrs: {preferences}}) {
+  oninit({ attrs: { preferences } }) {
     this.preferences = preferences;
   }
 
@@ -12,15 +11,21 @@ class ImportComponent {
       let reader = new FileReader();
       reader.onload = (event) => {
         let importedData = JSON.parse(event.target.result);
-        resolve(Promise.all(Object.keys(importedData.logs).map((logDate) => {
-          let logContent = importedData.logs[logDate];
-          return appStorage.set(`wtc-date-${logDate}`, logContent);
-        })).then(() => {
-          if (importedData.preferences) {
-            this.preferences.set(importedData.preferences, {trigger: false});
-            return this.preferences.save();
-          }
-        }));
+        resolve(
+          Promise.all(
+            Object.keys(importedData.logs).map((logDate) => {
+              let logContent = importedData.logs[logDate];
+              return appStorage.set(`wtc-date-${logDate}`, logContent);
+            })
+          ).then(() => {
+            if (importedData.preferences) {
+              this.preferences.set(importedData.preferences, {
+                trigger: false
+              });
+              return this.preferences.save();
+            }
+          })
+        );
       };
       reader.readAsText(jsonFile);
     });
@@ -41,7 +46,6 @@ class ImportComponent {
       'Import'
     ]);
   }
-
 }
 
 export default ImportComponent;
