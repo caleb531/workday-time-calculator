@@ -1,4 +1,4 @@
-import idbKeyval from 'idb-keyval';
+import * as idbKeyval from 'idb-keyval';
 
 // This is a storage API-agnostic class for accessing local data saved by the
 // app; it uses IndexedDB as the internal storage API, falling back to

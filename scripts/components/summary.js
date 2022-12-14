@@ -1,6 +1,8 @@
 import m from 'mithril';
 import _ from 'lodash';
 import ClipboardJS from 'clipboard';
+import doneSvgUrl from '../../icons/done.svg';
+import copySvgUrl from '../../icons/copy.svg';
 
 class SummaryComponent {
 
@@ -177,7 +179,7 @@ class SummaryComponent {
               title: 'Copy to Clipboard'
             }, [
               m('img.log-category-descriptions-copy-button-icon', {
-                src: category.copiedToClipboard ? 'icons/done.svg' : 'icons/copy.svg',
+                src: category.copiedToClipboard ? doneSvgUrl : copySvgUrl,
                 alt: 'Copy to Clipboard'
               })
             ]),

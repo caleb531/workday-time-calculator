@@ -26,10 +26,6 @@ module.exports = {
       files: ['autocompletion-worker.js'],
       env: {
         'worker': true
-      },
-      globals: {
-        'idbKeyval': true,
-        '_': true
       }
     },
     {

@@ -1,4 +1,5 @@
-importScripts('idb-keyval.min.js', 'lodash.min.js');
+import * as idbKeyval from 'idb-keyval';
+import _ from 'lodash';
 
 // A map representing the various algorithms for the autocomplete; each key
 // name is the ID of a specific autocomplete mode, and each value is a function

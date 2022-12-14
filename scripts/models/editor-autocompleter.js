@@ -1,4 +1,5 @@
 import appStorage from './app-storage.js';
+import AutocompletionWorker from '../autocompletion-worker.js?worker';
 
 class EditorAutocompleter {
 
@@ -15,7 +16,7 @@ class EditorAutocompleter {
   setMode(newMode) {
     this.mode = newMode;
     if (appStorage.usingIDB() && newMode !== 'off') {
-      this.worker = new Worker('scripts/autocompletion-worker.js');
+      this.worker = new AutocompletionWorker();
       this.worker.onmessage = (event) => {
         this.receiveCompletions(event);
       };

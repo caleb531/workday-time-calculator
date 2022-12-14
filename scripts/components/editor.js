@@ -1,6 +1,7 @@
 import m from 'mithril';
 import _ from 'lodash';
 import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 import EditorAutocompleter from '../models/editor-autocompleter.js';
 import EditorAutocompleterComponent from './editor-autocompleter.js';
 import appStorage from '../models/app-storage.js';

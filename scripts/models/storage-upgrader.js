@@ -1,4 +1,4 @@
-import idbKeyval from 'idb-keyval';
+import * as idbKeyval from 'idb-keyval';
 
 class StorageUpgrader {
 
