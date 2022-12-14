@@ -19,10 +19,10 @@ management.
 ```bash
 npm install -g pnpm
 pnpm install
-gulp serve
+pnpm dev
 ```
 
-The app will then be accessible at http://localhost:8080.
+The app will then be accessible at http://localhost:5173.
 
 ## Usage
 
