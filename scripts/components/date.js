@@ -52,7 +52,7 @@ class DateComponent {
       ]),
       m('div.log-selected-date', [
         m('div.log-selected-date-absolute', this.selectedDate.format('dddd, MMMM D, YYYY')),
-        m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.formatRelativeMessage(this.selectedDate.fromNow())}`),
+        m('div.log-selected-date-relative', this.selectedDate.isSame(moment(), 'day') ? 'today' : `${this.formatRelativeMessage(this.selectedDate.fromNow())}`)
       ]),
 
       this.selectedDate && this.calendarOpen ? m(CalendarComponent, {

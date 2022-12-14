@@ -62,7 +62,7 @@ class PreferencesComponent {
                 }) : null,
                 m('label.app-preference-option-label', {
                   for: `${preference.id}-${option.value}`
-                }, option.label),
+                }, option.label)
               ]);
             })),
             preference.id === 'reminderInterval' && this.preferences.reminderInterval > 0 && Notification.permission === 'denied' ? m('p.app-preferences-notification-error', [
@@ -71,7 +71,7 @@ class PreferencesComponent {
               ' to fix this.'
             ]) : null
           ]);
-        }),
+        })
 
       ])
 

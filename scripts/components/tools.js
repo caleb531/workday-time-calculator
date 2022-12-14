@@ -14,7 +14,7 @@ class ToolsComponent {
 
   view({attrs: {preferences}}) {
     return m('div.app-tools', {
-      class: this.toolsMenuOpen ? 'app-tools-open' : '',
+      class: this.toolsMenuOpen ? 'app-tools-open' : ''
     }, [
       m('button.app-tools-menu-toggle', {
         onclick: () => {

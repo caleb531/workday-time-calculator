@@ -57,7 +57,7 @@ class StorageUpgraderComponent {
 
         m(LoadingComponent, {class: 'storage-upgrade-loading'})
 
-      ]),
+      ])
 
     ]) : null;
   }

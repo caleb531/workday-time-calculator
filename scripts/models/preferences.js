@@ -89,7 +89,7 @@ Preferences.preferences = [
       {label: 'Green', value: 'green'},
       {label: 'Purple', value: 'purple'},
       {label: 'Rose', value: 'rose'},
-      {label: 'Slate', value: 'slate'},
+      {label: 'Slate', value: 'slate'}
     ]
   },
   {

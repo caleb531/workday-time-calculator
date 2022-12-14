@@ -57,7 +57,7 @@ class EditorComponent {
           [
             {'indent': '-1'},
             {'indent': '+1'}
-          ],
+          ]
         ],
         history: {
           // Do not add the editor contents to the Undo history when the app
@@ -132,7 +132,7 @@ class EditorComponent {
             }
           }
         }
-      },
+      }
     });
     this.editor.on('selection-change', () => {
       this.autocompleter.cancel();
