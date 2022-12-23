@@ -2,6 +2,7 @@
   "name": "workday-time-calculator",
   "version": "1.0.0",
   "description": "Calculates my total hours (per client, as well as overall) for a workday",
+  "private": true,
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
