@@ -4,7 +4,6 @@ import ReminderManager from '../models/reminder-manager.js';
 
 import m from 'mithril';
 import moment from 'moment';
-import SWUpdateManager from 'sw-update-manager';
 
 import LoadingComponent from './loading.js';
 import ToolsComponent from './tools.js';
@@ -26,15 +25,6 @@ class AppComponent {
     this.reminderManager = new ReminderManager({
       preferences: this.preferences
     });
-    if (
-      navigator.serviceWorker &&
-      (window.location.hostname !== 'localhost' || sessionStorage.getItem('sw'))
-    ) {
-      let serviceWorker = navigator.serviceWorker.register('service-worker.js');
-      this.updateManager = new SWUpdateManager(serviceWorker);
-      this.updateManager.on('updateAvailable', () => m.redraw());
-      this.updateManager.checkForUpdates();
-    }
     this.setColorThemeOnBody();
   }
 
@@ -52,11 +42,10 @@ class AppComponent {
 
   view() {
     return m('div.app', [
-      this.updateManager
-        ? m(UpdateNotificationComponent, {
-            updateManager: this.updateManager
-          })
-        : null,
+      // The UpdateNotificationComponent manages its own visibility
+      m(UpdateNotificationComponent, {
+        updateManager: this.updateManager
+      }),
       m('header.app-header', [
         m('h1', 'Workday Time Calculator'),
         m('span#personal-site-link.nav-link.nav-link-right', [
