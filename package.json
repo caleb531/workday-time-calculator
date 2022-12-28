@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
-    "preview": "vite preview --open",
+    "preview": "vite preview",
     "lint": "eslint scripts/**/*.js"
   },
   "repository": {
