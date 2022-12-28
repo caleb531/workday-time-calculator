@@ -73,8 +73,10 @@ h1 {
 }
 
 .log-area {
+  width: 100%;
   margin-bottom: 15px;
   @media (min-width: $app-hybrid-max-width) {
+    width: auto;
     margin-bottom: 0;
   }
 }
