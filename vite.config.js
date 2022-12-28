@@ -10,6 +10,7 @@ export default defineConfig({
   base: './',
   plugins: [
     VitePWA({
+      filename: 'service-worker.js',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         // Include Google Fonts in service worker cache
