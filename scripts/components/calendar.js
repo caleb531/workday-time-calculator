@@ -101,6 +101,7 @@ class CalendarComponent {
                   m(
                     'button.log-calendar-month-control.log-calendar-prev-month-control',
                     {
+                      ariaLabel: 'Previous Month',
                       onclick: () => this.viewPrevMonth()
                     },
                     m(PrevIconComponent)
@@ -108,6 +109,7 @@ class CalendarComponent {
                   m(
                     'button.log-calendar-month-control.log-calendar-next-month-control',
                     {
+                      ariaLabel: 'Next Month',
                       onclick: () => this.viewNextMonth()
                     },
                     m(NextIconComponent)
