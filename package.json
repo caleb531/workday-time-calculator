@@ -4,7 +4,7 @@
   "description": "Calculates my total hours (per client, as well as overall) for a workday",
   "private": true,
   "scripts": {
-    "dev": "vite --open",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint scripts/**/*.js"
