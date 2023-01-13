@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://*.gstatic.com; img-src 'self'; script-src 'self'; child-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://*.gstatic.com; img-src 'self'; script-src 'self' https://plausible.io; child-src 'self'; connect-src 'self' https://plausible.io; worker-src 'self'; manifest-src 'self';" />
   <title>Workday Time Calculator | Caleb Evans</title>
   <meta name="viewport" content="width=device-width" />
   <meta name="description" content="A minimal time-tracking app with features like autocomplete, notifications, and one-click Copy to Clipboard." />
@@ -11,6 +11,7 @@
   <link rel="shortcut icon" href="favicon.png" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" />
   <link rel="apple-touch-icon" href="/icons/app-icon-192.png" sizes="192x192" />
+  <script defer data-domain="projects.calebevans.me" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
 
