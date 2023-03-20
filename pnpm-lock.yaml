@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@fontsource/open-sans': ^4.5.14
   clipboard: ^2.0.6
   eslint: ^8.10.0
   idb-keyval: ^6.1.0
@@ -17,6 +18,7 @@ specifiers:
   workbox-window: ^6.5.4
 
 dependencies:
+  '@fontsource/open-sans': 4.5.14
   clipboard: 2.0.6
   idb-keyval: 6.1.0
   lodash: 4.17.21
@@ -1284,6 +1286,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@fontsource/open-sans/4.5.14:
+    resolution: {integrity: sha512-mBXIIETBlW8q/ocuUN0hyGow2iuf75hQEHQt8R/RJ/HcphVbLg8KB7pHYGbFGDqs75W+SWvTC7JkVeAjT65BuQ==}
+    dev: false
 
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}

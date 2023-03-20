@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/caleb531/workday-time-calculator#README",
   "dependencies": {
+    "@fontsource/open-sans": "^4.5.14",
     "clipboard": "^2.0.6",
     "idb-keyval": "^6.1.0",
     "lodash": "^4.17.21",
