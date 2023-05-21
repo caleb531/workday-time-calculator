@@ -5,10 +5,11 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Open SansVariable', sans-serif;
+  font-family: 'Open Sans Variable', sans-serif;
   background-color: map-get($color-themes, 'slate');
   color: #fff;
   font-size: 0;
+  font-style: normal;
   font-weight: 300;
 }
 
