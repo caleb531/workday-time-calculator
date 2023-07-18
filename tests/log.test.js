@@ -116,4 +116,24 @@ describe('Log model', () => {
     expect(log.overlaps).toHaveLength(1);
   });
 
+  it('should have no gaps in cases of outward overlap (case 1)', () => {
+    const log = new Log(overlapOuterLogContents, {calculateStats: true});
+    expect(log.gaps).toHaveLength(0);
+  });
+
+  it('should have no gaps in cases of inward overlap (case 2)', () => {
+    const log = new Log(overlapInnerLogContents, {calculateStats: true});
+    expect(log.gaps).toHaveLength(0);
+  });
+
+  it('should have no gaps in cases of leftward overlap (case 3)', () => {
+    const log = new Log(overlapLeftLogContents, {calculateStats: true});
+    expect(log.gaps).toHaveLength(0);
+  });
+
+  it('should have no gaps in cases of rightward overlap (case 4)', () => {
+    const log = new Log(overlapRightLogContents, {calculateStats: true});
+    expect(log.gaps).toHaveLength(0);
+  });
+
 });
