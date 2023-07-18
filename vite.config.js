@@ -8,6 +8,13 @@ export default defineConfig({
   // projects domain (e.g. https://projects.calebevans.me/truthy/), we must
   // specify . as the base directory to serve from
   base: './',
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    coverage: {
+      reporter: ['text', 'lcov', 'html', 'text-summary']
+    }
+  },
   plugins: [
     VitePWA({
       filename: 'service-worker.js',
