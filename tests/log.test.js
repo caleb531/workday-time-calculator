@@ -6,6 +6,8 @@ import overlapLeftLogContents from './test-logs/overlap-left.json';
 import overlapRightLogContents from './test-logs/overlap-right.json';
 import overlapInnerLogContents from './test-logs/overlap-inner.json';
 import overlapOuterLogContents from './test-logs/overlap-outer.json';
+import gapSingleLogContents from './test-logs/gap-single.json';
+import gapMultipleLogContents from './test-logs/gap-multiple.json';
 
 describe('Log model', () => {
 
@@ -134,6 +136,48 @@ describe('Log model', () => {
   it('should have no gaps in cases of rightward overlap (case 4)', () => {
     const log = new Log(overlapRightLogContents, {calculateStats: true});
     expect(log.gaps).toHaveLength(0);
+  });
+
+  it('should detect single gaps', () => {
+    const log = new Log(gapSingleLogContents, {calculateStats: true});
+    const gap = log.gaps[0];
+    expect(gap.startTime.toString()).toEqual(
+      moment('9:30am', 'h:mma').toString()
+    );
+    expect(gap.endTime.toString()).toEqual(
+      moment('10:15am', 'h:mma').toString()
+    );
+    expect(log.gaps).toHaveLength(1);
+  });
+
+  it('should detect multiple gaps', () => {
+    const log = new Log(gapMultipleLogContents, {calculateStats: true});
+    const gaps = log.gaps;
+    expect(gaps[0].startTime.toString()).toEqual(
+      moment('9am', 'h:mma').toString()
+    );
+    expect(gaps[0].endTime.toString()).toEqual(
+      moment('9:30am', 'h:mma').toString()
+    );
+    expect(gaps[1].startTime.toString()).toEqual(
+      moment('10:15am', 'h:mma').toString()
+    );
+    expect(gaps[1].endTime.toString()).toEqual(
+      moment('10:30am', 'h:mma').toString()
+    );
+    expect(gaps[1].startTime.toString()).toEqual(
+      moment('10:15am', 'h:mma').toString()
+    );
+    expect(gaps[1].endTime.toString()).toEqual(
+      moment('10:30am', 'h:mma').toString()
+    );
+    expect(gaps[2].startTime.toString()).toEqual(
+      moment('11:45am', 'h:mma').toString()
+    );
+    expect(gaps[2].endTime.toString()).toEqual(
+      moment('12:15pm', 'h:mma').toString()
+    );
+    expect(log.gaps).toHaveLength(3);
   });
 
 });
