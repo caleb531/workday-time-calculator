@@ -68,31 +68,19 @@ describe('Log model', () => {
     expect(log.overlaps).toHaveLength(0);
   });
 
-  it('should handle leftward overlap (case 1)', () => {
-    const log = new Log(overlapLeftLogContents, {calculateStats: true});
+  it('should handle outer overlap (case 1)', () => {
+    const log = new Log(overlapOuterLogContents, {calculateStats: true});
     const overlap = log.overlaps[0];
     expect(overlap.startTime.toString()).toEqual(
       moment('9am', 'h:mma').toString()
     );
     expect(overlap.endTime.toString()).toEqual(
-      moment('9:30am', 'h:mma').toString()
+      moment('10am', 'h:mma').toString()
     );
     expect(log.overlaps).toHaveLength(1);
   });
 
-  it('should handle rightward overlap (case 2)', () => {
-    const log = new Log(overlapRightLogContents, {calculateStats: true});
-    const overlap = log.overlaps[0];
-    expect(overlap.startTime.toString()).toEqual(
-      moment('9am', 'h:mma').toString()
-    );
-    expect(overlap.endTime.toString()).toEqual(
-      moment('9:30am', 'h:mma').toString()
-    );
-    expect(log.overlaps).toHaveLength(1);
-  });
-
-  it('should handle inner overlap (case 3)', () => {
+  it('should handle inner overlap (case 2)', () => {
     const log = new Log(overlapInnerLogContents, {calculateStats: true});
     const overlap = log.overlaps[0];
     expect(overlap.startTime.toString()).toEqual(
@@ -104,14 +92,26 @@ describe('Log model', () => {
     expect(log.overlaps).toHaveLength(1);
   });
 
-  it('should handle outer overlap (case 4)', () => {
-    const log = new Log(overlapOuterLogContents, {calculateStats: true});
+  it('should handle leftward overlap (case 3)', () => {
+    const log = new Log(overlapLeftLogContents, {calculateStats: true});
     const overlap = log.overlaps[0];
     expect(overlap.startTime.toString()).toEqual(
       moment('9am', 'h:mma').toString()
     );
     expect(overlap.endTime.toString()).toEqual(
-      moment('10am', 'h:mma').toString()
+      moment('9:30am', 'h:mma').toString()
+    );
+    expect(log.overlaps).toHaveLength(1);
+  });
+
+  it('should handle rightward overlap (case 4)', () => {
+    const log = new Log(overlapRightLogContents, {calculateStats: true});
+    const overlap = log.overlaps[0];
+    expect(overlap.startTime.toString()).toEqual(
+      moment('9am', 'h:mma').toString()
+    );
+    expect(overlap.endTime.toString()).toEqual(
+      moment('9:30am', 'h:mma').toString()
     );
     expect(log.overlaps).toHaveLength(1);
   });
