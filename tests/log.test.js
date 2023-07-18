@@ -10,12 +10,13 @@ import gapSingleLogContents from './test-logs/gap-single.json';
 import gapMultipleLogContents from './test-logs/gap-multiple.json';
 import errorBackwardsLogContents from './test-logs/error-backwards.json';
 import errorRepeatedTimeLogContents from './test-logs/error-repeated-time.json';
-import './test-utils.js';
+import { createLog } from './utils.js';
+import './custom-matchers.js';
 
 describe('Log model', () => {
 
   it('should instantiate basic log', () => {
-    const log = new Log(basicLogContents, {calculateStats: true});
+    const log = createLog(basicLogContents);
     const category = log.categories[0];
     expect(category).toHaveProperty('name', 'Internal');
     expect(category).toHaveProperty('descriptions', [
@@ -34,7 +35,7 @@ describe('Log model', () => {
   });
 
   it('should instantiate basic log without descriptions', () => {
-    const log = new Log(noDescriptionsLogContents, {calculateStats: true});
+    const log = createLog(noDescriptionsLogContents);
     const category = log.categories[0];
     expect(category).toHaveProperty('name', 'Internal');
     expect(category).toHaveProperty('descriptions', []);
@@ -50,68 +51,62 @@ describe('Log model', () => {
   });
 
   it('should handle outer overlap (case 1)', () => {
-    const log = new Log(overlapOuterLogContents, {calculateStats: true});
-    const overlap = log.overlaps[0];
-    expect(overlap.startTime).toEqualTime('9am');
-    expect(overlap.endTime).toEqualTime('10am');
-    expect(log.overlaps).toHaveLength(1);
+    const { overlaps } = createLog(overlapOuterLogContents);
+    expect(overlaps[0].startTime).toEqualTime('9am');
+    expect(overlaps[0].endTime).toEqualTime('10am');
+    expect(overlaps).toHaveLength(1);
   });
 
   it('should handle inner overlap (case 2)', () => {
-    const log = new Log(overlapInnerLogContents, {calculateStats: true});
-    const overlap = log.overlaps[0];
-    expect(overlap.startTime).toEqualTime('9:15am');
-    expect(overlap.endTime).toEqualTime('9:45am');
-    expect(log.overlaps).toHaveLength(1);
+    const { overlaps } = createLog(overlapInnerLogContents);
+    expect(overlaps[0].startTime).toEqualTime('9:15am');
+    expect(overlaps[0].endTime).toEqualTime('9:45am');
+    expect(overlaps).toHaveLength(1);
   });
 
   it('should handle leftward overlap (case 3)', () => {
-    const log = new Log(overlapLeftLogContents, {calculateStats: true});
-    const overlap = log.overlaps[0];
-    expect(overlap.startTime).toEqualTime('9am');
-    expect(overlap.endTime).toEqualTime('9:30am');
-    expect(log.overlaps).toHaveLength(1);
+    const { overlaps } = createLog(overlapLeftLogContents);
+    expect(overlaps[0].startTime).toEqualTime('9am');
+    expect(overlaps[0].endTime).toEqualTime('9:30am');
+    expect(overlaps).toHaveLength(1);
   });
 
   it('should handle rightward overlap (case 4)', () => {
-    const log = new Log(overlapRightLogContents, {calculateStats: true});
-    const overlap = log.overlaps[0];
-    expect(overlap.startTime).toEqualTime('9am');
-    expect(overlap.endTime).toEqualTime('9:30am');
-    expect(log.overlaps).toHaveLength(1);
+    const { overlaps } = createLog(overlapRightLogContents);
+    expect(overlaps[0].startTime).toEqualTime('9am');
+    expect(overlaps[0].endTime).toEqualTime('9:30am');
+    expect(overlaps).toHaveLength(1);
   });
 
   it('should have no gaps in cases of outward overlap (case 1)', () => {
-    const log = new Log(overlapOuterLogContents, {calculateStats: true});
-    expect(log.gaps).toHaveLength(0);
+    const { gaps } = createLog(overlapOuterLogContents);
+    expect(gaps).toHaveLength(0);
   });
 
   it('should have no gaps in cases of inward overlap (case 2)', () => {
-    const log = new Log(overlapInnerLogContents, {calculateStats: true});
-    expect(log.gaps).toHaveLength(0);
+    const { gaps } = createLog(overlapInnerLogContents);
+    expect(gaps).toHaveLength(0);
   });
 
   it('should have no gaps in cases of leftward overlap (case 3)', () => {
-    const log = new Log(overlapLeftLogContents, {calculateStats: true});
-    expect(log.gaps).toHaveLength(0);
+    const { gaps } = createLog(overlapLeftLogContents);
+    expect(gaps).toHaveLength(0);
   });
 
   it('should have no gaps in cases of rightward overlap (case 4)', () => {
-    const log = new Log(overlapRightLogContents, {calculateStats: true});
-    expect(log.gaps).toHaveLength(0);
+    const { gaps } = createLog(overlapRightLogContents);
+    expect(gaps).toHaveLength(0);
   });
 
   it('should detect single gaps', () => {
-    const log = new Log(gapSingleLogContents, {calculateStats: true});
-    const gap = log.gaps[0];
-    expect(gap.startTime).toEqualTime('9:30am');
-    expect(gap.endTime).toEqualTime('10:15am');
-    expect(log.gaps).toHaveLength(1);
+    const { gaps } = createLog(gapSingleLogContents);
+    expect(gaps[0].startTime).toEqualTime('9:30am');
+    expect(gaps[0].endTime).toEqualTime('10:15am');
+    expect(gaps).toHaveLength(1);
   });
 
   it('should detect multiple gaps', () => {
-    const log = new Log(gapMultipleLogContents, {calculateStats: true});
-    const gaps = log.gaps;
+    const { gaps } = createLog(gapMultipleLogContents);
     expect(gaps[0].startTime).toEqualTime('9am');
     expect(gaps[0].endTime).toEqualTime('9:30am');
     expect(gaps[1].startTime).toEqualTime('10:15am');
@@ -120,23 +115,21 @@ describe('Log model', () => {
     expect(gaps[1].endTime).toEqualTime('10:30am');
     expect(gaps[2].startTime).toEqualTime('11:45am');
     expect(gaps[2].endTime).toEqualTime('12:15pm');
-    expect(log.gaps).toHaveLength(3);
+    expect(gaps).toHaveLength(3);
   });
 
   it('should flag backward time range as an error', () => {
-    const log = new Log(errorBackwardsLogContents, {calculateStats: true});
-    const errors = log.errors;
+    const { errors } = createLog(errorBackwardsLogContents);
     expect(errors[0].startTime).toEqualTime('9am');
     expect(errors[0].endTime).toEqualTime('8:30am');
-    expect(log.errors).toHaveLength(1);
+    expect(errors).toHaveLength(1);
   });
 
   it('should flag repeated time (within the same range) as an error', () => {
-    const log = new Log(errorRepeatedTimeLogContents, {calculateStats: true});
-    const errors = log.errors;
+    const { errors } = createLog(errorRepeatedTimeLogContents);
     expect(errors[0].startTime).toEqualTime('9am');
     expect(errors[0].endTime).toEqualTime('9am');
-    expect(log.errors).toHaveLength(1);
+    expect(errors).toHaveLength(1);
   });
 
 });
