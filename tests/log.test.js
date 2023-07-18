@@ -8,6 +8,7 @@ import overlapInnerLogContents from './test-logs/overlap-inner.json';
 import overlapOuterLogContents from './test-logs/overlap-outer.json';
 import gapSingleLogContents from './test-logs/gap-single.json';
 import gapMultipleLogContents from './test-logs/gap-multiple.json';
+import './test-utils.js';
 
 describe('Log model', () => {
 
@@ -19,24 +20,12 @@ describe('Log model', () => {
       'Getting started with my day',
       'Performance review self-assessment'
     ]);
-    expect(category.tasks[0].startTime.toString()).toEqual(
-      moment('8:45am', 'h:mma').toString()
-    );
-    expect(category.tasks[0].endTime.toString()).toEqual(
-      moment('9am', 'h:mma').toString()
-    );
-    expect(category.tasks[0].totalDuration.toString()).toEqual(
-      moment.duration(15, 'minutes').toString()
-    );
-    expect(category.tasks[1].totalDuration.toString()).toEqual(
-      moment.duration(210, 'minutes').toString()
-    );
-    expect(category.totalDuration.toString()).toEqual(
-      moment.duration(225, 'minutes').toString()
-    );
-    expect(log.totalDuration.toString()).toEqual(
-      moment.duration(225, 'minutes').toString()
-    );
+    expect(category.tasks[0].startTime).toEqualTime('8:45am');
+    expect(category.tasks[0].endTime).toEqualTime('9am');
+    expect(category.tasks[0].totalDuration).toEqualDuration(15, 'minutes');
+    expect(category.tasks[1].totalDuration).toEqualDuration(210, 'minutes');
+    expect(category.totalDuration).toEqualDuration(225, 'minutes');
+    expect(log.totalDuration).toEqualDuration(225, 'minutes');
     expect(log.errors).toHaveLength(0);
     expect(log.gaps).toHaveLength(0);
     expect(log.overlaps).toHaveLength(0);
@@ -47,24 +36,12 @@ describe('Log model', () => {
     const category = log.categories[0];
     expect(category).toHaveProperty('name', 'Internal');
     expect(category).toHaveProperty('descriptions', []);
-    expect(category.tasks[0].startTime.toString()).toEqual(
-      moment('8:45am', 'h:mma').toString()
-    );
-    expect(category.tasks[0].endTime.toString()).toEqual(
-      moment('9am', 'h:mma').toString()
-    );
-    expect(category.tasks[0].totalDuration.toString()).toEqual(
-      moment.duration(15, 'minutes').toString()
-    );
-    expect(category.tasks[1].totalDuration.toString()).toEqual(
-      moment.duration(210, 'minutes').toString()
-    );
-    expect(category.totalDuration.toString()).toEqual(
-      moment.duration(225, 'minutes').toString()
-    );
-    expect(log.totalDuration.toString()).toEqual(
-      moment.duration(225, 'minutes').toString()
-    );
+    expect(category.tasks[0].startTime).toEqualTime('8:45am');
+    expect(category.tasks[0].endTime).toEqualTime('9am');
+    expect(category.tasks[0].totalDuration).toEqualDuration(15, 'minutes');
+    expect(category.tasks[1].totalDuration).toEqualDuration(210, 'minutes');
+    expect(category.totalDuration).toEqualDuration(225, 'minutes');
+    expect(log.totalDuration).toEqualDuration(225, 'minutes');
     expect(log.errors).toHaveLength(0);
     expect(log.gaps).toHaveLength(0);
     expect(log.overlaps).toHaveLength(0);
@@ -73,48 +50,32 @@ describe('Log model', () => {
   it('should handle outer overlap (case 1)', () => {
     const log = new Log(overlapOuterLogContents, {calculateStats: true});
     const overlap = log.overlaps[0];
-    expect(overlap.startTime.toString()).toEqual(
-      moment('9am', 'h:mma').toString()
-    );
-    expect(overlap.endTime.toString()).toEqual(
-      moment('10am', 'h:mma').toString()
-    );
+    expect(overlap.startTime).toEqualTime('9am');
+    expect(overlap.endTime).toEqualTime('10am');
     expect(log.overlaps).toHaveLength(1);
   });
 
   it('should handle inner overlap (case 2)', () => {
     const log = new Log(overlapInnerLogContents, {calculateStats: true});
     const overlap = log.overlaps[0];
-    expect(overlap.startTime.toString()).toEqual(
-      moment('9:15am', 'h:mma').toString()
-    );
-    expect(overlap.endTime.toString()).toEqual(
-      moment('9:45am', 'h:mma').toString()
-    );
+    expect(overlap.startTime).toEqualTime('9:15am');
+    expect(overlap.endTime).toEqualTime('9:45am');
     expect(log.overlaps).toHaveLength(1);
   });
 
   it('should handle leftward overlap (case 3)', () => {
     const log = new Log(overlapLeftLogContents, {calculateStats: true});
     const overlap = log.overlaps[0];
-    expect(overlap.startTime.toString()).toEqual(
-      moment('9am', 'h:mma').toString()
-    );
-    expect(overlap.endTime.toString()).toEqual(
-      moment('9:30am', 'h:mma').toString()
-    );
+    expect(overlap.startTime).toEqualTime('9am');
+    expect(overlap.endTime).toEqualTime('9:30am');
     expect(log.overlaps).toHaveLength(1);
   });
 
   it('should handle rightward overlap (case 4)', () => {
     const log = new Log(overlapRightLogContents, {calculateStats: true});
     const overlap = log.overlaps[0];
-    expect(overlap.startTime.toString()).toEqual(
-      moment('9am', 'h:mma').toString()
-    );
-    expect(overlap.endTime.toString()).toEqual(
-      moment('9:30am', 'h:mma').toString()
-    );
+    expect(overlap.startTime).toEqualTime('9am');
+    expect(overlap.endTime).toEqualTime('9:30am');
     expect(log.overlaps).toHaveLength(1);
   });
 
@@ -141,42 +102,22 @@ describe('Log model', () => {
   it('should detect single gaps', () => {
     const log = new Log(gapSingleLogContents, {calculateStats: true});
     const gap = log.gaps[0];
-    expect(gap.startTime.toString()).toEqual(
-      moment('9:30am', 'h:mma').toString()
-    );
-    expect(gap.endTime.toString()).toEqual(
-      moment('10:15am', 'h:mma').toString()
-    );
+    expect(gap.startTime).toEqualTime('9:30am');
+    expect(gap.endTime).toEqualTime('10:15am');
     expect(log.gaps).toHaveLength(1);
   });
 
   it('should detect multiple gaps', () => {
     const log = new Log(gapMultipleLogContents, {calculateStats: true});
     const gaps = log.gaps;
-    expect(gaps[0].startTime.toString()).toEqual(
-      moment('9am', 'h:mma').toString()
-    );
-    expect(gaps[0].endTime.toString()).toEqual(
-      moment('9:30am', 'h:mma').toString()
-    );
-    expect(gaps[1].startTime.toString()).toEqual(
-      moment('10:15am', 'h:mma').toString()
-    );
-    expect(gaps[1].endTime.toString()).toEqual(
-      moment('10:30am', 'h:mma').toString()
-    );
-    expect(gaps[1].startTime.toString()).toEqual(
-      moment('10:15am', 'h:mma').toString()
-    );
-    expect(gaps[1].endTime.toString()).toEqual(
-      moment('10:30am', 'h:mma').toString()
-    );
-    expect(gaps[2].startTime.toString()).toEqual(
-      moment('11:45am', 'h:mma').toString()
-    );
-    expect(gaps[2].endTime.toString()).toEqual(
-      moment('12:15pm', 'h:mma').toString()
-    );
+    expect(gaps[0].startTime).toEqualTime('9am');
+    expect(gaps[0].endTime).toEqualTime('9:30am');
+    expect(gaps[1].startTime).toEqualTime('10:15am');
+    expect(gaps[1].endTime).toEqualTime('10:30am');
+    expect(gaps[1].startTime).toEqualTime('10:15am');
+    expect(gaps[1].endTime).toEqualTime('10:30am');
+    expect(gaps[2].startTime).toEqualTime('11:45am');
+    expect(gaps[2].endTime).toEqualTime('12:15pm');
     expect(log.gaps).toHaveLength(3);
   });
 
