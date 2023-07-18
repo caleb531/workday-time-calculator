@@ -8,6 +8,8 @@ import overlapInnerLogContents from './test-logs/overlap-inner.json';
 import overlapOuterLogContents from './test-logs/overlap-outer.json';
 import gapSingleLogContents from './test-logs/gap-single.json';
 import gapMultipleLogContents from './test-logs/gap-multiple.json';
+import errorBackwardsLogContents from './test-logs/error-backwards.json';
+import errorRepeatedTimeLogContents from './test-logs/error-repeated-time.json';
 import './test-utils.js';
 
 describe('Log model', () => {
@@ -119,6 +121,22 @@ describe('Log model', () => {
     expect(gaps[2].startTime).toEqualTime('11:45am');
     expect(gaps[2].endTime).toEqualTime('12:15pm');
     expect(log.gaps).toHaveLength(3);
+  });
+
+  it('should flag backward time range as an error', () => {
+    const log = new Log(errorBackwardsLogContents, {calculateStats: true});
+    const errors = log.errors;
+    expect(errors[0].startTime).toEqualTime('9am');
+    expect(errors[0].endTime).toEqualTime('8:30am');
+    expect(log.errors).toHaveLength(1);
+  });
+
+  it('should flag repeated time (within the same range) as an error', () => {
+    const log = new Log(errorRepeatedTimeLogContents, {calculateStats: true});
+    const errors = log.errors;
+    expect(errors[0].startTime).toEqualTime('9am');
+    expect(errors[0].endTime).toEqualTime('9am');
+    expect(log.errors).toHaveLength(1);
   });
 
 });
