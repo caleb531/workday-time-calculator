@@ -303,6 +303,6 @@ class Log {
 // times
 Log.prototype.timeFormat = 'h:mma';
 // The number of minutes to round each time to
-Log.prototype.minuteIncrement = 15;
+Log.prototype.minuteIncrement = 1;
 
 export default Log;
