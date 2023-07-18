@@ -253,17 +253,26 @@ class Log {
           return;
         }
 
-        // Because the time ranges are sorted beforehand, only 2 of the 4 cases
-        // need to be covered logically
         if (
           rangeA.startTime.isSameOrBefore(rangeB.startTime) &&
           rangeB.startTime.isBefore(rangeB.endTime) &&
           rangeB.endTime.isSameOrBefore(rangeA.endTime)
         ) {
-          // Cases 1 and 2: startA startB endB endA
+          // Case 1: startA startB endB endA
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeB.endTime,
+            categories: _.uniqBy([rangeA.category, rangeB.category])
+          });
+        } else if (
+          rangeB.startTime.isSameOrBefore(rangeA.startTime) &&
+          rangeA.startTime.isBefore(rangeA.endTime) &&
+          rangeA.endTime.isSameOrBefore(rangeB.endTime)
+        ) {
+          // Case 2: startB startA endA endB
+          overlaps.push({
+            startTime: rangeA.startTime,
+            endTime: rangeA.endTime,
             categories: _.uniqBy([rangeA.category, rangeB.category])
           });
         } else if (
@@ -271,10 +280,21 @@ class Log {
           rangeB.startTime.isBefore(rangeA.endTime) &&
           rangeA.endTime.isSameOrBefore(rangeB.endTime)
         ) {
-          // Cases 3 and 4: startA startB endA endB
+          // Case 3: startA startB endA endB
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeA.endTime,
+            categories: _.uniqBy([rangeA.category, rangeB.category])
+          });
+        } else if (
+          rangeB.startTime.isSameOrBefore(rangeA.startTime) &&
+          rangeA.startTime.isBefore(rangeB.endTime) &&
+          rangeB.endTime.isSameOrBefore(rangeA.endTime)
+        ) {
+          // Case 4: startB startA endB endA
+          overlaps.push({
+            startTime: rangeA.startTime,
+            endTime: rangeB.endTime,
             categories: _.uniqBy([rangeA.category, rangeB.category])
           });
         }
