@@ -75,7 +75,9 @@ describe('Log model', () => {
     const { overlaps } = createLog(overlapRightLogContents);
     expect(overlaps[0].startTime).toEqualTime('9am');
     expect(overlaps[0].endTime).toEqualTime('9:30am');
-    expect(overlaps).toHaveLength(1);
+    expect(overlaps[1].startTime).toEqualTime('9am');
+    expect(overlaps[1].endTime).toEqualTime('10am');
+    expect(overlaps).toHaveLength(2);
   });
 
   it('should have no gaps in cases of outward overlap (case 1)', () => {
