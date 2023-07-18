@@ -1,6 +1,6 @@
 # Workday Time Calculator
 
-*Copyright 2017-2022 Caleb Evans*  
+*Copyright 2017-2023 Caleb Evans*  
 *Released under the MIT license*
 
 This application allows you to easily record and track what you've done (and
