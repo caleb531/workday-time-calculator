@@ -286,17 +286,6 @@ class Log {
             endTime: rangeA.endTime,
             categories: _.uniqBy([rangeA.category, rangeB.category])
           });
-        } else if (
-          rangeB.startTime.isSameOrBefore(rangeA.startTime) &&
-          rangeA.startTime.isBefore(rangeB.endTime) &&
-          rangeB.endTime.isSameOrBefore(rangeA.endTime)
-        ) {
-          // Case 4: startB startA endB endA
-          overlaps.push({
-            startTime: rangeA.startTime,
-            endTime: rangeB.endTime,
-            categories: _.uniqBy([rangeA.category, rangeB.category])
-          });
         }
       });
     });
