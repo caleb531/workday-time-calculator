@@ -258,7 +258,7 @@ class Log {
           rangeB.startTime.isBefore(rangeB.endTime) &&
           rangeB.endTime.isSameOrBefore(rangeA.endTime)
         ) {
-          // Case 1: startA startB endB endA
+          // Case 1: startA startB endB endA (outer overlap)
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeB.endTime,
@@ -269,7 +269,7 @@ class Log {
           rangeA.startTime.isBefore(rangeA.endTime) &&
           rangeA.endTime.isSameOrBefore(rangeB.endTime)
         ) {
-          // Case 2: startB startA endA endB
+          // Case 2: startB startA endA endB (inner overlap)
           overlaps.push({
             startTime: rangeA.startTime,
             endTime: rangeA.endTime,
@@ -280,7 +280,7 @@ class Log {
           rangeB.startTime.isBefore(rangeA.endTime) &&
           rangeA.endTime.isSameOrBefore(rangeB.endTime)
         ) {
-          // Case 3: startA startB endA endB
+          // Case 3: startA startB endA endB (leftward overlap)
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeA.endTime,
