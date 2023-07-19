@@ -71,7 +71,7 @@ describe('Log model', () => {
     expect(overlaps).toHaveLength(1);
   });
 
-  it('should handle rightward overlap (case 4)', () => {
+  it('should handle rightward overlap (also case 3)', () => {
     const { overlaps } = createLog(overlapRightLogContents);
     expect(overlaps[0].startTime).toEqualTime('9am');
     expect(overlaps[0].endTime).toEqualTime('9:30am');
