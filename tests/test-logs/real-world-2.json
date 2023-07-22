@@ -1,0 +1,251 @@
+{
+  "ops": [
+    {
+      "insert": "Internal"
+    },
+    {
+      "attributes": {
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "8:45 to 9"
+    },
+    {
+      "attributes": {
+        "indent": 1,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Getting started with my day"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "11:30 to 12"
+    },
+    {
+      "attributes": {
+        "indent": 1,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Intro meeting"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "12 to 12:15"
+    },
+    {
+      "attributes": {
+        "indent": 1,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Updating calendar events"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Changing passwords"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "1:15 to 2"
+    },
+    {
+      "attributes": {
+        "indent": 1,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Drafting statement of work"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Time-tracking"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Client A"
+    },
+    {
+      "attributes": {
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "9 to 10:30"
+    },
+    {
+      "attributes": {
+        "indent": 1,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Daily review call"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "10:30 to 11:30"
+    },
+    {
+      "attributes": {
+        "indent": 1,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Troubleshooting session"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "2 to 3"
+    },
+    {
+      "attributes": {
+        "indent": 1,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Development environment setup call"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "10pm to 12am"
+    },
+    {
+      "attributes": {
+        "indent": 1,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Soft launch"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Client B"
+    },
+    {
+      "attributes": {
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "3 to 6"
+    },
+    {
+      "attributes": {
+        "indent": 1,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Updating engine with new feature"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "6 to 6:15"
+    },
+    {
+      "attributes": {
+        "indent": 1,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Email correspondence"
+    },
+    {
+      "attributes": {
+        "indent": 2,
+        "list": "ordered"
+      },
+      "insert": "\n"
+    }
+  ]
+}

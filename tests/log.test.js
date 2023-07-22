@@ -3,7 +3,8 @@ import Log from '../scripts/models/log';
 import basicLogContents from './test-logs/basic.json';
 import noDescriptionsLogContents from './test-logs/no-descriptions.json';
 import minutewiseLogContents from './test-logs/minutewise.json';
-import realWorldLogContents from './test-logs/real-world.json';
+import realWorld1LogContents from './test-logs/real-world-1.json';
+import realWorld2LogContents from './test-logs/real-world-2.json';
 import overlapLeftLogContents from './test-logs/overlap-left.json';
 import overlapRightLogContents from './test-logs/overlap-right.json';
 import overlapInnerLogContents from './test-logs/overlap-inner.json';
@@ -53,7 +54,7 @@ describe('Log model', () => {
   });
 
   it('should instantiate real-world log with multiple categories, descriptions, and a gap', () => {
-    const log = createLog(realWorldLogContents);
+    const log = createLog(realWorld1LogContents);
     const { categories } = log;
 
     // Internal
@@ -117,6 +118,100 @@ describe('Log model', () => {
     expect(log.gaps).toHaveLength(1);
     expect(log.gaps[0].startTime).toEqualTime('12pm');
     expect(log.gaps[0].endTime).toEqualTime('12:30pm');
+    expect(log.overlaps).toHaveLength(0);
+  });
+
+  it('should instantiate real-world log with midnight crossover', () => {
+    const log = createLog(realWorld2LogContents);
+    const { categories } = log;
+
+    // Internal
+
+    expect(categories[0]).toHaveProperty('name', 'Internal');
+    expect(categories[0]).toHaveProperty('descriptions', [
+      'Getting started with my day',
+      'Intro meeting',
+      'Updating calendar events',
+      'Changing passwords',
+      'Drafting statement of work',
+      'Time-tracking'
+    ]);
+
+    expect(categories[0].tasks[0].startTime).toEqualTime('8:45am');
+    expect(categories[0].tasks[0].endTime).toEqualTime('9am');
+    expect(categories[0].tasks[0].totalDuration).toEqualDuration(15, 'minutes');
+
+    expect(categories[0].tasks[1].startTime).toEqualTime('11:30am');
+    expect(categories[0].tasks[1].endTime).toEqualTime('12pm');
+    expect(categories[0].tasks[1].totalDuration).toEqualDuration(30, 'minutes');
+
+    expect(categories[0].tasks[2].startTime).toEqualTime('12pm');
+    expect(categories[0].tasks[2].endTime).toEqualTime('12:15pm');
+    expect(categories[0].tasks[2].totalDuration).toEqualDuration(15, 'minutes');
+
+    expect(categories[0].tasks[3].startTime).toEqualTime('1:15pm');
+    expect(categories[0].tasks[3].endTime).toEqualTime('2pm');
+    expect(categories[0].tasks[3].totalDuration).toEqualDuration(45, 'minutes');
+
+    expect(categories[0].totalDuration).toEqualDuration(105, 'minutes');
+
+    // Client A
+
+    expect(categories[1]).toHaveProperty('name', 'Client A');
+    expect(categories[1]).toHaveProperty('descriptions', [
+      'Daily review call',
+      'Troubleshooting session',
+      'Development environment setup call',
+      'Soft launch'
+    ]);
+
+    expect(categories[1].tasks[0].startTime).toEqualTime('9am');
+    expect(categories[1].tasks[0].endTime).toEqualTime('10:30am');
+    expect(categories[1].tasks[0].totalDuration).toEqualDuration(90, 'minutes');
+
+    expect(categories[1].tasks[1].startTime).toEqualTime('10:30am');
+    expect(categories[1].tasks[1].endTime).toEqualTime('11:30am');
+    expect(categories[1].tasks[1].totalDuration).toEqualDuration(60, 'minutes');
+
+    expect(categories[1].tasks[2].startTime).toEqualTime('2pm');
+    expect(categories[1].tasks[2].endTime).toEqualTime('3pm');
+    expect(categories[1].tasks[2].totalDuration).toEqualDuration(60, 'minutes');
+
+    expect(categories[1].tasks[3].startTime).toEqualTime('10pm');
+    expect(categories[1].tasks[3].endTime).toEqualMoment(
+      moment('12am', 'h:mma')
+      .add(1, 'day')
+    );
+    expect(categories[1].tasks[3].totalDuration).toEqualDuration(120, 'minutes');
+
+    expect(categories[1].totalDuration).toEqualDuration(330, 'minutes');
+
+    // Client B
+
+    expect(categories[2]).toHaveProperty('name', 'Client B');
+    expect(categories[2]).toHaveProperty('descriptions', [
+      'Updating engine with new feature',
+      'Email correspondence'
+    ]);
+    expect(categories[2].tasks[0].startTime).toEqualTime('3pm');
+    expect(categories[2].tasks[0].endTime).toEqualTime('6pm');
+    expect(categories[2].tasks[0].totalDuration).toEqualDuration(180, 'minutes');
+
+    expect(categories[2].tasks[1].startTime).toEqualTime('6pm');
+    expect(categories[2].tasks[1].endTime).toEqualTime('6:15pm');
+    expect(categories[2].tasks[1].totalDuration).toEqualDuration(15, 'minutes');
+
+    expect(categories[2].totalDuration).toEqualDuration(195, 'minutes');
+
+    // Totals
+
+    expect(log.totalDuration).toEqualDuration(630, 'minutes');
+    expect(log.errors).toHaveLength(0);
+    expect(log.gaps).toHaveLength(2);
+    expect(log.gaps[0].startTime).toEqualTime('12:15pm');
+    expect(log.gaps[0].endTime).toEqualTime('1:15pm');
+    expect(log.gaps[1].startTime).toEqualTime('6:15pm');
+    expect(log.gaps[1].endTime).toEqualTime('10pm');
     expect(log.overlaps).toHaveLength(0);
   });
 
