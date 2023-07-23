@@ -7,42 +7,30 @@ const logs = import.meta.glob('./test-logs/*.json', {
   as: 'json',
   eager: true
 });
+const testCases = import.meta.glob('./test-cases/*.json', {
+  as: 'json',
+  eager: true
+});
 
 describe('Log model', () => {
 
-  it('should instantiate basic log', () => {
-    const log = createLog(logs['./test-logs/basic.json']);
-    const category = log.categories[0];
-    expect(category).toHaveProperty('name', 'Internal');
-    expect(category).toHaveProperty('descriptions', [
-      'Getting started with my day',
-      'Performance review self-assessment'
-    ]);
-    expect(category.tasks[0].startTime).toEqualTime('8:45am');
-    expect(category.tasks[0].endTime).toEqualTime('9am');
-    expect(category.tasks[0].totalDuration).toEqualDuration(15, 'minutes');
-    expect(category.tasks[1].totalDuration).toEqualDuration(210, 'minutes');
-    expect(category.totalDuration).toEqualDuration(225, 'minutes');
-    expect(log.totalDuration).toEqualDuration(225, 'minutes');
-    expect(log.errors).toHaveLength(0);
-    expect(log.gaps).toHaveLength(0);
-    expect(log.overlaps).toHaveLength(0);
-  });
-
-  it('should instantiate basic log without descriptions', () => {
-    const log = createLog(logs['./test-logs/no-descriptions.json']);
-    const category = log.categories[0];
-    expect(category).toHaveProperty('name', 'Internal');
-    expect(category).toHaveProperty('descriptions', []);
-    expect(category.tasks[0].startTime).toEqualTime('8:45am');
-    expect(category.tasks[0].endTime).toEqualTime('9am');
-    expect(category.tasks[0].totalDuration).toEqualDuration(15, 'minutes');
-    expect(category.tasks[1].totalDuration).toEqualDuration(210, 'minutes');
-    expect(category.totalDuration).toEqualDuration(225, 'minutes');
-    expect(log.totalDuration).toEqualDuration(225, 'minutes');
-    expect(log.errors).toHaveLength(0);
-    expect(log.gaps).toHaveLength(0);
-    expect(log.overlaps).toHaveLength(0);
+  Object.values(testCases).forEach((testCase) => {
+    it(testCase.description, () => {
+      const log = createLog(testCase.logContents);
+      testCase.assertions.categories.forEach((expectedCategory, c) => {
+        const category = log.categories[c];
+        expect(category).toHaveProperty('name', expectedCategory.name);
+        expect(category).toHaveProperty('descriptions', expectedCategory.descriptions);
+        expectedCategory.tasks.forEach((expectedTask, t) => {
+          const task = category.tasks[t];
+          expect(task.startTime).toEqualTime(expectedTask.startTime);
+          expect(task.endTime).toEqualTime(expectedTask.endTime);
+          expect(task.totalDuration).toEqualDuration(expectedTask.totalDuration, 'minutes');
+        });
+        expect(category.tasks).toHaveLength(expectedCategory.tasks.length);
+        expect(category.totalDuration).toEqualDuration(expectedCategory.totalDuration, 'minutes');
+      });
+    });
   });
 
   it('should instantiate real-world log with multiple categories, descriptions, and a gap', () => {
