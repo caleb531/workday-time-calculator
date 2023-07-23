@@ -21,8 +21,12 @@ describe('Log model', () => {
       if (testCase.assertions.categories) {
         testCase.assertions.categories.forEach((expectedCategory, c) => {
           const category = log.categories[c];
-          expect(category).toHaveProperty('name', expectedCategory.name);
-          expect(category).toHaveProperty('descriptions', expectedCategory.descriptions);
+          if (expectedCategory.name) {
+            expect(category).toHaveProperty('name', expectedCategory.name);
+          }
+          if (expectedCategory.descriptions) {
+            expect(category).toHaveProperty('descriptions', expectedCategory.descriptions);
+          }
           if (expectedCategory.tasks) {
             expectedCategory.tasks.forEach((expectedTask, t) => {
               const task = category.tasks[t];
