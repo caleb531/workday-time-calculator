@@ -1,5 +1,5 @@
 {
-  "description": "should instantiate real-world log with multiple categories, descriptions, and a gap",
+  "description": "should instantiate real-world log with midnight crossover",
   "assertions": {
     "categories": [
       {
