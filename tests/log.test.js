@@ -17,6 +17,7 @@ describe('Log model', () => {
   Object.values(testCases).forEach((testCase) => {
     it(testCase.description, () => {
       const log = createLog(testCase.logContents);
+
       testCase.assertions.categories.forEach((expectedCategory, c) => {
         const category = log.categories[c];
         expect(category).toHaveProperty('name', expectedCategory.name);
@@ -30,169 +31,26 @@ describe('Log model', () => {
         expect(category.tasks).toHaveLength(expectedCategory.tasks.length);
         expect(category.totalDuration).toEqualDuration(expectedCategory.totalDuration, 'minutes');
       });
+      expect(log.categories).toHaveLength(testCase.assertions.categories.length);
+
+      testCase.assertions.errors.forEach((expectedError, e) => {
+        expect(log.errors[e].startTime).toEqualTime(expectedError.startTime);
+        expect(log.errors[e].endTime).toEqualTime(expectedError.endTime);
+      });
+      expect(log.errors).toHaveLength(testCase.assertions.errors.length);
+
+      testCase.assertions.gaps.forEach((expectedGap, g) => {
+        expect(log.gaps[g].startTime).toEqualTime(expectedGap.startTime);
+        expect(log.gaps[g].endTime).toEqualTime(expectedGap.endTime);
+      });
+      expect(log.gaps).toHaveLength(testCase.assertions.gaps.length);
+
+      testCase.assertions.overlaps.forEach((expectedOverlap, o) => {
+        expect(log.overlaps[o].startTime).toEqualTime(expectedOverlap.startTime);
+        expect(log.overlaps[o].endTime).toEqualTime(expectedOverlap.endTime);
+      });
+      expect(log.overlaps).toHaveLength(testCase.assertions.overlaps.length);
     });
-  });
-
-  it('should instantiate real-world log with multiple categories, descriptions, and a gap', () => {
-    const log = createLog(logs['./test-logs/real-world-1.json']);
-    const { categories } = log;
-
-    // Internal
-
-    expect(categories[0]).toHaveProperty('name', 'Internal');
-    expect(categories[0]).toHaveProperty('descriptions', [
-      'Responding to comments',
-      'Weekly dev team scrum'
-    ]);
-
-    expect(categories[0].tasks[0].startTime).toEqualTime('9am');
-    expect(categories[0].tasks[0].endTime).toEqualTime('9:15am');
-    expect(categories[0].tasks[0].totalDuration).toEqualDuration(15, 'minutes');
-
-    expect(categories[0].tasks[1].startTime).toEqualTime('10am');
-    expect(categories[0].tasks[1].endTime).toEqualTime('11am');
-    expect(categories[0].tasks[1].totalDuration).toEqualDuration(60, 'minutes');
-
-    expect(categories[0].totalDuration).toEqualDuration(75, 'minutes');
-
-    // Client A
-
-    expect(categories[1]).toHaveProperty('name', 'Client A');
-    expect(categories[1]).toHaveProperty('descriptions', [
-      'Meeting with client PM',
-      'Emailing client about X'
-    ]);
-
-    expect(categories[1].tasks[0].startTime).toEqualTime('9:15am');
-    expect(categories[1].tasks[0].endTime).toEqualTime('10am');
-    expect(categories[1].tasks[0].totalDuration).toEqualDuration(45, 'minutes');
-
-    expect(categories[1].tasks[1].startTime).toEqualTime('11am');
-    expect(categories[1].tasks[1].endTime).toEqualTime('12pm');
-    expect(categories[1].tasks[1].totalDuration).toEqualDuration(60, 'minutes');
-
-    expect(categories[1].tasks[2].startTime).toEqualTime('12:30pm');
-    expect(categories[1].tasks[2].endTime).toEqualTime('1pm');
-    expect(categories[1].tasks[2].totalDuration).toEqualDuration(30, 'minutes');
-
-    expect(categories[1].tasks[3].startTime).toEqualTime('1pm');
-    expect(categories[1].tasks[3].endTime).toEqualTime('1:15pm');
-    expect(categories[1].tasks[3].totalDuration).toEqualDuration(15, 'minutes');
-
-    expect(categories[1].totalDuration).toEqualDuration(150, 'minutes');
-
-    // Client B
-
-    expect(categories[2]).toHaveProperty('name', 'Client B');
-    expect(categories[2]).toHaveProperty('descriptions', [
-      'Implementing new feature for client website'
-    ]);
-    expect(categories[2].tasks[0].startTime).toEqualTime('1:15pm');
-    expect(categories[2].tasks[0].endTime).toEqualTime('2:30pm');
-    expect(categories[2].tasks[0].totalDuration).toEqualDuration(75, 'minutes');
-
-    // Totals
-
-    expect(log.totalDuration).toEqualDuration(300, 'minutes');
-    expect(log.errors).toHaveLength(0);
-    expect(log.gaps).toHaveLength(1);
-    expect(log.gaps[0].startTime).toEqualTime('12pm');
-    expect(log.gaps[0].endTime).toEqualTime('12:30pm');
-    expect(log.overlaps).toHaveLength(0);
-  });
-
-  it('should instantiate real-world log with midnight crossover', () => {
-    const log = createLog(logs['./test-logs/real-world-2.json']);
-    const { categories } = log;
-
-    // Internal
-
-    expect(categories[0]).toHaveProperty('name', 'Internal');
-    expect(categories[0]).toHaveProperty('descriptions', [
-      'Getting started with my day',
-      'Intro meeting',
-      'Updating calendar events',
-      'Changing passwords',
-      'Drafting statement of work',
-      'Time-tracking'
-    ]);
-
-    expect(categories[0].tasks[0].startTime).toEqualTime('8:45am');
-    expect(categories[0].tasks[0].endTime).toEqualTime('9am');
-    expect(categories[0].tasks[0].totalDuration).toEqualDuration(15, 'minutes');
-
-    expect(categories[0].tasks[1].startTime).toEqualTime('11:30am');
-    expect(categories[0].tasks[1].endTime).toEqualTime('12pm');
-    expect(categories[0].tasks[1].totalDuration).toEqualDuration(30, 'minutes');
-
-    expect(categories[0].tasks[2].startTime).toEqualTime('12pm');
-    expect(categories[0].tasks[2].endTime).toEqualTime('12:15pm');
-    expect(categories[0].tasks[2].totalDuration).toEqualDuration(15, 'minutes');
-
-    expect(categories[0].tasks[3].startTime).toEqualTime('1:15pm');
-    expect(categories[0].tasks[3].endTime).toEqualTime('2pm');
-    expect(categories[0].tasks[3].totalDuration).toEqualDuration(45, 'minutes');
-
-    expect(categories[0].totalDuration).toEqualDuration(105, 'minutes');
-
-    // Client A
-
-    expect(categories[1]).toHaveProperty('name', 'Client A');
-    expect(categories[1]).toHaveProperty('descriptions', [
-      'Daily review call',
-      'Troubleshooting session',
-      'Development environment setup call',
-      'Soft launch'
-    ]);
-
-    expect(categories[1].tasks[0].startTime).toEqualTime('9am');
-    expect(categories[1].tasks[0].endTime).toEqualTime('10:30am');
-    expect(categories[1].tasks[0].totalDuration).toEqualDuration(90, 'minutes');
-
-    expect(categories[1].tasks[1].startTime).toEqualTime('10:30am');
-    expect(categories[1].tasks[1].endTime).toEqualTime('11:30am');
-    expect(categories[1].tasks[1].totalDuration).toEqualDuration(60, 'minutes');
-
-    expect(categories[1].tasks[2].startTime).toEqualTime('2pm');
-    expect(categories[1].tasks[2].endTime).toEqualTime('3pm');
-    expect(categories[1].tasks[2].totalDuration).toEqualDuration(60, 'minutes');
-
-    expect(categories[1].tasks[3].startTime).toEqualTime('10pm');
-    expect(categories[1].tasks[3].endTime).toEqualMoment(
-      moment('12am', 'h:mma')
-      .add(1, 'day')
-    );
-    expect(categories[1].tasks[3].totalDuration).toEqualDuration(120, 'minutes');
-
-    expect(categories[1].totalDuration).toEqualDuration(330, 'minutes');
-
-    // Client B
-
-    expect(categories[2]).toHaveProperty('name', 'Client B');
-    expect(categories[2]).toHaveProperty('descriptions', [
-      'Updating engine with new feature',
-      'Email correspondence'
-    ]);
-    expect(categories[2].tasks[0].startTime).toEqualTime('3pm');
-    expect(categories[2].tasks[0].endTime).toEqualTime('6pm');
-    expect(categories[2].tasks[0].totalDuration).toEqualDuration(180, 'minutes');
-
-    expect(categories[2].tasks[1].startTime).toEqualTime('6pm');
-    expect(categories[2].tasks[1].endTime).toEqualTime('6:15pm');
-    expect(categories[2].tasks[1].totalDuration).toEqualDuration(15, 'minutes');
-
-    expect(categories[2].totalDuration).toEqualDuration(195, 'minutes');
-
-    // Totals
-
-    expect(log.totalDuration).toEqualDuration(630, 'minutes');
-    expect(log.errors).toHaveLength(0);
-    expect(log.gaps).toHaveLength(2);
-    expect(log.gaps[0].startTime).toEqualTime('12:15pm');
-    expect(log.gaps[0].endTime).toEqualTime('1:15pm');
-    expect(log.gaps[1].startTime).toEqualTime('6:15pm');
-    expect(log.gaps[1].endTime).toEqualTime('10pm');
-    expect(log.overlaps).toHaveLength(0);
   });
 
   it('should allow for minute-wise times', () => {

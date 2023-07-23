@@ -1,0 +1,231 @@
+{
+  "description": "should instantiate real-world log with multiple categories, descriptions, and a gap",
+  "assertions": {
+    "categories": [
+      {
+        "name": "Internal",
+        "descriptions": [
+          "Responding to comments",
+          "Weekly dev team scrum"
+        ],
+        "tasks": [
+          {
+            "startTime": "9am",
+            "endTime": "9:15am",
+            "totalDuration": 15
+          },
+          {
+            "startTime": "10am",
+            "endTime": "11am",
+            "totalDuration": 60
+          }
+        ],
+        "totalDuration": 75
+      },
+      {
+        "name": "Client A",
+        "descriptions": [
+          "Meeting with client PM",
+          "Emailing client about X"
+        ],
+        "tasks": [
+          {
+            "startTime": "9:15am",
+            "endTime": "10am",
+            "totalDuration": 45
+          },
+          {
+            "startTime": "11am",
+            "endTime": "12pm",
+            "totalDuration": 60
+          },
+          {
+            "startTime": "12:30pm",
+            "endTime": "1pm",
+            "totalDuration": 30
+          },
+          {
+            "startTime": "1pm",
+            "endTime": "1:15pm",
+            "totalDuration": 15
+          }
+        ],
+        "totalDuration": 150
+      },
+      {
+        "name": "Client B",
+        "descriptions": [
+          "Implementing new feature for client website"
+        ],
+        "tasks": [
+          {
+            "startTime": "1:15pm",
+            "endTime": "2:30pm",
+            "totalDuration": 75
+          }
+        ],
+        "totalDuration": 75
+      }
+    ],
+    "totalDuration": 300,
+    "errors": [],
+    "gaps": [
+      {
+        "startTime": "12pm",
+        "endTime": "12:30pm"
+      }
+    ],
+    "overlaps": []
+  },
+  "logContents": {
+    "ops": [
+      {
+        "insert": "Internal "
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "9 to 9:15"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Responding to comments"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "10 to 11"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Weekly dev team scrum"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Client A"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "9:15 to 10"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "11 to 12"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "12:30 to 1"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Meeting with client PM"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "1 to 1:15"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Emailing client about X"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Client B"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "1:15 to 2:30"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Implementing new feature for client website"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      }
+    ]
+  }
+}

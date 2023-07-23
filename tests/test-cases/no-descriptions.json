@@ -1,4 +1,5 @@
 {
+  "description": "should instantiate a log with no task descriptions",
   "assertions": {
     "categories": [
       {
