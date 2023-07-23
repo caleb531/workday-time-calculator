@@ -53,23 +53,6 @@ describe('Log model', () => {
     });
   });
 
-  it('should allow for minute-wise times', () => {
-    const log = createLog(logs['./test-logs/minutewise.json']);
-    const category = log.categories[0];
-    expect(category).toHaveProperty('name', 'Internal');
-    expect(category.tasks[0].startTime).toEqualTime('8:48am');
-    expect(category.tasks[0].endTime).toEqualTime('8:55am');
-    expect(category.tasks[1].startTime).toEqualTime('8:55am');
-    expect(category.tasks[1].endTime).toEqualTime('9:06am');
-    expect(category.tasks[0].totalDuration).toEqualDuration(7, 'minutes');
-    expect(category.tasks[1].totalDuration).toEqualDuration(11, 'minutes');
-    expect(category.totalDuration).toEqualDuration(18, 'minutes');
-    expect(log.totalDuration).toEqualDuration(18, 'minutes');
-    expect(log.errors).toHaveLength(0);
-    expect(log.gaps).toHaveLength(0);
-    expect(log.overlaps).toHaveLength(0);
-  });
-
   it('should handle outer overlap (case 1)', () => {
     const { overlaps } = createLog(logs['./test-logs/overlap-outer.json']);
     expect(overlaps[0].startTime).toEqualTime('9am');

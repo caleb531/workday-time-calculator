@@ -1,0 +1,60 @@
+{
+  "assertions": {
+    "categories": [
+      {
+        "name": "Internal",
+        "descriptions": [],
+        "tasks": [
+          {
+            "startTime": "8:48am",
+            "endTime": "8:55am",
+            "totalDuration": 7
+          },
+          {
+            "startTime": "8:55am",
+            "endTime": "9:06am",
+            "totalDuration": 11
+          }
+        ],
+        "totalDuration": 18
+      }
+    ],
+    "totalDuration": 18,
+    "errors": [],
+    "gaps": [],
+    "overlaps": []
+  },
+  "logContents": {
+    "ops": [
+      {
+        "insert": "Internal "
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "8:48 to 8:55"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "8:55 to 9:06"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      }
+    ]
+  }
+}
