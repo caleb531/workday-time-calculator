@@ -1,6 +1,11 @@
 {
   "env": {
-    "jest/globals": true
+    "jest/globals": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
   },
   "globals": {
     "vi": true
