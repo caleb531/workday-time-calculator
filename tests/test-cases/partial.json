@@ -1,0 +1,50 @@
+{
+  "description": "should instantiate a basic log",
+  "assertions": {
+    "categories": [
+      {
+        "name": "Internal",
+        "descriptions": [
+          "8:45 to ",
+          "9:15 "
+        ],
+        "tasks": [],
+        "totalDuration": 0
+      }
+    ],
+    "totalDuration": 0
+  },
+  "logContents": {
+    "ops": [
+      {
+        "insert": "Internal"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "8:45 to "
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "9:15 "
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      }
+    ]
+  }
+}
