@@ -1,6 +1,5 @@
 import moment from 'moment';
 import Log from '../scripts/models/log';
-import { createLog } from './utils.js';
 import './custom-matchers.js';
 
 const testCases = import.meta.glob('./test-cases/*.json', {
@@ -12,7 +11,9 @@ describe('Log model', () => {
 
   Object.values(testCases).forEach((testCase) => {
     it(testCase.description, () => {
-      const log = createLog(testCase.logContents);
+      const log = new Log(testCase.logContents, {
+        calculateStats: true
+      });
 
       if (testCase.assertions.categories) {
         testCase.assertions.categories.forEach((expectedCategory, c) => {
