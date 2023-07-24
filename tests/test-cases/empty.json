@@ -1,0 +1,13 @@
+{
+  "description": "should instantiate an empty log",
+  "assertions": {
+    "categories": [],
+    "totalDuration": 0,
+    "errors": [],
+    "gaps": [],
+    "overlaps": []
+  },
+  "logContents": {
+    "ops": []
+  }
+}
