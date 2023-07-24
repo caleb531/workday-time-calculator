@@ -1,5 +1,5 @@
 {
-  "description": "should instantiate a log using the 12-hour time system",
+  "description": "should instantiate a log using various time formats",
   "assertions": {
     "categories": [
       {
