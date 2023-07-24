@@ -3,10 +3,6 @@ import Log from '../scripts/models/log';
 import { createLog } from './utils.js';
 import './custom-matchers.js';
 
-const logs = import.meta.glob('./test-logs/*.json', {
-  as: 'json',
-  eager: true
-});
 const testCases = import.meta.glob('./test-cases/*.json', {
   as: 'json',
   eager: true
