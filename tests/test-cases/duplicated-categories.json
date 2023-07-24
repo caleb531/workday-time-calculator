@@ -1,0 +1,170 @@
+{
+  "description": "should combine categories with the same name",
+  "assertions": {
+    "categories": [
+      {
+        "name": "Internal",
+        "descriptions": [
+          "Getting started with my day",
+          "Performance review"
+        ],
+        "tasks": [
+          {
+            "startTime": "8:45am",
+            "endTime": "9am",
+            "totalDuration": 15
+          },
+          {
+            "startTime": "9am",
+            "endTime": "12:30pm",
+            "totalDuration": 210
+          }
+        ],
+        "totalDuration": 225
+      },
+      {
+        "name": "Client A",
+        "descriptions": [
+          "Work on new website",
+          "Do other thing"
+        ],
+        "tasks": [
+          {
+            "startTime": "1pm",
+            "endTime": "2pm",
+            "totalDuration": 60
+          },
+          {
+            "startTime": "3pm",
+            "endTime": "3:30pm",
+            "totalDuration": 30
+          }
+        ],
+        "totalDuration": 90
+      }
+    ],
+    "totalDuration": 315,
+    "errors": [],
+    "overlaps": []
+  },
+  "logContents": {
+    "ops": [
+      {
+        "insert": "Internal"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "8:45 to 9"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Client A"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "1 to 2"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Work on new website"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "  Internal  "
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Getting started with my day"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "9 to 12:30"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Performance review"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Client A"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "3pm to 3:30pm"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Do other thing"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      }
+    ]
+  }
+}
