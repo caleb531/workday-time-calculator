@@ -1,0 +1,81 @@
+{
+  "description": "should detect multiple gaps",
+  "assertions": {
+    "gaps": [
+      {
+        "startTime": "9am",
+        "endTime": "9:30am"
+      },
+      {
+        "startTime": "10:15am",
+        "endTime": "10:30am"
+      },
+      {
+        "startTime": "11:45am",
+        "endTime": "12:15pm"
+      }
+    ]
+  },
+  "logContents": {
+    "ops": [
+      {
+        "insert": "Client A"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "8:30 to 9"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Client B"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "9:30 to 10:15"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "10:30 to 11:45"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "12:15 to 12:45"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      }
+    ]
+  }
+}
