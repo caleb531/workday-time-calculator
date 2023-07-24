@@ -2,7 +2,8 @@ import _ from 'lodash';
 import appStorage from './app-storage.js';
 
 class Preferences {
-  constructor() {
+  constructor(prefs = {}) {
+    Object.assign(this, this.getDefaultValueMap(), prefs);
     this.eventCallbacks = {};
   }
 

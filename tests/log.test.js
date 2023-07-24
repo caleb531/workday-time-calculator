@@ -1,5 +1,6 @@
 import moment from 'moment';
 import Log from '../scripts/models/log';
+import Preferences from '../scripts/models/preferences';
 import './custom-matchers.js';
 
 const testCases = import.meta.glob('./test-cases/*.json', {
@@ -10,9 +11,13 @@ const testCases = import.meta.glob('./test-cases/*.json', {
 describe('Log model', () => {
 
   Object.values(testCases).forEach((testCase) => {
-    it(testCase.description, () => {
+    it(testCase.description, async () => {
       const log = new Log(testCase.logContents, {
-        calculateStats: true
+        calculateStats: true,
+        preferences: new Preferences({
+          categorySortOrder: null,
+          ...testCase.preferences
+        })
       });
 
       if (testCase.assertions.categories) {
