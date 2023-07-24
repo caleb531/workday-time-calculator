@@ -69,56 +69,6 @@ describe('Log model', () => {
     });
   });
 
-  it('should handle outer overlap (case 1)', () => {
-    const { overlaps } = createLog(logs['./test-logs/overlap-outer.json']);
-    expect(overlaps[0].startTime).toEqualTime('9am');
-    expect(overlaps[0].endTime).toEqualTime('10am');
-    expect(overlaps).toHaveLength(1);
-  });
-
-  it('should handle inner overlap (case 2)', () => {
-    const { overlaps } = createLog(logs['./test-logs/overlap-inner.json']);
-    expect(overlaps[0].startTime).toEqualTime('9:15am');
-    expect(overlaps[0].endTime).toEqualTime('9:45am');
-    expect(overlaps).toHaveLength(1);
-  });
-
-  it('should handle leftward overlap (case 3)', () => {
-    const { overlaps } = createLog(logs['./test-logs/overlap-left.json']);
-    expect(overlaps[0].startTime).toEqualTime('9am');
-    expect(overlaps[0].endTime).toEqualTime('9:30am');
-    expect(overlaps).toHaveLength(1);
-  });
-
-  it('should handle rightward overlap (also case 3)', () => {
-    const { overlaps } = createLog(logs['./test-logs/overlap-right.json']);
-    expect(overlaps[0].startTime).toEqualTime('9am');
-    expect(overlaps[0].endTime).toEqualTime('9:30am');
-    expect(overlaps[1].startTime).toEqualTime('9am');
-    expect(overlaps[1].endTime).toEqualTime('10am');
-    expect(overlaps).toHaveLength(2);
-  });
-
-  it('should have no gaps in cases of outward overlap (case 1)', () => {
-    const { gaps } = createLog(logs['./test-logs/overlap-outer.json']);
-    expect(gaps).toHaveLength(0);
-  });
-
-  it('should have no gaps in cases of inward overlap (case 2)', () => {
-    const { gaps } = createLog(logs['./test-logs/overlap-inner.json']);
-    expect(gaps).toHaveLength(0);
-  });
-
-  it('should have no gaps in cases of leftward overlap (case 3)', () => {
-    const { gaps } = createLog(logs['./test-logs/overlap-left.json']);
-    expect(gaps).toHaveLength(0);
-  });
-
-  it('should have no gaps in cases of rightward overlap (case 4)', () => {
-    const { gaps } = createLog(logs['./test-logs/overlap-right.json']);
-    expect(gaps).toHaveLength(0);
-  });
-
   it('should detect single gaps', () => {
     const { gaps } = createLog(logs['./test-logs/gap-single.json']);
     expect(gaps[0].startTime).toEqualTime('9:30am');

@@ -1,0 +1,54 @@
+{
+  "description": "should handle inner overlap (case 2)",
+  "assertions": {
+    "gaps": [],
+    "overlaps": [
+      {
+        "startTime": "9:15am",
+        "endTime": "9:45am"
+      }
+    ]
+  },
+  "logContents": {
+    "ops": [
+      {
+        "insert": "Client A"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "9 to 10"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Client B"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "9:15 to 9:45"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      }
+    ]
+  }
+}
