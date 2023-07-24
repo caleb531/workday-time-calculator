@@ -1,0 +1,60 @@
+{
+  "description": "should instantiate a log using the 12-hour time system",
+  "assertions": {
+    "categories": [
+      {
+        "name": "Internal",
+        "descriptions": [],
+        "tasks": [
+          {
+            "startTime": "7am",
+            "endTime": "8am",
+            "totalDuration": 60
+          },
+          {
+            "startTime": "6pm",
+            "endTime": "6:30pm",
+            "totalDuration": 30
+          }
+        ],
+        "totalDuration": 90
+      }
+    ],
+    "totalDuration": 90,
+    "errors": [],
+    "overlaps": []
+  },
+  "logContents": {
+    "ops": [
+      {
+        "insert": "Internal"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "7:00 to 8:00am"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "6:00pm to 6:30 PM"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      }
+    ]
+  }
+}
