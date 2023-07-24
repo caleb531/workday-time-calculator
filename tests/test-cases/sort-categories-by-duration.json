@@ -1,0 +1,145 @@
+{
+  "description": "should instantiate log with categories sorted by duration (in descending order)",
+  "assertions": {
+    "categories": [
+      {
+        "name": "Client B",
+        "descriptions": [
+          "Website GoLive"
+        ],
+        "tasks": [
+          {
+            "startTime": "1pm",
+            "endTime": "3pm",
+            "totalDuration": 120
+          }
+        ],
+        "totalDuration": 120
+      },
+      {
+        "name": "Internal",
+        "descriptions": [
+          "Daily scrum"
+        ],
+        "tasks": [
+          {
+            "startTime": "9am",
+            "endTime": "10am",
+            "totalDuration": 60
+          }
+        ],
+        "totalDuration": 60
+      },
+      {
+        "name": "Client A",
+        "descriptions": [
+          "Quick troubleshooting"
+        ],
+        "tasks": [
+          {
+            "startTime": "10am",
+            "endTime": "10:30am",
+            "totalDuration": 30
+          }
+        ],
+        "totalDuration": 30
+      }
+    ],
+    "totalDuration": 630,
+    "errors": []
+  },
+  "preferences": {
+    "categorySortOrder": "duration"
+  },
+  "logContents": {
+    "ops": [
+      {
+        "insert": "Internal"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "9 to 10"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Daily scrum"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Client A"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "10 to 10:30"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Quick troubleshooting"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Client B"
+      },
+      {
+        "attributes": {
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "1 to 3"
+      },
+      {
+        "attributes": {
+          "indent": 1,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      },
+      {
+        "insert": "Website GoLive"
+      },
+      {
+        "attributes": {
+          "indent": 2,
+          "list": "ordered"
+        },
+        "insert": "\n"
+      }
+    ]
+  }
+}
