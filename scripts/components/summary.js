@@ -27,7 +27,7 @@ class SummaryComponent {
   // Set the format of displayed times based on the user's preferred time system
   // (e.g. 12-hour or 24-hour)
   setTimeFormat() {
-    if (this.preferences.timeSystem === '24-hour') {
+    if (this.preferences && this.preferences.timeSystem === '24-hour') {
       this.timeFormat = 'H:mm';
     } else {
       this.timeFormat = 'h:mm';
