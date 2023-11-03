@@ -10,7 +10,5 @@
   "globals": {
     "vi": true
   },
-  "plugins": [
-    "jest"
-  ]
+  "plugins": ["jest"]
 }

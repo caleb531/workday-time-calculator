@@ -3,7 +3,10 @@ import Preferences from './preferences.js';
 import { first, last, maxBy, orderBy, sortBy, uniqBy } from 'lodash-es';
 
 class Log {
-  constructor(logContents, { preferences = new Preferences(), calculateStats = false } = {}) {
+  constructor(
+    logContents,
+    { preferences = new Preferences(), calculateStats = false } = {}
+  ) {
     this.preferences = preferences;
     this.logContents = logContents;
     this.calculateStats = calculateStats;

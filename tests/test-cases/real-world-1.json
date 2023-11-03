@@ -4,10 +4,7 @@
     "categories": [
       {
         "name": "Internal",
-        "descriptions": [
-          "Responding to comments",
-          "Weekly dev team scrum"
-        ],
+        "descriptions": ["Responding to comments", "Weekly dev team scrum"],
         "tasks": [
           {
             "startTime": "9am",
@@ -24,10 +21,7 @@
       },
       {
         "name": "Client A",
-        "descriptions": [
-          "Meeting with client PM",
-          "Emailing client about X"
-        ],
+        "descriptions": ["Meeting with client PM", "Emailing client about X"],
         "tasks": [
           {
             "startTime": "9:15am",
@@ -54,9 +48,7 @@
       },
       {
         "name": "Client B",
-        "descriptions": [
-          "Implementing new feature for client website"
-        ],
+        "descriptions": ["Implementing new feature for client website"],
         "tasks": [
           {
             "startTime": "1:15pm",

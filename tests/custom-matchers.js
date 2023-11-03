@@ -13,7 +13,10 @@ expect.extend({
     } else {
       expectedTime = moment(expectedTimeStr, 'h:mma');
     }
-    const message = () => `expected ${actualTime.format(dateTimeDisplayFormat)} to equal ${expectedTime.format(dateTimeDisplayFormat)}`;
+    const message = () =>
+      `expected ${actualTime.format(
+        dateTimeDisplayFormat
+      )} to equal ${expectedTime.format(dateTimeDisplayFormat)}`;
     if (actualTime.toString() === expectedTime.toString()) {
       return { message, pass: true };
     } else {
@@ -21,9 +24,17 @@ expect.extend({
     }
   },
   // Check if a Moment Duration object is equivalent to the given duration parameters
-  toEqualDuration: (actualDuration, expectedDurationValue, expectedDurationUnits) => {
-    const expectedDuration = moment.duration(expectedDurationValue, expectedDurationUnits);
-    const message = () => `expected ${actualDuration.asMinutes()} minute(s) to equal ${expectedDuration.asMinutes()} minute(s)`;
+  toEqualDuration: (
+    actualDuration,
+    expectedDurationValue,
+    expectedDurationUnits
+  ) => {
+    const expectedDuration = moment.duration(
+      expectedDurationValue,
+      expectedDurationUnits
+    );
+    const message = () =>
+      `expected ${actualDuration.asMinutes()} minute(s) to equal ${expectedDuration.asMinutes()} minute(s)`;
     if (actualDuration.toString() === expectedDuration.toString()) {
       return { message, pass: true };
     } else {

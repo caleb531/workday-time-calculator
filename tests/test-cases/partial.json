@@ -4,10 +4,7 @@
     "categories": [
       {
         "name": "Internal",
-        "descriptions": [
-          "8:45 to ",
-          "9:15 "
-        ],
+        "descriptions": ["8:45 to ", "9:15 "],
         "tasks": [],
         "totalDuration": 0
       }

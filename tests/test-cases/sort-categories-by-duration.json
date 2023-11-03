@@ -4,9 +4,7 @@
     "categories": [
       {
         "name": "Client B",
-        "descriptions": [
-          "Website GoLive"
-        ],
+        "descriptions": ["Website GoLive"],
         "tasks": [
           {
             "startTime": "1pm",
@@ -18,9 +16,7 @@
       },
       {
         "name": "Internal",
-        "descriptions": [
-          "Daily scrum"
-        ],
+        "descriptions": ["Daily scrum"],
         "tasks": [
           {
             "startTime": "9am",
@@ -32,9 +28,7 @@
       },
       {
         "name": "Client A",
-        "descriptions": [
-          "Quick troubleshooting"
-        ],
+        "descriptions": ["Quick troubleshooting"],
         "tasks": [
           {
             "startTime": "10am",

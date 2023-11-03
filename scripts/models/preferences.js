@@ -74,7 +74,10 @@ class Preferences {
   }
 
   toJSON() {
-    return pick(this, Preferences.preferences.map((pref) => pref.id));
+    return pick(
+      this,
+      Preferences.preferences.map((pref) => pref.id)
+    );
   }
 }
 

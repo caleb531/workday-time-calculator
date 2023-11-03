@@ -25,7 +25,8 @@ export default defineConfig({
       manifest: {
         short_name: 'WTC',
         name: 'Workday Time Calculator',
-        description: 'A minimal time-tracking app with features like autocomplete, notifications, and one-click Copy to Clipboard.',
+        description:
+          'A minimal time-tracking app with features like autocomplete, notifications, and one-click Copy to Clipboard.',
         start_url: '.',
         display: 'standalone',
         orientation: 'portrait',

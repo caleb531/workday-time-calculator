@@ -4,10 +4,7 @@
     "categories": [
       {
         "name": "Internal",
-        "descriptions": [
-          "Getting started with my day",
-          "Performance review"
-        ],
+        "descriptions": ["Getting started with my day", "Performance review"],
         "tasks": [
           {
             "startTime": "8:45am",
@@ -24,10 +21,7 @@
       },
       {
         "name": "Client A",
-        "descriptions": [
-          "Work on new website",
-          "Do other thing"
-        ],
+        "descriptions": ["Work on new website", "Do other thing"],
         "tasks": [
           {
             "startTime": "1pm",
