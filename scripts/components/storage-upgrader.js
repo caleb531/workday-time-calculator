@@ -2,7 +2,7 @@ import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
 import LoadingComponent from './loading.js';
 import StorageUpgrader from '../models/storage-upgrader.js';
-import _ from 'lodash';
+import { defer } from 'lodash-es';
 
 class StorageUpgraderComponent {
   oninit() {
@@ -36,7 +36,7 @@ class StorageUpgraderComponent {
   // When the Storage Upgrade prompt shows, blur the editor by focusing the
   // prompt
   blurEditor({ dom }) {
-    _.defer(() => {
+    defer(() => {
       dom.focus();
     });
   }

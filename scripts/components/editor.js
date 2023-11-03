@@ -1,5 +1,5 @@
 import m from 'mithril';
-import _ from 'lodash';
+import { debounce } from 'lodash-es';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import EditorAutocompleter from '../models/editor-autocompleter.js';
@@ -152,7 +152,7 @@ class EditorComponent {
     // completed text
     this.editor.on(
       'text-change',
-      _.debounce((delta, oldDelta, source) => {
+      debounce((delta, oldDelta, source) => {
         if (source === 'user') {
           let logContents = this.editor.getContents();
           this.onSetLogContents(logContents);

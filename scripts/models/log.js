@@ -1,6 +1,6 @@
 import moment from 'moment';
 import Preferences from './preferences.js';
-import _ from 'lodash';
+import { first, last, maxBy, orderBy, sortBy, uniqBy } from 'lodash-es';
 
 class Log {
   constructor(logContents, { preferences = new Preferences(), calculateStats = false } = {}) {
@@ -145,13 +145,13 @@ class Log {
       this.totalDuration.add(category.totalDuration);
     });
     if (this.preferences.categorySortOrder === 'duration') {
-      this.categories = _.orderBy(
+      this.categories = orderBy(
         this.categories,
         (category) => category.totalDuration.asHours(),
         'desc'
       );
     } else if (this.preferences.categorySortOrder === 'title') {
-      this.categories = _.orderBy(this.categories, (category) => category.name);
+      this.categories = orderBy(this.categories, (category) => category.name);
     }
   }
 
@@ -175,7 +175,7 @@ class Log {
   }
 
   sortTimeRanges(ranges) {
-    return _.sortBy(ranges, (range) => [range.startTime, range.endTime]);
+    return sortBy(ranges, (range) => [range.startTime, range.endTime]);
   }
 
   getRangeMap(ranges) {
@@ -211,8 +211,8 @@ class Log {
       return gaps;
     }
 
-    let firstStartTime = _.first(ranges).startTime;
-    let lastEndTime = _.last(ranges).endTime;
+    let firstStartTime = first(ranges).startTime;
+    let lastEndTime = last(ranges).endTime;
     let currentTime = firstStartTime.clone();
     let endTimeSet = new Set();
     let gapStartTime = null;
@@ -262,7 +262,7 @@ class Log {
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeB.endTime,
-            categories: _.uniqBy([rangeA.category, rangeB.category])
+            categories: uniqBy([rangeA.category, rangeB.category])
           });
         } else if (
           rangeB.startTime.isSameOrBefore(rangeA.startTime) &&
@@ -273,7 +273,7 @@ class Log {
           overlaps.push({
             startTime: rangeA.startTime,
             endTime: rangeA.endTime,
-            categories: _.uniqBy([rangeA.category, rangeB.category])
+            categories: uniqBy([rangeA.category, rangeB.category])
           });
         } else if (
           rangeA.startTime.isSameOrBefore(rangeB.startTime) &&
@@ -284,7 +284,7 @@ class Log {
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeA.endTime,
-            categories: _.uniqBy([rangeA.category, rangeB.category])
+            categories: uniqBy([rangeA.category, rangeB.category])
           });
         }
       });
@@ -292,7 +292,7 @@ class Log {
     // Do not display duplicate overlaps; an overlap is considered a duplicate
     // if it has the same start time, end time, *and* categories as an existing
     // overlap
-    overlaps = _.uniqBy(overlaps, (overlap) => {
+    overlaps = uniqBy(overlaps, (overlap) => {
       return [
         overlap.startTime,
         overlap.endTime,
@@ -305,7 +305,7 @@ class Log {
   }
 
   getLatestRange() {
-    return _.maxBy(this.getAllTimeRanges(), (range) => range.endTime);
+    return maxBy(this.getAllTimeRanges(), (range) => range.endTime);
   }
 }
 // The textual time format used for all entered times, as well as displayed

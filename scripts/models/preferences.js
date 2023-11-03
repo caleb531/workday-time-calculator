@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { fromPairs, pick } from 'lodash-es';
 import appStorage from './app-storage.js';
 
 class Preferences {
@@ -18,7 +18,7 @@ class Preferences {
   // Get a map of default values, where the key is the preference ID and the
   // value is the default value for that preference
   getDefaultValueMap() {
-    return _.fromPairs(
+    return fromPairs(
       Preferences.preferences.map((preference) => {
         return [preference.id, preference.defaultValue];
       })
@@ -74,7 +74,7 @@ class Preferences {
   }
 
   toJSON() {
-    return _.pick(this, _.map(Preferences.preferences, 'id'));
+    return pick(this, Preferences.preferences.map((pref) => pref.id));
   }
 }
 

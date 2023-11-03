@@ -1,5 +1,4 @@
 import m from 'mithril';
-import _ from 'lodash';
 import ClipboardJS from 'clipboard';
 import doneSvgUrl from '../../icons/done.svg';
 import copySvgUrl from '../../icons/copy.svg';
