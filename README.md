@@ -3,6 +3,8 @@
 *Copyright 2017-2023 Caleb Evans*  
 *Released under the MIT license*
 
+[![tests](https://github.com/caleb531/workday-time-calculator/actions/workflows/tests.yml/badge.svg)](https://github.com/caleb531/workday-time-calculator/actions/workflows/tests.yml)
+
 This application allows you to easily record and track what you've done (and
 when) throughout the day.
 
