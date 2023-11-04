@@ -40,3 +40,20 @@ export async function applyLogContentsToApp(logContentsMapRelative) {
     })
   );
 }
+
+// Pad the given time string with zeroes if needed
+export function padWithZeroes(time) {
+  if (Number(time) < 10) {
+    return '0' + time;
+  } else {
+    return time;
+  }
+}
+
+// Format the given Moment object in HH:MM format
+export function formatDuration(duration) {
+  let isNegative = duration.asMinutes() < 0;
+  let hours = Math.abs(duration.hours());
+  let minutes = padWithZeroes(Math.abs(duration.minutes()));
+  return `${isNegative ? '-' : ''}${hours}:${minutes}`;
+}
