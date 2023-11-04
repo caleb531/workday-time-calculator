@@ -1,4 +1,5 @@
 {
+  "description": "should instantiate a log with sub-15 minute tasks",
   "assertions": {
     "categories": [
       {
