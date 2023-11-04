@@ -11,6 +11,11 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    setupFiles: [
+      'fake-indexeddb/auto',
+      '@testing-library/jest-dom',
+      'tests/setup.js'
+    ],
     coverage: {
       reporter: ['text', 'lcov', 'html', 'text-summary']
     }

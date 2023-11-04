@@ -14,7 +14,11 @@ class EditorAutocompleter {
 
   setMode(newMode) {
     this.mode = newMode;
-    if (appStorage.usingIDB() && newMode !== 'off') {
+    if (
+      appStorage.usingIDB() &&
+      newMode !== 'off' &&
+      typeof Worker !== 'undefined'
+    ) {
       this.worker = new AutocompletionWorker();
       this.worker.onmessage = (event) => {
         this.receiveCompletions(event);
