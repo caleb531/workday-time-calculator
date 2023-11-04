@@ -2,7 +2,6 @@ import m from 'mithril';
 import { getByText, waitFor } from '@testing-library/dom';
 import basicTestCase from './test-cases/basic.json';
 import { renderApp, unmountApp, applyLogContentsToApp } from './utils.js';
-import preview from 'jest-preview';
 
 describe('app UI', () => {
   afterEach(async () => {
