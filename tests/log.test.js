@@ -2,14 +2,10 @@ import moment from 'moment';
 import Log from '../scripts/models/log';
 import Preferences from '../scripts/models/preferences';
 import './custom-matchers.js';
-
-const testCases = import.meta.glob('./test-cases/*.json', {
-  as: 'json',
-  eager: true
-});
+import { forEachTestCase } from './utils.js';
 
 describe('Log model', () => {
-  Object.values(testCases).forEach((testCase) => {
+  forEachTestCase((testCase) => {
     it(testCase.description, async () => {
       const log = new Log(testCase.logContents, {
         calculateStats: true,
