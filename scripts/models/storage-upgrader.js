@@ -26,7 +26,7 @@ class StorageUpgrader {
         appKeys.forEach((key) => localStorage.removeItem(key));
         window.location.reload();
       } else {
-        console.log('error while upgrading');
+        console.log('error while upgrading storage');
       }
     });
   }
