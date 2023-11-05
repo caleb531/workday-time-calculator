@@ -86,6 +86,8 @@ export function formatTime(timeStr) {
   return moment(timeStr, 'h:mma').format('h:mm');
 }
 
+// Mock the Location object so that we can mock its methods (which cannot be
+// reassigned directly)
 export function mockLocationObject() {
   // @ts-ignore (see <https://stackoverflow.com/a/61649798/560642>)
   delete window.location;
