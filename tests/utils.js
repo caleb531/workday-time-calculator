@@ -1,3 +1,4 @@
+import { fireEvent, waitFor } from '@testing-library/dom';
 import * as idbKeyval from 'idb-keyval';
 import m from 'mithril';
 import moment from 'moment';
@@ -96,4 +97,13 @@ export function mockLocationObject() {
     reload: vi.fn(),
     assign: vi.fn()
   };
+}
+
+// Wait for the the element returned by the given callback to be inserted into
+// the DOM, and when it is, click it
+export async function waitForAndClick(callback) {
+  await waitFor(() => {
+    expect(callback()).toBeInTheDocument();
+  });
+  fireEvent.click(callback());
 }
