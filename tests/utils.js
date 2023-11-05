@@ -25,18 +25,35 @@ export async function unmountApp() {
   localStorage.clear();
 }
 
+// A utility that can be used with the below applyLogContentsToApp() as an
+// supported callback adapter for saving the respective log contents to
+// localStorage
+export async function saveLogContentsToLocalStorage(storageKey, logContents) {
+  return localStorage.setItem(storageKey, JSON.stringify(logContents));
+}
+
+// A utility that can be used with the below applyLogContentsToApp() as an
+// supported callback adapter for saving the respective log contents to
+// indexedDB
+export async function saveLogContentsToIndexedDB(storageKey, logContents) {
+  return idbKeyval.set(storageKey, logContents);
+}
+
 // Apply to the application the given hashmap representing one or more entries
 // of log contents; each key in this object is an integer representing the
 // number of days difference from the current date (e.g. a value of '-1'
 // represents yesterday, a value of '1' represents tomorrow, and a value of '0'
 // represents today)
-export async function applyLogContentsToApp(logContentsMapRelative) {
+export async function applyLogContentsToApp(
+  logContentsMapRelative,
+  callback = saveLogContentsToIndexedDB
+) {
   return Promise.all(
     Object.entries(logContentsMapRelative).map(([key, logContents]) => {
       const daysFromToday = Number(key);
       const dateStr = moment().add(daysFromToday, 'day').format('l');
       const storageKey = `wtc-date-${dateStr}`;
-      return idbKeyval.set(storageKey, logContents);
+      return callback(storageKey, logContents);
     })
   );
 }
