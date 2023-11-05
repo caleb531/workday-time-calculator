@@ -3,6 +3,8 @@ import m from 'mithril';
 import moment from 'moment';
 import AppComponent from '../scripts/components/app.js';
 
+const originalLocationObject = window.location;
+
 const testCases = import.meta.glob('./test-cases/*.json', {
   as: 'json',
   eager: true
@@ -39,6 +41,12 @@ export async function saveLogContentsToIndexedDB(storageKey, logContents) {
   return idbKeyval.set(storageKey, logContents);
 }
 
+// Build the storage key string for the given index; -1 represents yesterday, -1 represents yesterday, and 0 represents today
+export function getStorageKeyFromDays(daysFromToday) {
+  const dateStr = moment().add(daysFromToday, 'day').format('l');
+  return `wtc-date-${dateStr}`;
+}
+
 // Apply to the application the given hashmap representing one or more entries
 // of log contents; each key in this object is an integer representing the
 // number of days difference from the current date (e.g. a value of '-1'
@@ -50,10 +58,7 @@ export async function applyLogContentsToApp(
 ) {
   return Promise.all(
     Object.entries(logContentsMapRelative).map(([key, logContents]) => {
-      const daysFromToday = Number(key);
-      const dateStr = moment().add(daysFromToday, 'day').format('l');
-      const storageKey = `wtc-date-${dateStr}`;
-      return callback(storageKey, logContents);
+      return callback(getStorageKeyFromDays(Number(key)), logContents);
     })
   );
 }
@@ -79,4 +84,14 @@ export function formatDuration(durationStr) {
 // Format the given time string in H:MM format
 export function formatTime(timeStr) {
   return moment(timeStr, 'h:mma').format('h:mm');
+}
+
+export function mockLocationObject() {
+  // @ts-ignore (see <https://stackoverflow.com/a/61649798/560642>)
+  delete window.location;
+  window.location = {
+    ...originalLocationObject,
+    reload: vi.fn(),
+    assign: vi.fn()
+  };
 }
