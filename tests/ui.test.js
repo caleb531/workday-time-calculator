@@ -44,16 +44,17 @@ describe('app UI', () => {
                   ).toBeInTheDocument();
                 });
               }
-              // if (expectedCategory.totalDuration) {
-              //   expect(
-              //     getByText(
-              //       summaryElem,
-              //       formatDuration(
-              //         moment.duration(expectedCategory.totalDuration, 'minutes')
-              //       )
-              //     )
-              //   ).toBeInTheDocument();
-              // }
+              if (expectedCategory.totalDuration && expectedCategory.name) {
+                expect(
+                  getByText(
+                    getByText(summaryElem, `${expectedCategory.name}:`)
+                      .parentElement,
+                    formatDuration(
+                      moment.duration(expectedCategory.totalDuration, 'minutes')
+                    )
+                  )
+                ).toBeInTheDocument();
+              }
             });
           }
 
