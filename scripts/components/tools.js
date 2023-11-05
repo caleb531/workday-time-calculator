@@ -21,7 +21,7 @@ class ToolsComponent {
         m(
           'button.app-tools-menu-toggle',
           {
-            ariaLabel: 'Toggle Tools Menu',
+            'aria-label': 'Toggle Tools Menu',
             onclick: () => {
               this.toolsMenuOpen = !this.toolsMenuOpen;
             }

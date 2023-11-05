@@ -40,7 +40,7 @@ class DateComponent {
         m(
           'button.log-date-control.log-date-prev-control',
           {
-            ariaLabel: 'Go To Previous Day',
+            'aria-label': 'Go To Previous Day',
             onclick: () => this.selectPrevDay()
           },
           m(PrevIconComponent)
@@ -49,7 +49,7 @@ class DateComponent {
           'button.log-date-control.log-date-calendar-control',
           {
             class: this.calendarOpen ? 'active' : '',
-            ariaLabel: 'Toggle Calendar',
+            'aria-label': 'Toggle Calendar',
             onclick: () => this.toggleCalendar()
           },
           m(CalendarIconComponent, { selectedDate: this.selectedDate })
@@ -57,7 +57,7 @@ class DateComponent {
         m(
           'button.log-date-control.log-date-next-control',
           {
-            ariaLabel: 'Go To Next Day',
+            'aria-label': 'Go To Next Day',
             onclick: () => this.selectNextDay()
           },
           m(NextIconComponent)
