@@ -1,9 +1,10 @@
 # Workday Time Calculator
 
-*Copyright 2017-2023 Caleb Evans*  
-*Released under the MIT license*
+_Copyright 2017-2023 Caleb Evans_  
+_Released under the MIT license_
 
 [![tests](https://github.com/caleb531/workday-time-calculator/actions/workflows/tests.yml/badge.svg)](https://github.com/caleb531/workday-time-calculator/actions/workflows/tests.yml)
+[![Coverage Status](https://coveralls.io/repos/caleb531/workday-time-calculator/badge.svg?branch=main)](https://coveralls.io/r/caleb531/workday-time-calculator?branch=main)
 
 This application allows you to easily record and track what you've done (and
 when) throughout the day.
