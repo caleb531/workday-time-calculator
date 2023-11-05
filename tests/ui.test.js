@@ -91,6 +91,17 @@ describe('app UI', () => {
               }
             });
           }
+          if (testCase.assertions.overlaps) {
+            testCase.assertions.overlaps.forEach((expectedOverlap, e) => {
+              const overlapsElem = document.querySelectorAll('.log-overlap')[e];
+              expect(
+                getByText(overlapsElem, formatTime(expectedOverlap.startTime))
+              ).toBeInTheDocument();
+              expect(
+                getByText(overlapsElem, formatTime(expectedOverlap.endTime))
+              ).toBeInTheDocument();
+            });
+          }
         });
       });
     });
