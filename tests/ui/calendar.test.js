@@ -6,7 +6,7 @@ import {
   waitFor
 } from '@testing-library/dom';
 import moment from 'moment';
-import { renderApp, unmountApp, waitForAndClick } from '../utils.js';
+import { renderApp, unmountApp } from '../utils.js';
 
 describe('log calendar', () => {
   afterEach(async () => {
@@ -15,9 +15,12 @@ describe('log calendar', () => {
 
   it('should open', async () => {
     await renderApp();
-    await waitForAndClick(() => {
-      return getByRole(document.body, 'button', { name: 'Toggle Calendar' });
+    const getControl = () =>
+      getByRole(document.body, 'button', { name: 'Toggle Calendar' });
+    await waitFor(() => {
+      expect(getControl()).toBeInTheDocument();
     });
+    fireEvent.click(getControl());
     await waitFor(() => {
       expect(
         getByText(document.body, moment().format('MMMM YYYY'))
@@ -28,7 +31,10 @@ describe('log calendar', () => {
     await renderApp();
     const getControl = () =>
       getByRole(document.body, 'button', { name: 'Toggle Calendar' });
-    await waitForAndClick(() => getControl());
+    await waitFor(() => {
+      expect(getControl()).toBeInTheDocument();
+    });
+    fireEvent.click(getControl());
     await waitFor(() => {
       expect(
         getByText(document.body, moment().format('MMMM YYYY'))
