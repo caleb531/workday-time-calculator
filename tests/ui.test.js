@@ -74,27 +74,23 @@ describe('app UI', () => {
             });
           }
 
-          // if (testCase.assertions.gaps) {
-          //   testCase.assertions.gaps.forEach((expectedGap, g) => {
-          //     expect(log.gaps[g].startTime).toEqualTime(expectedGap.startTime);
-          //     expect(log.gaps[g].endTime).toEqualTime(expectedGap.endTime);
-          //   });
-          //   expect(log.gaps).toHaveLength(testCase.assertions.gaps.length);
-          // }
-
-          // if (testCase.assertions.overlaps) {
-          //   testCase.assertions.overlaps.forEach((expectedOverlap, o) => {
-          //     expect(log.overlaps[o].startTime).toEqualTime(
-          //       expectedOverlap.startTime
-          //     );
-          //     expect(log.overlaps[o].endTime).toEqualTime(
-          //       expectedOverlap.endTime
-          //     );
-          //   });
-          //   expect(log.overlaps).toHaveLength(
-          //     testCase.assertions.overlaps.length
-          //   );
-          // }
+          if (testCase.assertions.gaps) {
+            const gapsElem = document.querySelector('.log-gaps');
+            testCase.assertions.gaps.forEach((expectedGap, e) => {
+              if (expectedGap.startTime === expectedGap.endTime) {
+                expect(
+                  getAllByText(gapsElem, formatTime(expectedGap.startTime))
+                ).toHaveLength(2);
+              } else {
+                expect(
+                  getByText(gapsElem, formatTime(expectedGap.startTime))
+                ).toBeInTheDocument();
+                expect(
+                  getByText(gapsElem, formatTime(expectedGap.endTime))
+                ).toBeInTheDocument();
+              }
+            });
+          }
         });
       });
     });
