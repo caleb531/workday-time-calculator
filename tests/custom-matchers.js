@@ -8,10 +8,10 @@ expect.extend({
     // Allow a time from tomorrow to be represented in JSON
     let expectedTime;
     if (typeof expectedTimeStr === 'object') {
-      expectedTime = moment(expectedTimeStr.value, 'h:mma');
+      expectedTime = moment.utc(expectedTimeStr.value, 'h:mma');
       expectedTime.add(expectedTimeStr.dayOffset, 'day');
     } else {
-      expectedTime = moment(expectedTimeStr, 'h:mma');
+      expectedTime = moment.utc(expectedTimeStr, 'h:mma');
     }
     const message = () =>
       `expected ${actualTime.format(

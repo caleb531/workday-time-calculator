@@ -42,8 +42,8 @@ class Log {
 
   isTimeRange(logLine) {
     let timeStrs = this.splitLineIntoTimeStrs(logLine);
-    let startTime = moment(timeStrs[0], this.timeFormat);
-    let endTime = moment(timeStrs[1], this.timeFormat);
+    let startTime = moment.utc(timeStrs[0], this.timeFormat);
+    let endTime = moment.utc(timeStrs[1], this.timeFormat);
     return startTime.isValid() && endTime.isValid();
   }
 
@@ -108,8 +108,12 @@ class Log {
           // Time range
           // console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimeStrs(currentLine);
-          let startTime = this.roundTime(moment(timeStrs[0], this.timeFormat));
-          let endTime = this.roundTime(moment(timeStrs[1], this.timeFormat));
+          let startTime = this.roundTime(
+            moment.utc(timeStrs[0], this.timeFormat)
+          );
+          let endTime = this.roundTime(
+            moment.utc(timeStrs[1], this.timeFormat)
+          );
           // If time range extends past midnight, count time range as overtime
           // for same day
           if (startTime.hour() >= 12 && endTime.hour() < 12) {
