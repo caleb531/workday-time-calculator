@@ -1,13 +1,13 @@
-import moment from 'moment';
 import m from 'mithril';
-import { getByText, waitFor } from '@testing-library/dom';
+import { getByText, getAllByText, waitFor } from '@testing-library/dom';
 import basicTestCase from './test-cases/basic.json';
 import {
   forEachTestCase,
   renderApp,
   unmountApp,
   applyLogContentsToApp,
-  formatDuration
+  formatDuration,
+  formatTime
 } from './utils.js';
 
 describe('app UI', () => {
@@ -49,24 +49,30 @@ describe('app UI', () => {
                   getByText(
                     getByText(summaryElem, `${expectedCategory.name}:`)
                       .parentElement,
-                    formatDuration(
-                      moment.duration(expectedCategory.totalDuration, 'minutes')
-                    )
+                    formatDuration(expectedCategory.totalDuration)
                   )
                 ).toBeInTheDocument();
               }
             });
           }
 
-          // if (testCase.assertions.errors) {
-          //   testCase.assertions.errors.forEach((expectedError, e) => {
-          //     expect(log.errors[e].startTime).toEqualTime(
-          //       expectedError.startTime
-          //     );
-          //     expect(log.errors[e].endTime).toEqualTime(expectedError.endTime);
-          //   });
-          //   expect(log.errors).toHaveLength(testCase.assertions.errors.length);
-          // }
+          if (testCase.assertions.errors) {
+            const errorsElem = document.querySelector('.log-errors');
+            testCase.assertions.errors.forEach((expectedError, e) => {
+              if (expectedError.startTime === expectedError.endTime) {
+                expect(
+                  getAllByText(errorsElem, formatTime(expectedError.startTime))
+                ).toHaveLength(2);
+              } else {
+                expect(
+                  getByText(errorsElem, formatTime(expectedError.startTime))
+                ).toBeInTheDocument();
+                expect(
+                  getByText(errorsElem, formatTime(expectedError.endTime))
+                ).toBeInTheDocument();
+              }
+            });
+          }
 
           // if (testCase.assertions.gaps) {
           //   testCase.assertions.gaps.forEach((expectedGap, g) => {

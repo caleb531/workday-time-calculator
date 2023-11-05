@@ -50,10 +50,16 @@ export function padWithZeroes(time) {
   }
 }
 
-// Format the given Moment object in HH:MM format
-export function formatDuration(duration) {
+// Format the given duration string in HH:MM format
+export function formatDuration(durationStr) {
+  let duration = moment.duration(durationStr, 'minutes');
   let isNegative = duration.asMinutes() < 0;
   let hours = Math.abs(duration.hours());
   let minutes = padWithZeroes(Math.abs(duration.minutes()));
   return `${isNegative ? '-' : ''}${hours}:${minutes}`;
+}
+
+// Format the given time string in H:MM format
+export function formatTime(timeStr) {
+  return moment(timeStr, 'h:mma').format('h:mm');
 }
