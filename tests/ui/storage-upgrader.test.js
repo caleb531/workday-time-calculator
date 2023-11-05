@@ -1,4 +1,4 @@
-import { getByText, waitFor } from '@testing-library/dom';
+import { findByText, waitFor } from '@testing-library/dom';
 import * as idbKeyval from 'idb-keyval';
 import basicLogTestCase from '../test-cases/basic.json';
 import {
@@ -27,11 +27,9 @@ describe('storage upgrader', () => {
     );
     expect(localStorage).toHaveLength(1);
     await renderApp();
-    await waitFor(() => {
-      expect(
-        getByText(document.body, 'Upgrading Database...')
-      ).toBeInTheDocument();
-    });
+    expect(
+      await findByText(document.body, 'Upgrading Database...')
+    ).toBeInTheDocument();
     await waitFor(async () => {
       expect(localStorage).toHaveLength(0);
       expect(await idbKeyval.keys()).toHaveLength(1);

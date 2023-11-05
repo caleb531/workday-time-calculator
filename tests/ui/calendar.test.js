@@ -1,7 +1,7 @@
 import {
+  findByRole,
+  findByText,
   fireEvent,
-  getByRole,
-  getByText,
   queryByText,
   waitFor
 } from '@testing-library/dom';
@@ -16,31 +16,23 @@ describe('log calendar', () => {
   it('should open', async () => {
     await renderApp();
     const getControl = () =>
-      getByRole(document.body, 'button', { name: 'Toggle Calendar' });
-    await waitFor(() => {
-      expect(getControl()).toBeInTheDocument();
-    });
-    fireEvent.click(getControl());
-    await waitFor(() => {
-      expect(
-        getByText(document.body, moment().format('MMMM YYYY'))
-      ).toBeInTheDocument();
-    });
+      findByRole(document.body, 'button', { name: 'Toggle Calendar' });
+    expect(await getControl()).toBeInTheDocument();
+    fireEvent.click(await getControl());
+    expect(
+      await findByText(document.body, moment().format('MMMM YYYY'))
+    ).toBeInTheDocument();
   });
   it('should close by clicking Calendar control again', async () => {
     await renderApp();
     const getControl = () =>
-      getByRole(document.body, 'button', { name: 'Toggle Calendar' });
-    await waitFor(() => {
-      expect(getControl()).toBeInTheDocument();
-    });
-    fireEvent.click(getControl());
-    await waitFor(() => {
-      expect(
-        getByText(document.body, moment().format('MMMM YYYY'))
-      ).toBeInTheDocument();
-    });
-    fireEvent.click(getControl());
+      findByRole(document.body, 'button', { name: 'Toggle Calendar' });
+    expect(await getControl()).toBeInTheDocument();
+    fireEvent.click(await getControl());
+    expect(
+      await findByText(document.body, moment().format('MMMM YYYY'))
+    ).toBeInTheDocument();
+    fireEvent.click(await getControl());
     await waitFor(() => {
       expect(
         queryByText(document.body, moment().format('MMMM YYYY'))
