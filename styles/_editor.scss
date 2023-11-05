@@ -61,12 +61,12 @@
 
 .ql-editor ol li:not(.ql-direction-rtl),
 .ql-editor ul li:not(.ql-direction-rtl) {
-  padding-left: 0;
+  padding-left: 0 !important;
 }
 
 @for $i from 1 through 9 {
   .ql-editor li.ql-indent-#{$i}:not(.ql-direction-rtl) {
-    padding-left: (2em * $i);
+    padding-left: (2em * $i) !important;
   }
 }
 
