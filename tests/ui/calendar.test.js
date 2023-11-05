@@ -41,6 +41,25 @@ describe('log calendar', () => {
     });
   });
 
+  it('should close by clicking overlay', async () => {
+    await renderApp();
+    const getControl = () =>
+      findByRole(document.body, 'button', { name: 'Toggle Calendar' });
+    expect(await getControl()).toBeInTheDocument();
+    fireEvent.click(await getControl());
+    expect(
+      await findByText(document.body, moment().format('MMMM YYYY'))
+    ).toBeInTheDocument();
+    fireEvent.click(
+      await findByRole(document.body, 'button', { name: 'Close Calendar' })
+    );
+    await waitFor(() => {
+      expect(
+        queryByText(document.body, moment().format('MMMM YYYY'))
+      ).not.toBeInTheDocument();
+    });
+  });
+
   it('should view previous month', async () => {
     await renderApp();
     const getControl = () =>
