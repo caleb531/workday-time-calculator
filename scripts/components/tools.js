@@ -28,11 +28,14 @@ class ToolsComponent {
           },
           m(WrenchIconComponent)
         ),
-        m(DismissableOverlayComponent, {
-          onDismiss: () => {
-            this.toolsMenuOpen = false;
-          }
-        }),
+        this.toolsMenuOpen
+          ? m(DismissableOverlayComponent, {
+              'aria-label': 'Close Tools Menu',
+              onDismiss: () => {
+                this.toolsMenuOpen = false;
+              }
+            })
+          : null,
         m(
           'ul.app-tools-menu',
           {

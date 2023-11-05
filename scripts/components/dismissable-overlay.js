@@ -1,8 +1,12 @@
+import { omit } from 'lodash-es';
 import m from 'mithril';
 
 class DismissableOverlayComponent {
-  view({ attrs: { onDismiss } }) {
-    return m('div.dismissable-overlay', { onclick: () => onDismiss() });
+  view({ attrs }) {
+    return m(`button.dismissable-overlay`, {
+      ...omit(attrs, ['onDismiss']),
+      onclick: () => attrs.onDismiss()
+    });
   }
 }
 

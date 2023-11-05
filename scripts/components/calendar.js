@@ -88,6 +88,7 @@ class CalendarComponent {
           },
           [
             m(DismissableOverlayComponent, {
+              'aria-label': 'Close Calendar',
               onDismiss: () => this.onCloseCalendar()
             }),
 

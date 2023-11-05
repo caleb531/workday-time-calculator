@@ -33,12 +33,15 @@ class PreferencesComponent {
       },
       [
         m(DismissableOverlayComponent, {
+          'aria-labelledby': 'app-preferences-close-control',
           onDismiss: () => this.onClosePreferences()
         }),
 
         m('div.panel.app-preferences-panel', [
           m(CloseButtonComponent, {
-            onDismiss: () => this.onClosePreferences()
+            id: 'app-preferences-close-control',
+            'aria-label': 'Close Preferences',
+            onClose: () => this.onClosePreferences()
           }),
 
           m('h2.app-preferences-heading', 'Preferences'),
