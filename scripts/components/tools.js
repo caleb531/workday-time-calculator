@@ -56,14 +56,16 @@ class ToolsComponent {
             )
           ]
         ),
-        m(PreferencesComponent, {
-          preferences,
-          preferencesOpen: this.preferencesOpen,
-          onClosePreferences: () => {
-            this.preferencesOpen = false;
-            m.redraw();
-          }
-        })
+        this.preferencesOpen
+          ? m(PreferencesComponent, {
+              preferences,
+              preferencesOpen: this.preferencesOpen,
+              onClosePreferences: () => {
+                this.preferencesOpen = false;
+                m.redraw();
+              }
+            })
+          : null
       ]
     );
   }
