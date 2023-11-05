@@ -31,17 +31,22 @@ class UpdateNotificationComponent {
   }
 
   view({ attrs: { updateManager } }) {
-    return m(
-      'div.update-notification',
-      {
-        class: this.isUpdateAvailable ? 'update-available' : '',
-        onclick: () => this.update()
-      },
-      m('div.update-notification-bubble', [
-        m('h2.update-notification-title', 'Update available!'),
-        m('p.update-notification-subtitle', 'Click here to finish updating.')
-      ])
-    );
+    return this.isUpdateAvailable
+      ? m(
+          'div.update-notification',
+          {
+            class: this.isUpdateAvailable ? 'update-available' : '',
+            onclick: () => this.update()
+          },
+          m('div.update-notification-bubble', [
+            m('h2.update-notification-title', 'Update available!'),
+            m(
+              'p.update-notification-subtitle',
+              'Click here to finish updating.'
+            )
+          ])
+        )
+      : null;
   }
 }
 
