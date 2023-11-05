@@ -22,7 +22,6 @@ class StorageUpgrader {
       })
     ).then(function (setStatus) {
       if (setStatus.length === appKeys.length) {
-        console.log('upgrade successful; reloading app...');
         // Delete WTC localStorage keys if indexedDB migration was successful
         appKeys.forEach((key) => localStorage.removeItem(key));
         window.location.reload();
