@@ -1,9 +1,7 @@
-import { getByText, waitFor } from '@testing-library/dom';
-import AppComponent from '../scripts/components/app.js';
-import m from 'mithril';
 import * as idbKeyval from 'idb-keyval';
+import m from 'mithril';
 import moment from 'moment';
-import { defer, fromPairs } from 'lodash-es';
+import AppComponent from '../scripts/components/app.js';
 
 const testCases = import.meta.glob('./test-cases/*.json', {
   as: 'json',

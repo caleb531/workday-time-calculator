@@ -1,7 +1,7 @@
-import m from 'mithril';
 import ClipboardJS from 'clipboard';
-import doneSvgUrl from '../../icons/done.svg';
+import m from 'mithril';
 import copySvgUrl from '../../icons/copy.svg';
+import doneSvgUrl from '../../icons/done.svg';
 
 class SummaryComponent {
   // Store a reference to the current log, and make sure it's always up-to-date

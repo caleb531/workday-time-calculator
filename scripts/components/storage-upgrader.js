@@ -1,8 +1,8 @@
+import { defer } from 'lodash-es';
 import m from 'mithril';
+import StorageUpgrader from '../models/storage-upgrader.js';
 import DismissableOverlayComponent from './dismissable-overlay.js';
 import LoadingComponent from './loading.js';
-import StorageUpgrader from '../models/storage-upgrader.js';
-import { defer } from 'lodash-es';
 
 class StorageUpgraderComponent {
   oninit() {

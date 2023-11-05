@@ -1,9 +1,9 @@
 import m from 'mithril';
 import moment from 'moment';
-import CalendarComponent from './calendar.js';
-import PrevIconComponent from './prev-icon.js';
-import NextIconComponent from './next-icon.js';
 import CalendarIconComponent from './calendar-icon.js';
+import CalendarComponent from './calendar.js';
+import NextIconComponent from './next-icon.js';
+import PrevIconComponent from './prev-icon.js';
 
 class DateComponent {
   oninit({ attrs: { selectedDate, onSetSelectedDate } }) {

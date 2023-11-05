@@ -1,6 +1,6 @@
+import { first, last, maxBy, orderBy, sortBy, uniqBy } from 'lodash-es';
 import moment from 'moment';
 import Preferences from './preferences.js';
-import { first, last, maxBy, orderBy, sortBy, uniqBy } from 'lodash-es';
 
 class Log {
   constructor(

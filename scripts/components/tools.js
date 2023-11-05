@@ -1,7 +1,7 @@
 import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.js';
-import ImportComponent from './import.js';
 import ExportComponent from './export.js';
+import ImportComponent from './import.js';
 import PreferencesComponent from './preferences.js';
 import WrenchIconComponent from './wrench-icon.js';
 

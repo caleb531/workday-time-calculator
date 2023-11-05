@@ -1,4 +1,3 @@
-import moment from 'moment';
 import Log from '../scripts/models/log';
 import Preferences from '../scripts/models/preferences';
 import './custom-matchers.js';

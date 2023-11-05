@@ -1,12 +1,11 @@
-import m from 'mithril';
-import { getByText, getAllByText, waitFor } from '@testing-library/dom';
+import { getAllByText, getByText, waitFor } from '@testing-library/dom';
 import {
-  forEachTestCase,
-  renderApp,
-  unmountApp,
   applyLogContentsToApp,
+  forEachTestCase,
   formatDuration,
-  formatTime
+  formatTime,
+  renderApp,
+  unmountApp
 } from '../utils.js';
 
 describe('log summary', () => {

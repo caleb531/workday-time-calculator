@@ -1,13 +1,5 @@
-import m from 'mithril';
-import { getByText, getAllByText, waitFor } from '@testing-library/dom';
-import {
-  forEachTestCase,
-  renderApp,
-  unmountApp,
-  applyLogContentsToApp,
-  formatDuration,
-  formatTime
-} from '../utils.js';
+import { getByText } from '@testing-library/dom';
+import { renderApp, unmountApp } from '../utils.js';
 
 describe('app UI', () => {
   afterEach(async () => {

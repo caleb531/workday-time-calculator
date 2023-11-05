@@ -1,20 +1,6 @@
+import { fireEvent, getByRole, getByText, waitFor } from '@testing-library/dom';
 import moment from 'moment';
-import m from 'mithril';
-import {
-  getByText,
-  getAllByText,
-  getByRole,
-  waitFor,
-  fireEvent
-} from '@testing-library/dom';
-import {
-  forEachTestCase,
-  renderApp,
-  unmountApp,
-  applyLogContentsToApp,
-  formatDuration,
-  formatTime
-} from '../utils.js';
+import { renderApp, unmountApp } from '../utils.js';
 
 describe('log calendar', () => {
   afterEach(async () => {

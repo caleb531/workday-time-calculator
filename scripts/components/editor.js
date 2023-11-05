@@ -1,10 +1,10 @@
-import m from 'mithril';
 import { debounce } from 'lodash-es';
+import m from 'mithril';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
+import appStorage from '../models/app-storage.js';
 import EditorAutocompleter from '../models/editor-autocompleter.js';
 import EditorAutocompleterComponent from './editor-autocompleter.js';
-import appStorage from '../models/app-storage.js';
 
 class EditorComponent {
   oninit({ attrs: { preferences, selectedDate, onSetLogContents } }) {

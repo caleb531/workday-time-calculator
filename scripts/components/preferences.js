@@ -1,9 +1,9 @@
 import m from 'mithril';
-import DismissableOverlayComponent from './dismissable-overlay.js';
-import CloseButtonComponent from './close-button.js';
-import RadioButtonComponent from './radio-button.js';
-import ColorSwatchComponent from './color-swatch.js';
 import Preferences from '../models/preferences.js';
+import CloseButtonComponent from './close-button.js';
+import ColorSwatchComponent from './color-swatch.js';
+import DismissableOverlayComponent from './dismissable-overlay.js';
+import RadioButtonComponent from './radio-button.js';
 
 class PreferencesComponent {
   oninit({ attrs: { preferences, onClosePreferences } }) {

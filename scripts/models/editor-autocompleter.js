@@ -1,5 +1,5 @@
-import appStorage from './app-storage.js';
 import AutocompletionWorker from '../autocompletion-worker.js?worker';
+import appStorage from './app-storage.js';
 
 class EditorAutocompleter {
   constructor({ autocompleteMode, onReceiveCompletions } = {}) {
