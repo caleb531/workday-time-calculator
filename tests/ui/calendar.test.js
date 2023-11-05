@@ -19,7 +19,6 @@ import {
 describe('log calendar', () => {
   afterEach(async () => {
     await unmountApp();
-    localStorage.clear();
   });
 
   it('should open', async () => {

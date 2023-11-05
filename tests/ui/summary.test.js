@@ -12,7 +12,6 @@ import {
 describe('log summary', () => {
   afterEach(async () => {
     await unmountApp();
-    localStorage.clear();
   });
 
   forEachTestCase((testCase) => {

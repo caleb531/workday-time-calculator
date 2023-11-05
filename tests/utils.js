@@ -23,6 +23,8 @@ export async function renderApp() {
 
 export async function unmountApp() {
   m.mount(document.querySelector('main'), null);
+  idbKeyval.clear();
+  localStorage.clear();
 }
 
 // Apply to the application the given hashmap representing one or more entries

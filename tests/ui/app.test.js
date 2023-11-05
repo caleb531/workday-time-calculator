@@ -12,7 +12,6 @@ import {
 describe('app UI', () => {
   afterEach(async () => {
     await unmountApp();
-    localStorage.clear();
   });
 
   it('should render app', async () => {
