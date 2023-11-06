@@ -16,6 +16,12 @@ export function forEachTestCase(...args) {
   return Object.values(testCases).forEach(...args);
 }
 
+// Expose a helper function that allows for transformation of each and every
+// test case file by mapping to a different value
+export function mapTestCases(...args) {
+  return Object.values(testCases).map(...args);
+}
+
 export async function renderApp() {
   document.body.appendChild(document.createElement('main'));
   m.mount(document.querySelector('main'), AppComponent);

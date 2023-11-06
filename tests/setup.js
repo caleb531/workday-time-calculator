@@ -1,3 +1,12 @@
+import BlobMock from './mocks/blob-mock.js';
+
+URL.createObjectURL = vi.fn();
+
+Object.defineProperty(window, 'Blob', {
+  configurable: true,
+  value: BlobMock
+});
+
 // Mock getBoundingClientRect() for a JSDOM environment
 Range.prototype.getBoundingClientRect = vi.fn(() => ({
   x: 0,
