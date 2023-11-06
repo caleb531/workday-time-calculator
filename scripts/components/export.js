@@ -7,48 +7,43 @@ class ExportComponent {
     this.preferences = preferences;
   }
 
-  getExportedJson() {
+  async getExportedJson() {
     let exportedData = {
       logs: {},
       preferences: this.preferences
     };
-    return appStorage
-      .keys()
-      .then((keys) => {
-        return Promise.all(
-          keys.map((key) => {
-            let logMatches = key.match(/^wtc-date-(\d{1,2}\/\d{1,2}\/\d{4})$/);
-            if (logMatches) {
-              let logDate = logMatches[1];
-              return appStorage.get(key).then((logContents) => {
-                if (
-                  !(
-                    logContents?.ops.length === 1 &&
-                    logContents?.ops[0].insert === '\n'
-                  )
-                ) {
-                  exportedData.logs[logDate] = logContents;
-                  return logContents;
-                }
-                return null;
-              });
-            }
-            return null;
-          })
-        );
+    const keys = await appStorage.keys();
+    await Promise.all(
+      keys.map(async (key) => {
+        let logMatches = key.match(/^wtc-date-(\d{1,2}\/\d{1,2}\/\d{4})$/);
+        if (!logMatches) {
+          return null;
+        }
+        let logDate = logMatches[1];
+        const logContents = await appStorage.get(key);
+        if (
+          !(
+            logContents?.ops.length === 1 && logContents?.ops[0].insert === '\n'
+          )
+        ) {
+          exportedData.logs[logDate] = logContents;
+          return logContents;
+        } else {
+          return null;
+        }
       })
-      .then(() => exportedData);
+    );
+    return exportedData;
   }
 
-  downloadExportedJson() {
-    this.getExportedJson().then((exportedJson) => {
-      let a = document.createElement('a');
-      a.href = URL.createObjectURL(
-        new Blob([JSON.stringify(exportedJson)], { type: 'application/json' })
-      );
-      a.download = `wtc-logs-thru-${moment().format('YYYY-MM-DD')}.json`;
-      a.click();
-    });
+  async downloadExportedJson() {
+    const exportedJson = await this.getExportedJson();
+    let a = document.createElement('a');
+    a.href = URL.createObjectURL(
+      new Blob([JSON.stringify(exportedJson)], { type: 'application/json' })
+    );
+    a.download = `wtc-logs-thru-${moment().format('YYYY-MM-DD')}.json`;
+    a.click();
   }
 
   view() {

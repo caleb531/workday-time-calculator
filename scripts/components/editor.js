@@ -46,7 +46,7 @@ class EditorComponent {
     }
   }
 
-  initializeEditor(editorContainer) {
+  async initializeEditor(editorContainer) {
     this.editor = new Quill(editorContainer, {
       theme: 'snow',
       placeholder:
@@ -163,21 +163,18 @@ class EditorComponent {
         this.editor.focus();
       })
     );
-    this.getLogContentsForSelectedDate().then((logContents) => {
-      this.setEditorText(logContents);
-    });
+    const logContents = await this.getLogContentsForSelectedDate();
+    this.setEditorText(logContents);
     this.autocompleter.setEditor(this.editor);
   }
 
-  getLogContentsForSelectedDate() {
+  async getLogContentsForSelectedDate() {
     let dateStorageId = this.getSelectedDateStorageId();
     let logContentsPromise = appStorage.get(dateStorageId);
     try {
-      return logContentsPromise.then((logContents) => {
-        return logContents || this.getDefaultLogContents();
-      });
+      return (await logContentsPromise) || this.getDefaultLogContents();
     } catch (error) {
-      return new Promise((resolve) => resolve(this.getDefaultLogContents()));
+      return this.getDefaultLogContents();
     }
   }
 

@@ -24,23 +24,22 @@ function getCurrentDate() {
 
 // Process all entered log entries and store the keywords into a string, where
 // each line of text is separated by a newline
-function processLogEntries() {
-  return idbKeyval.entries().then((entries) => {
-    return (
-      entries
-        .filter(([key]) => /^wtc-date-/.test(key))
-        /* eslint-disable-next-line no-unused-vars */
-        .map(([key, value]) => {
-          return value.ops
-            .filter((op) => op.insert.trim())
-            .map((op) => op.insert)
-            .join('\n');
-        })
-        .join('\n')
-        // Collapse consecutive sequences of spaces
-        .replace(/ +/gi, ' ')
-    );
-  });
+async function processLogEntries() {
+  const entries = await idbKeyval.entries();
+  return (
+    entries
+      .filter(([key]) => /^wtc-date-/.test(key))
+      /* eslint-disable-next-line no-unused-vars */
+      .map(([key, value]) => {
+        return value.ops
+          .filter((op) => op.insert.trim())
+          .map((op) => op.insert)
+          .join('\n');
+      })
+      .join('\n')
+      // Collapse consecutive sequences of spaces
+      .replace(/ +/gi, ' ')
+  );
 }
 
 // When the app needs to autocomplete, it sends the web worker a list of all
@@ -130,7 +129,7 @@ let entriesPromise = processLogEntries();
 let lastAutocompleteDate = getCurrentDate();
 // Wait for all log entries to be processed before handling messages from the
 // main thread
-self.onmessage = (event) => {
+self.onmessage = async (event) => {
   // If the user never closes Workday Time Calculator, make sure the available
   // autocomplete data still refreshes itself when the current date changes
   const currentDate = getCurrentDate();
@@ -138,13 +137,12 @@ self.onmessage = (event) => {
     lastAutocompleteDate = currentDate;
     entriesPromise = processLogEntries();
   }
-  return entriesPromise.then((keywordStr) => {
-    self.postMessage(
-      buildCompletions({
-        keywordStr: keywordStr,
-        completionQuery: event.data.completionQuery,
-        autocompleteMode: event.data.autocompleteMode
-      })
-    );
-  });
+  const keywordStr = await entriesPromise;
+  self.postMessage(
+    buildCompletions({
+      keywordStr: keywordStr,
+      completionQuery: event.data.completionQuery,
+      autocompleteMode: event.data.autocompleteMode
+    })
+  );
 };
