@@ -4,17 +4,12 @@ import basicLogTestCase from '../test-cases/basic.json';
 import {
   applyLogContentsToApp,
   getStorageKeyFromDays,
-  mockLocationObject,
   renderApp,
   saveLogContentsToLocalStorage,
   unmountApp
 } from '../utils.js';
 
 describe('storage upgrader', () => {
-  beforeEach(() => {
-    mockLocationObject();
-  });
-
   afterEach(async () => {
     await unmountApp();
   });

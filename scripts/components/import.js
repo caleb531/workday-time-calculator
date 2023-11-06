@@ -33,17 +33,23 @@ class ImportComponent {
 
   view() {
     return m('span.app-control-import', [
-      m('input[type="file"].app-control-import-input', {
-        accept: 'application/json',
-        onchange: (event) => {
-          if (event.target.files.length > 0) {
-            this.importJsonFile(event.target.files[0]).then(() => {
-              window.location.reload();
-            });
+      m(
+        'input[type="file"].app-control-import-input#app-control-import-input',
+        {
+          accept: 'application/json',
+          onchange: (event) => {
+            if (event.target.files.length > 0) {
+              this.importJsonFile(event.target.files[0]).then(() => {
+                window.location.reload();
+              });
+            }
           }
         }
-      }),
-      'Import'
+      ),
+      m(
+        'label.app-control-import-label[for="app-control-import-input"]',
+        'Import'
+      )
     ]);
   }
 }

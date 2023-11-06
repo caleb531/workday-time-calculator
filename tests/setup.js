@@ -1,10 +1,13 @@
 import BlobMock from './mocks/blob-mock.js';
+import { mockLocationObject } from './utils.js';
 
-URL.createObjectURL = vi.fn();
-
-Object.defineProperty(window, 'Blob', {
-  configurable: true,
-  value: BlobMock
+beforeEach(() => {
+  URL.createObjectURL = vi.fn();
+  Object.defineProperty(window, 'Blob', {
+    configurable: true,
+    value: BlobMock
+  });
+  mockLocationObject();
 });
 
 // Mock getBoundingClientRect() for a JSDOM environment
