@@ -3,13 +3,13 @@ import appStorage from './app-storage.js';
 
 class Preferences {
   constructor(prefs = {}) {
-    Object.assign(this, this.getDefaultValueMap(), prefs);
+    Object.assign(this, this.constructor.getDefaultValueMap(), prefs);
     this.eventCallbacks = {};
   }
 
   load() {
     return appStorage.get('wtc-prefs').then((prefs) => {
-      Object.assign(this, this.getDefaultValueMap(), prefs);
+      Object.assign(this, this.constructor.getDefaultValueMap(), prefs);
       this.validatePreferenceValues();
       return this;
     });
@@ -17,7 +17,7 @@ class Preferences {
 
   // Get a map of default values, where the key is the preference ID and the
   // value is the default value for that preference
-  getDefaultValueMap() {
+  static getDefaultValueMap() {
     return fromPairs(
       Preferences.preferences.map((preference) => {
         return [preference.id, preference.defaultValue];
