@@ -7,12 +7,11 @@ class Preferences {
     this.eventCallbacks = {};
   }
 
-  load() {
-    return appStorage.get('wtc-prefs').then((prefs) => {
-      Object.assign(this, this.constructor.getDefaultValueMap(), prefs);
-      this.validatePreferenceValues();
-      return this;
-    });
+  async load() {
+    const prefs = await appStorage.get('wtc-prefs');
+    Object.assign(this, this.constructor.getDefaultValueMap(), prefs);
+    this.validatePreferenceValues();
+    return this;
   }
 
   // Get a map of default values, where the key is the preference ID and the
