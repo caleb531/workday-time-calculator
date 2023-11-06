@@ -23,8 +23,8 @@ class ExportComponent {
               return appStorage.get(key).then((logContents) => {
                 if (
                   !(
-                    logContents.ops.length === 1 &&
-                    logContents.ops[0].insert === '\n'
+                    logContents?.ops.length === 1 &&
+                    logContents?.ops[0].insert === '\n'
                   )
                 ) {
                   exportedData.logs[logDate] = logContents;
