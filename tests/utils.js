@@ -23,12 +23,15 @@ export function mapTestCases(...args) {
 }
 
 export async function renderApp() {
-  document.body.appendChild(document.createElement('main'));
-  m.mount(document.querySelector('main'), AppComponent);
+  const main = document.createElement('main');
+  document.body.appendChild(main);
+  m.mount(main, AppComponent);
 }
 
 export async function unmountApp() {
-  m.mount(document.querySelector('main'), null);
+  const main = document.querySelector('main');
+  m.mount(main, null);
+  main.remove();
   idbKeyval.clear();
   localStorage.clear();
 }
