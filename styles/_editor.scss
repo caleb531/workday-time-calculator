@@ -71,6 +71,6 @@
 }
 
 .ql-editor.ql-blank::before {
-  color: rgba(#fff, 0.4);
-  font-style: normal;
+  color: rgba(#fff, 0.4) !important;
+  font-style: normal !important;
 }
