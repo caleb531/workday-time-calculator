@@ -2,7 +2,6 @@ import {
   findByRole,
   findByTestId,
   findByText,
-  getByText,
   queryByText,
   waitFor
 } from '@testing-library/dom';
@@ -124,14 +123,12 @@ describe('log calendar', () => {
       (await findByTestId(document.body, 'log-calendar-selected-date'))
         .nextElementSibling
     );
-    await waitFor(() => {
-      expect(
-        getByText(
-          document.body,
-          moment().add(1, 'day').format('dddd, MMMM D, YYYY')
-        )
-      ).toBeInTheDocument();
-    });
+    expect(
+      await findByText(
+        document.body,
+        moment().add(1, 'day').format('dddd, MMMM D, YYYY')
+      )
+    ).toBeInTheDocument();
     // Check if real world log contents #2 are populated into editor
     expect(
       await findByText(
