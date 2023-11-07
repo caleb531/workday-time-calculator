@@ -1,4 +1,9 @@
-import { getAllByText, getByText, waitFor } from '@testing-library/dom';
+import {
+  getAllByText,
+  getByText,
+  queryByTestId,
+  waitFor
+} from '@testing-library/dom';
 import {
   applyLogContentsToApp,
   forEachTestCase,
@@ -18,7 +23,7 @@ describe('log summary', () => {
       await applyLogContentsToApp({ 0: testCase.logContents });
       await renderApp();
       await waitFor(() => {
-        const summaryElem = document.querySelector('.log-summary');
+        const summaryElem = queryByTestId(document.body, 'log-summary');
         if (testCase.assertions.categories) {
           testCase.assertions.categories.forEach((expectedCategory, c) => {
             if (expectedCategory.name) {
@@ -46,7 +51,7 @@ describe('log summary', () => {
         }
 
         if (testCase.assertions.errors) {
-          const errorsElem = document.querySelector('.log-errors');
+          const errorsElem = queryByTestId(document.body, 'log-errors');
           testCase.assertions.errors.forEach((expectedError, e) => {
             if (expectedError.startTime === expectedError.endTime) {
               expect(
@@ -64,7 +69,7 @@ describe('log summary', () => {
         }
 
         if (testCase.assertions.gaps) {
-          const gapsElem = document.querySelector('.log-gaps');
+          const gapsElem = queryByTestId(document.body, 'log-gaps');
           testCase.assertions.gaps.forEach((expectedGap, e) => {
             if (expectedGap.startTime === expectedGap.endTime) {
               expect(
@@ -81,13 +86,17 @@ describe('log summary', () => {
           });
         }
         if (testCase.assertions.overlaps) {
+          const overlapsElem = queryByTestId(
+            document.body,
+            'log-overlap-times'
+          );
           testCase.assertions.overlaps.forEach((expectedOverlap, e) => {
-            const overlapsElem = document.querySelectorAll('.log-overlap')[e];
+            const overlapElem = overlapsElem.children[e];
             expect(
-              getByText(overlapsElem, formatTime(expectedOverlap.startTime))
+              getByText(overlapElem, formatTime(expectedOverlap.startTime))
             ).toBeInTheDocument();
             expect(
-              getByText(overlapsElem, formatTime(expectedOverlap.endTime))
+              getByText(overlapElem, formatTime(expectedOverlap.endTime))
             ).toBeInTheDocument();
           });
         }

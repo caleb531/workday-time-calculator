@@ -75,7 +75,7 @@ class SummaryComponent {
 
   view({ attrs: { log } }) {
     return log && log.categories.length > 0
-      ? m('div.log-summary', [
+      ? m('div.log-summary[data-testid="log-summary"]', [
           m('div.log-summary-overview', [
             m('div.log-summary-overview-main', [
               m('div.log-total', [
@@ -89,7 +89,7 @@ class SummaryComponent {
 
               m('.log-stats', [
                 log.errors && log.errors.length > 0
-                  ? m('div.log-errors', [
+                  ? m('div.log-errors[data-testid="log-errors"]', [
                       m('span.log-label', 'Errors:'),
                       ' ',
                       m(
@@ -118,7 +118,7 @@ class SummaryComponent {
                   : null,
 
                 log.gaps && log.gaps.length > 0
-                  ? m('div.log-gaps', [
+                  ? m('div.log-gaps[data-testid="log-gaps"]', [
                       m('span.log-label', 'Gaps:'),
                       ' ',
                       m(
@@ -151,7 +151,7 @@ class SummaryComponent {
                       m('span.log-label', 'Overlaps:'),
                       ' ',
                       m(
-                        'div.log-times.log-overlap-times',
+                        'div.log-times.log-overlap-times[data-testid="log-overlap-times"]',
                         log.overlaps.map((overlap) => {
                           return m('div.log-overlap', [
                             m(
