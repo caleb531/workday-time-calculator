@@ -132,5 +132,12 @@ describe('log calendar', () => {
         )
       ).toBeInTheDocument();
     });
+    // Check if real world log contents #2 are populated into editor
+    expect(
+      await findByText(
+        document.body,
+        realWorldTestCase2.assertions.categories[1].descriptions[0]
+      )
+    ).toBeInTheDocument();
   });
 });
