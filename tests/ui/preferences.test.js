@@ -1,4 +1,5 @@
-import { findByRole, findByText, fireEvent } from '@testing-library/dom';
+import { findByRole, findByText } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import { renderApp, unmountApp } from '../utils.js';
 
 describe('app preferences', () => {
@@ -12,9 +13,9 @@ describe('app preferences', () => {
       findByRole(document.body, 'button', { name: 'Toggle Tools Menu' });
     const getPrefsMenuItem = () => findByText(document.body, 'Preferences');
     expect(await getToolsControl()).toBeInTheDocument();
-    fireEvent.click(await getToolsControl());
+    userEvent.click(await getToolsControl());
     expect(await getPrefsMenuItem()).toBeInTheDocument();
-    fireEvent.click(await getPrefsMenuItem());
+    userEvent.click(await getPrefsMenuItem());
     expect(
       await findByRole(document.body, 'heading', { name: 'Preferences' })
     ).toBeInTheDocument();

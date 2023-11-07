@@ -2,7 +2,6 @@ import {
   findByRole,
   findByTestId,
   findByText,
-  fireEvent,
   getByText,
   queryByText,
   waitFor
@@ -24,7 +23,7 @@ describe('log calendar', () => {
     const getControl = () =>
       findByRole(document.body, 'button', { name: 'Toggle Calendar' });
     expect(await getControl()).toBeInTheDocument();
-    fireEvent.click(await getControl());
+    userEvent.click(await getControl());
     expect(
       await findByText(document.body, moment().format('MMMM YYYY'))
     ).toBeInTheDocument();
@@ -35,11 +34,11 @@ describe('log calendar', () => {
     const getControl = () =>
       findByRole(document.body, 'button', { name: 'Toggle Calendar' });
     expect(await getControl()).toBeInTheDocument();
-    fireEvent.click(await getControl());
+    userEvent.click(await getControl());
     expect(
       await findByText(document.body, moment().format('MMMM YYYY'))
     ).toBeInTheDocument();
-    fireEvent.click(await getControl());
+    userEvent.click(await getControl());
     await waitFor(() => {
       expect(
         queryByText(document.body, moment().format('MMMM YYYY'))
@@ -52,11 +51,11 @@ describe('log calendar', () => {
     const getControl = () =>
       findByRole(document.body, 'button', { name: 'Toggle Calendar' });
     expect(await getControl()).toBeInTheDocument();
-    fireEvent.click(await getControl());
+    userEvent.click(await getControl());
     expect(
       await findByText(document.body, moment().format('MMMM YYYY'))
     ).toBeInTheDocument();
-    fireEvent.click(
+    userEvent.click(
       await findByRole(document.body, 'button', { name: 'Close Calendar' })
     );
     await waitFor(() => {
@@ -71,8 +70,8 @@ describe('log calendar', () => {
     const getControl = () =>
       findByRole(document.body, 'button', { name: 'Toggle Calendar' });
     expect(await getControl()).toBeInTheDocument();
-    fireEvent.click(await getControl());
-    fireEvent.click(
+    userEvent.click(await getControl());
+    userEvent.click(
       await findByRole(document.body, 'button', { name: 'Previous Month' })
     );
     expect(
@@ -88,8 +87,8 @@ describe('log calendar', () => {
     const getControl = () =>
       findByRole(document.body, 'button', { name: 'Toggle Calendar' });
     expect(await getControl()).toBeInTheDocument();
-    fireEvent.click(await getControl());
-    fireEvent.click(
+    userEvent.click(await getControl());
+    userEvent.click(
       await findByRole(document.body, 'button', { name: 'Next Month' })
     );
     expect(
@@ -117,7 +116,7 @@ describe('log calendar', () => {
         basicLogTestCase.assertions.categories[0].descriptions[1]
       )
     ).toBeInTheDocument();
-    fireEvent.click(await getControl());
+    userEvent.click(await getControl());
     expect(
       await findByTestId(document.body, 'log-calendar-dates')
     ).toBeInTheDocument();

@@ -1,9 +1,5 @@
-import {
-  findByRole,
-  findByText,
-  fireEvent,
-  waitFor
-} from '@testing-library/dom';
+import { findByRole, findByText, waitFor } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import { fromPairs } from 'lodash-es';
 import moment from 'moment';
 import Preferences from '../../scripts/models/preferences.js';
@@ -35,7 +31,7 @@ describe('export functionality', () => {
       findByRole(document.body, 'button', { name: 'Toggle Tools Menu' });
     const getExportMenuItem = () => findByText(document.body, 'Export All');
     expect(await getToolsControl()).toBeInTheDocument();
-    fireEvent.click(await getToolsControl());
+    userEvent.click(await getToolsControl());
     expect(await getExportMenuItem()).toBeInTheDocument();
     let exportedBlob;
     vi.spyOn(URL, 'createObjectURL').mockImplementationOnce((blob) => {
@@ -43,7 +39,7 @@ describe('export functionality', () => {
       // Doesn't matter what this value is
       return '';
     });
-    fireEvent.click(await getExportMenuItem());
+    userEvent.click(await getExportMenuItem());
     await waitFor(() => {
       expect(exportedBlob).toBeDefined();
     });

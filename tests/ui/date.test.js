@@ -1,4 +1,5 @@
-import { findByRole, findByText, fireEvent } from '@testing-library/dom';
+import { findByRole, findByText } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import moment from 'moment';
 import basicLogTestCase from '../test-cases/basic.json';
 import realWorldTestCase1 from '../test-cases/real-world-1.json';
@@ -27,7 +28,7 @@ describe('log date selector', () => {
         basicLogTestCase.assertions.categories[0].descriptions[1]
       )
     ).toBeInTheDocument();
-    fireEvent.click(await getControl());
+    userEvent.click(await getControl());
     expect(
       await findByText(
         document.body,
@@ -60,7 +61,7 @@ describe('log date selector', () => {
         basicLogTestCase.assertions.categories[0].descriptions[1]
       )
     ).toBeInTheDocument();
-    fireEvent.click(await getControl());
+    userEvent.click(await getControl());
     expect(
       await findByText(
         document.body,

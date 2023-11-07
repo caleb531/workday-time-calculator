@@ -4,6 +4,7 @@ import {
   fireEvent,
   waitFor
 } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import * as idbKeyval from 'idb-keyval';
 import { fromPairs } from 'lodash-es';
 import moment from 'moment';
@@ -41,7 +42,7 @@ describe('import functionality', () => {
     const getToolsControl = () =>
       findByRole(document.body, 'button', { name: 'Toggle Tools Menu' });
     expect(await getToolsControl()).toBeInTheDocument();
-    fireEvent.click(await getToolsControl());
+    userEvent.click(await getToolsControl());
     const fileContents = JSON.stringify(exportedData);
     FileReaderMock._fileData = fileContents;
     fireEvent.change(await findByLabelText(document.body, 'Import'), {
