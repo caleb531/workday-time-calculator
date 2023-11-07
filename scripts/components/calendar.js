@@ -128,6 +128,7 @@ class CalendarComponent {
               m(
                 'div.log-calendar-dates',
                 {
+                  'data-testid': 'log-calendar-dates',
                   onmousedown: (event) => this.selectDate(event),
                   ondblclick: (event) =>
                     this.closeCalendarAfterDblClickDate(event)
@@ -137,6 +138,9 @@ class CalendarComponent {
                     'div.log-calendar-date',
                     {
                       'data-date': currentDate.format('l'),
+                      'data-testid': currentDate.isSame(this.selectedDate)
+                        ? 'log-calendar-selected-date'
+                        : undefined,
                       class: [
                         currentDate.format('YYYY/MM') ===
                         this.firstDayOfMonthInView.format('YYYY/MM')

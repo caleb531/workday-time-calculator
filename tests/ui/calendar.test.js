@@ -1,12 +1,18 @@
 import {
   findByRole,
+  findByTestId,
   findByText,
   fireEvent,
+  getByText,
   queryByText,
   waitFor
 } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import moment from 'moment';
-import { renderApp, unmountApp } from '../utils.js';
+import basicLogTestCase from '../test-cases/basic.json';
+import realWorldTestCase1 from '../test-cases/real-world-1.json';
+import realWorldTestCase2 from '../test-cases/real-world-2.json';
+import { applyLogContentsToApp, renderApp, unmountApp } from '../utils.js';
 
 describe('log calendar', () => {
   afterEach(async () => {
@@ -92,5 +98,40 @@ describe('log calendar', () => {
         moment().startOf('month').add(1, 'month').format('MMMM YYYY')
       )
     ).toBeInTheDocument();
+  });
+
+  it('should select new date', async () => {
+    await applyLogContentsToApp({
+      '-1': realWorldTestCase1.logContents,
+      0: basicLogTestCase.logContents,
+      1: realWorldTestCase2.logContents
+    });
+    await renderApp();
+    const getControl = () =>
+      findByRole(document.body, 'button', { name: 'Toggle Calendar' });
+    expect(await getControl()).toBeInTheDocument();
+    // Check if basic log contents are populated into editor
+    expect(
+      await findByText(
+        document.body,
+        basicLogTestCase.assertions.categories[0].descriptions[1]
+      )
+    ).toBeInTheDocument();
+    fireEvent.click(await getControl());
+    expect(
+      await findByTestId(document.body, 'log-calendar-dates')
+    ).toBeInTheDocument();
+    userEvent.dblClick(
+      (await findByTestId(document.body, 'log-calendar-selected-date'))
+        .nextElementSibling
+    );
+    await waitFor(() => {
+      expect(
+        getByText(
+          document.body,
+          moment().add(1, 'day').format('dddd, MMMM D, YYYY')
+        )
+      ).toBeInTheDocument();
+    });
   });
 });
