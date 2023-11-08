@@ -1,5 +1,8 @@
 import * as idbKeyval from 'idb-keyval';
-import { chain } from 'lodash-es';
+// If we try to use named imports (e.g. { chain }), then the other lodash
+// methods will be missing; therefore, we must import all Lodash methods with
+// the global import
+import _ from 'lodash-es';
 
 // A map representing the various algorithms for the autocomplete; each key
 // name is the ID of a specific autocomplete mode, and each value is a function
@@ -96,7 +99,7 @@ function buildCompletions({ keywordStr, completionQuery, autocompleteMode }) {
     const querySubstring = querySubstrings[i];
     // Retrieve all phrases in the keyword string that match the given
     // autocomplete query
-    const matches = chain(matchGroup)
+    const matches = _.chain(matchGroup)
       // Map the number of occurrences of each match
       .countBy()
       .toPairs()
