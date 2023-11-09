@@ -4,9 +4,10 @@ import { VitePWA } from 'vite-plugin-pwa';
 // https://vitejs.dev/config/
 export default defineConfig({
   // By default, Vite will assume we are serving from the root of the domain
-  // (i.e. /); however, because we are serving Truthy from a subdirectory of my
-  // projects domain (e.g. https://projects.calebevans.me/truthy/), we must
-  // specify . as the base directory to serve from
+  // (i.e. /); however, because we are serving Workday Time Calculator from a
+  // subdirectory of my projects domain (e.g.
+  // https://projects.calebevans.me/workday-time-calculator/), we must specify .
+  // as the base directory to serve from
   base: './',
   test: {
     globals: true,
