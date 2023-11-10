@@ -3,7 +3,12 @@ import userEvent from '@testing-library/user-event';
 import basicLogTestCase from '../test-cases/basic.json';
 import realWorldTestCase1 from '../test-cases/real-world-1.json';
 import realWorldTestCase2 from '../test-cases/real-world-2.json';
-import { applyLogContentsToApp, renderApp, unmountApp } from '../utils.js';
+import {
+  applyLogContentsToApp,
+  renderApp,
+  setPreferences,
+  unmountApp
+} from '../utils.js';
 
 // Check if the given typed string (called the "completion query") will
 // suggest the match represented by the given placeholder string, and also
@@ -71,5 +76,12 @@ describe('log autocomplete', () => {
     await checkIfCompletable('R', 'esponding');
     await checkIfCompletable('w', 'ith');
     await checkIfCompletable('W', 'eekly');
+  });
+
+  it('should allow for greedy matching', async () => {
+    await setPreferences({ autocompleteMode: 'greedy' });
+    await renderApp();
+    await checkIfCompletable('Ge', 'tting started with');
+    await checkIfCompletable('Getting started with m', 'y day');
   });
 });

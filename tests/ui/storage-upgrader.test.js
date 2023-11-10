@@ -5,7 +5,7 @@ import {
   applyLogContentsToApp,
   getStorageKeyFromDays,
   renderApp,
-  saveLogContentsToLocalStorage,
+  saveToLocalStorage,
   unmountApp
 } from '../utils.js';
 
@@ -16,10 +16,7 @@ describe('storage upgrader', () => {
 
   it('should trigger when local storage is populated', async () => {
     const logContents = basicLogTestCase.logContents;
-    await applyLogContentsToApp(
-      { 0: logContents },
-      saveLogContentsToLocalStorage
-    );
+    await applyLogContentsToApp({ 0: logContents }, saveToLocalStorage);
     expect(localStorage).toHaveLength(1);
     await renderApp();
     expect(

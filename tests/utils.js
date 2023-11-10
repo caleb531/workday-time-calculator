@@ -2,6 +2,7 @@ import * as idbKeyval from 'idb-keyval';
 import m from 'mithril';
 import moment from 'moment';
 import AppComponent from '../scripts/components/app.js';
+import Preferences from '../scripts/models/preferences.js';
 
 const originalLocationObject = window.location;
 
@@ -41,14 +42,14 @@ export async function unmountApp() {
 // A utility that can be used with the below applyLogContentsToApp() as an
 // supported callback adapter for saving the respective log contents to
 // localStorage
-export async function saveLogContentsToLocalStorage(storageKey, logContents) {
+export async function saveToLocalStorage(storageKey, logContents) {
   return localStorage.setItem(storageKey, JSON.stringify(logContents));
 }
 
 // A utility that can be used with the below applyLogContentsToApp() as an
 // supported callback adapter for saving the respective log contents to
 // indexedDB
-export async function saveLogContentsToIndexedDB(storageKey, logContents) {
+export async function saveToIndexedDB(storageKey, logContents) {
   return idbKeyval.set(storageKey, logContents);
 }
 
@@ -65,13 +66,23 @@ export function getStorageKeyFromDays(daysFromToday) {
 // represents today)
 export async function applyLogContentsToApp(
   logContentsMapRelative,
-  callback = saveLogContentsToIndexedDB
+  callback = saveToIndexedDB
 ) {
   return Promise.all(
     Object.entries(logContentsMapRelative).map(([key, logContents]) => {
       return callback(getStorageKeyFromDays(Number(key)), logContents);
     })
   );
+}
+
+// Set the given preferences for the current application; any unspecified
+// preferences will fall back to the default values for those respective
+// preferences
+export function setPreferences(prefs, callback = saveToIndexedDB) {
+  callback('wtc-prefs', {
+    ...Preferences.getDefaultValueMap(),
+    ...prefs
+  });
 }
 
 // Pad the given time string with zeroes if needed
