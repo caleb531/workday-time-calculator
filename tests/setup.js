@@ -1,5 +1,12 @@
 import BlobMock from './mocks/blob-mock.js';
+import registerSWMock from './mocks/register-sw-mock.js';
 import { mockLocationObject } from './utils.js';
+
+vi.mock('virtual:pwa-register', () => {
+  return {
+    registerSW: registerSWMock
+  };
+});
 
 beforeEach(() => {
   URL.createObjectURL = vi.fn();
