@@ -23,6 +23,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: [
       'fake-indexeddb/auto',
+      '@vitest/web-worker',
       '@testing-library/jest-dom',
       'tests/setup.js'
     ],
