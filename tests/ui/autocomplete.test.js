@@ -17,9 +17,7 @@ async function checkIfCompletable(completionQuery, completionPlaceholder) {
     'log-editor-autocomplete'
   );
   await userEvent.clear(editorElem);
-  if (completionQuery) {
-    await userEvent.type(editorElem, completionQuery);
-  }
+  await userEvent.type(editorElem, completionQuery);
   await waitFor(() => {
     expect(autocompleteElem.textContent).toBe(completionPlaceholder);
   });
