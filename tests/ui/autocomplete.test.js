@@ -10,7 +10,7 @@ describe('log autocomplete', () => {
     await unmountApp();
   });
 
-  it('should complete previously-entered phrases', async () => {
+  it('should suggest previously-entered phrases (#1)', async () => {
     await applyLogContentsToApp({
       '-3': realWorldTestCase1.logContents,
       '-2': basicLogTestCase.logContents,
@@ -26,9 +26,7 @@ describe('log autocomplete', () => {
     );
     await userEvent.type(editorElem, 'Ge');
     await waitFor(() => {
-      expect(autocompleteElem).toBeInTheDocument();
-      // TODO
-      // expect(autocompleteElem).toHaveTextContent('tting');
+      expect(autocompleteElem).toHaveTextContent('tting');
     });
   });
 });
