@@ -10,16 +10,23 @@ import {
   unmountApp
 } from '../utils.js';
 
+// Retrieve the DOM element for the editable Quill editor
+async function getEditorElem() {
+  return (await findByTestId(document.body, 'log-editor')).querySelector(
+    '.ql-editor'
+  );
+}
+
+const autocompleteElemTestId = 'log-editor-autocomplete';
+
 // Check if the given typed string (called the "completion query") will
 // suggest the match represented by the given placeholder string, and also
 // check if, on pressing the TAB key, if the app will apply the completion
 async function checkIfCompletable(completionQuery, completionPlaceholder) {
-  const editorElem = (
-    await findByTestId(document.body, 'log-editor')
-  ).querySelector('.ql-editor');
+  const editorElem = await getEditorElem();
   const autocompleteElem = await findByTestId(
     document.body,
-    'log-editor-autocomplete'
+    autocompleteElemTestId
   );
   await userEvent.clear(editorElem);
   await userEvent.type(editorElem, completionQuery);
@@ -30,6 +37,25 @@ async function checkIfCompletable(completionQuery, completionPlaceholder) {
     // property instead
     expect(autocompleteElem.textContent).toBe(completionPlaceholder);
   });
+}
+
+// Check if autocomplete is properly disabled within the UI
+async function checkIfAutocompleteIsDisabled() {
+  expect(await getEditorElem()).toBeInTheDocument();
+  try {
+    expect(
+      await findByTestId(document.body, autocompleteElemTestId)
+    ).toBeInTheDocument();
+  } catch (error) {
+    // If the DOM element does not exist after findByTestId() has hit its retry
+    // limit, then we consider that a success because it means the autocomplete
+    // worker has had a chance to load but won't run because autocomplete is
+    // truly disabled
+    return;
+  }
+  // Vitest does not have a utility for explicitly forcing a failure, so we must
+  // do so ourselves
+  expect(true).toBe(false);
 }
 
 describe('log autocomplete', () => {
@@ -83,5 +109,24 @@ describe('log autocomplete', () => {
     await renderApp();
     await checkIfCompletable('Ge', 'tting started with');
     await checkIfCompletable('Getting started with m', 'y day');
+  });
+
+  // Checking if autocomplete is properly disabled is tricky, because the DOM
+  // element may be absent for not one reason, but two possible reasons; either
+  // the autocomplete worker has not yet returned, or autocomplete is disabled
+  // entirely; to ensure that our custom checkIfAutocompleteIsDisabled() check
+  // behaves correctly, we add a negative test which we expect to fail if
+  // autocomplete is actually enabled but the autocomplete DOM element still
+  // renders
+  it.fails('should check that autocomplete is properly disabled', async () => {
+    await setPreferences({ autocompleteMode: 'greedy' });
+    await renderApp();
+    await checkIfAutocompleteIsDisabled();
+  });
+
+  it('should allow user to disable autocompletion', async () => {
+    await setPreferences({ autocompleteMode: 'off' });
+    await renderApp();
+    await checkIfAutocompleteIsDisabled();
   });
 });
