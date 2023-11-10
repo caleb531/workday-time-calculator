@@ -11,7 +11,7 @@ class EditorAutocompleterComponent {
 
   view() {
     return m(
-      'div.log-editor-autocomplete',
+      'div.log-editor-autocomplete[data-testid="log-editor-autocomplete"]',
       {
         class: this.autocompleter.shouldAutocomplete() ? 'is-visible' : '',
         style: this.autocompleter.shouldAutocomplete()

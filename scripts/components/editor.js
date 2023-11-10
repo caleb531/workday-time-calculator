@@ -213,7 +213,7 @@ class EditorComponent {
 
   view() {
     return m('div.log-editor-area', [
-      m('div.log-editor', {
+      m('div.log-editor[data-testid="log-editor"]', {
         oncreate: (vnode) => {
           this.initializeEditor(vnode.dom);
         }
