@@ -22,12 +22,14 @@ export function mapTestCases(...args) {
   return Object.values(testCases).map(...args);
 }
 
+// Mount the application onto the page and render it
 export async function renderApp() {
   const main = document.createElement('main');
   document.body.appendChild(main);
   m.mount(main, AppComponent);
 }
 
+// Reset the DOM and clear stores
 export async function unmountApp() {
   const main = document.querySelector('main');
   m.mount(main, null);
