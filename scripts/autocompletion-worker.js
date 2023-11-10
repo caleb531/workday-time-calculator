@@ -32,7 +32,6 @@ async function processLogEntries() {
   return (
     entries
       .filter(([key]) => /^wtc-date-/.test(key))
-      /* eslint-disable-next-line no-unused-vars */
       .map(([key, value]) => {
         return value.ops
           .filter((op) => op.insert.trim())
@@ -104,7 +103,6 @@ function buildCompletions({ keywordStr, completionQuery, autocompleteMode }) {
       .countBy()
       .toPairs()
       // Sort matches from most occurrences to least
-      /* eslint-disable-next-line no-unused-vars */
       .sortBy(([word, count]) => -count)
       .value()
       .map(([word]) => word);
