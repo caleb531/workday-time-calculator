@@ -1,8 +1,5 @@
 import * as idbKeyval from 'idb-keyval';
-// If we try to use named imports (e.g. { chain }), then the other lodash
-// methods will be missing; therefore, we must import all Lodash methods with
-// the global import
-import _ from 'lodash-es';
+import { countBy, sortBy } from 'lodash-es';
 
 // A map representing the various algorithms for the autocomplete; each key
 // name is the ID of a specific autocomplete mode, and each value is a function
@@ -97,15 +94,13 @@ function buildCompletions({ keywordStr, completionQuery, autocompleteMode }) {
     const matchGroup = substringMatchGroups[i];
     const querySubstring = querySubstrings[i];
     // Retrieve all phrases in the keyword string that match the given
-    // autocomplete query
-    const matches = _.chain(matchGroup)
-      // Map the number of occurrences of each match
-      .countBy()
-      .toPairs()
-      // Sort matches from most occurrences to least
-      .sortBy(([word, count]) => -count)
-      .value()
-      .map(([word]) => word);
+    // autocomplete query; we first map the number of occurrences of each match
+    const countPairs = Object.entries(countBy(matchGroup));
+    // Then we sort matches from most occurrences to least
+    const sortedCountPairs = sortBy(countPairs, ([word, count]) => -count);
+    // Finally, we discard the count information and just return a list of
+    // matching words
+    const matches = sortedCountPairs.map(([word]) => word);
     if (matches.length) {
       return {
         matchingCompletion: matches[0],
