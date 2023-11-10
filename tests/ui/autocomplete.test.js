@@ -46,6 +46,11 @@ describe('log autocomplete', () => {
     await checkIfCompletable('Getting sta', 'rted');
   });
 
+  it('should suggest previously-entered (complete) phrase', async () => {
+    await renderApp();
+    await checkIfCompletable('Getting started with my d', 'ay');
+  });
+
   it('should not suggest anything if word is complete and there is no space following', async () => {
     await renderApp();
     await checkIfCompletable('Getting', '');
