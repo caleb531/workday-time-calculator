@@ -19,6 +19,10 @@ async function checkIfCompletable(completionQuery, completionPlaceholder) {
   await userEvent.clear(editorElem);
   await userEvent.type(editorElem, completionQuery);
   await waitFor(() => {
+    // @testing-library/jest-dom provides a toHaveTextContent() matcher, but it
+    // doesn't check for an exact match (only a substring match); therefore,
+    // because we require an exact match, we use toBe() with the textContent
+    // property instead
     expect(autocompleteElem.textContent).toBe(completionPlaceholder);
   });
 }
