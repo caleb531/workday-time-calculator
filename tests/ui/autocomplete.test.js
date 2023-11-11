@@ -137,10 +137,20 @@ describe('log autocomplete', () => {
     await renderApp();
     await checkIfAutocompleteIsDisabled();
   });
+
   it('should not render when user disables preference', async () => {
     await renderApp();
     await openPreferences();
     await clickPreferenceOption('Autocomplete Suggestions', 'Disabled');
     await checkIfAutocompleteIsDisabled();
+  });
+
+  it('should activate when user enables preference', async () => {
+    await setPreferences({ autocompleteMode: 'off' });
+    await renderApp();
+    await checkIfAutocompleteIsDisabled();
+    await openPreferences();
+    await clickPreferenceOption('Autocomplete Suggestions', /Lazy/i);
+    await checkIfCompletable('Ge', 'tting');
   });
 });
