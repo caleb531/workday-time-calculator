@@ -1,4 +1,4 @@
-import { findByRole, findByText } from '@testing-library/dom';
+import { findByLabelText, findByRole, findByText } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import * as idbKeyval from 'idb-keyval';
 import m from 'mithril';
@@ -87,6 +87,7 @@ export function setPreferences(prefs, callback = saveToIndexedDB) {
   });
 }
 
+// Open the Preferences panel within the UI
 export async function openPreferences() {
   const getToolsControl = () =>
     findByRole(document.body, 'button', { name: 'Toggle Tools Menu' });
@@ -95,6 +96,14 @@ export async function openPreferences() {
   userEvent.click(await getToolsControl());
   expect(await getPrefsMenuItem()).toBeInTheDocument();
   userEvent.click(await getPrefsMenuItem());
+}
+
+// Click the option with the given name and associated with the specified
+// preference (this assumes the Preferences panel is already open)
+export async function clickPreferenceOption(preferenceName, optionName) {
+  const preferenceNameElem = await findByText(document.body, preferenceName);
+  const preferenceContainer = preferenceNameElem.parentElement;
+  await userEvent.click(await findByLabelText(preferenceContainer, optionName));
 }
 
 // Pad the given time string with zeroes if needed

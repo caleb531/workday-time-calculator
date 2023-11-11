@@ -1,7 +1,11 @@
-import { findByLabelText, waitFor } from '@testing-library/dom';
-import userEvent from '@testing-library/user-event';
+import { waitFor } from '@testing-library/dom';
 import * as idbKeyval from 'idb-keyval';
-import { openPreferences, renderApp, unmountApp } from '../utils.js';
+import {
+  clickPreferenceOption,
+  openPreferences,
+  renderApp,
+  unmountApp
+} from '../utils.js';
 
 describe('color theme', () => {
   afterEach(async () => {
@@ -12,7 +16,7 @@ describe('color theme', () => {
     await renderApp();
     expect(document.body).toHaveClass('color-theme-blue');
     await openPreferences();
-    await userEvent.click(await findByLabelText(document.body, 'Rose'));
+    await clickPreferenceOption('Color Theme', 'Rose');
     await waitFor(() => {
       expect(document.body).toHaveClass('color-theme-rose');
     });
