@@ -1,4 +1,4 @@
-import { findByTestId, waitFor } from '@testing-library/dom';
+import { findByTestId, queryByTestId, waitFor } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import basicLogTestCase from '../test-cases/basic.json';
 import realWorldTestCase1 from '../test-cases/real-world-1.json';
@@ -55,9 +55,13 @@ async function checkIfAutocompleteIsDisabled() {
     // truly disabled
     return;
   }
-  throw new Error(
-    'Should not reach this point if autocomplete is properly disabled'
-  );
+  // If element exists (e.g. if autocomplete transitions from an enabled to a
+  // disabled state), then wait for the element to be removed from the DOM
+  await waitFor(() => {
+    expect(
+      queryByTestId(document.body, autocompleteElemTestId)
+    ).not.toBeInTheDocument();
+  });
 }
 
 describe('log autocomplete', () => {
