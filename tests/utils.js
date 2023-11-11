@@ -1,3 +1,5 @@
+import { findByRole, findByText } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import * as idbKeyval from 'idb-keyval';
 import m from 'mithril';
 import moment from 'moment';
@@ -83,6 +85,16 @@ export function setPreferences(prefs, callback = saveToIndexedDB) {
     ...Preferences.getDefaultValueMap(),
     ...prefs
   });
+}
+
+export async function openPreferences() {
+  const getToolsControl = () =>
+    findByRole(document.body, 'button', { name: 'Toggle Tools Menu' });
+  const getPrefsMenuItem = () => findByText(document.body, 'Preferences');
+  expect(await getToolsControl()).toBeInTheDocument();
+  userEvent.click(await getToolsControl());
+  expect(await getPrefsMenuItem()).toBeInTheDocument();
+  userEvent.click(await getPrefsMenuItem());
 }
 
 // Pad the given time string with zeroes if needed
