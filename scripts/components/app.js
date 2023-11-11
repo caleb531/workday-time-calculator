@@ -17,12 +17,14 @@ class AppComponent {
     this.preferencesLoaded = false;
     this.preferences.load().then(() => {
       this.preferencesLoaded = true;
+      // We need to wait for the preferences to load before we can initialize
+      // the reminder notification system
+      this.reminderManager = new ReminderManager({
+        preferences: this.preferences
+      });
       m.redraw();
     });
     this.selectedDate = moment();
-    this.reminderManager = new ReminderManager({
-      preferences: this.preferences
-    });
     this.setColorThemeOnBody();
   }
 

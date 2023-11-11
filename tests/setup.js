@@ -1,4 +1,5 @@
 import BlobMock from './mocks/blob-mock.js';
+import NotificationMock from './mocks/notification-mock.js';
 import registerSWMock from './mocks/register-sw-mock.js';
 import { mockLocationObject } from './utils.js';
 
@@ -13,6 +14,10 @@ beforeEach(() => {
   Object.defineProperty(window, 'Blob', {
     configurable: true,
     value: BlobMock
+  });
+  Object.defineProperty(window, 'Notification', {
+    configurable: true,
+    value: NotificationMock
   });
   mockLocationObject();
 });
