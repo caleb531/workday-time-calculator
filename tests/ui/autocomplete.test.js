@@ -5,6 +5,8 @@ import realWorldTestCase1 from '../test-cases/real-world-1.json';
 import realWorldTestCase2 from '../test-cases/real-world-2.json';
 import {
   applyLogContentsToApp,
+  clickPreferenceOption,
+  openPreferences,
   renderApp,
   setPreferences,
   unmountApp
@@ -124,9 +126,21 @@ describe('log autocomplete', () => {
     await checkIfAutocompleteIsDisabled();
   });
 
-  it('should allow user to disable autocompletion', async () => {
+  it('should not render when disabled', async () => {
     await setPreferences({ autocompleteMode: 'off' });
     await renderApp();
+    await checkIfAutocompleteIsDisabled();
+  });
+
+  // Another negative test that we expect to fail
+  it.fails('should render when enabled', async () => {
+    await renderApp();
+    await checkIfAutocompleteIsDisabled();
+  });
+  it('should not render when user disables preference', async () => {
+    await renderApp();
+    await openPreferences();
+    await clickPreferenceOption('Autocomplete Suggestions', 'Disabled');
     await checkIfAutocompleteIsDisabled();
   });
 });
