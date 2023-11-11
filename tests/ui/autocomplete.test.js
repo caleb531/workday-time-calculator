@@ -55,9 +55,9 @@ async function checkIfAutocompleteIsDisabled() {
     // truly disabled
     return;
   }
-  // Vitest does not have a utility for explicitly forcing a failure, so we must
-  // do so ourselves
-  expect(true).toBe(false);
+  throw new Error(
+    'Should not reach this point if autocomplete is properly disabled'
+  );
 }
 
 describe('log autocomplete', () => {
