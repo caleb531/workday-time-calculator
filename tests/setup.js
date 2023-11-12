@@ -22,6 +22,10 @@ beforeEach(() => {
   mockLocationObject();
 });
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 // Mock getBoundingClientRect() for a JSDOM environment
 Range.prototype.getBoundingClientRect = vi.fn(() => ({
   x: 0,
