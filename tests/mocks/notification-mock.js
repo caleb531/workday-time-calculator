@@ -1,4 +1,7 @@
 class NotificationMock {
+  constructor(...args) {
+    this.constructor._constructorSpy(...args);
+  }
   static _grantWhenRequested() {
     NotificationMock._pendingPermission = 'granted';
   }
@@ -7,6 +10,9 @@ class NotificationMock {
   }
   static _resetPermissions() {
     NotificationMock.permission = 'default';
+  }
+  static _resetConstructorCalls() {
+    NotificationMock._constructorSpy = vi.fn();
   }
   static requestPermission(callback) {
     this.permission = NotificationMock._pendingPermission;
@@ -18,5 +24,7 @@ NotificationMock.permission = 'default';
 // requested; this allows us to test both granting and denying permission to
 // display notifications
 NotificationMock._pendingPermission = 'granted';
+// Keep track of all instantiations of the constructor
+NotificationMock._constructorSpy = vi.fn();
 
 export default NotificationMock;
