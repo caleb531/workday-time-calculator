@@ -15,6 +15,7 @@ describe('reminder system', () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
   });
   afterEach(async () => {
+    vi.useRealTimers();
     await unmountApp();
     Notification._resetPermissions();
   });

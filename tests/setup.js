@@ -24,7 +24,6 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.restoreAllMocks();
-  vi.clearAllTimers();
 });
 
 // Mock getBoundingClientRect() for a JSDOM environment
