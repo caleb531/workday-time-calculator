@@ -55,4 +55,20 @@ describe('reminder system', () => {
     });
     expect(Notification).toHaveBeenCalledTimes(2);
   });
+  it('should re-spawn reminder at the designated interval', async () => {
+    const minutes = 15;
+    await renderApp();
+    await openPreferences();
+    Notification._grantWhenRequested();
+    await clickPreferenceOption(
+      'Reminder Interval',
+      `Every ${minutes} minutes`
+    );
+    vi.advanceTimersByTime(2 * minutes * S_IN_M * MS_IN_S);
+    expect(Notification).toHaveBeenCalledWith('Workday Time Calculator', {
+      body: 'Remember to update your log!',
+      icon: 'app-icon.png'
+    });
+    expect(Notification).toHaveBeenCalledTimes(3);
+  });
 });
