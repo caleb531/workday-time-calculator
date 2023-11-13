@@ -16,8 +16,8 @@ describe('reminder system', () => {
   });
   afterEach(async () => {
     vi.useRealTimers();
-    await unmountApp();
     Notification._resetPermissions();
+    await unmountApp();
   });
 
   it('should enable reminders', async () => {
