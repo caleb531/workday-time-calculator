@@ -72,4 +72,19 @@ describe.each([
     });
     expect(Notification).toHaveBeenCalledTimes(3);
   });
+
+  it('should properly disable after being enabled', async () => {
+    await renderApp();
+    await openPreferences();
+    Notification._grantWhenRequested();
+    await clickPreferenceOption('Reminder Interval', label);
+    expect(Notification).toHaveBeenCalledWith('Workday Time Calculator', {
+      body: `Reminder set to show every ${minutes} minutes!`,
+      icon: 'app-icon.png'
+    });
+    expect(Notification).toHaveBeenCalledTimes(1);
+    await clickPreferenceOption('Reminder Interval', 'Never');
+    vi.advanceTimersByTime(minutes * S_IN_M * MS_IN_S);
+    expect(Notification).toHaveBeenCalledTimes(1);
+  });
 });
