@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 import * as idbKeyval from 'idb-keyval';
 import { fromPairs } from 'lodash-es';
 import moment from 'moment';
-import { mapTestCases, renderApp, unmountApp } from '../utils.js';
+import { renderApp, testCases, unmountApp } from '../utils.js';
 
 import FileReaderMock from '../mocks/file-reader-mock.js';
 
@@ -19,7 +19,7 @@ describe('import functionality', () => {
 
   const exportedData = {
     logs: fromPairs(
-      mapTestCases((testCase, i, testCases) => {
+      testCases.map((testCase, i, testCases) => {
         const daysDiff = i - Math.floor(testCases.length / 2);
         return [
           moment().add(daysDiff, 'days').format('l'),

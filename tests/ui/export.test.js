@@ -5,8 +5,8 @@ import moment from 'moment';
 import Preferences from '../../scripts/models/preferences.js';
 import {
   applyLogContentsToApp,
-  mapTestCases,
   renderApp,
+  testCases,
   unmountApp
 } from '../utils.js';
 
@@ -21,7 +21,7 @@ describe('export functionality', () => {
       // a relative date as an integer (representing how many dates from the
       // current date this log entry is)
       fromPairs(
-        mapTestCases((testCase, i, testCases) => {
+        testCases.map((testCase, i, testCases) => {
           return [i - Math.floor(testCases.length / 2), testCase.logContents];
         })
       )
@@ -45,7 +45,7 @@ describe('export functionality', () => {
     });
     expect(JSON.parse(await exportedBlob.text())).toEqual({
       logs: fromPairs(
-        mapTestCases((testCase, i, testCases) => {
+        testCases.map((testCase, i, testCases) => {
           const daysDiff = i - Math.floor(testCases.length / 2);
           return [
             moment().add(daysDiff, 'days').format('l'),

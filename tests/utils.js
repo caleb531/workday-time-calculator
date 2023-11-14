@@ -8,22 +8,12 @@ import Preferences from '../scripts/models/preferences.js';
 
 const originalLocationObject = window.location;
 
-const testCases = import.meta.glob('./test-cases/*.json', {
-  as: 'json',
-  eager: true
-});
-
-// Expose a helper function that allows for any series of assertions to be run
-// against each and every test case file
-export function forEachTestCase(...args) {
-  return Object.values(testCases).forEach(...args);
-}
-
-// Expose a helper function that allows for transformation of each and every
-// test case file by mapping to a different value
-export function mapTestCases(...args) {
-  return Object.values(testCases).map(...args);
-}
+export const testCases = Object.values(
+  import.meta.glob('./test-cases/*.json', {
+    as: 'json',
+    eager: true
+  })
+);
 
 // Mount the application onto the page and render it
 export async function renderApp() {
