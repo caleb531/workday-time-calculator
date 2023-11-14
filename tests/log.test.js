@@ -3,7 +3,7 @@ import Preferences from '../scripts/models/preferences';
 import './custom-matchers.js';
 import { testCases } from './utils.js';
 
-describe('Log model', () => {
+describe('log model', () => {
   it.each(testCases)('$description', async (testCase) => {
     const log = new Log(testCase.logContents, {
       calculateStats: true,

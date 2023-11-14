@@ -7,7 +7,7 @@ class ServiceWorkerMock {}
 let originalServiceWorker;
 const updateAvailableMessage = 'Update available!';
 
-describe('Update Notification', () => {
+describe('update notification', () => {
   beforeEach(() => {
     mockLocationObject();
     // Mock navigator.serviceWorker
