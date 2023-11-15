@@ -119,8 +119,27 @@ describe('log autocomplete', () => {
     await checkIfCompletable('Getting started with m', 'y day');
   });
 
+  // Checking if autocomplete is properly disabled is tricky, because the DOM
+  // element may be absent for not one reason, but two possible reasons; either
+  // the autocomplete worker has not yet returned, or autocomplete is disabled
+  // entirely; to ensure that our custom checkIfAutocompleteIsDisabled() check
+  // behaves correctly, we add a negative test which we expect to fail if
+  // autocomplete is actually enabled but the autocomplete DOM element still
+  // renders
+  it.fails('should check that autocomplete is properly disabled', async () => {
+    await setPreferences({ autocompleteMode: 'greedy' });
+    await renderApp();
+    await checkIfAutocompleteIsDisabled();
+  });
+
   it('should not render when disabled', async () => {
     await setPreferences({ autocompleteMode: 'off' });
+    await renderApp();
+    await checkIfAutocompleteIsDisabled();
+  });
+
+  // Another negative test that we expect to fail
+  it.fails('should render when enabled', async () => {
     await renderApp();
     await checkIfAutocompleteIsDisabled();
   });
