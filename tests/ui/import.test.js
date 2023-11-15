@@ -31,7 +31,7 @@ describe('import functionality', () => {
       colorTheme: 'green',
       reminderInterval: 15,
       autocompleteMode: 'greedy',
-      timeSystem: '24-hour',
+      timeSystem: '12-hour',
       categorySortOrder: 'title'
     }
   };

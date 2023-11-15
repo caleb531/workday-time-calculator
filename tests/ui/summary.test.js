@@ -9,6 +9,7 @@ import {
   formatDuration,
   formatTime,
   renderApp,
+  setPreferences,
   testCases,
   unmountApp
 } from '../utils.js';
@@ -19,6 +20,9 @@ describe('log summary', () => {
   });
 
   it.each(testCases)('$description', async (testCase) => {
+    if (testCase.preferences) {
+      await setPreferences(testCase.preferences);
+    }
     await applyLogContentsToApp({ 0: testCase.logContents });
     await renderApp();
     await waitFor(() => {
