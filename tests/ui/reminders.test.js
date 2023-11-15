@@ -47,7 +47,7 @@ describe.each([
     });
   });
 
-  it('should spawn reminder when %i minutes elapses', async () => {
+  it(`should spawn reminder when ${minutes} minutes elapses`, async () => {
     await renderApp();
     await openPreferences();
     Notification._grantWhenRequested();
@@ -60,7 +60,7 @@ describe.each([
     expect(Notification).toHaveBeenCalledTimes(2);
   });
 
-  it('should re-spawn reminder every %i minutes', async () => {
+  it(`should re-spawn reminder every ${minutes} minutes`, async () => {
     await renderApp();
     await openPreferences();
     Notification._grantWhenRequested();
