@@ -35,7 +35,6 @@ class UpdateNotificationComponent {
       ? m(
           'div.update-notification',
           {
-            class: this.isUpdateAvailable ? 'update-available' : '',
             onclick: () => this.update()
           },
           m('div.update-notification-bubble', [

@@ -1,32 +1,31 @@
 .update-notification {
-  pointer-events: none;
   position: absolute;
   top: 0;
   right: 0;
   z-index: 1000;
   overflow: hidden;
-  &.update-available {
-    pointer-events: auto;
+}
+
+@keyframes slide-from-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }
 
 .update-notification-bubble {
-  visibility: hidden;
   margin: 8px;
   border-radius: 4px;
   padding: 10px 15px;
   background-color: $blue;
-  transform: translateX(100%);
-  transition: transform 400ms ease-in-out;
+  animation: slide-from-right 400ms ease-in-out forwards;
   text-align: left;
   color: #fff;
   cursor: pointer;
   user-select: none;
   box-shadow: 0 1px 3px rgba(#000, 0.5);
-  .update-available & {
-    visibility: visible;
-    transform: translateX(0);
-  }
 }
 
 .update-notification-title {
