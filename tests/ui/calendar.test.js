@@ -99,7 +99,50 @@ describe('log calendar', () => {
     ).toBeInTheDocument();
   });
 
-  it('should select new date and close calendar', async () => {
+  it('should select new date on single-click (without closing calendar)', async () => {
+    await applyLogContentsToApp({
+      '-1': realWorldTestCase1.logContents,
+      0: basicLogTestCase.logContents,
+      1: realWorldTestCase2.logContents
+    });
+    await renderApp();
+    const getControl = () =>
+      findByRole(document.body, 'button', { name: 'Toggle Calendar' });
+    expect(await getControl()).toBeInTheDocument();
+    // Check if basic log contents are populated into editor
+    expect(
+      await findByText(
+        document.body,
+        basicLogTestCase.assertions.categories[0].descriptions[1]
+      )
+    ).toBeInTheDocument();
+    userEvent.click(await getControl());
+    expect(
+      await findByTestId(document.body, 'log-calendar-dates')
+    ).toBeInTheDocument();
+    userEvent.click(
+      (await findByTestId(document.body, 'log-calendar-selected-date'))
+        .nextElementSibling
+    );
+    expect(
+      await findByText(
+        document.body,
+        moment().add(1, 'day').format('dddd, MMMM D, YYYY')
+      )
+    ).toBeInTheDocument();
+    // Check if real world log contents #2 are populated into editor
+    expect(
+      await findByText(
+        document.body,
+        realWorldTestCase2.assertions.categories[1].descriptions[0]
+      )
+    ).toBeInTheDocument();
+    expect(
+      await findByTestId(document.body, 'log-calendar-dates')
+    ).toBeInTheDocument();
+  });
+
+  it('should select new date (and close calendar) on double-click', async () => {
     await applyLogContentsToApp({
       '-1': realWorldTestCase1.logContents,
       0: basicLogTestCase.logContents,
