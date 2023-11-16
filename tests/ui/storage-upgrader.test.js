@@ -1,4 +1,4 @@
-import { findByText, waitFor } from '@testing-library/dom';
+import { findByText, queryByText, waitFor } from '@testing-library/dom';
 import * as idbKeyval from 'idb-keyval';
 import basicLogTestCase from '../test-cases/basic.json';
 import {
@@ -8,6 +8,8 @@ import {
   saveToLocalStorage,
   unmountApp
 } from '../utils.js';
+
+const storageUpgradePanelHeading = 'Upgrading Database...';
 
 describe('storage upgrader', () => {
   afterEach(async () => {
@@ -20,7 +22,7 @@ describe('storage upgrader', () => {
     expect(localStorage).toHaveLength(1);
     await renderApp();
     expect(
-      await findByText(document.body, 'Upgrading Database...')
+      await findByText(document.body, storageUpgradePanelHeading)
     ).toBeInTheDocument();
     await waitFor(async () => {
       expect(localStorage).toHaveLength(0);
@@ -28,6 +30,38 @@ describe('storage upgrader', () => {
       expect(await idbKeyval.get(getStorageKeyFromDays(0))).toEqual(
         logContents
       );
+    });
+  });
+
+  describe('backwards-compatibility', () => {
+    let originalIndexedDB = window.indexedDB;
+
+    beforeEach(() => {
+      window.indexedDB = undefined;
+    });
+
+    afterEach(() => {
+      window.indexedDB = originalIndexedDB;
+    });
+
+    it('should skip storage upgrade if browser does not support indexedDB', async () => {
+      const logContents = basicLogTestCase.logContents;
+      await applyLogContentsToApp({ 0: logContents }, saveToLocalStorage);
+      expect(localStorage).toHaveLength(1);
+      await renderApp();
+      try {
+        expect(
+          await findByText(document.body, storageUpgradePanelHeading)
+        ).toBeInTheDocument();
+      } catch (error) {
+        // Proceed to the next assertion
+      }
+      await waitFor(() => {
+        expect(
+          queryByText(document.body, storageUpgradePanelHeading)
+        ).not.toBeInTheDocument();
+        expect(localStorage).toHaveLength(1);
+      });
     });
   });
 });
