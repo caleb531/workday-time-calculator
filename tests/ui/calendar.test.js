@@ -180,8 +180,10 @@ describe('log calendar', () => {
         realWorldTestCase2.assertions.categories[1].descriptions[0]
       )
     ).toBeInTheDocument();
-    expect(
-      queryByTestId(document.body, 'log-calendar-dates')
-    ).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        queryByTestId(document.body, 'log-calendar-dates')
+      ).not.toBeInTheDocument();
+    });
   });
 });
