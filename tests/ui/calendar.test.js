@@ -2,6 +2,7 @@ import {
   findByRole,
   findByTestId,
   findByText,
+  queryByTestId,
   queryByText,
   waitFor
 } from '@testing-library/dom';
@@ -98,7 +99,7 @@ describe('log calendar', () => {
     ).toBeInTheDocument();
   });
 
-  it('should select new date', async () => {
+  it('should select new date and close calendar', async () => {
     await applyLogContentsToApp({
       '-1': realWorldTestCase1.logContents,
       0: basicLogTestCase.logContents,
@@ -136,5 +137,8 @@ describe('log calendar', () => {
         realWorldTestCase2.assertions.categories[1].descriptions[0]
       )
     ).toBeInTheDocument();
+    expect(
+      queryByTestId(document.body, 'log-calendar-dates')
+    ).not.toBeInTheDocument();
   });
 });
