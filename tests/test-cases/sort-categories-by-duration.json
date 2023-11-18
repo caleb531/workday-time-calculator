@@ -1,5 +1,8 @@
 {
   "description": "should instantiate log with categories sorted by duration (in descending order)",
+  "preferences": {
+    "categorySortOrder": "duration"
+  },
   "assertions": {
     "categories": [
       {
@@ -41,9 +44,6 @@
     ],
     "totalDuration": 630,
     "errors": []
-  },
-  "preferences": {
-    "categorySortOrder": "duration"
   },
   "logContents": {
     "ops": [

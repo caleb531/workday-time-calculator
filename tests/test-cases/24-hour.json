@@ -1,5 +1,8 @@
 {
   "description": "should instantiate a log using the 24-hour time system",
+  "preferences": {
+    "timeSystem": "24-hour"
+  },
   "assertions": {
     "categories": [
       {
@@ -23,9 +26,6 @@
     "totalDuration": 60,
     "errors": [],
     "overlaps": []
-  },
-  "preferences": {
-    "timeSystem": "24-hour"
   },
   "logContents": {
     "ops": [
