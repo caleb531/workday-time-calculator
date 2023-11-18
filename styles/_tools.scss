@@ -104,7 +104,7 @@
       }
     }
   }
-  span {
+  li > * {
     display: block;
     padding: $menu-padding-y $menu-padding-x;
     color: inherit;

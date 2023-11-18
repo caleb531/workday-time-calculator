@@ -32,7 +32,7 @@ class ImportComponent {
   }
 
   view() {
-    return m('span.app-control-import', [
+    return m('label[for="app-control-import-input"]', [
       m(
         'input[type="file"].app-control-import-input#app-control-import-input',
         {
@@ -46,10 +46,7 @@ class ImportComponent {
           }
         }
       ),
-      m(
-        'label.app-control-import-label[for="app-control-import-input"]',
-        'Import'
-      )
+      m('span.app-control-import-label', 'Import')
     ]);
   }
 }
