@@ -10,7 +10,6 @@ Object.assign(NotificationMock, {
     this.permission = 'default';
   },
   _resetConstructorCalls() {
-    console.log('reset');
     this._constructorSpy.mockClear();
   },
   requestPermission(callback) {
