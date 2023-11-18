@@ -37,12 +37,12 @@ class ImportComponent {
         'input[type="file"].app-control-import-input#app-control-import-input',
         {
           accept: 'application/json',
-          onchange: (event) => {
-            if (event.target.files.length > 0) {
-              this.importJsonFile(event.target.files[0]).then(() => {
-                window.location.reload();
-              });
+          onchange: async (event) => {
+            if (!event.target.files.length) {
+              return;
             }
+            await this.importJsonFile(event.target.files[0]);
+            window.location.reload();
           }
         }
       ),
