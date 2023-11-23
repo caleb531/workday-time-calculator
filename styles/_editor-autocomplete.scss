@@ -1,7 +1,18 @@
+.log-editor-autocomplete-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  @media (min-width: $app-hybrid-max-width) {
+    $autocomplete-padding-right: 100px;
+    width: calc(100% + $autocomplete-padding-right);
+  }
+}
 .log-editor-autocomplete {
   display: none;
   position: absolute;
-  min-width: 100px;
   font-size: $editor-font-size;
   // Preserve leading whitespace in completion placeholder
   white-space: pre;

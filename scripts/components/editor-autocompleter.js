@@ -37,17 +37,20 @@ class EditorAutocompleterComponent {
 
   view() {
     return m(
-      'div.log-editor-autocomplete[data-testid="log-editor-autocomplete"]',
-      {
-        class: this.shouldAutocomplete() ? 'is-visible' : '',
-        style: this.shouldAutocomplete()
-          ? {
-              top: `${this.position.top}px`,
-              left: `${this.position.left}px`
-            }
-          : null
-      },
-      this.autocompleter.getCompletionPlaceholder()
+      'div.log-editor-autocomplete-wrapper',
+      m(
+        'div.log-editor-autocomplete[data-testid="log-editor-autocomplete"]',
+        {
+          class: this.shouldAutocomplete() ? 'is-visible' : '',
+          style: this.shouldAutocomplete()
+            ? {
+                top: `${this.position.top}px`,
+                left: `${this.position.left}px`
+              }
+            : null
+        },
+        this.autocompleter.getCompletionPlaceholder()
+      )
     );
   }
 }
