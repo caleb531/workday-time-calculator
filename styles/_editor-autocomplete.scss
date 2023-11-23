@@ -7,8 +7,13 @@
   pointer-events: none;
   overflow: hidden;
   @media (min-width: $app-hybrid-max-width) {
-    $autocomplete-padding-right: 100px;
-    width: calc(100% + $autocomplete-padding-right);
+    --autocomplete-padding-right: 70px;
+    width: calc(100% + var(--autocomplete-padding-right));
+    -webkit-mask-image: linear-gradient(
+      to left,
+      transparent calc(var(--autocomplete-padding-right) / 2),
+      #000 var(--autocomplete-padding-right)
+    );
   }
 }
 .log-editor-autocomplete {
