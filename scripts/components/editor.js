@@ -144,6 +144,15 @@ class EditorComponent {
       this.autocompleter.cancel();
       m.redraw();
     });
+    // Ensure that autocomplete placeholder text remains fixed relative to the
+    // text being completed
+    this.editor.container
+      .querySelector('.ql-editor')
+      .addEventListener('scroll', () => {
+        if (this.autocompleter.getCompletionPlaceholder()) {
+          m.redraw();
+        }
+      });
     // We need to asynchronously defer our text-change handler below with
     // _.debounce() so that the earlier tab-completion handler (which cannot be
     // performed in any less than two atomic operations) can complete before we
@@ -213,16 +222,22 @@ class EditorComponent {
 
   view() {
     return m('div.log-editor-area', [
-      m('div.log-editor[data-testid="log-editor"]', {
-        oncreate: (vnode) => {
-          this.initializeEditor(vnode.dom);
-        }
-      }),
-      this.editor && this.autocompleter.isEnabled
-        ? m(EditorAutocompleterComponent, {
-            autocompleter: this.autocompleter
-          })
-        : null
+      m(
+        'div.log-editor[data-testid="log-editor"]',
+        {
+          oncreate: (vnode) => {
+            this.initializeEditor(vnode.dom);
+          }
+        },
+        [
+          this.editor && this.autocompleter.isEnabled
+            ? m(EditorAutocompleterComponent, {
+                editorContainer: this.editor.container,
+                autocompleter: this.autocompleter
+              })
+            : null
+        ]
+      )
     ]);
   }
 }
