@@ -12,8 +12,7 @@ class EditorComponent {
     this.selectedDate = selectedDate.clone();
     this.onSetLogContents = onSetLogContents;
     this.autocompleter = new EditorAutocompleter({
-      autocompleteMode: this.preferences.autocompleteMode,
-      onReceiveCompletions: () => m.redraw()
+      autocompleteMode: this.preferences.autocompleteMode
     });
     this.preferences.on('change:autocompleteMode', (key, newMode) => {
       this.autocompleter.setMode(newMode);
@@ -172,6 +171,9 @@ class EditorComponent {
         this.editor.focus();
       })
     );
+    this.autocompleter.on('receive-completions', () => {
+      m.redraw();
+    });
     const logContents = await this.getLogContentsForSelectedDate();
     this.setEditorText(logContents);
     this.autocompleter.setEditor(this.editor);

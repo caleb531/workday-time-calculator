@@ -1,10 +1,11 @@
+import Emitter from 'tiny-emitter';
 import AutocompletionWorker from '../autocompletion-worker.js?worker';
 import appStorage from './app-storage.js';
 
-class EditorAutocompleter {
-  constructor({ autocompleteMode, onReceiveCompletions } = {}) {
+class EditorAutocompleter extends Emitter {
+  constructor({ autocompleteMode } = {}) {
+    super();
     this.mode = autocompleteMode;
-    this.onReceiveCompletions = onReceiveCompletions;
     this.cancel();
     // Use a web worker to perform the computationally-heavy work of processing
     // terms, which may involve processing thousands of words within the user's
@@ -85,9 +86,7 @@ class EditorAutocompleter {
   receiveCompletions(event) {
     this.matchingCompletion = event.data.matchingCompletion;
     this.completionPlaceholder = event.data.completionPlaceholder;
-    if (this.onReceiveCompletions) {
-      this.onReceiveCompletions();
-    }
+    this.emit('receive-completions', this.getCompletionPlaceholder());
   }
 
   // Fetch autocompletion matches for the currently-typed line of text (the
