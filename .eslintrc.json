@@ -98,7 +98,6 @@
     "no-with": ["error"],
     "prefer-promise-reject-errors": ["warn"],
     "radix": ["error"],
-    "semi": ["error", "always"],
     "strict": ["error", "safe"],
     "use-isnan": ["error"],
     "valid-typeof": ["error"]
