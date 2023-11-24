@@ -20,7 +20,7 @@ class ImportComponent {
           ).then(() => {
             if (importedData.preferences) {
               this.preferences.set(importedData.preferences, {
-                trigger: false
+                emit: false
               });
               return this.preferences.save();
             }

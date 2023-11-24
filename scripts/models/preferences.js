@@ -1,10 +1,11 @@
 import { fromPairs, pick } from 'lodash-es';
+import Emitter from 'tiny-emitter';
 import appStorage from './app-storage.js';
 
-class Preferences {
+class Preferences extends Emitter {
   constructor(prefs = {}) {
+    super();
     Object.assign(this, this.constructor.getDefaultValueMap(), prefs);
-    this.eventCallbacks = {};
   }
 
   async load() {
@@ -47,28 +48,12 @@ class Preferences {
     return appStorage.set('wtc-prefs', this.toJSON());
   }
 
-  set(props, { trigger = true } = {}) {
+  set(props, { emit = true } = {}) {
     Object.keys(props).forEach((key) => {
       this[key] = props[key];
-      if (trigger) {
-        this.trigger(`change:${key}`, key, props[key]);
+      if (emit) {
+        this.emit(`change:${key}`, key, props[key]);
       }
-    });
-  }
-
-  on(eventName, eventCallback) {
-    if (!this.eventCallbacks[eventName]) {
-      this.eventCallbacks[eventName] = [];
-    }
-    this.eventCallbacks[eventName].push(eventCallback);
-  }
-
-  trigger(eventName, ...eventArgs) {
-    if (!this.eventCallbacks[eventName]) {
-      this.eventCallbacks[eventName] = [];
-    }
-    this.eventCallbacks[eventName].forEach((eventCallback) => {
-      eventCallback.apply(this, eventArgs);
     });
   }
 
