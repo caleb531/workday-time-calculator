@@ -30,7 +30,7 @@ class UpdateNotificationComponent {
     }
   }
 
-  view({ attrs: { updateManager } }) {
+  view() {
     return this.isUpdateAvailable
       ? m(
           'div.update-notification',
