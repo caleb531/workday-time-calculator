@@ -19,7 +19,7 @@ async function getEditorElem() {
   );
 }
 
-const autocompleteElemTestId = 'log-editor-autocomplete';
+const autocompleteElemTestId = 'log-editor-autocomplete-placeholder';
 
 // Check if the given typed string (called the "completion query") will
 // suggest the match represented by the given placeholder string, and also

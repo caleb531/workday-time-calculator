@@ -1,22 +1,4 @@
-.log-editor-autocomplete-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-  @media (min-width: $app-hybrid-max-width) {
-    --autocomplete-padding-right: 70px;
-    width: calc(100% + var(--autocomplete-padding-right));
-    -webkit-mask-image: linear-gradient(
-      to left,
-      transparent calc(var(--autocomplete-padding-right) / 2),
-      #000 var(--autocomplete-padding-right)
-    );
-  }
-}
-.log-editor-autocomplete {
+.log-editor-autocomplete-placeholder {
   display: none;
   position: absolute;
   font-size: $editor-font-size;
