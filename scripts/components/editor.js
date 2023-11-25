@@ -175,7 +175,6 @@ class EditorComponent {
         'data-testid',
         'log-editor-has-autocomplete-active'
       );
-      m.redraw();
     });
     this.autocompleter.on('cancel', () => {
       document.querySelectorAll('[data-autocomplete]').forEach((element) => {
