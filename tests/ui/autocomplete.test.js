@@ -37,7 +37,8 @@ async function checkIfCompletable(completionQuery, completionPlaceholder) {
     // doesn't check for an exact match (only a substring match); therefore,
     // because we require an exact match, we use toBe() with the textContent
     // property instead
-    expect(autocompleteElem.getAttribute('data-autocomplete')).toBe(
+    expect(autocompleteElem).toHaveAttribute(
+      'data-autocomplete',
       completionPlaceholder
     );
   });

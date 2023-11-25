@@ -93,11 +93,28 @@ class EditorAutocompleter extends Emitter {
   // Fetch autocompletion matches for the currently-typed line of text (the
   // query)
   fetchCompletions() {
-    this.cancel();
     const completionQuery = this.getCompletionQuery();
+    // An optimization to handle the common case where the user types "into" the
+    // placeholder text, one character at a time, meaning that the full
+    // completion will not change; therefore, we can skip calling out to the
+    // worker in this case and simply perform the substring math to compute the
+    // new placeholder text directly
+    if (
+      completionQuery + this.completionPlaceholder.slice(1) ===
+      this.matchingCompletion
+    ) {
+      this.receiveCompletions({
+        data: {
+          matchingCompletion: this.matchingCompletion,
+          completionPlaceholder: this.completionPlaceholder.slice(1)
+        }
+      });
+      return;
+    }
     if (!completionQuery) {
       // Don't bother to fetch completions if the current line is blank, or if
       // the cursor is not at the end of the line
+      this.cancel();
       return;
     }
     if (this.worker && this.isEnabled) {

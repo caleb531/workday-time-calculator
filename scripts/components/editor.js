@@ -1,4 +1,3 @@
-import { debounce } from 'lodash-es';
 import m from 'mithril';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
@@ -32,12 +31,20 @@ class EditorComponent {
   autocomplete(range, options = {}) {
     const completionPlaceholder = this.autocompleter.completionPlaceholder;
     if (completionPlaceholder) {
-      this.editor.insertText(range.index, completionPlaceholder + ' ', 'user');
+      // Perform the two atomic operations silently and then trigger the event
+      // listeners all at once; this solves a race condition where the
+      // text-change event fires before the tab completion operations can finish
+      this.editor.insertText(
+        range.index,
+        completionPlaceholder + ' ',
+        'silent'
+      );
       this.editor.setSelection(
         range.index + completionPlaceholder.length + 1,
         0,
-        'user'
+        'silent'
       );
+      this.editor.insertText(range.index, '', 'user');
       this.autocompleter.cancel();
     } else if (options.fallbackBehavior) {
       options.fallbackBehavior();
@@ -142,39 +149,22 @@ class EditorComponent {
       this.autocompleter.cancel();
       m.redraw();
     });
-    // Ensure that autocomplete placeholder text remains fixed relative to the
-    // text being completed
-    this.editor.container
-      .querySelector('.ql-editor')
-      .addEventListener('scroll', () => {
-        if (this.autocompleter.completionPlaceholder) {
-          m.redraw();
-        }
-      });
-    // We need to asynchronously defer our text-change handler below with
-    // _.debounce() so that the earlier tab-completion handler (which cannot be
-    // performed in any less than two atomic operations) can complete before we
-    // attempt to fetch completions again; in the case of the tab-completion,
-    // this gives time for the selection to be set, just after inserting the
-    // completed text
-    this.editor.on(
-      'text-change',
-      debounce((delta, oldDelta, source) => {
-        if (source === 'user') {
-          let logContents = this.editor.getContents();
-          this.onSetLogContents(logContents);
-          this.saveTextLog(logContents);
-          this.autocompleter.fetchCompletions();
-          m.redraw();
-        }
-        this.editor.focus();
-      })
-    );
+    this.editor.on('text-change', (delta, oldDelta, source) => {
+      if (source === 'user') {
+        let logContents = this.editor.getContents();
+        this.onSetLogContents(logContents);
+        this.saveTextLog(logContents);
+        this.autocompleter.fetchCompletions();
+        m.redraw();
+      }
+      this.editor.focus();
+    });
     this.autocompleter.on('receive', (placeholder) => {
       const selection = window.getSelection();
       // Do not calculate anything if the text cursor is not active inside the
       // editor, or if the parent element has not been set yet
       if (selection.type.toLowerCase() === 'none') {
+        console.log('return');
         return;
       }
       const range = selection.getRangeAt(0);
