@@ -58,7 +58,6 @@ class PreferencesComponent {
                 m(
                   'div.app-preference-options',
                   preference.options.map((option) => {
-                    // console.log(this.preferences[preference.id], option.value);
                     return m(
                       'div.app-preference-option',
                       {

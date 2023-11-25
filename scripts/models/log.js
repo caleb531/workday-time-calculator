@@ -87,7 +87,6 @@ class Log {
 
         if (indent === 0) {
           // Category
-          // console.log('Category:', currentLine);
           let categoryName = currentLine.trim();
           if (categoryMap[categoryName]) {
             currentCategory = categoryMap[categoryName];
@@ -106,7 +105,6 @@ class Log {
           currentCategory
         ) {
           // Time range
-          // console.log('Time:', currentLine);
           let timeStrs = this.parseLineTimeStrs(currentLine);
           let startTime = this.roundTime(
             moment.utc(timeStrs[0], this.timeFormat)
@@ -132,7 +130,6 @@ class Log {
           currentLine.trim() !== ''
         ) {
           // Task description
-          // console.log('Desc:', currentLine);
           currentCategory.descriptions.push(currentLine);
         }
       }
