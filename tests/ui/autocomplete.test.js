@@ -28,20 +28,18 @@ async function checkIfCompletable(completionQuery, completionPlaceholder) {
   const editorElem = await getEditorElem();
   await userEvent.clear(editorElem);
   await userEvent.type(editorElem, completionQuery);
-  await waitFor(async () => {
-    const autocompleteElem = await findByTestId(
-      document.body,
-      autocompleteElemTestId
-    );
-    // @testing-library/jest-dom provides a toHaveTextContent() matcher, but it
-    // doesn't check for an exact match (only a substring match); therefore,
-    // because we require an exact match, we use toBe() with the textContent
-    // property instead
-    expect(autocompleteElem).toHaveAttribute(
-      'data-autocomplete',
-      completionPlaceholder
-    );
-  });
+  const autocompleteElem = await findByTestId(
+    document.body,
+    autocompleteElemTestId
+  );
+  // @testing-library/jest-dom provides a toHaveTextContent() matcher, but it
+  // doesn't check for an exact match (only a substring match); therefore,
+  // because we require an exact match, we use toBe() with the textContent
+  // property instead
+  expect(autocompleteElem).toHaveAttribute(
+    'data-autocomplete',
+    completionPlaceholder
+  );
 }
 
 // Check if autocomplete is properly disabled within the UI
