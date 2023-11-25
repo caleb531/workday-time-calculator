@@ -112,10 +112,10 @@ describe('log autocomplete', () => {
 
   it('should be case-sensitive', async () => {
     await renderApp();
-    await checkIfCompletable('r', 'eview');
-    await checkIfCompletable('R', 'esponding');
-    await checkIfCompletable('w', 'ith');
-    await checkIfCompletable('W', 'eekly');
+    await checkIfCompletable('re', 'view');
+    await checkIfCompletable('Re', 'sponding');
+    await checkIfCompletable('wi', 'th');
+    await checkIfCompletable('We', 'ekly');
   });
 
   it('should allow for greedy matching', async () => {
