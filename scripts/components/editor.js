@@ -30,7 +30,7 @@ class EditorComponent {
   // Autocomplete the shown completion, if there is one; if not, run the
   // designated callback as a fallback
   autocomplete(range, options = {}) {
-    const completionPlaceholder = this.autocompleter.getCompletionPlaceholder();
+    const completionPlaceholder = this.autocompleter.completionPlaceholder;
     if (completionPlaceholder) {
       this.editor.insertText(range.index, completionPlaceholder + ' ', 'user');
       this.editor.setSelection(
@@ -128,7 +128,7 @@ class EditorComponent {
             escape: {
               key: 27,
               handler: () => {
-                if (this.autocompleter.getCompletionPlaceholder()) {
+                if (this.autocompleter.completionPlaceholder) {
                   this.autocompleter.cancel();
                   m.redraw();
                 }
@@ -147,7 +147,7 @@ class EditorComponent {
     this.editor.container
       .querySelector('.ql-editor')
       .addEventListener('scroll', () => {
-        if (this.autocompleter.getCompletionPlaceholder()) {
+        if (this.autocompleter.completionPlaceholder) {
           m.redraw();
         }
       });

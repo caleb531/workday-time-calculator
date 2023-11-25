@@ -87,7 +87,7 @@ class EditorAutocompleter extends Emitter {
   receiveCompletions(event) {
     this.matchingCompletion = event.data.matchingCompletion;
     this.completionPlaceholder = event.data.completionPlaceholder;
-    this.emit('receive', this.getCompletionPlaceholder());
+    this.emit('receive', this.completionPlaceholder);
   }
 
   // Fetch autocompletion matches for the currently-typed line of text (the
@@ -107,12 +107,6 @@ class EditorAutocompleter extends Emitter {
         autocompleteMode: this.mode
       });
     }
-  }
-
-  // If the user can currently autocomplete something, return the last-fetched
-  // placeholder text to indicate that the current text can be autocompleted
-  getCompletionPlaceholder() {
-    return this.completionPlaceholder;
   }
 }
 
