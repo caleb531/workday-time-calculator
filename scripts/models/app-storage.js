@@ -59,6 +59,21 @@ class AppStorage {
       });
     }
   }
+
+  // Return an array of [key, value] pairs for all entries in the storage
+  entries() {
+    if (this.usingIDB()) {
+      return idbKeyval.entries();
+    } else {
+      return new Promise((resolve) => {
+        resolve(
+          localStorage.keys().map((key) => {
+            return [key, JSON.parse(localStorage.getItem(key))];
+          })
+        );
+      });
+    }
+  }
 }
 
 export default new AppStorage();

@@ -1,3 +1,4 @@
+import { fromPairs } from 'lodash-es';
 import m from 'mithril';
 import moment from 'moment';
 import appStorage from '../models/app-storage.js';
@@ -8,31 +9,33 @@ class ExportComponent {
   }
 
   async getExportedJson() {
+    const entries = await appStorage.entries();
     let exportedData = {
-      logs: {},
+      logs: fromPairs(
+        entries
+          // Exclude storage entries which aren't log entries
+          .map(([key, value]) => {
+            let logKeyMatches = key.match(
+              /^wtc-date-(\d{1,2}\/\d{1,2}\/\d{4})$/
+            );
+            return [logKeyMatches, value];
+          })
+          .filter(([logKeyMatches]) => logKeyMatches)
+          // Exclude empty log entries
+          .filter(([, logContents]) => {
+            return !(
+              logContents?.ops.length === 1 &&
+              logContents?.ops[0].insert === '\n'
+            );
+          })
+          // Index each log entry by its date
+          .map(([logKeyMatches, logContents]) => {
+            const logDate = logKeyMatches[1];
+            return [logDate, logContents];
+          })
+      ),
       preferences: this.preferences
     };
-    const keys = await appStorage.keys();
-    await Promise.all(
-      keys.map(async (key) => {
-        let logMatches = key.match(/^wtc-date-(\d{1,2}\/\d{1,2}\/\d{4})$/);
-        if (!logMatches) {
-          return null;
-        }
-        let logDate = logMatches[1];
-        const logContents = await appStorage.get(key);
-        if (
-          !(
-            logContents?.ops.length === 1 && logContents?.ops[0].insert === '\n'
-          )
-        ) {
-          exportedData.logs[logDate] = logContents;
-          return logContents;
-        } else {
-          return null;
-        }
-      })
-    );
     return exportedData;
   }
 
