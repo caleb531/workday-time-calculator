@@ -41,6 +41,7 @@ class EditorAutocompleter extends Emitter {
     this.isReady = false;
     this.matchingCompletion = '';
     this.completionPlaceholder = '';
+    this.completionQuery = '';
     this.emit('cancel');
   }
 
@@ -93,25 +94,27 @@ class EditorAutocompleter extends Emitter {
   // Fetch autocompletion matches for the currently-typed line of text (the
   // query)
   fetchCompletions() {
-    const completionQuery = this.getCompletionQuery();
+    const newCompletionQuery = this.getCompletionQuery();
     // An optimization to handle the common case where the user types "into" the
-    // placeholder text, one character at a time, meaning that the full
-    // completion will not change; therefore, we can skip calling out to the
-    // worker in this case and simply perform the substring math to compute the
-    // new placeholder text directly
+    // placeholder text, meaning that the full completion will not change;
+    // therefore, we can skip calling out to the worker in this case and simply
+    // perform the substring math to compute the new placeholder text directly
     if (
-      completionQuery + this.completionPlaceholder.slice(1) ===
-      this.matchingCompletion
+      this.matchingCompletion.indexOf(newCompletionQuery) === 0 &&
+      newCompletionQuery.length > this.completionQuery.length
     ) {
+      this.completionQuery = newCompletionQuery;
       this.receiveCompletions({
         data: {
           matchingCompletion: this.matchingCompletion,
-          completionPlaceholder: this.completionPlaceholder.slice(1)
+          completionPlaceholder: this.matchingCompletion.slice(
+            newCompletionQuery.length
+          )
         }
       });
       return;
     }
-    if (!completionQuery) {
+    if (!newCompletionQuery) {
       // Don't bother to fetch completions if the current line is blank, or if
       // the cursor is not at the end of the line
       this.cancel();
@@ -119,8 +122,9 @@ class EditorAutocompleter extends Emitter {
     }
     if (this.worker && this.isEnabled) {
       this.isReady = true;
+      this.completionQuery = newCompletionQuery;
       this.worker.postMessage({
-        completionQuery,
+        completionQuery: newCompletionQuery,
         autocompleteMode: this.mode
       });
     }
