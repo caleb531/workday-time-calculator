@@ -29,7 +29,7 @@ async function processLogEntries() {
   return (
     entries
       .filter(([key]) => /^wtc-date-/.test(key))
-      .map(([key, value]) => {
+      .map(([, value]) => {
         return value.ops
           .filter((op) => op.insert.trim())
           .map((op) => op.insert)
@@ -97,7 +97,7 @@ function buildCompletions({ keywordStr, completionQuery, autocompleteMode }) {
     // autocomplete query; we first map the number of occurrences of each match
     const countPairs = Object.entries(countBy(matchGroup));
     // Then we sort matches from most occurrences to least
-    const sortedCountPairs = sortBy(countPairs, ([word, count]) => -count);
+    const sortedCountPairs = sortBy(countPairs, ([, count]) => -count);
     // Finally, we discard the count information and just return a list of
     // matching words
     const matches = sortedCountPairs.map(([word]) => word);
