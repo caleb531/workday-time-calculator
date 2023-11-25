@@ -6,9 +6,31 @@ import Preferences from '../../scripts/models/preferences.js';
 import {
   applyLogContentsToApp,
   renderApp,
+  saveToIndexedDB,
   testCases,
   unmountApp
 } from '../utils.js';
+
+// Consolidate logic to run export and verify contents
+async function expectAppToExport(expectedExportObj) {
+  const getToolsControl = () =>
+    findByRole(document.body, 'button', { name: 'Toggle Tools Menu' });
+  const getExportMenuItem = () => findByText(document.body, 'Export All');
+  expect(await getToolsControl()).toBeInTheDocument();
+  userEvent.click(await getToolsControl());
+  expect(await getExportMenuItem()).toBeInTheDocument();
+  let exportedBlob;
+  vi.spyOn(URL, 'createObjectURL').mockImplementationOnce((blob) => {
+    exportedBlob = blob;
+    // Doesn't matter what this value is
+    return '';
+  });
+  userEvent.click(await getExportMenuItem());
+  await waitFor(() => {
+    expect(exportedBlob).toBeDefined();
+  });
+  expect(JSON.parse(await exportedBlob.text())).toEqual(expectedExportObj);
+}
 
 describe('export functionality', () => {
   afterEach(async () => {
@@ -27,23 +49,30 @@ describe('export functionality', () => {
       )
     );
     await renderApp();
-    const getToolsControl = () =>
-      findByRole(document.body, 'button', { name: 'Toggle Tools Menu' });
-    const getExportMenuItem = () => findByText(document.body, 'Export All');
-    expect(await getToolsControl()).toBeInTheDocument();
-    userEvent.click(await getToolsControl());
-    expect(await getExportMenuItem()).toBeInTheDocument();
-    let exportedBlob;
-    vi.spyOn(URL, 'createObjectURL').mockImplementationOnce((blob) => {
-      exportedBlob = blob;
-      // Doesn't matter what this value is
-      return '';
+    await expectAppToExport({
+      logs: fromPairs(
+        testCases.map((testCase, i, testCases) => {
+          const daysDiff = i - Math.floor(testCases.length / 2);
+          return [
+            moment().add(daysDiff, 'days').format('l'),
+            testCase.logContents
+          ];
+        })
+      ),
+      preferences: Preferences.getDefaultValueMap()
     });
-    userEvent.click(await getExportMenuItem());
-    await waitFor(() => {
-      expect(exportedBlob).toBeDefined();
+  });
+  it('should not export keys which do not belong to app', async () => {
+    await applyLogContentsToApp({
+      ...fromPairs(
+        testCases.map((testCase, i, testCases) => {
+          return [i - Math.floor(testCases.length / 2), testCase.logContents];
+        })
+      )
     });
-    expect(JSON.parse(await exportedBlob.text())).toEqual({
+    await saveToIndexedDB('not_a_log_entry', '{}');
+    await renderApp();
+    await expectAppToExport({
       logs: fromPairs(
         testCases.map((testCase, i, testCases) => {
           const daysDiff = i - Math.floor(testCases.length / 2);
