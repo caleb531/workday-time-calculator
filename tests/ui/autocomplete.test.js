@@ -19,25 +19,27 @@ async function getEditorElem() {
   );
 }
 
-const autocompleteElemTestId = 'log-editor-autocomplete-placeholder';
+const autocompleteElemTestId = 'log-editor-has-autocomplete-active';
 
 // Check if the given typed string (called the "completion query") will
 // suggest the match represented by the given placeholder string, and also
 // check if, on pressing the TAB key, if the app will apply the completion
 async function checkIfCompletable(completionQuery, completionPlaceholder) {
   const editorElem = await getEditorElem();
-  const autocompleteElem = await findByTestId(
-    document.body,
-    autocompleteElemTestId
-  );
   await userEvent.clear(editorElem);
   await userEvent.type(editorElem, completionQuery);
-  await waitFor(() => {
+  await waitFor(async () => {
+    const autocompleteElem = await findByTestId(
+      document.body,
+      autocompleteElemTestId
+    );
     // @testing-library/jest-dom provides a toHaveTextContent() matcher, but it
     // doesn't check for an exact match (only a substring match); therefore,
     // because we require an exact match, we use toBe() with the textContent
     // property instead
-    expect(autocompleteElem.textContent).toBe(completionPlaceholder);
+    expect(autocompleteElem.getAttribute('data-autocomplete')).toBe(
+      completionPlaceholder
+    );
   });
 }
 
@@ -66,7 +68,10 @@ async function checkIfAutocompleteIsDisabled() {
 
 describe('log autocomplete', () => {
   beforeEach(async () => {
-    vi.useFakeTimers({ shouldAdvanceTime: true });
+    vi.useFakeTimers({
+      shouldAdvanceTime: true,
+      toFake: ['nextTick']
+    });
     await applyLogContentsToApp({
       '-3': realWorldTestCase1.logContents,
       '-2': basicLogTestCase.logContents,
@@ -119,27 +124,8 @@ describe('log autocomplete', () => {
     await checkIfCompletable('Getting started with m', 'y day');
   });
 
-  // Checking if autocomplete is properly disabled is tricky, because the DOM
-  // element may be absent for not one reason, but two possible reasons; either
-  // the autocomplete worker has not yet returned, or autocomplete is disabled
-  // entirely; to ensure that our custom checkIfAutocompleteIsDisabled() check
-  // behaves correctly, we add a negative test which we expect to fail if
-  // autocomplete is actually enabled but the autocomplete DOM element still
-  // renders
-  it.fails('should check that autocomplete is properly disabled', async () => {
-    await setPreferences({ autocompleteMode: 'greedy' });
-    await renderApp();
-    await checkIfAutocompleteIsDisabled();
-  });
-
   it('should not render when disabled', async () => {
     await setPreferences({ autocompleteMode: 'off' });
-    await renderApp();
-    await checkIfAutocompleteIsDisabled();
-  });
-
-  // Another negative test that we expect to fail
-  it.fails('should render when enabled', async () => {
     await renderApp();
     await checkIfAutocompleteIsDisabled();
   });

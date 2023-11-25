@@ -4,7 +4,6 @@ import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import appStorage from '../models/app-storage.js';
 import EditorAutocompleter from '../models/editor-autocompleter.js';
-import EditorAutocompleterComponent from './editor-autocompleter.js';
 
 class EditorComponent {
   oninit({ attrs: { preferences, selectedDate, onSetLogContents } }) {
@@ -171,8 +170,28 @@ class EditorComponent {
         this.editor.focus();
       })
     );
-    this.autocompleter.on('receive-completions', () => {
+    this.autocompleter.on('receive', (placeholder) => {
+      const selection = window.getSelection();
+      // Do not calculate anything if the text cursor is not active inside the
+      // editor, or if the parent element has not been set yet
+      if (selection.type.toLowerCase() === 'none') {
+        return;
+      }
+      const range = selection.getRangeAt(0);
+      const autocompleteParentElement =
+        range.commonAncestorContainer.parentElement;
+      autocompleteParentElement.setAttribute('data-autocomplete', placeholder);
+      autocompleteParentElement.setAttribute(
+        'data-testid',
+        'log-editor-has-autocomplete-active'
+      );
       m.redraw();
+    });
+    this.autocompleter.on('cancel', () => {
+      document.querySelectorAll('[data-autocomplete]').forEach((element) => {
+        element.removeAttribute('data-autocomplete');
+        element.removeAttribute('data-testid');
+      });
     });
     const logContents = await this.getLogContentsForSelectedDate();
     this.setEditorText(logContents);
@@ -224,22 +243,11 @@ class EditorComponent {
 
   view() {
     return m('div.log-editor-area', [
-      m(
-        'div.log-editor[data-testid="log-editor"]',
-        {
-          oncreate: (vnode) => {
-            this.initializeEditor(vnode.dom);
-          }
-        },
-        [
-          this.editor && this.autocompleter.isEnabled
-            ? m(EditorAutocompleterComponent, {
-                editorContainer: this.editor.container,
-                autocompleter: this.autocompleter
-              })
-            : null
-        ]
-      )
+      m('div.log-editor[data-testid="log-editor"]', {
+        oncreate: (vnode) => {
+          this.initializeEditor(vnode.dom);
+        }
+      })
     ]);
   }
 }

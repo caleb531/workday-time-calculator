@@ -41,6 +41,7 @@ class EditorAutocompleter extends Emitter {
     this.isReady = false;
     this.matchingCompletion = '';
     this.completionPlaceholder = '';
+    this.emit('cancel');
   }
 
   // Since the Quill editor is loaded asynchronously apart from this
@@ -86,17 +87,17 @@ class EditorAutocompleter extends Emitter {
   receiveCompletions(event) {
     this.matchingCompletion = event.data.matchingCompletion;
     this.completionPlaceholder = event.data.completionPlaceholder;
-    this.emit('receive-completions', this.getCompletionPlaceholder());
+    this.emit('receive', this.getCompletionPlaceholder());
   }
 
   // Fetch autocompletion matches for the currently-typed line of text (the
   // query)
   fetchCompletions() {
+    this.cancel();
     const completionQuery = this.getCompletionQuery();
     if (!completionQuery) {
-      // Reset the current completion placeholder if we are at the start of the
-      // line, or if a space precedes the text cursor
-      this.cancel();
+      // Don't bother to fetch completions if the current line is blank, or if
+      // the cursor is not at the end of the line
       return;
     }
     if (this.worker && this.isEnabled) {

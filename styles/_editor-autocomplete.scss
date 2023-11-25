@@ -1,12 +1,9 @@
-.log-editor-autocomplete-placeholder {
-  display: none;
-  position: absolute;
+// Allow autocompleted text to be specified on any element within the editor by
+// populating a data-* attribute on that element
+.ql-editor *:after {
+  content: attr(data-autocomplete);
   font-size: $editor-font-size;
   // Preserve leading whitespace in completion placeholder
   white-space: pre;
   color: rgba(#fff, 0.5);
-  &.is-visible {
-    display: block;
-    pointer-events: none;
-  }
 }
