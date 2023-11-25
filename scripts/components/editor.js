@@ -164,7 +164,6 @@ class EditorComponent {
       // Do not calculate anything if the text cursor is not active inside the
       // editor, or if the parent element has not been set yet
       if (selection.type.toLowerCase() === 'none') {
-        console.log('return');
         return;
       }
       const range = selection.getRangeAt(0);
