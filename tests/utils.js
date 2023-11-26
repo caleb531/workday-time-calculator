@@ -140,6 +140,9 @@ export function mockLocationObject() {
   };
 }
 
+// A slightly-modified version of Vitest's describe() block which runs the
+// contained tests as though indexedDB was not supported by the environment;
+// this allows us to test the localStorage-only mode
 export function describeWithIndexedDBDisabled(description, body) {
   describe(description, () => {
     beforeEach(() => {
