@@ -52,7 +52,7 @@ describe.each([
     await openPreferences();
     Notification._grantWhenRequested();
     await clickPreferenceOption('Reminder Interval', label);
-    vi.advanceTimersByTime(minutes * S_IN_M * MS_IN_S);
+    vi.advanceTimersByTime((minutes + 1) * S_IN_M * MS_IN_S);
     expect(Notification).toHaveBeenCalledWith('Workday Time Calculator', {
       body: 'Remember to update your log!',
       icon: 'app-icon.png'
