@@ -4,7 +4,7 @@ import './custom-matchers.js';
 import { testCases } from './utils.js';
 
 describe('log model', () => {
-  it.each(testCases)('$description', async (testCase) => {
+  it.each(testCases)('var(--description)', async (testCase) => {
     const log = new Log(testCase.logContents, {
       calculateStats: true,
       preferences: new Preferences({

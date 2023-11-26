@@ -31,7 +31,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: flex-start;
-  width: $date-control-width;
+  width: var(--date-control-width);
   height: 100%;
   border-width: 0;
   padding: 0;
@@ -40,18 +40,18 @@
   cursor: pointer;
   &:hover:active,
   &.active {
-    color: $blue;
+    color: var(--color-blue);
   }
   &:focus {
     outline-width: 0;
   }
   &:first-child {
-    border-top-left-radius: $app-border-radius;
-    border-bottom-left-radius: $app-border-radius;
+    border-top-left-radius: var(--app-border-radius);
+    border-bottom-left-radius: var(--app-border-radius);
   }
   &:last-child {
-    border-top-right-radius: $app-border-radius;
-    border-bottom-right-radius: $app-border-radius;
+    border-top-right-radius: var(--app-border-radius);
+    border-bottom-right-radius: var(--app-border-radius);
   }
 }
 .log-date-control svg {

@@ -6,9 +6,9 @@
   stroke: #fff;
   stroke-width: 1.5;
   svg {
-    $icon-size: 100px;
-    width: $icon-size;
-    height: $icon-size;
+    --icon-size: 100px;
+    width: var(--icon-size);
+    height: var(--icon-size);
     animation: spin 1000ms linear infinite;
   }
 }

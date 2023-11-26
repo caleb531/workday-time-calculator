@@ -35,14 +35,14 @@
   align-items: center;
   opacity: 0;
   position: absolute;
-  $button-size: 26px;
-  $button-padding: 5px;
-  width: $button-size;
-  height: $button-size;
+  --button-size: 26px;
+  --button-padding: 5px;
+  width: var(--button-size);
+  height: var(--button-size);
   border-radius: 50%;
-  padding: $button-padding;
-  background-color: $blue;
-  top: $button-padding;
+  padding: var(--button-padding);
+  background-color: var(--color-blue);
+  top: var(--button-padding);
   left: -10px;
   box-shadow: 0 1px 3px rgba(#000, 0.5);
   .log-category-descriptions-container:hover & {

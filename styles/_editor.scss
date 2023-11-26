@@ -9,7 +9,7 @@
   width: 100%;
   height: 300px;
   font-family: inherit;
-  font-size: $editor-font-size;
+  font-size: var(--editor-font-size);
   font-weight: 300;
   color: #fff;
   resize: none;
@@ -18,11 +18,11 @@
   }
 }
 .ql-editor {
-  border-radius: $app-border-radius;
+  border-radius: var(--app-border-radius);
   background-color: rgba(#000, 0.5);
   &:focus {
     outline-width: 0;
-    box-shadow: inset 0 0 0 1px $blue;
+    box-shadow: inset 0 0 0 1px var(--color-blue);
   }
 }
 
@@ -35,7 +35,7 @@
 }
 
 .ql-toolbar.ql-snow {
-  border-radius: $app-border-radius;
+  border-radius: var(--app-border-radius);
   background-color: rgba(#000, math.div(2, 3));
   margin-bottom: 2px;
 }
@@ -54,7 +54,7 @@
   }
   &.ql-active,
   &:hover:active {
-    color: $blue;
+    color: var(--color-blue);
   }
   .ql-fill {
     fill: currentColor !important;

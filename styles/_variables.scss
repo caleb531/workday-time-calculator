@@ -1,43 +1,45 @@
-// Responsive widths (mobile-first)
+// Responsive widths (mobile-first); this must be a Sass variable (as opposed to
+// a CSS custom property) because CSS custom properties cannot be used inside
+// media query declarations
 $app-hybrid-max-width: 768px;
 
-// Corner radius on various app elements
-$app-border-radius: 5px;
+:root {
+  // Corner radius on various app elements
+  --app-border-radius: 5px;
 
-// Colors
+  // Colors
 
-$blue: #5ae;
-$red: #c33;
-$gray: #bcd;
+  --color-blue: #5ae;
+  --color-red: #c33;
+  --color-gray: #bcd;
 
-// Color Themes
+  // Color Themes
 
-$color-themes: (
-  'blue': #113355,
-  'green': #114433,
-  'purple': #333355,
-  'rose': #553344,
-  'slate': #1c2127
-);
+  --color-theme-color-blue: #113355;
+  --color-theme-color-green: #114433;
+  --color-theme-color-purple: #333355;
+  --color-theme-color-rose: #553344;
+  --color-theme-color-slate: #1c2127;
 
-// Editor
-$editor-font-size: 16px;
+  // Editor
+  --editor-font-size: 16px;
 
-// Calendar
-$calendar-date-size: 25px;
-$calendar-date-font-size: 12px;
-$calendar-weekday-count: 7;
-$calendar-padding-x: 12px;
-$calendar-padding-y: 8px;
-$calendar-panel-arrow-size: 6px;
+  // Calendar
+  --calendar-date-size: 25px;
+  --calendar-date-font-size: 12px;
+  --calendar-weekday-count: 7;
+  --calendar-padding-x: 12px;
+  --calendar-padding-y: 8px;
+  --calendar-panel-arrow-size: 6px;
 
-// Dates
-$date-control-width: 30px;
+  // Dates
+  --date-control-width: 30px;
 
-// Floating panels
-$panel-arrow-size: 6px;
-$panel-shadow: 0 1px 3px #000;
+  // Floating panels
+  --panel-arrow-size: 6px;
+  --panel-shadow: 0 1px 3px #000;
 
-// Color swatches
-$color-swatch-swatch-size: 24px;
-$color-swatch-swatch-dot-size: 8px;
+  // Color swatches
+  --color-swatch-swatch-size: 24px;
+  --color-swatch-swatch-dot-size: 8px;
+}

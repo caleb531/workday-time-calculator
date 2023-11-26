@@ -16,9 +16,9 @@
 .app-tools-menu-toggle {
   display: inline-block;
   position: relative;
-  $icon-size: 20px;
-  width: $icon-size;
-  height: $icon-size;
+  --icon-size: 20px;
+  width: var(--icon-size);
+  height: var(--icon-size);
   margin: 0;
   border-width: 0;
   padding: 0;
@@ -27,7 +27,7 @@
   &:hover:active,
   .app-tools-open & {
     z-index: 100;
-    color: $blue;
+    color: var(--color-blue);
   }
   &:focus {
     outline-width: 0;
@@ -45,22 +45,22 @@
   min-width: 100px;
   top: 100%;
   z-index: 10;
-  $menu-padding-x: 12px;
-  $menu-padding-y: 8px;
+  --menu-padding-x: 12px;
+  --menu-padding-y: 8px;
   left: auto;
-  right: -$menu-padding-x;
+  right: -var(--menu-padding-x);
   @media (min-width: $app-hybrid-max-width) {
-    left: -$menu-padding-x;
+    left: -var(--menu-padding-x);
     right: auto;
   }
   margin: 0;
-  margin-top: $panel-arrow-size * 1.5;
+  margin-top: calc(var(--panel-arrow-size) * 1.5);
   padding: 0;
-  border-radius: $app-border-radius;
+  border-radius: var(--app-border-radius);
   background-color: #fff;
   color: #000;
   text-align: left;
-  box-shadow: $panel-shadow;
+  box-shadow: var(--panel-shadow);
   font-weight: 400;
   font-size: 14px;
   white-space: nowrap;
@@ -78,16 +78,16 @@
         content: '';
         display: inline-block;
         position: absolute;
-        top: -$panel-arrow-size;
+        top: -var(--panel-arrow-size);
         left: auto;
-        right: $menu-padding-x;
+        right: var(--menu-padding-x);
         @media (min-width: $app-hybrid-max-width) {
-          left: $menu-padding-x;
+          left: var(--menu-padding-x);
           right: auto;
         }
         width: 0;
         height: 0;
-        border: solid $panel-arrow-size transparent;
+        border: solid var(--panel-arrow-size) transparent;
         border-top-width: 0;
         border-bottom-color: #fff;
       }
@@ -97,16 +97,16 @@
       border-bottom-right-radius: inherit;
     }
     &:hover {
-      background-color: $blue;
+      background-color: var(--color-blue);
       color: #fff;
       &:before {
-        border-bottom-color: $blue;
+        border-bottom-color: var(--color-blue);
       }
     }
   }
   li > * {
     display: block;
-    padding: $menu-padding-y $menu-padding-x;
+    padding: var(--menu-padding-y) var(--menu-padding-x);
     color: inherit;
     text-decoration: none;
   }

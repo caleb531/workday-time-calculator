@@ -1,5 +1,0 @@
-@each $color-name, $color-code in $color-themes {
-  .color-theme-#{$color-name} {
-    background-color: $color-code;
-  }
-}

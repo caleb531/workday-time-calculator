@@ -2,7 +2,7 @@
 // populating a data-* attribute on that element
 .ql-editor *:after {
   content: attr(data-autocomplete);
-  font-size: $editor-font-size;
+  font-size: var(--editor-font-size);
   // Preserve leading whitespace in completion placeholder
   color: rgba(#fff, 0.5);
 }

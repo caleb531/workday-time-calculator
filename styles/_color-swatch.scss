@@ -1,9 +1,10 @@
 .color-swatch-swatch {
   display: inline-block;
   position: relative;
-  width: $color-swatch-swatch-size;
-  height: $color-swatch-swatch-size;
+  width: var(--color-swatch-swatch-size);
+  height: var(--color-swatch-swatch-size);
   border-radius: 50%;
+  background-color: var(--color-swatch-color);
   filter: brightness(1.75);
 }
 .app-preference-option-selected .color-swatch-swatch-dot {
@@ -12,8 +13,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: $color-swatch-swatch-dot-size;
-  height: $color-swatch-swatch-dot-size;
+  width: var(--color-swatch-swatch-dot-size);
+  height: var(--color-swatch-swatch-dot-size);
   background-color: #fff;
   border-radius: 50%;
 }

@@ -14,11 +14,15 @@ describe('color theme', () => {
 
   it('should be able to be changed by user', async () => {
     await renderApp();
-    expect(document.body).toHaveClass('color-theme-blue');
+    expect(
+      document.body.style.getPropertyValue('--current-color-theme-color')
+    ).toContain('var(--color-theme-color-blue)');
     await openPreferences();
     await clickPreferenceOption('Color Theme', 'Rose');
     await waitFor(() => {
-      expect(document.body).toHaveClass('color-theme-rose');
+      expect(
+        document.body.style.getPropertyValue('--current-color-theme-color')
+      ).toEqual('var(--color-theme-color-rose)');
     });
     expect(await idbKeyval.get('wtc-prefs')).toHaveProperty(
       'colorTheme',

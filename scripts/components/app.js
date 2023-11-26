@@ -37,7 +37,7 @@ class AppComponent {
   // element; however, since the <body> is not within the scope of the virtual
   // DOM, we must query it manually
   setColorThemeOnBody() {
-    document.body.className = `color-theme-${this.preferences.colorTheme}`;
+    document.body.style = `--current-color-theme-color: var(--color-theme-color-${this.preferences.colorTheme});`;
   }
 
   view() {

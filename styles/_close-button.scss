@@ -2,18 +2,18 @@
   position: absolute;
   top: 0;
   right: 0;
-  $button-size: 32px;
-  width: $button-size;
-  height: $button-size;
+  --button-size: 32px;
+  width: var(--button-size);
+  height: var(--button-size);
   fill: currentColor;
   border-width: 0;
-  border-bottom-left-radius: $app-border-radius;
+  border-bottom-left-radius: var(--app-border-radius);
   margin: 0;
   padding: 10px;
   background: none;
   box-sizing: content-box;
   &:hover {
-    background-color: $blue;
+    background-color: var(--color-blue);
     color: #fff;
   }
   &:focus {
