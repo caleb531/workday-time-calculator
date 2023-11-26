@@ -28,7 +28,7 @@ describe('log summary', () => {
     await waitFor(() => {
       const summaryElem = queryByTestId(document.body, 'log-summary');
       if (testCase.assertions.categories) {
-        testCase.assertions.categories.forEach((expectedCategory, c) => {
+        testCase.assertions.categories.forEach((expectedCategory) => {
           if (expectedCategory.name) {
             expect(
               getByText(summaryElem, `${expectedCategory.name}:`)
@@ -55,7 +55,7 @@ describe('log summary', () => {
 
       if (testCase.assertions.errors) {
         const errorsElem = queryByTestId(document.body, 'log-errors');
-        testCase.assertions.errors.forEach((expectedError, e) => {
+        testCase.assertions.errors.forEach((expectedError) => {
           if (expectedError.startTime === expectedError.endTime) {
             expect(
               getAllByText(errorsElem, formatTime(expectedError.startTime))
@@ -73,7 +73,7 @@ describe('log summary', () => {
 
       if (testCase.assertions.gaps) {
         const gapsElem = queryByTestId(document.body, 'log-gaps');
-        testCase.assertions.gaps.forEach((expectedGap, e) => {
+        testCase.assertions.gaps.forEach((expectedGap) => {
           if (expectedGap.startTime === expectedGap.endTime) {
             expect(
               getAllByText(gapsElem, formatTime(expectedGap.startTime))
