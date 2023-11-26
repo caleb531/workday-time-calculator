@@ -34,8 +34,16 @@ export async function unmountApp() {
 // A utility that can be used with the below applyLogContentsToApp() as an
 // supported callback adapter for saving the respective log contents to
 // localStorage
-export async function saveToLocalStorage(storageKey, logContents) {
-  return localStorage.setItem(storageKey, JSON.stringify(logContents));
+export async function saveToLocalStorage(
+  storageKey,
+  logContents,
+  options = { raw: false }
+) {
+  if (options.raw) {
+    return localStorage.setItem(storageKey, logContents);
+  } else {
+    return localStorage.setItem(storageKey, JSON.stringify(logContents));
+  }
 }
 
 // A utility that can be used with the below applyLogContentsToApp() as an

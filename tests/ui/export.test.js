@@ -7,6 +7,7 @@ import {
   applyLogContentsToApp,
   renderApp,
   saveToIndexedDB,
+  saveToLocalStorage,
   testCases,
   unmountApp
 } from '../utils.js';
@@ -62,29 +63,7 @@ describe('export functionality', () => {
       preferences: Preferences.getDefaultValueMap()
     });
   });
-  it('should not export entries which do not belong to app', async () => {
-    await applyLogContentsToApp({
-      ...fromPairs(
-        testCases.map((testCase, i, testCases) => {
-          return [i - Math.floor(testCases.length / 2), testCase.logContents];
-        })
-      )
-    });
-    await saveToIndexedDB('not_a_log_entry', '{}');
-    await renderApp();
-    await expectAppToExport({
-      logs: fromPairs(
-        testCases.map((testCase, i, testCases) => {
-          const daysDiff = i - Math.floor(testCases.length / 2);
-          return [
-            moment().add(daysDiff, 'days').format('l'),
-            testCase.logContents
-          ];
-        })
-      ),
-      preferences: Preferences.getDefaultValueMap()
-    });
-  });
+
   it('should not export empty log entries', async () => {
     await applyLogContentsToApp({
       [-Math.floor(testCases.length / 2) - 1]: { ops: [{ insert: '\n' }] },
@@ -107,6 +86,72 @@ describe('export functionality', () => {
         })
       ),
       preferences: Preferences.getDefaultValueMap()
+    });
+  });
+
+  it('should not export entries which do not belong to app', async () => {
+    await applyLogContentsToApp({
+      ...fromPairs(
+        testCases.map((testCase, i, testCases) => {
+          return [i - Math.floor(testCases.length / 2), testCase.logContents];
+        })
+      )
+    });
+    await saveToIndexedDB('not_a_log_entry', 'foo');
+    await renderApp();
+    await expectAppToExport({
+      logs: fromPairs(
+        testCases.map((testCase, i, testCases) => {
+          const daysDiff = i - Math.floor(testCases.length / 2);
+          return [
+            moment().add(daysDiff, 'days').format('l'),
+            testCase.logContents
+          ];
+        })
+      ),
+      preferences: Preferences.getDefaultValueMap()
+    });
+  });
+
+  describe('in localStorage-only mode', () => {
+    let originalIndexedDB = window.indexedDB;
+
+    beforeEach(() => {
+      window.indexedDB = undefined;
+    });
+
+    afterEach(() => {
+      window.indexedDB = originalIndexedDB;
+    });
+
+    it('should not export localStorage entries which do not belong to app', async () => {
+      await applyLogContentsToApp(
+        {
+          ...fromPairs(
+            testCases.map((testCase, i, testCases) => {
+              return [
+                i - Math.floor(testCases.length / 2),
+                testCase.logContents
+              ];
+            })
+          )
+        },
+        saveToLocalStorage
+      );
+      await saveToLocalStorage('not_a_log_entry', 'foo', { raw: true });
+      await renderApp();
+      await expectAppToExport({
+        logs: fromPairs(
+          testCases.map((testCase, i, testCases) => {
+            const daysDiff = i - Math.floor(testCases.length / 2);
+            return [
+              moment().add(daysDiff, 'days').format('l'),
+              testCase.logContents
+            ];
+          })
+        ),
+        preferences: Preferences.getDefaultValueMap()
+      });
     });
   });
 });

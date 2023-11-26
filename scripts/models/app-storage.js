@@ -67,8 +67,14 @@ class AppStorage {
     } else {
       return new Promise((resolve) => {
         resolve(
-          localStorage.keys().map((key) => {
-            return [key, JSON.parse(localStorage.getItem(key))];
+          Object.keys(localStorage).map((key) => {
+            try {
+              // Attempt to parse as JSON, and if it fails, assume the value is
+              // non-JSON
+              return [key, JSON.parse(localStorage.getItem(key))];
+            } catch (error) {
+              return [key, localStorage.getItem(key)];
+            }
           })
         );
       });
