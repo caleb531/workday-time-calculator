@@ -8,7 +8,12 @@ import userEvent from '@testing-library/user-event';
 import * as idbKeyval from 'idb-keyval';
 import { fromPairs } from 'lodash-es';
 import moment from 'moment';
-import { renderApp, testCases, unmountApp } from '../utils.js';
+import {
+  getStorageKeyFromDays,
+  renderApp,
+  testCases,
+  unmountApp
+} from '../utils.js';
 
 import FileReaderMock from '../mocks/file-reader-mock.js';
 
@@ -52,8 +57,9 @@ describe('import functionality', () => {
       expect(window.location.reload).toHaveBeenCalled();
       Object.values(exportedData.logs).forEach(async (logContents, i, logs) => {
         const daysDiff = i - Math.floor(logs.length / 2);
-        const dateStr = moment().add(daysDiff, 'days').format('l');
-        expect(await idbKeyval.get(`wtc-date-${dateStr}`)).toEqual(logContents);
+        expect(await idbKeyval.get(getStorageKeyFromDays(daysDiff))).toEqual(
+          logContents
+        );
       });
       expect(await idbKeyval.get('wtc-prefs')).toEqual(
         exportedData.preferences
