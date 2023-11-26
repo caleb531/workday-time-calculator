@@ -1,4 +1,9 @@
-import { findByLabelText, findByRole, findByText } from '@testing-library/dom';
+import {
+  findByLabelText,
+  findByRole,
+  findByTestId,
+  findByText
+} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import * as idbKeyval from 'idb-keyval';
 import m from 'mithril';
@@ -138,6 +143,13 @@ export function mockLocationObject() {
     reload: vi.fn(),
     assign: vi.fn()
   };
+}
+
+// Retrieve the DOM element for the editable Quill editor
+export async function getEditorElem() {
+  return (await findByTestId(document.body, 'log-editor')).querySelector(
+    '.ql-editor'
+  );
 }
 
 // A slightly-modified version of Vitest's describe() block which runs the

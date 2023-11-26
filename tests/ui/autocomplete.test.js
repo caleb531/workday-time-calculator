@@ -6,18 +6,12 @@ import realWorldTestCase2 from '../test-cases/real-world-2.json';
 import {
   applyLogContentsToApp,
   clickPreferenceOption,
+  getEditorElem,
   openPreferences,
   renderApp,
   setPreferences,
   unmountApp
 } from '../utils.js';
-
-// Retrieve the DOM element for the editable Quill editor
-async function getEditorElem() {
-  return (await findByTestId(document.body, 'log-editor')).querySelector(
-    '.ql-editor'
-  );
-}
 
 const autocompleteElemTestId = 'log-editor-has-autocomplete-active';
 
