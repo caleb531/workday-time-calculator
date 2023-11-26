@@ -5,6 +5,7 @@ import moment from 'moment';
 import Preferences from '../../scripts/models/preferences.js';
 import {
   applyLogContentsToApp,
+  describeWithIndexedDBDisabled,
   renderApp,
   saveToIndexedDB,
   saveToLocalStorage,
@@ -113,17 +114,7 @@ describe('export functionality', () => {
     });
   });
 
-  describe('in localStorage-only mode', () => {
-    let originalIndexedDB = window.indexedDB;
-
-    beforeEach(() => {
-      window.indexedDB = undefined;
-    });
-
-    afterEach(() => {
-      window.indexedDB = originalIndexedDB;
-    });
-
+  describeWithIndexedDBDisabled('in localStorage-only mode', () => {
     it('should not export localStorage entries which do not belong to app', async () => {
       await applyLogContentsToApp(
         {

@@ -7,6 +7,7 @@ import AppComponent from '../scripts/components/app.js';
 import Preferences from '../scripts/models/preferences.js';
 
 const originalLocationObject = window.location;
+const originalIndexedDB = window.indexedDB;
 
 export const testCases = Object.values(
   import.meta.glob('./test-cases/*.json', {
@@ -137,4 +138,16 @@ export function mockLocationObject() {
     reload: vi.fn(),
     assign: vi.fn()
   };
+}
+
+export function describeWithIndexedDBDisabled(description, body) {
+  describe(description, () => {
+    beforeEach(() => {
+      window.indexedDB = undefined;
+    });
+    afterEach(() => {
+      window.indexedDB = originalIndexedDB;
+    });
+    body();
+  });
 }

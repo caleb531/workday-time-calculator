@@ -3,6 +3,7 @@ import * as idbKeyval from 'idb-keyval';
 import basicLogTestCase from '../test-cases/basic.json';
 import {
   applyLogContentsToApp,
+  describeWithIndexedDBDisabled,
   getStorageKeyFromDays,
   renderApp,
   saveToLocalStorage,
@@ -33,17 +34,7 @@ describe('storage upgrader', () => {
     });
   });
 
-  describe('backwards-compatibility', () => {
-    let originalIndexedDB = window.indexedDB;
-
-    beforeEach(() => {
-      window.indexedDB = undefined;
-    });
-
-    afterEach(() => {
-      window.indexedDB = originalIndexedDB;
-    });
-
+  describeWithIndexedDBDisabled('backwards-compatibility', () => {
     it('should skip storage upgrade if browser does not support indexedDB', async () => {
       const logContents = basicLogTestCase.logContents;
       await applyLogContentsToApp({ 0: logContents }, saveToLocalStorage);
