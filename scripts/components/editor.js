@@ -51,6 +51,20 @@ class EditorComponent {
     }
   }
 
+  // Clean up any leftover autocomplete placeholders in the DOM by clearing all
+  // data-autocomplete attributes (except for those elements specified by the
+  // optional 'excludeElements' array)
+  resetAutocompleteInDOM({ excludeElements = [] } = {}) {
+    this.editor.root
+      .querySelectorAll('[data-autocomplete]')
+      .forEach((element) => {
+        if (!excludeElements.includes(element)) {
+          element.removeAttribute('data-autocomplete');
+          element.removeAttribute('data-testid');
+        }
+      });
+  }
+
   async initializeEditor(editorContainer) {
     this.editor = new Quill(editorContainer, {
       theme: 'snow',
@@ -149,12 +163,18 @@ class EditorComponent {
       this.autocompleter.cancel();
       m.redraw();
     });
-    this.editor.on('text-change', (delta, oldDelta, source) => {
+    this.editor.on('text-change', (delta, oldContents, source) => {
       if (source === 'user') {
         let logContents = this.editor.getContents();
         this.onSetLogContents(logContents);
         this.saveTextLog(logContents);
-        this.autocompleter.fetchCompletions();
+        if (delta.ops[delta.ops.length - 1]?.insert === '\n') {
+          // If user enters down to a new line, cancel the current autocomplete
+          this.autocompleter.cancel();
+        } else {
+          // Otherwise, fetch normally
+          this.autocompleter.fetchCompletions();
+        }
         m.redraw();
       }
       this.editor.focus();
@@ -169,6 +189,9 @@ class EditorComponent {
       const range = selection.getRangeAt(0);
       const autocompleteParentElement =
         range.commonAncestorContainer.parentElement;
+      this.resetAutocompleteInDOM({
+        excludeElements: [autocompleteParentElement]
+      });
       autocompleteParentElement.setAttribute('data-autocomplete', placeholder);
       autocompleteParentElement.setAttribute(
         'data-testid',
@@ -176,10 +199,7 @@ class EditorComponent {
       );
     });
     this.autocompleter.on('cancel', () => {
-      document.querySelectorAll('[data-autocomplete]').forEach((element) => {
-        element.removeAttribute('data-autocomplete');
-        element.removeAttribute('data-testid');
-      });
+      this.resetAutocompleteInDOM();
     });
     const logContents = await this.getLogContentsForSelectedDate();
     this.setEditorText(logContents);
