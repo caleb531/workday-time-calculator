@@ -177,6 +177,7 @@ class EditorComponent {
         }
         m.redraw();
       }
+      // Focus the editor when the page initially loads
       this.editor.focus();
     });
     this.autocompleter.on('receive', (placeholder) => {
