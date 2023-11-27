@@ -4,7 +4,7 @@
   width: var(--color-swatch-swatch-size);
   height: var(--color-swatch-swatch-size);
   border-radius: 50%;
-  background-color: var(--color-swatch-color);
+  background-color: var(--color-swatch-swatch-color);
   filter: brightness(1.75);
 }
 .app-preference-option-selected .color-swatch-swatch-dot {

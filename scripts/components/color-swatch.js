@@ -7,7 +7,7 @@ class ColorSwatchComponent {
         `label.color-swatch-swatch`,
         {
           for: `${preference.id}-${option.value}`,
-          style: `--color-swatch-color: var(--color-theme-color-${option.value})`
+          style: `--color-swatch-swatch-color: var(--color-theme-color-${option.value})`
         },
         preferences[preference.id] === option.value
           ? m('div.color-swatch-swatch-dot')
