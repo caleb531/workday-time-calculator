@@ -45,7 +45,7 @@ class EditorComponent {
         'silent'
       );
       this.editor.insertText(range.index, '', 'user');
-      this.autocompleter.cancel();
+      this.resetAutocompleteInDOM();
     } else if (options.fallbackBehavior) {
       options.fallbackBehavior();
     }
