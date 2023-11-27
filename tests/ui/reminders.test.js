@@ -19,7 +19,10 @@ describe.each([
   'reminder system with var(--minutes-minute) reminders',
   ({ label, minutes }) => {
     beforeEach(async () => {
-      vi.useFakeTimers({ shouldAdvanceTime: true });
+      vi.useFakeTimers({
+        shouldAdvanceTime: true,
+        toFake: ['nextTick']
+      });
     });
 
     afterEach(async () => {
