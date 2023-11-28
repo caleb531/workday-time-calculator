@@ -19,7 +19,7 @@ describe('log summary', () => {
     await unmountApp();
   });
 
-  it.each(testCases)('var(--description)', async (testCase) => {
+  it.each(testCases)('$description', async (testCase) => {
     if (testCase.preferences) {
       await setPreferences(testCase.preferences);
     }
