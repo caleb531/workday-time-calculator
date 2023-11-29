@@ -1,7 +1,7 @@
 {
   "name": "workday-time-calculator",
   "version": "1.0.0",
-  "description": "Calculates my total hours (per client, as well as overall) for a workday",
+  "description": "Record and track what you've done (and when) throughout your workday",
   "private": true,
   "type": "module",
   "scripts": {
