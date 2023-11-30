@@ -91,6 +91,20 @@ class EditorAutocompleter extends Emitter {
     this.emit('receive', this.completionPlaceholder);
   }
 
+  // Find the index of the substring within the given completion query which
+  // marks the beginning of the given matching completion (e.g. providing
+  // query:"Getting started with" and match:"started wi" should return an index
+  // of 8)
+  findIndexOfQueryMatch(completionQuery, matchingCompletion) {
+    for (let i = 0; i < completionQuery.length; i += 1) {
+      const substring = completionQuery.slice(i);
+      if (matchingCompletion.indexOf(substring) === 0) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   // Fetch autocompletion matches for the currently-typed line of text (the
   // query)
   fetchCompletions() {
@@ -99,8 +113,12 @@ class EditorAutocompleter extends Emitter {
     // placeholder text, meaning that the full completion will not change;
     // therefore, we can skip calling out to the worker in this case and simply
     // perform the substring math to compute the new placeholder text directly
+    const substringIndex = this.findIndexOfQueryMatch(
+      newCompletionQuery,
+      this.matchingCompletion
+    );
     if (
-      this.matchingCompletion.indexOf(newCompletionQuery) === 0 &&
+      substringIndex !== -1 &&
       newCompletionQuery.length > this.completionQuery.length
     ) {
       this.completionQuery = newCompletionQuery;
@@ -108,7 +126,7 @@ class EditorAutocompleter extends Emitter {
         data: {
           matchingCompletion: this.matchingCompletion,
           completionPlaceholder: this.matchingCompletion.slice(
-            newCompletionQuery.length
+            newCompletionQuery.slice(substringIndex).length
           )
         }
       });
