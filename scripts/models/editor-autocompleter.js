@@ -1,3 +1,4 @@
+import { debounce } from 'lodash-es';
 import Emitter from 'tiny-emitter';
 import AutocompletionWorker from '../autocompletion-worker.js?worker';
 import appStorage from './app-storage.js';
@@ -107,7 +108,7 @@ class EditorAutocompleter extends Emitter {
 
   // Fetch autocompletion matches for the currently-typed line of text (the
   // query)
-  fetchCompletions() {
+  _fetchCompletions() {
     const newCompletionQuery = this.getCompletionQuery();
     // An optimization to handle the common case where the user types "into" the
     // placeholder text, meaning that the full completion will not change;
@@ -147,6 +148,27 @@ class EditorAutocompleter extends Emitter {
       });
     }
   }
+
+  _fetchCompletionsDebounced = debounce(() => {
+    this._fetchCompletions();
+  }, this.constructor.debounceDelay);
+
+  // A wrapper around the internal methods for fetching completions; this is to
+  // allow the public API to receive options that control the timing behavior of
+  // the operation (e.g. whether or not to debounce)
+  fetchCompletions(options = { debounce: false }) {
+    if (options.debounce) {
+      this._fetchCompletionsDebounced();
+    } else {
+      this._fetchCompletions();
+    }
+  }
 }
+// The delay (in milliseconds) at which to debounce the autocompletion (when
+// requested); in testing, it seems the key repeat delay on macOS is about
+// 600ms, so setting the debounce delay to that will ensure that if the user
+// holds down the Delete key, the autocomplete placeholder *won't* briefly
+// render before the key actually starts repeating
+EditorAutocompleter.debounceDelay = 600;
 
 export default EditorAutocompleter;

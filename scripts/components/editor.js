@@ -171,6 +171,13 @@ class EditorComponent {
         if (delta.ops[delta.ops.length - 1]?.insert === '\n') {
           // If user enters down to a new line, cancel the current autocomplete
           this.autocompleter.cancel();
+        } else if (delta.ops[delta.ops.length - 1]?.delete >= 1) {
+          // If the user is deleting any amount of text, then debounce the
+          // updating of the autocomplete placeholder to prevent the placeholder
+          // text from jittering across successive deletes (e.g. if the user
+          // holds down the Delete key)
+          this.autocompleter.cancel();
+          this.autocompleter.fetchCompletions({ debounce: true });
         } else {
           // Otherwise, fetch normally
           this.autocompleter.fetchCompletions();
