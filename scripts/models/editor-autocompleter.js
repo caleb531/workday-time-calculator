@@ -149,10 +149,6 @@ class EditorAutocompleter extends Emitter {
     }
   }
 
-  _fetchCompletionsDebounced = debounce(() => {
-    this._fetchCompletions();
-  }, this.constructor.debounceDelay);
-
   // A wrapper around the internal methods for fetching completions; this is to
   // allow the public API to receive options that control the timing behavior of
   // the operation (e.g. whether or not to debounce)
@@ -170,5 +166,15 @@ class EditorAutocompleter extends Emitter {
 // holds down the Delete key, the autocomplete placeholder *won't* briefly
 // render before the key actually starts repeating
 EditorAutocompleter.debounceDelay = 600;
+// Support for class methods defined as arrow functions wasn't added until
+// ES2022, which is unsupported by Safari 16.3 and older; therefore, to maximize
+// compatibility with these versions, we are defining the debounced variant of
+// _fetchCompletions() in a more compatible way
+EditorAutocompleter.prototype._fetchCompletionsDebounced = debounce(
+  function () {
+    this._fetchCompletions();
+  },
+  EditorAutocompleter.debounceDelay
+);
 
 export default EditorAutocompleter;
