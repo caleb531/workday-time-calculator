@@ -161,7 +161,6 @@ class EditorComponent {
     });
     this.editor.on('selection-change', () => {
       this.autocompleter.cancel();
-      m.redraw();
     });
     this.editor.on('text-change', (delta, oldContents, source) => {
       if (source === 'user') {
