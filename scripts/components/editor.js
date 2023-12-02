@@ -197,6 +197,8 @@ class EditorComponent {
       const autocompleteParentElement =
         range.commonAncestorContainer.parentElement;
       this.resetAutocompleteInDOM({
+        // If the parent element remains the same since the last completion,
+        // then just reuse it (i.e. don't remove and recreate it)
         excludeElements: [autocompleteParentElement]
       });
       autocompleteParentElement.setAttribute('data-autocomplete', placeholder);
