@@ -52,7 +52,7 @@ describe.each([
     await openPreferences();
     Notification._grantWhenRequested();
     await clickPreferenceOption('Reminder Interval', label);
-    vi.advanceTimersByTime((minutes + 1) * S_IN_M * MS_IN_S);
+    await vi.advanceTimersByTimeAsync((minutes + 1) * S_IN_M * MS_IN_S);
     expect(Notification).toHaveBeenCalledWith('Workday Time Calculator', {
       body: 'Remember to update your log!',
       icon: 'app-icon.png'
@@ -65,7 +65,7 @@ describe.each([
     await openPreferences();
     Notification._grantWhenRequested();
     await clickPreferenceOption('Reminder Interval', label);
-    vi.advanceTimersByTime(2 * minutes * S_IN_M * MS_IN_S);
+    await vi.advanceTimersByTimeAsync(2 * minutes * S_IN_M * MS_IN_S);
     expect(Notification).toHaveBeenCalledWith('Workday Time Calculator', {
       body: 'Remember to update your log!',
       icon: 'app-icon.png'
@@ -84,7 +84,7 @@ describe.each([
     });
     expect(Notification).toHaveBeenCalledTimes(1);
     await clickPreferenceOption('Reminder Interval', 'Never');
-    vi.advanceTimersByTime(minutes * S_IN_M * MS_IN_S);
+    await vi.advanceTimersByTimeAsync(minutes * S_IN_M * MS_IN_S);
     expect(Notification).toHaveBeenCalledTimes(1);
   });
 });
