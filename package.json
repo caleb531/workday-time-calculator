@@ -25,7 +25,6 @@
   "dependencies": {
     "@fontsource-variable/open-sans": "^5.0.18",
     "@types/node": "^20.9.1",
-    "clipboard": "^2.0.11",
     "idb-keyval": "^6.2.1",
     "lodash-es": "^4.17.21",
     "mithril": "^2.2.2",

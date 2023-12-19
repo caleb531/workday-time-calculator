@@ -1,4 +1,3 @@
-import ClipboardJS from 'clipboard';
 import m from 'mithril';
 import copySvgUrl from '../../icons/copy.svg';
 import doneSvgUrl from '../../icons/done.svg';
@@ -49,24 +48,20 @@ class SummaryComponent {
     return `${isNegative ? '-' : ''}${hours}:${minutes}`;
   }
 
-  bindCopyToClipboardEvent(vnode) {
-    const clipboard = new ClipboardJS(vnode.dom);
-    clipboard.on('success', (copyEvent) => {
-      // In order for ClipboardJS to copy the text to the clipboard, it must
-      // first select it; this text remains selected after the copy is complete,
-      // so for a less-confusing UX, we clear the text selection after a
-      // successful copy
-      copyEvent.clearSelection();
-      // Briefly indicate that the copy was successful
-      const categoryIndex = vnode.dom.getAttribute('data-category-index');
-      const category = this.log.categories[categoryIndex];
-      category.copiedToClipboard = true;
+  async copyDescriptionToClipboard(copyButton) {
+    const targetElement = document.querySelector(
+      copyButton.getAttribute('data-clipboard-target')
+    );
+    await navigator.clipboard.writeText(targetElement.innerText);
+    // Briefly indicate that the copy was successful
+    const categoryIndex = copyButton.getAttribute('data-category-index');
+    const category = this.log.categories[categoryIndex];
+    category.copiedToClipboard = true;
+    m.redraw();
+    setTimeout(() => {
+      category.copiedToClipboard = false;
       m.redraw();
-      setTimeout(() => {
-        category.copiedToClipboard = false;
-        m.redraw();
-      }, this.clipboardCopySuccessDelay);
-    });
+    }, this.clipboardCopySuccessDelay);
   }
 
   getFormattedDescription(description) {
@@ -236,8 +231,11 @@ class SummaryComponent {
                                 {
                                   'data-clipboard-target': `#log-category-description-list-${c}`,
                                   'data-category-index': c,
-                                  oncreate: (vnode) =>
-                                    this.bindCopyToClipboardEvent(vnode),
+                                  onclick: (event) => {
+                                    this.copyDescriptionToClipboard(
+                                      event.currentTarget
+                                    );
+                                  },
                                   title: 'Copy to Clipboard'
                                 },
                                 [
