@@ -1,6 +1,6 @@
 # Workday Time Calculator
 
-_Copyright 2017-2023 Caleb Evans_  
+_Copyright 2017-2024 Caleb Evans_  
 _Released under the MIT license_
 
 [![tests](https://github.com/caleb531/workday-time-calculator/actions/workflows/tests.yml/badge.svg)](https://github.com/caleb531/workday-time-calculator/actions/workflows/tests.yml)
