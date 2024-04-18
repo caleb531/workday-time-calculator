@@ -9,9 +9,6 @@ Object.assign(NotificationMock, {
   _resetPermissions() {
     this.permission = 'default';
   },
-  _resetConstructorCalls() {
-    this._constructorSpy.mockClear();
-  },
   requestPermission(callback) {
     this.permission = this._pendingPermission;
     callback();
