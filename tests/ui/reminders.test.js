@@ -53,11 +53,13 @@ describe.each([
     Notification._grantWhenRequested();
     await clickPreferenceOption('Reminder Interval', label);
     await vi.advanceTimersByTimeAsync((minutes + 1) * S_IN_M * MS_IN_S);
-    expect(Notification).toHaveBeenCalledWith('Workday Time Calculator', {
-      body: 'Remember to update your log!',
-      icon: 'app-icon.png'
+    await waitFor(() => {
+      expect(Notification).toHaveBeenCalledWith('Workday Time Calculator', {
+        body: 'Remember to update your log!',
+        icon: 'app-icon.png'
+      });
+      expect(Notification).toHaveBeenCalledTimes(2);
     });
-    expect(Notification).toHaveBeenCalledTimes(2);
   });
 
   it(`should re-spawn reminder every ${minutes} minutes`, async () => {
@@ -66,11 +68,13 @@ describe.each([
     Notification._grantWhenRequested();
     await clickPreferenceOption('Reminder Interval', label);
     await vi.advanceTimersByTimeAsync(2 * minutes * S_IN_M * MS_IN_S);
-    expect(Notification).toHaveBeenCalledWith('Workday Time Calculator', {
-      body: 'Remember to update your log!',
-      icon: 'app-icon.png'
+    await waitFor(() => {
+      expect(Notification).toHaveBeenCalledWith('Workday Time Calculator', {
+        body: 'Remember to update your log!',
+        icon: 'app-icon.png'
+      });
+      expect(Notification).toHaveBeenCalledTimes(3);
     });
-    expect(Notification).toHaveBeenCalledTimes(3);
   });
 
   it('should properly disable after being enabled', async () => {
@@ -85,6 +89,8 @@ describe.each([
     expect(Notification).toHaveBeenCalledTimes(1);
     await clickPreferenceOption('Reminder Interval', 'Never');
     await vi.advanceTimersByTimeAsync(minutes * S_IN_M * MS_IN_S);
-    expect(Notification).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(Notification).toHaveBeenCalledTimes(1);
+    });
   });
 });
