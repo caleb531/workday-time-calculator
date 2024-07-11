@@ -15,8 +15,7 @@ import {
 describe('log editor', () => {
   beforeEach(async () => {
     vi.useFakeTimers({
-      shouldAdvanceTime: true,
-      toFake: ['nextTick']
+      shouldAdvanceTime: true
     });
     await applyLogContentsToApp({
       '-3': realWorldTestCase1.logContents,
