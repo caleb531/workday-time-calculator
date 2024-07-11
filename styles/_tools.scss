@@ -49,10 +49,6 @@
   --menu-padding-y: 8px;
   left: auto;
   right: -var(--menu-padding-x);
-  @media (min-width: $app-hybrid-max-width) {
-    left: -var(--menu-padding-x);
-    right: auto;
-  }
   margin: 0;
   margin-top: calc(var(--panel-arrow-size) * 1.5);
   padding: 0;
@@ -64,6 +60,10 @@
   font-weight: 400;
   font-size: 14px;
   white-space: nowrap;
+  @media (min-width: $app-hybrid-max-width) {
+    left: -var(--menu-padding-x);
+    right: auto;
+  }
   .app-tools-open & {
     display: block;
     z-index: 100;
@@ -81,15 +81,15 @@
         top: -var(--panel-arrow-size);
         left: auto;
         right: var(--menu-padding-x);
-        @media (min-width: $app-hybrid-max-width) {
-          left: var(--menu-padding-x);
-          right: auto;
-        }
         width: 0;
         height: 0;
         border: solid var(--panel-arrow-size) transparent;
         border-top-width: 0;
         border-bottom-color: #fff;
+        @media (min-width: $app-hybrid-max-width) {
+          left: var(--menu-padding-x);
+          right: auto;
+        }
       }
     }
     &:last-child {
