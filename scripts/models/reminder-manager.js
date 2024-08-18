@@ -89,7 +89,6 @@ class ReminderManager {
   }
 
   spawnNotification({ body }) {
-    /* eslint-disable-next-line no-new */
     new Notification('Workday Time Calculator', {
       body,
       icon: 'app-icon.png'
