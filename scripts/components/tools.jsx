@@ -1,9 +1,9 @@
 import m from 'mithril';
-import DismissableOverlayComponent from './dismissable-overlay.js';
-import ExportComponent from './export.js';
-import ImportComponent from './import.js';
-import PreferencesComponent from './preferences.js';
-import WrenchIconComponent from './wrench-icon.js';
+import DismissableOverlayComponent from './dismissable-overlay.jsx';
+import ExportComponent from './export.jsx';
+import ImportComponent from './import.jsx';
+import PreferencesComponent from './preferences.jsx';
+import WrenchIconComponent from './wrench-icon.jsx';
 
 class ToolsComponent {
   oninit() {

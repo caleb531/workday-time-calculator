@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 import * as idbKeyval from 'idb-keyval';
 import m from 'mithril';
 import moment from 'moment';
-import AppComponent from '../scripts/components/app.js';
+import AppComponent from '../scripts/components/app.jsx';
 import Preferences from '../scripts/models/preferences.js';
 
 const originalLocationObject = window.location;

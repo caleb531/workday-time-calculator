@@ -3,13 +3,13 @@ import moment from 'moment';
 import Log from '../models/log.js';
 import Preferences from '../models/preferences.js';
 import ReminderManager from '../models/reminder-manager.js';
-import DateComponent from './date.js';
-import EditorComponent from './editor.js';
-import LoadingComponent from './loading.js';
-import StorageUpgraderComponent from './storage-upgrader.js';
-import SummaryComponent from './summary.js';
-import ToolsComponent from './tools.js';
-import UpdateNotificationComponent from './update-notification.js';
+import DateComponent from './date.jsx';
+import EditorComponent from './editor.jsx';
+import LoadingComponent from './loading.jsx';
+import StorageUpgraderComponent from './storage-upgrader.jsx';
+import SummaryComponent from './summary.jsx';
+import ToolsComponent from './tools.jsx';
+import UpdateNotificationComponent from './update-notification.jsx';
 
 class AppComponent {
   oninit() {

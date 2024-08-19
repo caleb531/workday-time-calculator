@@ -1,8 +1,8 @@
 import m from 'mithril';
 import moment from 'moment';
-import DismissableOverlayComponent from './dismissable-overlay.js';
-import NextIconComponent from './next-icon.js';
-import PrevIconComponent from './prev-icon.js';
+import DismissableOverlayComponent from './dismissable-overlay.jsx';
+import NextIconComponent from './next-icon.jsx';
+import PrevIconComponent from './prev-icon.jsx';
 
 class CalendarComponent {
   oninit({ attrs: { selectedDate, onSetSelectedDate, onCloseCalendar } }) {
