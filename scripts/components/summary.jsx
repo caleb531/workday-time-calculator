@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import m from 'mithril';
 import copySvgUrl from '../../icons/copy.svg';
 import doneSvgUrl from '../../icons/done.svg';
@@ -69,206 +70,194 @@ class SummaryComponent {
   }
 
   view({ attrs: { log } }) {
-    return log && log.categories.length > 0
-      ? m('div.log-summary[data-testid="log-summary"]', [
-          m('div.log-summary-overview', [
-            m('div.log-summary-overview-main', [
-              m('div.log-total', [
-                m('div.log-total-time-name.log-label', 'Total:'),
-                ' ',
-                m(
-                  'div.log-total-time.log-value',
-                  this.getFormattedDuration(log.totalDuration)
-                )
-              ]),
+    return log && log.categories.length > 0 ? (
+      <div className="log-summary" data-testid="log-summary">
+        <div className="log-summary-overview">
+          <div className="log-summary-overview-main">
+            <div className="log-total">
+              <div className="log-total-time-name log-label">Total:</div>{' '}
+              <div className="log-total-time log-value">
+                {this.getFormattedDuration(log.totalDuration)}
+              </div>
+            </div>
 
-              m('.log-stats', [
-                log.errors && log.errors.length > 0
-                  ? m('div.log-errors[data-testid="log-errors"]', [
-                      m('span.log-label', 'Errors:'),
-                      ' ',
-                      m(
-                        'div.log-times.log-error-times',
-                        log.errors.map((error) => {
-                          return m('div.log-error', [
-                            m(
-                              'span.log-error-start-time.log-value',
-                              error.startTime.isValid()
-                                ? error.startTime.format(this.timeFormat)
-                                : '?'
-                            ),
-                            ' ',
-                            m('span.log-error-separator.log-separator', 'to'),
-                            ' ',
-                            m(
-                              'span.log-error-end-time.log-value',
-                              error.endTime.isValid()
-                                ? error.endTime.format(this.timeFormat)
-                                : '?'
+            <div className="log-stats">
+              {log.errors && log.errors.length > 0 ? (
+                <div className="log-errors" data-testid="log-errors">
+                  <span className="log-label">Errors:</span>{' '}
+                  <div className="log-times log-error-times">
+                    {log.errors.map((error) => {
+                      return (
+                        <div className="log-error">
+                          <span className="log-error-start-time log-value">
+                            {error.startTime.isValid()
+                              ? error.startTime.format(this.timeFormat)
+                              : '?'}
+                          </span>{' '}
+                          <span className="log-error-separator log-separator">
+                            to
+                          </span>{' '}
+                          <span className="log-error-end-time log-value">
+                            {error.endTime.isValid()
+                              ? error.endTime.format(this.timeFormat)
+                              : '?'}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
+
+              {log.gaps && log.gaps.length > 0 ? (
+                <div className="log-gaps" data-testid="log-gaps">
+                  <span className="log-label">Gaps:</span>{' '}
+                  <div className="log-times log-gap-times">
+                    {log.gaps.map((gap) => {
+                      return (
+                        <div className="log-gap">
+                          <span className="log-gap-start-time log-value">
+                            {gap.startTime.isValid()
+                              ? gap.startTime.format(this.timeFormat)
+                              : '?'}
+                          </span>{' '}
+                          <span className="log-gap-separator log-separator">
+                            to
+                          </span>{' '}
+                          <span className="log-gap-end-time log-value">
+                            {gap.endTime.isValid()
+                              ? gap.endTime.format(this.timeFormat)
+                              : '?'}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
+
+              {log.overlaps && log.overlaps.length > 0 ? (
+                <div className="log-overlaps">
+                  <span className="log-label">Overlaps:</span>{' '}
+                  <div
+                    className="log-times log-overlap-times"
+                    data-testid="log-overlap-times"
+                  >
+                    {log.overlaps.map((overlap) => {
+                      return (
+                        <div className="log-overlap">
+                          <span className="log-overlap-start-time log-value">
+                            {overlap.startTime.isValid()
+                              ? overlap.startTime.format(this.timeFormat)
+                              : '?'}
+                          </span>{' '}
+                          <span className="log-overlap-separator log-separator">
+                            to
+                          </span>{' '}
+                          <span className="log-overlap-end-time log-value">
+                            {overlap.endTime.isValid()
+                              ? overlap.endTime.format(this.timeFormat)
+                              : '?'}
+                          </span>{' '}
+                          <span className="log-value-categories">
+                            (
+                            {overlap.categories
+                              .map((category) => category.name)
+                              .join(', ')}
                             )
-                          ]);
-                        })
-                      )
-                    ])
-                  : null,
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </div>
 
-                log.gaps && log.gaps.length > 0
-                  ? m('div.log-gaps[data-testid="log-gaps"]', [
-                      m('span.log-label', 'Gaps:'),
-                      ' ',
-                      m(
-                        'div.log-times.log-gap-times',
-                        log.gaps.map((gap) => {
-                          return m('div.log-gap', [
-                            m(
-                              'span.log-gap-start-time.log-value',
-                              gap.startTime.isValid()
-                                ? gap.startTime.format(this.timeFormat)
-                                : '?'
-                            ),
-                            ' ',
-                            m('span.log-gap-separator.log-separator', 'to'),
-                            ' ',
-                            m(
-                              'span.log-gap-end-time.log-value',
-                              gap.endTime.isValid()
-                                ? gap.endTime.format(this.timeFormat)
-                                : '?'
-                            )
-                          ]);
-                        })
-                      )
-                    ])
-                  : null,
+          {log.latestRange ? (
+            <div className="log-latest-time">
+              <span className="log-label">Latest Time:</span>{' '}
+              <span className="log-latest-time-time">
+                <span className="log-value">
+                  {log.latestRange.endTime.format(this.timeFormat)}
+                </span>{' '}
+                <span className="log-value-category">
+                  ({log.latestRange.category.name})
+                </span>
+              </span>
+            </div>
+          ) : null}
+        </div>
 
-                log.overlaps && log.overlaps.length > 0
-                  ? m('div.log-overlaps', [
-                      m('span.log-label', 'Overlaps:'),
-                      ' ',
-                      m(
-                        'div.log-times.log-overlap-times[data-testid="log-overlap-times"]',
-                        log.overlaps.map((overlap) => {
-                          return m('div.log-overlap', [
-                            m(
-                              'span.log-overlap-start-time.log-value',
-                              overlap.startTime.isValid()
-                                ? overlap.startTime.format(this.timeFormat)
-                                : '?'
-                            ),
-                            ' ',
-                            m('span.log-overlap-separator.log-separator', 'to'),
-                            ' ',
-                            m(
-                              'span.log-overlap-end-time.log-value',
-                              overlap.endTime.isValid()
-                                ? overlap.endTime.format(this.timeFormat)
-                                : '?'
-                            ),
-                            ' ',
-                            m(
-                              'span.log-value-categories',
-                              `(${overlap.categories
-                                .map((category) => category.name)
-                                .join(', ')})`
-                            )
-                          ]);
-                        })
-                      )
-                    ])
-                  : null
-              ])
-            ]),
-
-            log.latestRange
-              ? m('div.log-latest-time', [
-                  m('span.log-label', 'Latest Time:'),
-                  ' ',
-                  m('span.log-latest-time-time', [
-                    m(
-                      'span.log-value',
-                      log.latestRange.endTime.format(this.timeFormat)
-                    ),
-                    ' ',
-                    m(
-                      'span.log-value-category',
-                      `(${log.latestRange.category.name})`
-                    )
-                  ])
-                ])
-              : null
-          ]),
-
-          m(
-            'div.log-summary-details',
-            log.categories.map((category, c) => {
-              return m(
-                'div.log-category',
-                category.totalDuration.asMinutes() > 0
+        <div className="log-summary-details">
+          {log.categories.map((category, c) => {
+            return (
+              <div className="log-category">
+                {category.totalDuration.asMinutes() > 0
                   ? [
-                      m('div.log-category-header', [
-                        m(
-                          'span.log-category-name.log-label',
-                          `${category.name}:`
-                        ),
-                        ' ',
-                        m('span.log-category-total-time.log-value', [
-                          this.getFormattedDuration(category.totalDuration)
-                        ]),
-                        ' '
-                      ]),
+                      <div className="log-category-header">
+                        <span className="log-category-name log-label">
+                          {category.name}:
+                        </span>{' '}
+                        <span className="log-category-total-time log-value">
+                          {this.getFormattedDuration(category.totalDuration)}
+                        </span>{' '}
+                      </div>,
 
-                      m(
-                        'div.log-category-descriptions-container',
-                        {
-                          class: category.copiedToClipboard
-                            ? 'copied-to-clipboard'
-                            : ''
-                        },
-                        category.descriptions.length
+                      <div
+                        className={clsx('log-category-descriptions-container', {
+                          'copied-to-clipboard': category.copiedToClipboard
+                        })}
+                      >
+                        {category.descriptions.length
                           ? [
-                              m(
-                                'div.log-category-descriptions-copy-button',
-                                {
-                                  'data-clipboard-target': `#log-category-description-list-${c}`,
-                                  'data-category-index': c,
-                                  onclick: (event) => {
-                                    this.copyDescriptionToClipboard(
-                                      event.currentTarget
-                                    );
-                                  },
-                                  title: 'Copy to Clipboard'
-                                },
-                                [
-                                  m(
-                                    'img.log-category-descriptions-copy-button-icon',
-                                    {
-                                      src: category.copiedToClipboard
-                                        ? doneSvgUrl
-                                        : copySvgUrl,
-                                      alt: 'Copy to Clipboard'
-                                    }
-                                  )
-                                ]
-                              ),
-                              m(
-                                `ul.log-category-descriptions-list#log-category-description-list-${c}`,
-                                category.descriptions.map((description) => {
-                                  return m(
-                                    'li.log-category-description',
-                                    this.getFormattedDescription(description)
+                              <div
+                                className="log-category-descriptions-copy-button"
+                                data-clipboard-target={`#log-category-description-list-${c}`}
+                                data-category-index={c}
+                                onclick={(event) => {
+                                  this.copyDescriptionToClipboard(
+                                    event.currentTarget
                                   );
-                                })
-                              )
+                                }}
+                                title="Copy to Clipboard"
+                              >
+                                <img
+                                  className="log-category-descriptions-copy-button-icon"
+                                  src={
+                                    category.copiedToClipboard
+                                      ? doneSvgUrl
+                                      : copySvgUrl
+                                  }
+                                  alt="Copy to Clipboard"
+                                />
+                              </div>,
+                              <ul
+                                className={`log-category-descriptions-list`}
+                                id={`log-category-description-list-${c}`}
+                              >
+                                {category.descriptions.map((description) => {
+                                  return (
+                                    <li className="log-category-description">
+                                      {this.getFormattedDescription(
+                                        description
+                                      )}
+                                    </li>
+                                  );
+                                })}
+                              </ul>
                             ]
-                          : null
-                      )
+                          : null}
+                      </div>
                     ]
-                  : null
-              );
-            })
-          )
-        ])
-      : null;
+                  : null}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    ) : null;
   }
 }
 // The number of milliseconds to display a 'done' checkmark after a category's

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import m from 'mithril';
 import DismissableOverlayComponent from './dismissable-overlay.jsx';
 import ExportComponent from './export.jsx';
@@ -12,64 +13,60 @@ class ToolsComponent {
   }
 
   view({ attrs: { preferences } }) {
-    return m(
-      'div.app-tools',
-      {
-        class: this.toolsMenuOpen ? 'app-tools-open' : ''
-      },
-      [
-        m(
-          'button.app-tools-menu-toggle',
-          {
-            'aria-label': 'Toggle Tools Menu',
-            onclick: () => {
-              this.toolsMenuOpen = !this.toolsMenuOpen;
-            }
-          },
-          m(WrenchIconComponent)
-        ),
-        this.toolsMenuOpen
-          ? m(DismissableOverlayComponent, {
-              'aria-label': 'Close Tools Menu',
-              onDismiss: () => {
-                this.toolsMenuOpen = false;
-              }
-            })
-          : null,
-        m(
-          'ul.app-tools-menu',
-          {
-            class: this.toolsMenuOpen ? 'app-tools-open' : '',
-            // Close menu when menu item is clicked
-            onclick: () => {
+    return (
+      <div
+        className={clsx('app-tools', { 'app-tools-open': this.toolsMenuOpen })}
+      >
+        <button
+          aria-label="Toggle Tools Menu"
+          onclick={() => {
+            this.toolsMenuOpen = !this.toolsMenuOpen;
+          }}
+          className="app-tools-menu-toggle"
+        >
+          <WrenchIconComponent />
+        </button>
+        {this.toolsMenuOpen ? (
+          <DismissableOverlayComponent
+            aria-label="Close Tools Menu"
+            onDismiss={() => {
               this.toolsMenuOpen = false;
-            }
-          },
-          [
-            m('li', m(ImportComponent, { preferences })),
-            m('li', m(ExportComponent, { preferences })),
-            m(
-              'li',
-              {
-                onclick: () => {
-                  this.preferencesOpen = true;
-                }
-              },
-              m('span.app-control-preferences', 'Preferences')
-            )
-          ]
-        ),
-        this.preferencesOpen
-          ? m(PreferencesComponent, {
-              preferences,
-              preferencesOpen: this.preferencesOpen,
-              onClosePreferences: () => {
-                this.preferencesOpen = false;
-                m.redraw();
-              }
-            })
-          : null
-      ]
+            }}
+          />
+        ) : null}
+        <ul
+          className={clsx('app-tools-menu', {
+            'app-tools-open': this.toolsMenuOpen
+          })}
+          onclick={() => {
+            this.toolsMenuOpen = false;
+          }}
+        >
+          <li>
+            <ImportComponent preferences={preferences} />
+          </li>
+          <li>
+            <ExportComponent preferences={preferences} />
+          </li>
+          <li
+            onclick={() => {
+              this.preferencesOpen = true;
+            }}
+          >
+            <span className="app-control-preferences">Preferences</span>
+          </li>
+        </ul>
+        {this.preferencesOpen ? (
+          <PreferencesComponent
+            preferences={preferences}
+            preferencesOpen={this.preferencesOpen}
+            onClosePreferences={() => {
+              this.preferencesOpen = false;
+              m.redraw();
+            }}
+          />
+        ) : null}
+      </div>
     );
   }
 }

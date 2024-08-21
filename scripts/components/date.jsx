@@ -1,4 +1,3 @@
-import m from 'mithril';
 import moment from 'moment';
 import CalendarIconComponent from './calendar-icon.jsx';
 import CalendarComponent from './calendar.jsx';
@@ -35,61 +34,57 @@ class DateComponent {
   }
 
   view() {
-    return m('div.log-date-area', [
-      m('div.log-date-controls', [
-        m(
-          'button.log-date-control.log-date-prev-control',
-          {
-            'aria-label': 'Go To Previous Day',
-            onclick: () => this.selectPrevDay()
-          },
-          m(PrevIconComponent)
-        ),
-        m(
-          'button.log-date-control.log-date-calendar-control',
-          {
-            class: this.calendarOpen ? 'active' : '',
-            'aria-label': 'Toggle Calendar',
-            onclick: () => this.toggleCalendar()
-          },
-          m(CalendarIconComponent, { selectedDate: this.selectedDate })
-        ),
-        m(
-          'button.log-date-control.log-date-next-control',
-          {
-            'aria-label': 'Go To Next Day',
-            onclick: () => this.selectNextDay()
-          },
-          m(NextIconComponent)
-        )
-      ]),
-      m('div.log-selected-date', [
-        m(
-          'div.log-selected-date-absolute',
-          this.selectedDate.format('dddd, MMMM D, YYYY')
-        ),
-        m(
-          'div.log-selected-date-relative',
-          this.selectedDate.isSame(moment(), 'day')
-            ? 'today'
-            : `${this.formatRelativeMessage(this.selectedDate.fromNow())}`
-        )
-      ]),
+    return (
+      <div className="log-date-area">
+        <div className="log-date-controls">
+          <button
+            className="log-date-control log-date-prev-control"
+            aria-label="Go To Previous Day"
+            onclick={() => this.selectPrevDay()}
+          >
+            <PrevIconComponent />
+          </button>
+          <button
+            className={`log-date-control log-date-calendar-control ${this.calendarOpen ? 'active' : ''}`}
+            aria-label="Toggle Calendar"
+            onclick={() => this.toggleCalendar()}
+          >
+            <CalendarIconComponent selectedDate={this.selectedDate} />
+          </button>
+          <button
+            className="log-date-control log-date-next-control"
+            aria-label="Go To Next Day"
+            onclick={() => this.selectNextDay()}
+          >
+            <NextIconComponent />
+          </button>
+        </div>
+        <div className="log-selected-date">
+          <div className="log-selected-date-absolute">
+            {this.selectedDate.format('dddd, MMMM D, YYYY')}
+          </div>
+          <div className="log-selected-date-relative">
+            {this.selectedDate.isSame(moment(), 'day')
+              ? 'today'
+              : `${this.formatRelativeMessage(this.selectedDate.fromNow())}`}
+          </div>
+        </div>
 
-      this.selectedDate && this.calendarOpen
-        ? m(CalendarComponent, {
-            selectedDate: this.selectedDate,
-            calendarOpen: this.calendarOpen,
-            onSetSelectedDate: (selectedDate) => {
+        {this.selectedDate && this.calendarOpen ? (
+          <CalendarComponent
+            selectedDate={this.selectedDate}
+            calendarOpen={this.calendarOpen}
+            onSetSelectedDate={(selectedDate) => {
               this.selectedDate = selectedDate.clone();
               this.onSetSelectedDate(this.selectedDate);
-            },
-            onCloseCalendar: () => {
+            }}
+            onCloseCalendar={() => {
               this.calendarOpen = false;
-            }
-          })
-        : null
-    ]);
+            }}
+          />
+        ) : null}
+      </div>
+    );
   }
 }
 

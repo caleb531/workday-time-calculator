@@ -42,33 +42,25 @@ class StorageUpgraderComponent {
   }
 
   view() {
-    return this.isVisible
-      ? m(
-          'div.storage-upgrade',
-          {
-            tabindex: '1',
-            oncreate: this.blurEditor
-          },
-          [
-            m(DismissableOverlayComponent, {
-              onDismiss: () => {
-                /* do nothing */
-              }
-            }),
+    return this.isVisible ? (
+      <div className="storage-upgrade" tabIndex="1" oncreate={this.blurEditor}>
+        <DismissableOverlayComponent
+          onDismiss={() => {
+            /* do nothing */
+          }}
+        />
 
-            m('div.panel.storage-upgrade-panel', [
-              m('h2.storage-upgrade-heading', 'Upgrading Database...'),
+        <div className="panel storage-upgrade-panel">
+          <h2 className="storage-upgrade-heading">Upgrading Database...</h2>
 
-              m(
-                'p.storage-upgrade-message',
-                'Hang tight while we upgrade the database...'
-              ),
+          <p className="storage-upgrade-message">
+            Hang tight while we upgrade the database...
+          </p>
 
-              m(LoadingComponent, { class: 'storage-upgrade-loading' })
-            ])
-          ]
-        )
-      : null;
+          <LoadingComponent className="storage-upgrade-loading" />
+        </div>
+      </div>
+    ) : null;
   }
 }
 

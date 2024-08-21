@@ -31,21 +31,16 @@ class UpdateNotificationComponent {
   }
 
   view() {
-    return this.isUpdateAvailable
-      ? m(
-          'div.update-notification',
-          {
-            onclick: () => this.update()
-          },
-          m('div.update-notification-bubble', [
-            m('h2.update-notification-title', 'Update available!'),
-            m(
-              'p.update-notification-subtitle',
-              'Click here to finish updating.'
-            )
-          ])
-        )
-      : null;
+    return this.isUpdateAvailable ? (
+      <div className="update-notification" onclick={() => this.update()}>
+        <div className="update-notification-bubble">
+          <h2 className="update-notification-title">Update available!</h2>
+          <p className="update-notification-subtitle">
+            Click here to finish updating.
+          </p>
+        </div>
+      </div>
+    ) : null;
   }
 }
 

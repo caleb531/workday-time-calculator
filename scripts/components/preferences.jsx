@@ -1,4 +1,4 @@
-import m from 'mithril';
+import clsx from 'clsx';
 import Preferences from '../models/preferences.js';
 import CloseButtonComponent from './close-button.jsx';
 import ColorSwatchComponent from './color-swatch.jsx';
@@ -25,88 +25,90 @@ class PreferencesComponent {
   }
 
   view({ attrs: { preferencesOpen } }) {
-    return m(
-      'div.app-preferences',
-      {
-        class: preferencesOpen ? 'app-preferences-open' : '',
-        onchange: (event) => this.savePreference(event)
-      },
-      [
-        m(DismissableOverlayComponent, {
-          'aria-labelledby': 'app-preferences-close-control',
-          onDismiss: () => this.onClosePreferences()
-        }),
+    return (
+      <div
+        className={clsx('app-preferences', {
+          'app-preferences-open': preferencesOpen
+        })}
+        onchange={(event) => this.savePreference(event)}
+      >
+        <DismissableOverlayComponent
+          aria-labelledby="app-preferences-close-control"
+          onDismiss={() => this.onClosePreferences()}
+        />
 
-        m('div.panel.app-preferences-panel', [
-          m(CloseButtonComponent, {
-            id: 'app-preferences-close-control',
-            'aria-label': 'Close Preferences',
-            onClose: () => this.onClosePreferences()
-          }),
+        <div className="panel app-preferences-panel">
+          <CloseButtonComponent
+            id="app-preferences-close-control"
+            aria-label="Close Preferences"
+            onClose={() => this.onClosePreferences()}
+          />
 
-          m('h2.app-preferences-heading', 'Preferences'),
+          <h2 className="app-preferences-heading">Preferences</h2>
 
-          Preferences.preferences.map((preference) => {
-            return m(
-              'div.app-preference',
-              {
-                'data-preference-id': preference.id
-              },
-              [
-                m('label.app-preference-label', preference.label),
-                m('p.app-preference-description', preference.description),
-                m(
-                  'div.app-preference-options',
-                  preference.options.map((option) => {
-                    return m(
-                      'div.app-preference-option',
-                      {
-                        class:
-                          this.preferences[preference.id] === option.value
-                            ? 'app-preference-option-selected'
-                            : ''
-                      },
-                      [
-                        m(RadioButtonComponent, {
-                          preferences: this.preferences,
-                          preference,
-                          option
-                        }),
-                        preference.optionType === 'color'
-                          ? m(ColorSwatchComponent, {
-                              preferences: this.preferences,
-                              preference,
-                              option
-                            })
-                          : null,
-                        m(
-                          'label.app-preference-option-label',
-                          {
-                            for: `${preference.id}-${option.value}`
-                          },
-                          option.label
-                        )
-                      ]
+          {Preferences.preferences.map((preference) => {
+            return (
+              <div
+                className="app-preference"
+                data-preference-id={preference.id}
+              >
+                <label className="app-preference-label">
+                  {preference.label}
+                </label>
+                <p className="app-preference-description">
+                  {preference.description}
+                </p>
+                <div className="app-preference-options">
+                  {preference.options.map((option) => {
+                    return (
+                      <div
+                        className={clsx('app-preference-option', {
+                          'app-preference-option-selected':
+                            this.preferences[preference.id] === option.value
+                        })}
+                      >
+                        <RadioButtonComponent
+                          preferences={this.preferences}
+                          preference={preference}
+                          option={option}
+                        />
+                        {preference.optionType === 'color' ? (
+                          <ColorSwatchComponent
+                            preferences={this.preferences}
+                            preference={preference}
+                            option={option}
+                          />
+                        ) : null}
+                        <label
+                          className="app-preference-option-label"
+                          htmlFor={`${preference.id}-${option.value}`}
+                        >
+                          {option.label}
+                        </label>
+                      </div>
                     );
-                  })
-                ),
-                preference.id === 'reminderInterval' &&
+                  })}
+                </div>
+                {preference.id === 'reminderInterval' &&
                 this.preferences.reminderInterval > 0 &&
-                Notification.permission === 'denied'
-                  ? m('p.app-preferences-notification-error', [
-                      'Your web browser is currently blocking WTC reminder notifications. Please refer to ',
-                      m(
-                        'a[href="https://help.vwo.com/hc/en-us/articles/360007700494-How-To-Unblock-Notifications-From-A-Website-VWO-Help-"][target="_blank"]',
-                        'this article'
-                      ),
-                      ' to fix this.'
-                    ])
-                  : null
-              ]
+                Notification.permission === 'denied' ? (
+                  <p className="app-preferences-notification-error">
+                    Your web browser is currently blocking WTC reminder
+                    notifications. Please refer to
+                    <a
+                      href="https://help.vwo.com/hc/en-us/articles/360007700494-How-To-Unblock-Notifications-From-A-Website-VWO-Help-"
+                      target="_blank"
+                    >
+                      this article
+                    </a>
+                    to fix this.
+                  </p>
+                ) : null}
+              </div>
             );
-          })
-        ])
-      ]
+          })}
+        </div>
+      </div>
     );
   }
 }
