@@ -1,4 +1,3 @@
-import m from 'mithril';
 import appStorage from '../models/app-storage.js';
 
 class ImportComponent {
@@ -32,22 +31,24 @@ class ImportComponent {
   }
 
   view() {
-    return m('label[for="app-control-import-input"]', [
-      m(
-        'input[type="file"].app-control-import-input#app-control-import-input',
-        {
-          accept: 'application/json',
-          onchange: async (event) => {
+    return (
+      <label htmlFor="app-control-import-input">
+        <input
+          type="file"
+          className="app-control-import-input"
+          id="app-control-import-input"
+          accept="application/json"
+          onchange={async (event) => {
             if (!event.target.files.length) {
               return;
             }
             await this.importJsonFile(event.target.files[0]);
             window.location.reload();
-          }
-        }
-      ),
-      m('span.app-control-import-label', 'Import')
-    ]);
+          }}
+        />
+        <span className="app-control-import-label">Import</span>
+      </label>
+    );
   }
 }
 

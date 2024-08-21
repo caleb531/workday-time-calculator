@@ -1,4 +1,4 @@
-import m from 'mithril';
+import clsx from 'clsx';
 import moment from 'moment';
 import DismissableOverlayComponent from './dismissable-overlay.jsx';
 import NextIconComponent from './next-icon.jsx';
@@ -80,86 +80,79 @@ class CalendarComponent {
   }
 
   view({ attrs: { calendarOpen } }) {
-    return this.firstDayOfMonthInView
-      ? m(
-          'div.log-calendar',
-          {
-            class: calendarOpen ? 'log-calendar-open' : ''
-          },
-          [
-            m(DismissableOverlayComponent, {
-              'aria-label': 'Close Calendar',
-              onDismiss: () => this.onCloseCalendar()
-            }),
+    return this.firstDayOfMonthInView ? (
+      <div
+        className={clsx('log-calendar', { 'log-calendar-open': calendarOpen })}
+      >
+        <DismissableOverlayComponent
+          aria-label="Close Calendar"
+          onDismiss={() => this.onCloseCalendar()}
+        />
 
-            m('div.log-calendar-panel', [
-              m('div.log-calendar-header', [
-                m(
-                  'span.log-calendar-current-month-name',
-                  this.firstDayOfMonthInView.format('MMMM YYYY')
-                ),
-                m('div.log-calendar-month-controls', [
-                  m(
-                    'button.log-calendar-month-control.log-calendar-prev-month-control',
-                    {
-                      'aria-label': 'Previous Month',
-                      onclick: () => this.viewPrevMonth()
-                    },
-                    m(PrevIconComponent)
-                  ),
-                  m(
-                    'button.log-calendar-month-control.log-calendar-next-month-control',
-                    {
-                      'aria-label': 'Next Month',
-                      onclick: () => this.viewNextMonth()
-                    },
-                    m(NextIconComponent)
-                  )
-                ])
-              ]),
+        <div className="log-calendar-panel">
+          <div className="log-calendar-header">
+            <span className="log-calendar-current-month-name">
+              {this.firstDayOfMonthInView.format('MMMM YYYY')}
+            </span>
+            <div className="log-calendar-month-controls">
+              <button
+                aria-label="Previous Month"
+                onclick={() => this.viewPrevMonth()}
+                className="log-calendar-month-control log-calendar-prev-month-control"
+              >
+                <PrevIconComponent />
+              </button>
+              <button
+                aria-label="Next Month"
+                onclick={() => this.viewNextMonth()}
+                className="log-calendar-month-control log-calendar-next-month-control"
+              >
+                <NextIconComponent />
+              </button>
+            </div>
+          </div>
 
-              m(
-                'div.log-calendar-weekday-labels',
-                this.weekdayLabels.map((weekdayLabel) => {
-                  return m('div.log-calendar-weekday-label', weekdayLabel);
-                })
-              ),
+          <div className="log-calendar-weekday-labels">
+            {this.weekdayLabels.map((weekdayLabel) => {
+              return (
+                <div className="log-calendar-weekday-label">{weekdayLabel}</div>
+              );
+            })}
+          </div>
 
-              m(
-                'div.log-calendar-dates',
-                {
-                  'data-testid': 'log-calendar-dates',
-                  onmousedown: (event) => this.selectDate(event),
-                  ondblclick: (event) =>
-                    this.closeCalendarAfterDblClickDate(event)
-                },
-                this.mapDaysInView((currentDate) => {
-                  return m(
-                    'div.log-calendar-date',
-                    {
-                      'data-date': currentDate.format('l'),
-                      'data-testid': currentDate.isSame(this.selectedDate)
-                        ? 'log-calendar-selected-date'
-                        : undefined,
-                      class: [
-                        currentDate.format('YYYY/MM') ===
-                        this.firstDayOfMonthInView.format('YYYY/MM')
-                          ? 'is-current-month'
-                          : '',
-                        currentDate.isSame(this.selectedDate)
-                          ? 'is-selected'
-                          : '',
-                        currentDate.isSame(this.getToday()) ? 'is-today' : ''
-                      ].join(' ')
-                    },
-                    m('div.log-calendar-date-label', currentDate.date())
-                  );
-                })
-              )
-            ])
-          ]
-        )
-      : null;
+          <div
+            className="log-calendar-dates"
+            data-testid="log-calendar-dates"
+            onmousedown={(event) => this.selectDate(event)}
+            ondblclick={(event) => this.closeCalendarAfterDblClickDate(event)}
+          >
+            {this.mapDaysInView((currentDate) => {
+              return (
+                <div
+                  data-date={currentDate.format('l')}
+                  data-testid={
+                    currentDate.isSame(this.selectedDate)
+                      ? 'log-calendar-selected-date'
+                      : undefined
+                  }
+                  className={clsx('log-calendar-date', {
+                    'is-current-month':
+                      currentDate.format('YYYY/MM') ===
+                      this.firstDayOfMonthInView.format('YYYY/MM'),
+                    'is-selected': currentDate.isSame(this.selectedDate),
+                    'is-today': currentDate.isSame(this.getToday())
+                  })}
+                >
+                  <div className="log-calendar-date-label">
+                    {currentDate.date()}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    ) : null;
   }
 }
 CalendarComponent.daysInWeek = 7;

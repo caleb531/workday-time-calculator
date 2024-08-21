@@ -1,5 +1,4 @@
 import { fromPairs } from 'lodash-es';
-import m from 'mithril';
 import moment from 'moment';
 import appStorage from '../models/app-storage.js';
 
@@ -50,14 +49,15 @@ class ExportComponent {
   }
 
   view() {
-    return m(
-      'span.app-control-export',
-      {
-        onclick: () => {
+    return (
+      <span
+        className="app-control-export"
+        onclick={() => {
           this.downloadExportedJson();
-        }
-      },
-      'Export All'
+        }}
+      >
+        Export All
+      </span>
     );
   }
 }

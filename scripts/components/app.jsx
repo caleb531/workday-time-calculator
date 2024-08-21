@@ -41,55 +41,56 @@ class AppComponent {
   }
 
   view() {
-    return m('div.app', [
-      // The UpdateNotificationComponent manages its own visibility
-      m(UpdateNotificationComponent, {
-        updateManager: this.updateManager
-      }),
-      m('header.app-header', [
-        m('h1', 'Workday Time Calculator'),
-        m('span#personal-site-link.nav-link.nav-link-right', [
-          'by ',
-          m('a[href=https://calebevans.me/]', 'Caleb Evans')
-        ]),
-        m(ToolsComponent, { preferences: this.preferences })
-      ]),
-      this.preferencesLoaded
-        ? m('div.app-content', [
-            m(StorageUpgraderComponent),
+    return (
+      <div className="app">
+        {/* The UpdateNotificationComponent manages its own visibility */}
+        <UpdateNotificationComponent updateManager={this.updateManager} />
+        <header className="app-header">
+          <h1>Workday Time Calculator</h1>
+          <span id="personal-site-link" className="nav-link nav-link-right">
+            by <a href="https://calebevans.me/">Caleb Evans</a>
+          </span>
+          <ToolsComponent preferences={this.preferences} />
+        </header>
+        {this.preferencesLoaded ? (
+          <div className="app-content">
+            <StorageUpgraderComponent />
 
-            m('div.log-area', [
-              m(EditorComponent, {
-                preferences: this.preferences,
-                selectedDate: this.selectedDate,
-                onSetLogContents: (logContents) => {
+            <div className="log-area">
+              <EditorComponent
+                preferences={this.preferences}
+                selectedDate={this.selectedDate}
+                onSetLogContents={(logContents) => {
                   // Instantiate a new Log object and automatically compute
                   // additional log statistics such as gaps and overlaps
                   this.log = new Log(logContents, {
                     preferences: this.preferences,
                     calculateStats: true
                   });
-                }
-              }),
+                }}
+              />
 
-              m(DateComponent, {
-                preferences: this.preferences,
-                selectedDate: this.selectedDate,
-                onSetSelectedDate: (selectedDate) => {
+              <DateComponent
+                preferences={this.preferences}
+                selectedDate={this.selectedDate}
+                onSetSelectedDate={(selectedDate) => {
                   this.selectedDate = selectedDate.clone();
-                }
-              })
-            ]),
+                }}
+              />
+            </div>
 
-            this.log
-              ? m(SummaryComponent, {
-                  preferences: this.preferences,
-                  log: this.log
-                })
-              : null
-          ])
-        : m(LoadingComponent, { class: 'app-loading' })
-    ]);
+            {this.log ? (
+              <SummaryComponent
+                preferences={this.preferences}
+                log={this.log}
+              />
+            ) : null}
+          </div>
+        ) : (
+          <LoadingComponent className="app-loading" />
+        )}
+      </div>
+    );
   }
 }
 

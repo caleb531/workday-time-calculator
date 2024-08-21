@@ -8,6 +8,7 @@ export default [
   js.configs.recommended,
   prettier,
   {
+    files: ['**/*.js', '**/*.jsx'],
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -16,6 +17,17 @@ export default [
     },
     rules: {
       'no-unused-vars': 'off'
+    }
+  },
+  // Enable parsing of JSX syntax
+  {
+    files: ['**/*.jsx'],
+    languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        }
+      }
     }
   },
   {
