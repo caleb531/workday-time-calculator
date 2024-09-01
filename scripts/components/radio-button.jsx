@@ -12,7 +12,10 @@ class RadioButtonComponent {
           value={option.value}
           checked={preferences[preference.id] === option.value}
         />
-        <label className="radio-button-icon" htmlFor={`${preference.id}-${option.value}`}>
+        <label
+          className="radio-button-icon"
+          htmlFor={`${preference.id}-${option.value}`}
+        >
           <div className="radio-button-icon-dot" />
         </label>
       </div>

@@ -9,7 +9,9 @@ class ColorSwatchComponent {
           htmlFor={`${preference.id}-${option.value}`}
           style={`--color-swatch-swatch-color: var(--color-theme-color-${option.value})`}
         >
-          {preferences[preference.id] === option.value ? <div className="color-swatch-swatch-dot" /> : null}
+          {preferences[preference.id] === option.value ? (
+            <div className="color-swatch-swatch-dot" />
+          ) : null}
         </label>
       </div>
     );

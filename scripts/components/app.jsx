@@ -80,10 +80,7 @@ class AppComponent {
             </div>
 
             {this.log ? (
-              <SummaryComponent
-                preferences={this.preferences}
-                log={this.log}
-              />
+              <SummaryComponent preferences={this.preferences} log={this.log} />
             ) : null}
           </div>
         ) : (
