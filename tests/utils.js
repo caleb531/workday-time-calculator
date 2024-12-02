@@ -16,7 +16,7 @@ const originalIndexedDB = window.indexedDB;
 
 export const testCases = Object.values(
   import.meta.glob('./test-cases/*.json', {
-    as: 'json',
+    query: 'json',
     eager: true
   })
 );
