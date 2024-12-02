@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .log-calendar {
   display: none;
   &.log-calendar-open {

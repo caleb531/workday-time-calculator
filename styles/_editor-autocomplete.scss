@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 // Allow autocompleted text to be specified on any element within the editor by
 // populating a data-* attribute on that element
 .ql-editor *:after {
