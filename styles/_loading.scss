@@ -1,7 +1,7 @@
 @use 'variables' as *;
 
 .loading {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   fill: none;

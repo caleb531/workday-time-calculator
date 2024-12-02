@@ -17,6 +17,15 @@
   }
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .update-notification-bubble {
   margin: 8px;
   border-radius: 4px;
@@ -31,6 +40,8 @@
 }
 
 .update-notification-title {
+  display: flex;
+  justify-content: space-between;
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
@@ -39,4 +50,13 @@
   margin: 0;
   font-size: 0.8rem;
   font-weight: 600;
+}
+.update-notification-loading {
+  stroke: var(--color-blue);
+  animation: fade-in 250ms ease-in-out forwards;
+  svg {
+    --icon-size: 12px;
+    stroke: #fff;
+    stroke-width: 4;
+  }
 }

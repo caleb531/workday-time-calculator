@@ -3,7 +3,7 @@ import clsx from 'clsx';
 class LoadingComponent {
   view({ attrs }) {
     return (
-      <div
+      <span
         aria-label="Loading..."
         {...attrs}
         className={clsx(['loading', attrs.className])}
@@ -12,7 +12,7 @@ class LoadingComponent {
           <title>Loading...</title>
           <path d="M 3,12 A 6,6 0,0,0 21,12" />
         </svg>
-      </div>
+      </span>
     );
   }
 }
