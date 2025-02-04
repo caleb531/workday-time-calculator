@@ -20,15 +20,6 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    // Because most of the tests are auto-generated using test generation
-    // patterns, the descriptions for those tests are all dynamic (rather than
-    // hardcoded strings); this confuses the default/verbose test runner as it
-    // outputs/updates the success/fail status of each individual test, so to
-    // avoid this confusing output, we only show the test suites that have
-    // finished; and fortunately, if a test fails, the test is still clearly
-    // identified; for documentation on the built-in reporters, see:
-    // <https://vitest.dev/guide/reporters.html#built-in-reporters>
-    reporters: ['basic'],
     environment: 'jsdom',
     setupFiles: [
       'fake-indexeddb/auto',
