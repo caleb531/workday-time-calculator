@@ -5,7 +5,6 @@ import Preferences from '../models/preferences.js';
 import ReminderManager from '../models/reminder-manager.js';
 import DateComponent from './date.jsx';
 import EditorComponent from './editor.jsx';
-import LoadingComponent from './loading.jsx';
 import StorageUpgraderComponent from './storage-upgrader.jsx';
 import SummaryComponent from './summary.jsx';
 import ToolsComponent from './tools.jsx';
@@ -83,9 +82,7 @@ class AppComponent {
               <SummaryComponent preferences={this.preferences} log={this.log} />
             ) : null}
           </div>
-        ) : (
-          <LoadingComponent className="app-loading" />
-        )}
+        ) : null}
       </div>
     );
   }
