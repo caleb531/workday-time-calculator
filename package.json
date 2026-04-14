@@ -26,6 +26,7 @@
   "dependencies": {
     "@fontsource-variable/open-sans": "^5.2.7",
     "@types/node": "^24.9.1",
+    "chartist": "^1.5.0",
     "clsx": "^2.1.1",
     "idb-keyval": "^6.2.2",
     "lodash-es": "^4.17.21",

@@ -9,6 +9,7 @@ import * as idbKeyval from 'idb-keyval';
 import m from 'mithril';
 import moment from 'moment';
 import AppComponent from '../scripts/components/app.jsx';
+import { formatDuration as formatDurationValue } from '../scripts/models/duration-formatter.js';
 import Preferences from '../scripts/models/preferences.js';
 
 const originalLocationObject = window.location;
@@ -121,11 +122,7 @@ export function padWithZeroes(time) {
 
 // Format the given duration string in HH:MM format
 export function formatDuration(durationStr) {
-  let duration = moment.duration(durationStr, 'minutes');
-  let isNegative = duration.asMinutes() < 0;
-  let hours = Math.abs(duration.hours());
-  let minutes = padWithZeroes(Math.abs(duration.minutes()));
-  return `${isNegative ? '-' : ''}${hours}:${minutes}`;
+  return formatDurationValue(Number(durationStr));
 }
 
 // Format the given time string in H:MM format

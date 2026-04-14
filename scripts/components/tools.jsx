@@ -1,5 +1,7 @@
 import clsx from 'clsx';
 import m from 'mithril';
+import AnalyticsComponent from './analytics.jsx';
+import AnalyticsIconComponent from './analytics-icon.jsx';
 import DismissableOverlayComponent from './dismissable-overlay.jsx';
 import ExportComponent from './export.jsx';
 import ImportComponent from './import.jsx';
@@ -8,6 +10,7 @@ import WrenchIconComponent from './wrench-icon.jsx';
 
 class ToolsComponent {
   oninit() {
+    this.analyticsOpen = false;
     this.toolsMenuOpen = false;
     this.preferencesOpen = false;
   }
@@ -22,9 +25,23 @@ class ToolsComponent {
           onclick={() => {
             this.toolsMenuOpen = !this.toolsMenuOpen;
           }}
-          className="app-tools-menu-toggle"
+          className={clsx('app-tools-menu-toggle', {
+            'app-tools-control-active': this.toolsMenuOpen
+          })}
         >
           <WrenchIconComponent />
+        </button>
+        <button
+          aria-label="Toggle Analytics"
+          onclick={() => {
+            this.analyticsOpen = !this.analyticsOpen;
+            this.toolsMenuOpen = false;
+          }}
+          className={clsx('app-tools-analytics-toggle', {
+            'app-tools-control-active': this.analyticsOpen
+          })}
+        >
+          <AnalyticsIconComponent />
         </button>
         {this.toolsMenuOpen ? (
           <DismissableOverlayComponent
@@ -62,6 +79,15 @@ class ToolsComponent {
             preferencesOpen={this.preferencesOpen}
             onClosePreferences={() => {
               this.preferencesOpen = false;
+              m.redraw();
+            }}
+          />
+        ) : null}
+        {this.analyticsOpen ? (
+          <AnalyticsComponent
+            preferences={preferences}
+            onCloseAnalytics={() => {
+              this.analyticsOpen = false;
               m.redraw();
             }}
           />

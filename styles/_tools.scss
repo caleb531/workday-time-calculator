@@ -1,7 +1,9 @@
 @use 'variables' as *;
 
 .app-tools {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   position: relative;
   margin-left: 20px;
   user-select: none;
@@ -15,8 +17,11 @@
   }
 }
 
-.app-tools-menu-toggle {
-  display: inline-block;
+.app-tools-menu-toggle,
+.app-tools-analytics-toggle {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   --icon-size: 20px;
   width: var(--icon-size);
@@ -27,6 +32,7 @@
   background: none;
   color: #fff;
   &:hover:active,
+  &.app-tools-control-active,
   .app-tools-open & {
     z-index: 100;
     color: var(--color-blue);
@@ -36,8 +42,16 @@
   }
   svg {
     fill: currentColor;
+    display: block;
     width: inherit;
     height: inherit;
+  }
+}
+
+.app-tools-analytics-toggle {
+  svg {
+    transform: scale(1.15);
+    transform-origin: center;
   }
 }
 

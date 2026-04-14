@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import m from 'mithril';
 import copySvgUrl from '../../icons/copy.svg';
 import doneSvgUrl from '../../icons/done.svg';
+import { formatDuration } from '../models/duration-formatter.js';
 
 class SummaryComponent {
   // Store a reference to the current log, and make sure it's always up-to-date
@@ -33,20 +34,8 @@ class SummaryComponent {
     }
   }
 
-  // Pad the given time value with zeroes if necessary
-  padWithZeroes(time) {
-    if (Number(time) < 10) {
-      return '0' + time;
-    } else {
-      return time;
-    }
-  }
-
   getFormattedDuration(duration) {
-    let isNegative = duration.asMinutes() < 0;
-    let hours = Math.abs(duration.hours());
-    let minutes = this.padWithZeroes(Math.abs(duration.minutes()));
-    return `${isNegative ? '-' : ''}${hours}:${minutes}`;
+    return formatDuration(duration);
   }
 
   async copyDescriptionToClipboard(copyButton) {

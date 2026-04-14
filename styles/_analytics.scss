@@ -1,0 +1,146 @@
+@use 'variables' as *;
+
+.app-analytics {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.app-analytics-panel {
+  width: min(720px, calc(100% - 30px));
+}
+
+.analytics-range-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.analytics-date-input {
+  min-width: 190px;
+  border-width: 0;
+  border-radius: var(--app-border-radius);
+  padding: 10px 12px;
+  background-color: rgba(#000, 0.08);
+  color: #000;
+  font: inherit;
+  font-size: 16px;
+  &:focus {
+    outline-width: 0;
+    box-shadow: inset 0 0 0 1px var(--color-blue);
+  }
+}
+
+.analytics-range-separator {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.analytics-chart-area {
+  min-height: 280px;
+  position: relative;
+}
+
+.analytics-chart-axis-title {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(#000, 0.55);
+}
+
+.analytics-loading {
+  display: block;
+  margin: 40px auto;
+  color: var(--current-color-theme-color);
+  stroke: currentColor;
+}
+
+.analytics-empty-state {
+  margin: 40px 0;
+  font-size: 15px;
+  text-align: center;
+  color: rgba(#000, 0.65);
+}
+
+.analytics-chart-layout {
+  display: flex;
+  align-items: flex-start;
+  min-height: 260px;
+}
+
+.analytics-chart-y-labels {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.analytics-chart-y-label {
+  position: absolute;
+  top: 0;
+  right: 16px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: right;
+  color: rgba(#000, 0.75);
+  white-space: nowrap;
+}
+
+.analytics-chart-canvas {
+  flex: 1 1 auto;
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .ct-label {
+    fill: rgba(#000, 0.75);
+    color: rgba(#000, 0.75);
+    font-size: 12px;
+  }
+  .ct-label.ct-horizontal {
+    transform: translateY(8px);
+  }
+  .ct-grid {
+    stroke: rgba(#000, 0.12);
+    stroke-dasharray: 2px;
+  }
+  .ct-bar {
+    stroke: var(--current-color-theme-color);
+    stroke-linecap: round;
+    stroke-width: 24px;
+  }
+}
+
+.analytics-chart-hidden {
+  display: none;
+}
+
+.analytics-chart-bar-label {
+  fill: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.analytics-chart-summary {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
