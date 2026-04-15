@@ -63,7 +63,7 @@ class DateInputComponent {
   handleInput(event) {
     const inputValue = event.target.value;
     this.inputValue = inputValue;
-    const parsedValue = moment(inputValue, 'MM/DD/YYYY', true);
+    const parsedValue = moment(inputValue, 'M/D/YYYY');
     if (parsedValue.isValid()) {
       this.selectedDate = parsedValue;
       this.value = parsedValue.format('YYYY-MM-DD');
