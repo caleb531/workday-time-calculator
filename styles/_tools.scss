@@ -12,7 +12,8 @@
     display: none;
     z-index: 10;
   }
-  &.app-tools-open .dismissable-overlay {
+  &.app-tools-open .dismissable-overlay,
+  .app-analytics-open .dismissable-overlay {
     display: block;
   }
 }
