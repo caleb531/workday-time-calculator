@@ -34,11 +34,11 @@ describe('log calendar', () => {
     const getControl = () =>
       findByRole(document.body, 'button', { name: 'Toggle Calendar' });
     expect(await getControl()).toBeInTheDocument();
-    userEvent.click(await getControl());
+    await userEvent.click(await getControl());
     expect(
       await findByText(document.body, moment().format('MMMM YYYY'))
     ).toBeInTheDocument();
-    userEvent.click(await getControl());
+    await userEvent.click(await getControl());
     await waitFor(() => {
       expect(
         queryByText(document.body, moment().format('MMMM YYYY'))
@@ -46,7 +46,7 @@ describe('log calendar', () => {
     });
   });
 
-  it('should close by clicking overlay', async () => {
+  it('should close by clicking outside calendar', async () => {
     await renderApp();
     const getControl = () =>
       findByRole(document.body, 'button', { name: 'Toggle Calendar' });
@@ -55,9 +55,7 @@ describe('log calendar', () => {
     expect(
       await findByText(document.body, moment().format('MMMM YYYY'))
     ).toBeInTheDocument();
-    userEvent.click(
-      await findByRole(document.body, 'button', { name: 'Close Calendar' })
-    );
+    userEvent.click(await findByText(document.body, 'Workday Time Calculator'));
     await waitFor(() => {
       expect(
         queryByText(document.body, moment().format('MMMM YYYY'))

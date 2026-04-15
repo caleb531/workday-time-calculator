@@ -1,5 +1,4 @@
 import {
-  findByDisplayValue,
   findByLabelText,
   findByRole,
   findByTestId,
@@ -55,15 +54,17 @@ describe('analytics panel', () => {
 
     const analyticsPanel = await openAnalytics();
 
-    expect(
-      await findByDisplayValue(
-        analyticsPanel,
-        moment().subtract(7, 'days').format('YYYY-MM-DD')
-      )
-    ).toBeInTheDocument();
-    expect(
-      await findByDisplayValue(analyticsPanel, moment().format('YYYY-MM-DD'))
-    ).toBeInTheDocument();
+    const startDateControl = await findByRole(analyticsPanel, 'textbox', {
+      name: 'Start Date'
+    });
+    const endDateControl = await findByRole(analyticsPanel, 'textbox', {
+      name: 'End Date'
+    });
+
+    expect(startDateControl).toHaveValue(
+      moment().subtract(7, 'days').format('MM/DD/YYYY')
+    );
+    expect(endDateControl).toHaveValue(moment().format('MM/DD/YYYY'));
 
     const analyticsSummary = await findByTestId(
       analyticsPanel,
@@ -86,10 +87,45 @@ describe('analytics panel', () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
+    await userEvent.click(
+      await findByRole(analyticsPanel, 'button', {
+        name: 'Open Start Date Calendar'
+      })
+    );
+
+    const dateToSelect = moment().subtract(1, 'days').format('l');
+    const calendarDates = await findByTestId(
+      document.body,
+      'log-calendar-dates'
+    );
+    fireEvent.mouseDown(
+      calendarDates.querySelector(`[data-date="${dateToSelect}"]`)
+    );
+
+    const analyticsSummary = await findByTestId(
+      analyticsPanel,
+      'analytics-chart-summary'
+    );
+
+    await waitFor(() => {
+      expect(analyticsSummary).toHaveTextContent('Internal: 5:00');
+      expect(analyticsSummary).not.toHaveTextContent('Internal: 8:45');
+    });
+  });
+
+  it('should refresh the chart when start date is typed manually', async () => {
+    await applyLogContentsToApp({
+      [-7]: basicTestCase.logContents,
+      [-1]: realWorldTestCase.logContents,
+      0: basicTestCase.logContents
+    });
+    await renderApp();
+
+    const analyticsPanel = await openAnalytics();
     const startDateInput = await findByLabelText(analyticsPanel, 'Start Date');
 
     fireEvent.input(startDateInput, {
-      target: { value: moment().subtract(1, 'days').format('YYYY-MM-DD') }
+      target: { value: moment().subtract(1, 'days').format('MM/DD/YYYY') }
     });
 
     const analyticsSummary = await findByTestId(

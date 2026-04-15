@@ -3,8 +3,8 @@ import moment from 'moment';
 import Log from '../models/log.js';
 import Preferences from '../models/preferences.js';
 import ReminderManager from '../models/reminder-manager.js';
-import DateComponent from './date.jsx';
 import EditorComponent from './editor.jsx';
+import LogDateComponent from './log-date.jsx';
 import StorageUpgraderComponent from './storage-upgrader.jsx';
 import SummaryComponent from './summary.jsx';
 import ToolsComponent from './tools.jsx';
@@ -69,7 +69,7 @@ class AppComponent {
                 }}
               />
 
-              <DateComponent
+              <LogDateComponent
                 preferences={this.preferences}
                 selectedDate={this.selectedDate}
                 onSetSelectedDate={(selectedDate) => {

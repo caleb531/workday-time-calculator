@@ -1,6 +1,6 @@
 import clsx from 'clsx';
+import m from 'mithril';
 import moment from 'moment';
-import DismissableOverlayComponent from './dismissable-overlay.jsx';
 import NextIconComponent from './next-icon.jsx';
 import PrevIconComponent from './prev-icon.jsx';
 
@@ -10,10 +10,36 @@ class CalendarComponent {
     this.onSetSelectedDate = onSetSelectedDate;
     this.onCloseCalendar = onCloseCalendar;
     this.onbeforeupdate({ attrs: { selectedDate } });
+    this.onDocumentMouseDown = (event) => {
+      if (
+        !this.calendarRootElement ||
+        this.calendarRootElement.contains(event.target)
+      ) {
+        return;
+      }
+      if (
+        this.onShouldIgnoreOutsideClick &&
+        this.onShouldIgnoreOutsideClick(event.target)
+      ) {
+        return;
+      }
+      this.onCloseCalendar();
+      m.redraw();
+    };
   }
 
-  onbeforeupdate({ attrs: { selectedDate } }) {
+  oncreate({ dom }) {
+    this.calendarRootElement = dom;
+    document.addEventListener('click', this.onDocumentMouseDown);
+  }
+
+  onremove() {
+    document.removeEventListener('click', this.onDocumentMouseDown);
+  }
+
+  onbeforeupdate({ attrs: { selectedDate, onShouldIgnoreOutsideClick } }) {
     selectedDate = selectedDate.clone().startOf('day');
+    this.onShouldIgnoreOutsideClick = onShouldIgnoreOutsideClick;
     if (!this.selectedDate || !selectedDate.isSame(this.selectedDate)) {
       this.selectedDate = selectedDate.startOf('day');
       this.firstDayOfMonthInView = this.getFirstDayOfMonth(this.selectedDate);
@@ -79,16 +105,13 @@ class CalendarComponent {
     return values;
   }
 
-  view({ attrs: { calendarOpen } }) {
+  view({ attrs: { calendarOpen, className } }) {
     return this.firstDayOfMonthInView ? (
       <div
-        className={clsx('log-calendar', { 'log-calendar-open': calendarOpen })}
+        className={clsx('log-calendar', className, {
+          'log-calendar-open': calendarOpen
+        })}
       >
-        <DismissableOverlayComponent
-          aria-label="Close Calendar"
-          onDismiss={() => this.onCloseCalendar()}
-        />
-
         <div className="log-calendar-panel">
           <div className="log-calendar-header">
             <span className="log-calendar-current-month-name">

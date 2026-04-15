@@ -6,6 +6,7 @@ import AnalyticsWorker from '../analytics-worker.js?worker';
 import { collectAnalytics } from '../models/analytics-collector.js';
 import { formatDuration } from '../models/duration-formatter.js';
 import CloseButtonComponent from './close-button.jsx';
+import DatePickerComponent from './date-picker.jsx';
 import DismissableOverlayComponent from './dismissable-overlay.jsx';
 import LoadingComponent from './loading.jsx';
 
@@ -175,8 +176,8 @@ class AnalyticsComponent {
     });
   }
 
-  handleDateInput(event) {
-    this[event.target.name] = event.target.value;
+  handleDateInput(name, value) {
+    this[name] = value;
     this.fetchAnalytics();
   }
 
@@ -299,22 +300,20 @@ class AnalyticsComponent {
           <h2 className="app-analytics-heading">Analytics</h2>
 
           <div className="analytics-range-controls">
-            <input
+            <DatePickerComponent
               aria-label="Start Date"
-              className="analytics-date-input"
-              name="startDate"
-              type="date"
+              className="analytics-date-picker"
+              inputClassName="analytics-date-input"
               value={this.startDate}
-              oninput={(event) => this.handleDateInput(event)}
+              onChange={(value) => this.handleDateInput('startDate', value)}
             />
             <span className="analytics-range-separator">thru</span>
-            <input
+            <DatePickerComponent
               aria-label="End Date"
-              className="analytics-date-input"
-              name="endDate"
-              type="date"
+              className="analytics-date-picker"
+              inputClassName="analytics-date-input"
               value={this.endDate}
-              oninput={(event) => this.handleDateInput(event)}
+              onChange={(value) => this.handleDateInput('endDate', value)}
             />
           </div>
 

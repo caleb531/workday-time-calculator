@@ -4,7 +4,7 @@ import CalendarComponent from './calendar.jsx';
 import NextIconComponent from './next-icon.jsx';
 import PrevIconComponent from './prev-icon.jsx';
 
-class DateComponent {
+class LogDateComponent {
   oninit({ attrs: { selectedDate, onSetSelectedDate } }) {
     this.selectedDate = selectedDate.clone();
     this.onSetSelectedDate = onSetSelectedDate;
@@ -74,6 +74,19 @@ class DateComponent {
           <CalendarComponent
             selectedDate={this.selectedDate}
             calendarOpen={this.calendarOpen}
+            onShouldIgnoreOutsideClick={(target) => {
+              let element = target;
+              while (element && element !== document) {
+                if (
+                  element.classList &&
+                  element.classList.contains('log-date-calendar-control')
+                ) {
+                  return true;
+                }
+                element = element.parentNode;
+              }
+              return false;
+            }}
             onSetSelectedDate={(selectedDate) => {
               this.selectedDate = selectedDate.clone();
               this.onSetSelectedDate(this.selectedDate);
@@ -88,4 +101,4 @@ class DateComponent {
   }
 }
 
-export default DateComponent;
+export default LogDateComponent;
