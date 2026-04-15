@@ -33,8 +33,7 @@
   background: none;
   color: #fff;
   &:hover:active,
-  &.app-tools-control-active,
-  .app-tools-open & {
+  &.app-tools-control-active {
     z-index: 100;
     color: var(--color-blue);
   }
