@@ -97,6 +97,7 @@
 
 .analytics-chart-canvas {
   flex: 1 1 auto;
+  overflow: visible;
   svg {
     display: block;
     max-width: 100%;
@@ -117,7 +118,6 @@
   }
   .ct-bar {
     stroke: var(--current-color-theme-color);
-    stroke-linecap: round;
     stroke-width: 24px;
   }
 }
@@ -127,7 +127,7 @@
 }
 
 .analytics-chart-bar-label {
-  fill: #fff;
+  fill: rgba(#000, 0.82);
   font-size: 12px;
   font-weight: 600;
   pointer-events: none;

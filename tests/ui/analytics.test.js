@@ -3,8 +3,8 @@ import {
   findByLabelText,
   findByRole,
   findByTestId,
-  waitFor,
-  fireEvent
+  fireEvent,
+  waitFor
 } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import moment from 'moment';
@@ -26,7 +26,9 @@ const realWorldTestCase = testCases.find(({ description }) => {
   );
 });
 const twentyFourHourTestCase = testCases.find(({ description }) => {
-  return description === 'should instantiate a log using the 24-hour time system';
+  return (
+    description === 'should instantiate a log using the 24-hour time system'
+  );
 });
 
 async function openAnalytics() {

@@ -66,12 +66,15 @@ class AnalyticsComponent {
   }
 
   get chartCategories() {
-    return this.categories.slice().reverse().map((category) => {
-      return {
-        ...category,
-        formattedDuration: formatDuration(category.totalMinutes)
-      };
-    });
+    return this.categories
+      .slice()
+      .reverse()
+      .map((category) => {
+        return {
+          ...category,
+          formattedDuration: formatDuration(category.totalMinutes)
+        };
+      });
   }
 
   get chartSummaryLabel() {
@@ -126,7 +129,11 @@ class AnalyticsComponent {
   getXAxisTicks() {
     const tickSize = this.getXAxisTickSize(this.chartMaxMinutes);
     const ticks = [];
-    for (let minutes = 0; minutes <= this.chartMaxMinutes; minutes += tickSize) {
+    for (
+      let minutes = 0;
+      minutes <= this.chartMaxMinutes;
+      minutes += tickSize
+    ) {
       ticks.push(minutes);
     }
     return ticks;
@@ -197,7 +204,11 @@ class AnalyticsComponent {
     this.chartElement = dom;
     this.destroyChart();
 
-    if (!this.chartCategories.length || this.isLoading || !this.isDateRangeValid) {
+    if (
+      !this.chartCategories.length ||
+      this.isLoading ||
+      !this.isDateRangeValid
+    ) {
       return;
     }
 
@@ -218,7 +229,7 @@ class AnalyticsComponent {
         high: this.chartMaxMinutes,
         chartPadding: {
           top: 10,
-          right: 12,
+          right: 56,
           bottom: 20,
           left: 0
         },
@@ -252,10 +263,10 @@ class AnalyticsComponent {
         .elem(
           'text',
           {
-            x: Math.max(event.x1, event.x2) - 8,
+            x: Math.max(event.x1, event.x2) + 6,
             y: event.y1,
             dy: '0.35em',
-            'text-anchor': 'end'
+            'text-anchor': 'start'
           },
           'analytics-chart-bar-label'
         )
@@ -275,7 +286,10 @@ class AnalyticsComponent {
           onDismiss={() => this.onCloseAnalytics()}
         />
 
-        <div className="panel app-analytics-panel" data-testid="analytics-panel">
+        <div
+          className="panel app-analytics-panel"
+          data-testid="analytics-panel"
+        >
           <CloseButtonComponent
             id="app-analytics-close-control"
             aria-label="Close Analytics"
@@ -314,14 +328,19 @@ class AnalyticsComponent {
                 Start date must be on or before end date.
               </p>
             ) : null}
-            {this.isDateRangeValid && !this.isLoading && !this.chartCategories.length ? (
+            {this.isDateRangeValid &&
+            !this.isLoading &&
+            !this.chartCategories.length ? (
               <p className="analytics-empty-state">
                 No analytics are available for this date range.
               </p>
             ) : null}
             <div
               className={clsx('analytics-chart-layout', {
-                'analytics-chart-hidden': this.isLoading || !this.isDateRangeValid || !this.chartCategories.length
+                'analytics-chart-hidden':
+                  this.isLoading ||
+                  !this.isDateRangeValid ||
+                  !this.chartCategories.length
               })}
             >
               <div
@@ -338,7 +357,10 @@ class AnalyticsComponent {
                 onupdate={({ dom }) => this.renderChart(dom)}
               />
             </div>
-            <ul className="analytics-chart-summary" data-testid="analytics-chart-summary">
+            <ul
+              className="analytics-chart-summary"
+              data-testid="analytics-chart-summary"
+            >
               {this.chartCategories.map((category) => {
                 return (
                   <li>

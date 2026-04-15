@@ -13,8 +13,7 @@ function isLogEntry([storageKey, logContents]) {
 
 function isDateInRange(date, startDate, endDate) {
   return (
-    date.isSameOrAfter(startDate, 'day') &&
-    date.isSameOrBefore(endDate, 'day')
+    date.isSameOrAfter(startDate, 'day') && date.isSameOrBefore(endDate, 'day')
   );
 }
 
