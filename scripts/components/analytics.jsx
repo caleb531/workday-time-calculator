@@ -227,7 +227,11 @@ class AnalyticsComponent {
 
     const nextChartRenderKey = JSON.stringify({
       categories: this.chartCategories.map((category) => {
-        return [category.name, category.totalMinutes, category.formattedDuration];
+        return [
+          category.name,
+          category.totalMinutes,
+          category.formattedDuration
+        ];
       }),
       chartWidth: this.chartWidth,
       chartHeight: this.chartHeight,

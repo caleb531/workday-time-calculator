@@ -257,7 +257,7 @@ class DateInputComponent {
     const bufferedValue = this.updateSegmentInputBuffer(segment, digit);
 
     if (segment === 'year') {
-      this.setSegmentDisplayValue(segment, bufferedValue);
+      this.setSegmentDisplayValue(segment, bufferedValue.padStart(4, '0'));
       if (bufferedValue.length === 4) {
         this.commitSegmentValue('year', parseInt(bufferedValue, 10));
         this.resetSegmentInputBuffer();
@@ -371,7 +371,7 @@ class DateInputComponent {
     }
 
     if (segment === 'year') {
-      this.setSegmentDisplayValue(segment, normalizedValue);
+      this.setSegmentDisplayValue(segment, normalizedValue.padStart(4, '0'));
       if (normalizedValue.length === 4) {
         this.commitSegmentValue('year', parseInt(normalizedValue, 10));
       }

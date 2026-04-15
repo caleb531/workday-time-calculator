@@ -1,9 +1,9 @@
 import {
   findByLabelText,
-  queryByLabelText,
   findByRole,
   findByTestId,
   fireEvent,
+  queryByLabelText,
   queryByTestId,
   waitFor
 } from '@testing-library/dom';
@@ -231,6 +231,31 @@ describe('analytics panel', () => {
     });
   });
 
+  it('should pad year entry with leading zeroes while digits are being typed', async () => {
+    await renderApp();
+
+    const analyticsPanel = await openAnalytics();
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
+
+    await userEvent.click(startDateSegments.year);
+    await userEvent.keyboard('1');
+
+    await waitFor(() => {
+      expect(startDateSegments.year).toHaveValue('0001');
+      expect(startDateSegments.year).toHaveFocus();
+    });
+
+    await userEvent.keyboard('2');
+
+    await waitFor(() => {
+      expect(startDateSegments.year).toHaveValue('0012');
+      expect(startDateSegments.year).toHaveFocus();
+    });
+  });
+
   it('should use Tab to move between date segments before leaving the field', async () => {
     await renderApp();
 
@@ -262,7 +287,10 @@ describe('analytics panel', () => {
       analyticsPanel,
       'Start Date'
     );
-    const analyticsChart = await findByTestId(analyticsPanel, 'analytics-chart');
+    const analyticsChart = await findByTestId(
+      analyticsPanel,
+      'analytics-chart'
+    );
     const analyticsSummary = await findByTestId(
       analyticsPanel,
       'analytics-chart-summary'
