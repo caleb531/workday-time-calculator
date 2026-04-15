@@ -3,7 +3,7 @@ import moment from 'moment';
 import CalendarIconComponent from './calendar-icon.jsx';
 import CalendarComponent from './calendar.jsx';
 
-class DatePickerComponent {
+class DateInputComponent {
   oninit({ attrs }) {
     this.calendarOpen = false;
     this.closeCalendarTimeoutId = null;
@@ -91,14 +91,12 @@ class DatePickerComponent {
   }
 
   view({ attrs }) {
-    const inputClassName = attrs.inputClassName;
-    const className = attrs.className;
     const ariaLabel = attrs['aria-label'];
     return (
-      <div className={className}>
+      <div className="date-input">
         <input
           type="text"
-          className={inputClassName}
+          className="date-input-input"
           aria-label={ariaLabel}
           placeholder="MM/DD/YYYY"
           aria-haspopup="dialog"
@@ -110,7 +108,7 @@ class DatePickerComponent {
         />
         <button
           type="button"
-          className="date-picker-calendar-toggle"
+          className="date-input-calendar-toggle"
           aria-label={`Open ${ariaLabel} Calendar`}
           aria-haspopup="dialog"
           aria-expanded={this.calendarOpen ? 'true' : 'false'}
@@ -121,7 +119,7 @@ class DatePickerComponent {
 
         {this.selectedDate && this.calendarOpen ? (
           <CalendarComponent
-            className="date-picker-calendar"
+            className="date-input-calendar"
             selectedDate={this.selectedDate}
             calendarOpen={this.calendarOpen}
             onShouldIgnoreOutsideClick={(target) => {
@@ -129,7 +127,7 @@ class DatePickerComponent {
               while (element && element !== document) {
                 if (
                   element.classList &&
-                  element.classList.contains('date-picker-calendar-toggle')
+                  element.classList.contains('date-input-calendar-toggle')
                 ) {
                   return true;
                 }
@@ -150,4 +148,4 @@ class DatePickerComponent {
   }
 }
 
-export default DatePickerComponent;
+export default DateInputComponent;
