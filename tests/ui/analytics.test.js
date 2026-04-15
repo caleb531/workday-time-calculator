@@ -1,5 +1,6 @@
 import {
   findByLabelText,
+  queryByLabelText,
   findByRole,
   findByTestId,
   fireEvent,
@@ -39,6 +40,14 @@ async function openAnalytics() {
   return findByTestId(document.body, 'analytics-panel');
 }
 
+async function getDateSegments(analyticsPanel, labelPrefix) {
+  return {
+    month: await findByLabelText(analyticsPanel, `${labelPrefix} Month`),
+    day: await findByLabelText(analyticsPanel, `${labelPrefix} Day`),
+    year: await findByLabelText(analyticsPanel, `${labelPrefix} Year`)
+  };
+}
+
 describe('analytics panel', () => {
   afterEach(async () => {
     await unmountApp();
@@ -54,18 +63,24 @@ describe('analytics panel', () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
-
-    const startDateControl = await findByRole(analyticsPanel, 'textbox', {
-      name: 'Start Date'
-    });
-    const endDateControl = await findByRole(analyticsPanel, 'textbox', {
-      name: 'End Date'
-    });
-
-    expect(startDateControl).toHaveValue(
-      moment().subtract(7, 'days').format('MM/DD/YYYY')
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
     );
-    expect(endDateControl).toHaveValue(moment().format('MM/DD/YYYY'));
+    const endDateSegments = await getDateSegments(analyticsPanel, 'End Date');
+
+    expect(startDateSegments.month).toHaveValue(
+      moment().subtract(7, 'days').format('MM')
+    );
+    expect(startDateSegments.day).toHaveValue(
+      moment().subtract(7, 'days').format('DD')
+    );
+    expect(startDateSegments.year).toHaveValue(
+      moment().subtract(7, 'days').format('YYYY')
+    );
+    expect(endDateSegments.month).toHaveValue(moment().format('MM'));
+    expect(endDateSegments.day).toHaveValue(moment().format('DD'));
+    expect(endDateSegments.year).toHaveValue(moment().format('YYYY'));
 
     const analyticsSummary = await findByTestId(
       analyticsPanel,
@@ -123,11 +138,15 @@ describe('analytics panel', () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
-    const startDateInput = await findByLabelText(analyticsPanel, 'Start Date');
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
 
-    fireEvent.input(startDateInput, {
-      target: { value: moment().subtract(1, 'days').format('MM/DD/YYYY') }
+    fireEvent.input(startDateSegments.day, {
+      target: { value: moment().subtract(1, 'days').format('DD') }
     });
+    fireEvent.blur(startDateSegments.day);
 
     const analyticsSummary = await findByTestId(
       analyticsPanel,
@@ -144,27 +163,71 @@ describe('analytics panel', () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
-    const startDateInput = await findByLabelText(analyticsPanel, 'Start Date');
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
 
-    await userEvent.click(startDateInput);
+    await userEvent.click(startDateSegments.month);
 
     expect(queryByTestId(document.body, 'log-calendar-dates')).toBeNull();
+  });
+
+  it('should focus the clicked segment when the date control is unfocused', async () => {
+    await renderApp();
+
+    const analyticsPanel = await openAnalytics();
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
+
+    await userEvent.click(startDateSegments.year);
+
+    expect(startDateSegments.year).toHaveFocus();
   });
 
   it('should support keyboard month navigation in date input', async () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
-    const startDateInput = await findByLabelText(analyticsPanel, 'Start Date');
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
 
-    await userEvent.click(startDateInput);
-    fireEvent.keyDown(startDateInput, { key: 'Home' });
-    fireEvent.keyDown(startDateInput, { key: 'ArrowUp' });
+    await userEvent.click(startDateSegments.month);
+    fireEvent.keyDown(startDateSegments.month, { key: 'ArrowUp' });
 
     await waitFor(() => {
-      expect(startDateInput).toHaveValue(
-        moment().subtract(7, 'days').add(1, 'month').format('MM/DD/YYYY')
+      expect(startDateSegments.month).toHaveValue(
+        moment().subtract(7, 'days').add(1, 'month').format('MM')
       );
+    });
+  });
+
+  it('should pad single-digit month entry and then accept a second digit', async () => {
+    await renderApp();
+
+    const analyticsPanel = await openAnalytics();
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
+
+    await userEvent.click(startDateSegments.month);
+    await userEvent.keyboard('1');
+
+    await waitFor(() => {
+      expect(startDateSegments.month).toHaveValue('01');
+      expect(startDateSegments.month).toHaveFocus();
+    });
+
+    await userEvent.keyboard('2');
+
+    await waitFor(() => {
+      expect(startDateSegments.month).toHaveValue('12');
+      expect(startDateSegments.day).toHaveFocus();
     });
   });
 
@@ -172,25 +235,58 @@ describe('analytics panel', () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
-    const startDateInput = await findByLabelText(analyticsPanel, 'Start Date');
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
 
-    await userEvent.click(startDateInput);
-    fireEvent.keyDown(startDateInput, { key: 'Home' });
+    await userEvent.click(startDateSegments.month);
+    await userEvent.tab();
+    expect(startDateSegments.day).toHaveFocus();
+
+    await userEvent.tab();
+    expect(startDateSegments.year).toHaveFocus();
+  });
+
+  it('should not reload analytics when tabbing through unchanged date segments', async () => {
+    await applyLogContentsToApp({
+      [-8]: basicTestCase.logContents,
+      [-7]: basicTestCase.logContents,
+      [-1]: realWorldTestCase.logContents,
+      0: basicTestCase.logContents
+    });
+    await renderApp();
+
+    const analyticsPanel = await openAnalytics();
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
+    const analyticsChart = await findByTestId(analyticsPanel, 'analytics-chart');
+    const analyticsSummary = await findByTestId(
+      analyticsPanel,
+      'analytics-chart-summary'
+    );
+
     await waitFor(() => {
-      expect(startDateInput.selectionStart).toBe(0);
-      expect(startDateInput.selectionEnd).toBe(2);
+      expect(analyticsSummary).toHaveTextContent('Internal: 8:45');
+    });
+    await waitFor(() => {
+      expect(queryByLabelText(analyticsPanel, 'Loading...')).toBeNull();
+      expect(analyticsChart.innerHTML).not.toBe('');
     });
 
-    fireEvent.keyDown(startDateInput, { key: 'Tab' });
-    await waitFor(() => {
-      expect(startDateInput.selectionStart).toBe(3);
-      expect(startDateInput.selectionEnd).toBe(5);
-    });
+    const chartMarkupBeforeTabbing = analyticsChart.innerHTML;
 
-    fireEvent.keyDown(startDateInput, { key: 'Tab' });
+    await userEvent.click(startDateSegments.month);
+    await userEvent.tab();
+    await userEvent.tab();
+
     await waitFor(() => {
-      expect(startDateInput.selectionStart).toBe(6);
-      expect(startDateInput.selectionEnd).toBe(10);
+      expect(startDateSegments.year).toHaveFocus();
+      expect(queryByLabelText(analyticsPanel, 'Loading...')).toBeNull();
+      expect(analyticsSummary).toHaveTextContent('Internal: 8:45');
+      expect(analyticsChart.innerHTML).toBe(chartMarkupBeforeTabbing);
     });
   });
 
@@ -198,44 +294,33 @@ describe('analytics panel', () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
-    const startDateInput = await findByLabelText(analyticsPanel, 'Start Date');
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
 
-    await userEvent.click(startDateInput);
-    fireEvent.keyDown(startDateInput, { key: 'End' });
-    await waitFor(() => {
-      expect(startDateInput.selectionStart).toBe(6);
-      expect(startDateInput.selectionEnd).toBe(10);
-    });
+    await userEvent.click(startDateSegments.year);
+    await userEvent.tab({ shift: true });
+    expect(startDateSegments.day).toHaveFocus();
 
-    fireEvent.keyDown(startDateInput, { key: 'Tab', shiftKey: true });
-    await waitFor(() => {
-      expect(startDateInput.selectionStart).toBe(3);
-      expect(startDateInput.selectionEnd).toBe(5);
-    });
-
-    fireEvent.keyDown(startDateInput, { key: 'Tab', shiftKey: true });
-    await waitFor(() => {
-      expect(startDateInput.selectionStart).toBe(0);
-      expect(startDateInput.selectionEnd).toBe(2);
-    });
+    await userEvent.tab({ shift: true });
+    expect(startDateSegments.month).toHaveFocus();
   });
 
   it('should allow Tab to leave the date input after the last segment', async () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
-    const startDateInput = await findByLabelText(analyticsPanel, 'Start Date');
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
     const startDateCalendarToggle = await findByRole(analyticsPanel, 'button', {
       name: 'Open Start Date Calendar'
     });
-    const endDateInput = await findByLabelText(analyticsPanel, 'End Date');
+    const endDateSegments = await getDateSegments(analyticsPanel, 'End Date');
 
-    await userEvent.click(startDateInput);
-    fireEvent.keyDown(startDateInput, { key: 'End' });
-    await waitFor(() => {
-      expect(startDateInput.selectionStart).toBe(6);
-      expect(startDateInput.selectionEnd).toBe(10);
-    });
+    await userEvent.click(startDateSegments.year);
 
     await userEvent.tab();
 
@@ -243,24 +328,22 @@ describe('analytics panel', () => {
 
     await userEvent.tab();
 
-    expect(endDateInput).toHaveFocus();
+    expect(endDateSegments.month).toHaveFocus();
   });
 
   it('should allow Shift+Tab to leave the date input before the first segment', async () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
-    const startDateInput = await findByLabelText(analyticsPanel, 'Start Date');
+    const startDateSegments = await getDateSegments(
+      analyticsPanel,
+      'Start Date'
+    );
     const closeAnalyticsButton = await findByRole(analyticsPanel, 'button', {
       name: 'Close Analytics'
     });
 
-    await userEvent.click(startDateInput);
-    fireEvent.keyDown(startDateInput, { key: 'Home' });
-    await waitFor(() => {
-      expect(startDateInput.selectionStart).toBe(0);
-      expect(startDateInput.selectionEnd).toBe(2);
-    });
+    await userEvent.click(startDateSegments.month);
 
     await userEvent.tab({ shift: true });
 

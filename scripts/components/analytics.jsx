@@ -19,6 +19,8 @@ class AnalyticsComponent {
     this.categories = [];
     this.isLoading = true;
     this.chart = null;
+    this.chartRenderKey = null;
+    this.chartBarPositions = [];
     this.chartYAxisLabelsElement = null;
     this.setDefaultDates();
 
@@ -53,6 +55,8 @@ class AnalyticsComponent {
       this.chart.detach();
       this.chart = null;
     }
+    this.chartRenderKey = null;
+    this.chartBarPositions = [];
     this.renderYAxisLabels([]);
   }
 
@@ -177,13 +181,21 @@ class AnalyticsComponent {
   }
 
   handleDateInput(name, value) {
+    if (this[name] === value) {
+      return;
+    }
+
     this[name] = value;
     this.fetchAnalytics();
   }
 
   setYAxisLabelsElement(dom) {
+    if (this.chartYAxisLabelsElement === dom) {
+      return;
+    }
+
     this.chartYAxisLabelsElement = dom;
-    this.renderYAxisLabels([]);
+    this.renderYAxisLabels(this.chartBarPositions);
   }
 
   renderYAxisLabels(barPositions) {
@@ -203,15 +215,33 @@ class AnalyticsComponent {
 
   renderChart(dom) {
     this.chartElement = dom;
-    this.destroyChart();
 
-    if (
-      !this.chartCategories.length ||
-      this.isLoading ||
-      !this.isDateRangeValid
-    ) {
+    const shouldRenderChart =
+      this.chartCategories.length && !this.isLoading && this.isDateRangeValid;
+    if (!shouldRenderChart) {
+      if (this.chart) {
+        this.destroyChart();
+      }
       return;
     }
+
+    const nextChartRenderKey = JSON.stringify({
+      categories: this.chartCategories.map((category) => {
+        return [category.name, category.totalMinutes, category.formattedDuration];
+      }),
+      chartWidth: this.chartWidth,
+      chartHeight: this.chartHeight,
+      chartMaxMinutes: this.chartMaxMinutes,
+      yAxisOffset: this.yAxisOffset,
+      xAxisTicks: this.getXAxisTicks()
+    });
+
+    if (this.chart && this.chartRenderKey === nextChartRenderKey) {
+      return;
+    }
+
+    this.destroyChart();
+    this.chartRenderKey = nextChartRenderKey;
 
     const barPositions = [];
 
@@ -275,7 +305,8 @@ class AnalyticsComponent {
     });
 
     this.chart.on('created', () => {
-      this.renderYAxisLabels(barPositions.filter(Boolean));
+      this.chartBarPositions = barPositions.filter(Boolean);
+      this.renderYAxisLabels(this.chartBarPositions);
     });
   }
 
