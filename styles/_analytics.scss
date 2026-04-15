@@ -59,7 +59,9 @@
 }
 
 .analytics-loading {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 40px auto;
   color: var(--current-color-theme-color);
   stroke: currentColor;
