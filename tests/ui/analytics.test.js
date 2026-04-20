@@ -159,6 +159,68 @@ describe('analytics panel', () => {
     });
   });
 
+  it('should commit a padded segment value when Enter is pressed', async () => {
+    await applyLogContentsToApp({
+      [-7]: basicTestCase.logContents,
+      [-1]: realWorldTestCase.logContents,
+      0: basicTestCase.logContents
+    });
+    await renderApp();
+
+    const analyticsPanel = await openAnalytics();
+    const endDateSegments = await getDateSegments(analyticsPanel, 'End Date');
+
+    await userEvent.click(endDateSegments.month);
+    await userEvent.keyboard('1');
+
+    await waitFor(() => {
+      expect(endDateSegments.month).toHaveValue('01');
+      expect(analyticsPanel).not.toHaveTextContent(
+        'Start date must be on or before end date.'
+      );
+    });
+
+    await userEvent.keyboard('{Enter}');
+
+    await waitFor(() => {
+      expect(endDateSegments.month).toHaveValue('01');
+      expect(analyticsPanel).toHaveTextContent(
+        'Start date must be on or before end date.'
+      );
+    });
+  });
+
+  it('should commit a padded segment value when the input change event fires', async () => {
+    await applyLogContentsToApp({
+      [-7]: basicTestCase.logContents,
+      [-1]: realWorldTestCase.logContents,
+      0: basicTestCase.logContents
+    });
+    await renderApp();
+
+    const analyticsPanel = await openAnalytics();
+    const endDateSegments = await getDateSegments(analyticsPanel, 'End Date');
+
+    await userEvent.click(endDateSegments.month);
+    await userEvent.keyboard('1');
+
+    await waitFor(() => {
+      expect(endDateSegments.month).toHaveValue('01');
+      expect(analyticsPanel).not.toHaveTextContent(
+        'Start date must be on or before end date.'
+      );
+    });
+
+    fireEvent.change(endDateSegments.month, { target: { value: '01' } });
+
+    await waitFor(() => {
+      expect(endDateSegments.month).toHaveValue('01');
+      expect(analyticsPanel).toHaveTextContent(
+        'Start date must be on or before end date.'
+      );
+    });
+  });
+
   it('should not open calendar when date input receives focus', async () => {
     await renderApp();
 

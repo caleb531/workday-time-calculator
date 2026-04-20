@@ -355,6 +355,29 @@ class DateInputComponent {
     this.finalizeSegment(segment);
   }
 
+  handleSegmentChange(segment, event) {
+    // Native change events should commit from the input's current visible value
+    // so padded single-digit edits become real dates immediately.
+    const normalizedValue = this.normalizeSegmentInputValue(
+      segment,
+      event.target.value
+    );
+
+    if (!normalizedValue) {
+      this.resetSegmentInputBuffer();
+      this.syncSegmentInputsFromSelectedDate();
+      return;
+    }
+
+    this.setSegmentInputValue(segment, normalizedValue);
+    this.commitSegmentValue(segment, parseInt(normalizedValue, 10));
+    this.resetSegmentInputBuffer();
+
+    if (document.activeElement === event.target) {
+      this.selectSegment(segment);
+    }
+  }
+
   handleSegmentInput(segment, event) {
     // Sanitize typed digits and progressively commit or auto-advance when the
     // segment has enough information to become a valid date part.
@@ -467,6 +490,13 @@ class DateInputComponent {
       return;
     }
 
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.finalizeSegment(segment);
+      this.selectSegment(segment);
+      return;
+    }
+
     if (event.key === 'Backspace' || event.key === 'Delete') {
       this.resetSegmentInputBuffer();
     }
@@ -505,6 +535,7 @@ class DateInputComponent {
           value={this.monthInputValue}
           onfocus={() => this.handleSegmentFocus('month')}
           onblur={() => this.handleSegmentBlur('month')}
+          onchange={(event) => this.handleSegmentChange('month', event)}
           onmousedown={() => this.handleSegmentMouseDown('month')}
           onmouseup={(event) => this.handleSegmentMouseUp('month', event)}
           onkeydown={(event) => this.handleSegmentKeyDown('month', event)}
@@ -523,6 +554,7 @@ class DateInputComponent {
           value={this.dayInputValue}
           onfocus={() => this.handleSegmentFocus('day')}
           onblur={() => this.handleSegmentBlur('day')}
+          onchange={(event) => this.handleSegmentChange('day', event)}
           onmousedown={() => this.handleSegmentMouseDown('day')}
           onmouseup={(event) => this.handleSegmentMouseUp('day', event)}
           onkeydown={(event) => this.handleSegmentKeyDown('day', event)}
@@ -541,6 +573,7 @@ class DateInputComponent {
           value={this.yearInputValue}
           onfocus={() => this.handleSegmentFocus('year')}
           onblur={() => this.handleSegmentBlur('year')}
+          onchange={(event) => this.handleSegmentChange('year', event)}
           onmousedown={() => this.handleSegmentMouseDown('year')}
           onmouseup={(event) => this.handleSegmentMouseUp('year', event)}
           onkeydown={(event) => this.handleSegmentKeyDown('year', event)}
