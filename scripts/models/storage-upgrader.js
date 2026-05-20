@@ -6,8 +6,8 @@ class StorageUpgrader {
     return Boolean(
       // The browser must support IndexedDB
       typeof indexedDB !== 'undefined' &&
-        // The user has at least one time log saved in the app
-        Object.keys(localStorage).find((key) => /^wtc-/.test(key))
+      // The user has at least one time log saved in the app
+      Object.keys(localStorage).find((key) => /^wtc-/.test(key))
     );
   }
 

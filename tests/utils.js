@@ -15,10 +15,12 @@ import Preferences from '../scripts/models/preferences.js';
 const originalLocationObject = window.location;
 const originalIndexedDB = window.indexedDB;
 
+// Import the default JSON payloads directly so the test fixtures are parsed by
+// Vite's JSON loader instead of being routed through a custom query suffix.
 export const testCases = Object.values(
   import.meta.glob('./test-cases/*.json', {
-    query: 'json',
-    eager: true
+    eager: true,
+    import: 'default'
   })
 );
 

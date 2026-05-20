@@ -11,8 +11,8 @@ class AppStorage {
     return Boolean(
       // The browser must support IndexedDB
       typeof indexedDB !== 'undefined' &&
-        // The user does not have any data left in localStorage
-        !Object.keys(localStorage).find((key) => /^wtc-/.test(key))
+      // The user does not have any data left in localStorage
+      !Object.keys(localStorage).find((key) => /^wtc-/.test(key))
     );
   }
 

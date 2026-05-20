@@ -33,6 +33,14 @@ class AnalyticsComponent {
         this.isLoading = false;
         m.redraw();
       };
+      this.worker.onerror = () => {
+        // If the analytics worker fails to load or crashes, keep the panel
+        // usable by falling back to the same main-thread analytics path used
+        // in browsers without Worker support.
+        this.worker?.terminate();
+        this.worker = null;
+        this.fetchAnalytics();
+      };
     }
 
     this.fetchAnalytics();
@@ -153,6 +161,8 @@ class AnalyticsComponent {
     }
 
     this.isLoading = true;
+    // Capture only the preference values the analytics model needs so worker
+    // messages and fallback calls receive the same compact request payload.
     const preferences = {
       timeSystem: this.preferences.timeSystem,
       categorySortOrder: this.preferences.categorySortOrder
