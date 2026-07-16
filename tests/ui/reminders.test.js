@@ -18,6 +18,9 @@ describe.each([
 ])('reminder system with $minutes reminders', ({ label, minutes }) => {
   beforeEach(async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
+    // Keep interval assertions independent of the wall-clock time at which
+    // the test suite happens to run.
+    vi.setSystemTime(new Date(2026, 0, 1, 10, 1));
   });
 
   afterEach(async () => {
@@ -91,6 +94,37 @@ describe.each([
     await vi.advanceTimersByTimeAsync(minutes * S_IN_M * MS_IN_S);
     await waitFor(() => {
       expect(Notification).toHaveBeenCalledTimes(1);
+    });
+  });
+});
+
+describe('reminder wall-clock alignment', () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    // Start just before two 15-minute boundaries to cover the edge case that
+    // previously caused intermittent failures in the parameterized tests.
+    vi.setSystemTime(new Date(2026, 0, 1, 10, 29, 30));
+  });
+
+  afterEach(async () => {
+    vi.useRealTimers();
+    Notification._resetPermissions();
+    await unmountApp();
+  });
+
+  it('should spawn every reminder scheduled within the elapsed time', async () => {
+    await renderApp();
+    await openPreferences();
+    Notification._grantWhenRequested();
+    await clickPreferenceOption('Reminder Interval', 'Every 15 minutes');
+    await vi.advanceTimersByTimeAsync(16 * S_IN_M * MS_IN_S);
+    await waitFor(() => {
+      expect(Notification).toHaveBeenCalledWith('Workday Time Calculator', {
+        body: 'Remember to update your log!',
+        icon: 'app-icon.png'
+      });
+      // One helper notification plus reminders at 10:30 and 10:45 are shown.
+      expect(Notification).toHaveBeenCalledTimes(3);
     });
   });
 });
