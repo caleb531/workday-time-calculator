@@ -73,7 +73,17 @@ describe('log autocomplete', () => {
 
   afterEach(async () => {
     vi.useRealTimers();
+    if (document.querySelector('main')) {
+      await unmountApp();
+    }
+  });
+
+  it('should terminate its worker when the editor is unmounted', async () => {
+    const terminateWorkerSpy = vi.spyOn(Worker.prototype, 'terminate');
+    await renderApp();
+    await getEditorElem();
     await unmountApp();
+    expect(terminateWorkerSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should suggest previously-entered word', async () => {

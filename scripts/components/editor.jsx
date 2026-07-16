@@ -26,6 +26,12 @@ class EditorComponent {
     }
   }
 
+  // Stop background autocomplete work when Mithril removes this editor from
+  // the application DOM.
+  onremove() {
+    this.autocompleter.terminate();
+  }
+
   // Autocomplete the shown completion, if there is one; if not, run the
   // designated callback as a fallback
   autocomplete(range, options = {}) {

@@ -33,6 +33,15 @@ class EditorAutocompleter extends Emitter {
     }
   }
 
+  // Release the worker when the owning editor is removed so it cannot keep
+  // processing messages or loading modules after the editor's lifecycle ends.
+  terminate() {
+    if (this.worker) {
+      this.worker.terminate();
+      delete this.worker;
+    }
+  }
+
   get isEnabled() {
     return this.mode !== 'off';
   }
