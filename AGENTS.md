@@ -7,3 +7,5 @@ After making changes, run:
 - `pnpm test`
 
 All variables, functions, and other definitions should be accompanied by thoughtful code comments.
+
+Do not end new/updated comments with periods. If you need multiple clauses, use semicolons.
