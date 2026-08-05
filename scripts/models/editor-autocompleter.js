@@ -7,6 +7,9 @@ class EditorAutocompleter extends Emitter {
   constructor({ autocompleteMode } = {}) {
     super();
     this.mode = autocompleteMode;
+    // Incremented for every request (and cancellation) so replies for an
+    // older editor state cannot replace the current suggestion
+    this.completionRequestId = 0;
     this.cancel();
     // Use a web worker to perform the computationally-heavy work of processing
     // terms, which may involve processing thousands of words within the user's
@@ -48,6 +51,9 @@ class EditorAutocompleter extends Emitter {
 
   // Dismiss the current completion suggestion
   cancel() {
+    // Invalidate any reply that was requested before this suggestion was
+    // dismissed, such as one still being processed by the worker
+    this.completionRequestId += 1;
     this.isReady = false;
     this.matchingCompletion = '';
     this.completionPlaceholder = '';
@@ -96,6 +102,11 @@ class EditorAutocompleter extends Emitter {
   // the user is currently typing, and any other data that may be relevant for
   // that purpose
   receiveCompletions(event) {
+    // A response may arrive after the user has typed, moved the cursor, or
+    // dismissed autocomplete; only accept the response for the latest state
+    if (event.data.requestId !== this.completionRequestId) {
+      return;
+    }
     this.matchingCompletion = event.data.matchingCompletion;
     this.completionPlaceholder = event.data.completionPlaceholder;
     this.emit('receive', this.completionPlaceholder);
@@ -134,6 +145,9 @@ class EditorAutocompleter extends Emitter {
       this.completionQuery = newCompletionQuery;
       this.receiveCompletions({
         data: {
+          // This local update represents the latest worker request, so it
+          // follows the same response contract without being discarded
+          requestId: this.completionRequestId,
           matchingCompletion: this.matchingCompletion,
           completionPlaceholder: this.matchingCompletion.slice(
             newCompletionQuery.slice(substringIndex).length
@@ -151,7 +165,10 @@ class EditorAutocompleter extends Emitter {
     if (this.worker && this.isEnabled) {
       this.isReady = true;
       this.completionQuery = newCompletionQuery;
+      // Give this request a new ID so a slower earlier worker reply is ignored
+      this.completionRequestId += 1;
       this.worker.postMessage({
+        requestId: this.completionRequestId,
         completionQuery: newCompletionQuery,
         autocompleteMode: this.mode
       });

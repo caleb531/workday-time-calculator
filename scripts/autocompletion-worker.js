@@ -134,11 +134,15 @@ self.onmessage = async (event) => {
     entriesPromise = processLogEntries();
   }
   const keywordStr = await entriesPromise;
-  self.postMessage(
-    buildCompletions({
+  // Echo the caller's ID so it can discard this response if a newer query has
+  // been issued while the worker was awaiting the local history index
+  const requestId = event.data.requestId;
+  self.postMessage({
+    requestId: requestId,
+    ...buildCompletions({
       keywordStr: keywordStr,
       completionQuery: event.data.completionQuery,
       autocompleteMode: event.data.autocompleteMode
     })
-  );
+  });
 };
