@@ -64,4 +64,79 @@ describe('editor autocompleter', () => {
     expect(receiveListener).toHaveBeenLastCalledWith('tarted');
     expect(autocompleter.completionPlaceholder).toBe('tarted');
   });
+
+  it('should replace enabled-mode workers and clear the active suggestion', () => {
+    const autocompleter = new EditorAutocompleter({
+      autocompleteMode: 'lazy'
+    });
+    const originalWorker = autocompleter.worker;
+    const terminateOriginalWorker = vi.spyOn(originalWorker, 'terminate');
+    const cancelListener = vi.fn();
+    autocompleter.on('cancel', cancelListener);
+    autocompleter.isReady = true;
+    autocompleter.matchingCompletion = 'Getting started';
+    autocompleter.completionPlaceholder = ' started';
+    autocompleter.completionQuery = 'Getting';
+
+    autocompleter.setMode('greedy');
+
+    expect(terminateOriginalWorker).toHaveBeenCalledOnce();
+    expect(autocompleter.worker).not.toBe(originalWorker);
+    expect(autocompleter.mode).toBe('greedy');
+    expect(autocompleter.isReady).toBe(false);
+    expect(autocompleter.matchingCompletion).toBe('');
+    expect(autocompleter.completionPlaceholder).toBe('');
+    expect(autocompleter.completionQuery).toBe('');
+    expect(cancelListener).toHaveBeenCalledOnce();
+  });
+
+  it('should disable autocomplete after an active worker error', () => {
+    const autocompleter = new EditorAutocompleter({
+      autocompleteMode: 'lazy'
+    });
+    const worker = autocompleter.worker;
+    const terminateWorker = vi.spyOn(worker, 'terminate');
+    const postMessage = vi.spyOn(worker, 'postMessage');
+    const cancelListener = vi.fn();
+    autocompleter.on('cancel', cancelListener);
+    autocompleter.isReady = true;
+    autocompleter.matchingCompletion = 'Getting started';
+    autocompleter.completionPlaceholder = ' started';
+    autocompleter.completionQuery = 'Getting';
+    autocompleter.setEditor({
+      getSelection: vi.fn(() => ({ index: 3, length: 0 })),
+      getText: vi.fn(() => 'Get\n')
+    });
+
+    worker.onerror(new ErrorEvent('error'));
+    autocompleter.fetchCompletions();
+
+    expect(terminateWorker).toHaveBeenCalledOnce();
+    expect(autocompleter.worker).toBeUndefined();
+    expect(autocompleter.mode).toBe('lazy');
+    expect(autocompleter.isReady).toBe(false);
+    expect(autocompleter.matchingCompletion).toBe('');
+    expect(autocompleter.completionPlaceholder).toBe('');
+    expect(cancelListener).toHaveBeenCalledOnce();
+    expect(postMessage).not.toHaveBeenCalled();
+  });
+
+  it('should ignore an error from a replaced worker', () => {
+    const autocompleter = new EditorAutocompleter({
+      autocompleteMode: 'lazy'
+    });
+    const replacedWorker = autocompleter.worker;
+
+    autocompleter.setMode('greedy');
+
+    const activeWorker = autocompleter.worker;
+    const terminateActiveWorker = vi.spyOn(activeWorker, 'terminate');
+    const cancelListener = vi.fn();
+    autocompleter.on('cancel', cancelListener);
+    replacedWorker.onerror(new ErrorEvent('error'));
+
+    expect(autocompleter.worker).toBe(activeWorker);
+    expect(terminateActiveWorker).not.toHaveBeenCalled();
+    expect(cancelListener).not.toHaveBeenCalled();
+  });
 });

@@ -10,7 +10,6 @@ class EditorAutocompleter extends Emitter {
     // Incremented for every request (and cancellation) so replies for an
     // older editor state cannot replace the current suggestion
     this.completionRequestId = 0;
-    this.cancel();
     // Use a web worker to perform the computationally-heavy work of processing
     // terms, which may involve processing thousands of words within the user's
     // log entries
@@ -18,21 +17,33 @@ class EditorAutocompleter extends Emitter {
   }
 
   setMode(newMode) {
+    // A mode change starts a new autocomplete session, preventing an existing
+    // worker or visible suggestion from outliving the selected mode
+    this.terminate();
+    this.cancel();
     this.mode = newMode;
     if (
       appStorage.usingIDB() &&
       newMode !== 'off' &&
       typeof Worker !== 'undefined'
     ) {
-      this.worker = new AutocompletionWorker();
-      this.worker.onmessage = (event) => {
-        this.receiveCompletions(event);
+      // Capture this specific worker so delayed events from a replaced worker
+      // cannot change state for a newer autocomplete session
+      const worker = new AutocompletionWorker();
+      this.worker = worker;
+      worker.onmessage = (event) => {
+        if (this.worker === worker) {
+          this.receiveCompletions(event);
+        }
       };
-    } else {
-      if (this.worker) {
-        this.worker.terminate();
-        delete this.worker;
-      }
+      worker.onerror = () => {
+        // A failed active worker cannot safely provide suggestions; retain the
+        // selected mode while allowing a later mode change to create a worker
+        if (this.worker === worker) {
+          this.terminate();
+          this.cancel();
+        }
+      };
     }
   }
 
