@@ -48,8 +48,22 @@ async function getDateSegments(analyticsPanel, labelPrefix) {
   };
 }
 
+function setDateSegments(dateSegments, date) {
+  // Mirror entering a complete date through the independently editable fields.
+  fireEvent.input(dateSegments.month, {
+    target: { value: date.format('MM') }
+  });
+  fireEvent.input(dateSegments.day, { target: { value: date.format('DD') } });
+  fireEvent.input(dateSegments.year, {
+    target: { value: date.format('YYYY') }
+  });
+  fireEvent.blur(dateSegments.year);
+}
+
 describe('analytics panel', () => {
   afterEach(async () => {
+    // Prevent a fixed-clock test from leaking its mocked time into later scenarios.
+    vi.useRealTimers();
     await unmountApp();
   });
 
@@ -129,34 +143,84 @@ describe('analytics panel', () => {
     });
   });
 
-  it('should refresh the chart when start date is typed manually', async () => {
-    await applyLogContentsToApp({
-      [-7]: basicTestCase.logContents,
-      [-1]: realWorldTestCase.logContents,
-      0: basicTestCase.logContents
-    });
-    await renderApp();
+  it('should refresh the chart when a complete start date is typed manually across a year boundary', async () => {
+    // January 5 makes the default seven-day range start in the previous year.
+    vi.setSystemTime(new Date(2026, 0, 5, 10, 0));
 
-    const analyticsPanel = await openAnalytics();
-    const startDateSegments = await getDateSegments(
-      analyticsPanel,
-      'Start Date'
-    );
+    try {
+      await applyLogContentsToApp({
+        [-7]: basicTestCase.logContents,
+        [-1]: realWorldTestCase.logContents,
+        0: basicTestCase.logContents
+      });
+      await renderApp();
 
-    fireEvent.input(startDateSegments.day, {
-      target: { value: moment().subtract(1, 'days').format('DD') }
-    });
-    fireEvent.blur(startDateSegments.day);
+      const analyticsToggle = await findByRole(document.body, 'button', {
+        name: 'Toggle Analytics'
+      });
+      fireEvent.click(analyticsToggle);
+      const analyticsPanel = await findByTestId(
+        document.body,
+        'analytics-panel'
+      );
+      const startDateSegments = await getDateSegments(
+        analyticsPanel,
+        'Start Date'
+      );
+      // Use yesterday as a complete date so every segment is exercised.
+      const targetStartDate = moment().subtract(1, 'days');
+      setDateSegments(startDateSegments, targetStartDate);
 
-    const analyticsSummary = await findByTestId(
-      analyticsPanel,
-      'analytics-chart-summary'
-    );
+      const analyticsSummary = await findByTestId(
+        analyticsPanel,
+        'analytics-chart-summary'
+      );
 
-    await waitFor(() => {
-      expect(analyticsSummary).toHaveTextContent('Internal: 5:00');
-      expect(analyticsSummary).not.toHaveTextContent('Internal: 8:45');
-    });
+      await waitFor(() => {
+        expect(startDateSegments.month).toHaveValue('01');
+        expect(startDateSegments.day).toHaveValue('04');
+        expect(startDateSegments.year).toHaveValue('2026');
+        expect(analyticsSummary).toHaveTextContent('Internal: 5:00');
+        expect(analyticsSummary).not.toHaveTextContent('Internal: 8:45');
+      });
+    } finally {
+      // Restore the real system clock before suite-level unmounting and later tests.
+      vi.useRealTimers();
+    }
+  });
+
+  it('should preserve the month and year when only the start-date day is edited', async () => {
+    // Reuse the cross-year default range to prove a day edit changes only its segment.
+    vi.setSystemTime(new Date(2026, 0, 5, 10, 0));
+
+    try {
+      await renderApp();
+
+      const analyticsToggle = await findByRole(document.body, 'button', {
+        name: 'Toggle Analytics'
+      });
+      fireEvent.click(analyticsToggle);
+      const analyticsPanel = await findByTestId(
+        document.body,
+        'analytics-panel'
+      );
+      const startDateSegments = await getDateSegments(
+        analyticsPanel,
+        'Start Date'
+      );
+
+      fireEvent.input(startDateSegments.day, { target: { value: '04' } });
+      fireEvent.blur(startDateSegments.day);
+
+      await waitFor(() => {
+        expect(startDateSegments.month).toHaveValue('12');
+        expect(startDateSegments.day).toHaveValue('04');
+        expect(startDateSegments.year).toHaveValue('2025');
+      });
+    } finally {
+      // Restore the real system clock before suite-level unmounting and later tests.
+      vi.useRealTimers();
+    }
   });
 
   it('should commit a padded segment value when Enter is pressed', async () => {
