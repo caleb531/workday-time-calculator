@@ -17,7 +17,7 @@ describe('autocompletion worker', () => {
   beforeEach(async () => {
     await idbKeyval.clear();
     await idbKeyval.set('wtc-date-2026-8-5', {
-      ops: [{ insert: 'Getting started\n' }]
+      ops: [{ insert: 'Getting started\n12\n10\n' }]
     });
     worker = new AutocompletionWorker();
   });
@@ -37,6 +37,20 @@ describe('autocompletion worker', () => {
       requestId: 42,
       matchingCompletion: 'Getting',
       completionPlaceholder: 'ting'
+    });
+  });
+
+  it('should retain the existing object-key order when completions tie', async () => {
+    const completion = await requestCompletion(worker, {
+      requestId: 43,
+      completionQuery: '1',
+      autocompleteMode: 'lazy'
+    });
+
+    expect(completion).toEqual({
+      requestId: 43,
+      matchingCompletion: '10',
+      completionPlaceholder: '0'
     });
   });
 });
