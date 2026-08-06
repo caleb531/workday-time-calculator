@@ -1,4 +1,4 @@
-import { first, last, maxBy, orderBy, sortBy, uniqBy } from 'es-toolkit/compat';
+import { head, last, maxBy, orderBy, sortBy, uniqBy } from 'es-toolkit';
 import moment from 'moment';
 
 class Log {
@@ -147,11 +147,15 @@ class Log {
     if (this.preferences.categorySortOrder === 'duration') {
       this.categories = orderBy(
         this.categories,
-        (category) => category.totalDuration.asHours(),
-        'desc'
+        [(category) => category.totalDuration.asHours()],
+        ['desc']
       );
     } else if (this.preferences.categorySortOrder === 'title') {
-      this.categories = orderBy(this.categories, (category) => category.name);
+      this.categories = orderBy(
+        this.categories,
+        [(category) => category.name],
+        ['asc']
+      );
     }
   }
 
@@ -175,7 +179,10 @@ class Log {
   }
 
   sortTimeRanges(ranges) {
-    return sortBy(ranges, (range) => [range.startTime, range.endTime]);
+    return sortBy(ranges, [
+      (range) => range.startTime,
+      (range) => range.endTime
+    ]);
   }
 
   getRangeMap(ranges) {
@@ -211,7 +218,7 @@ class Log {
       return gaps;
     }
 
-    let firstStartTime = first(ranges).startTime;
+    let firstStartTime = head(ranges).startTime;
     let lastEndTime = last(ranges).endTime;
     let currentTime = firstStartTime.clone();
     let endTimeSet = new Set();
@@ -262,7 +269,7 @@ class Log {
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeB.endTime,
-            categories: uniqBy([rangeA.category, rangeB.category])
+            categories: [...new Set([rangeA.category, rangeB.category])]
           });
         } else if (
           rangeB.startTime.isSameOrBefore(rangeA.startTime) &&
@@ -273,7 +280,7 @@ class Log {
           overlaps.push({
             startTime: rangeA.startTime,
             endTime: rangeA.endTime,
-            categories: uniqBy([rangeA.category, rangeB.category])
+            categories: [...new Set([rangeA.category, rangeB.category])]
           });
         } else if (
           rangeA.startTime.isSameOrBefore(rangeB.startTime) &&
@@ -284,7 +291,7 @@ class Log {
           overlaps.push({
             startTime: rangeB.startTime,
             endTime: rangeA.endTime,
-            categories: uniqBy([rangeA.category, rangeB.category])
+            categories: [...new Set([rangeA.category, rangeB.category])]
           });
         }
       });

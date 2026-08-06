@@ -1,4 +1,4 @@
-import { omit } from 'es-toolkit/compat';
+import { omit } from 'es-toolkit';
 
 class DismissableOverlayComponent {
   view({ attrs }) {

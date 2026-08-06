@@ -6,7 +6,6 @@ import {
 } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import * as idbKeyval from 'idb-keyval';
-import { fromPairs } from 'es-toolkit/compat';
 import moment from 'moment';
 import {
   getStorageKeyFromDays,
@@ -23,7 +22,7 @@ describe('import functionality', () => {
   });
 
   const exportedData = {
-    logs: fromPairs(
+    logs: Object.fromEntries(
       testCases.map((testCase, i, testCases) => {
         const daysDiff = i - Math.floor(testCases.length / 2);
         return [

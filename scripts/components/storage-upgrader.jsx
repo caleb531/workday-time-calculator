@@ -1,4 +1,3 @@
-import { defer } from 'es-toolkit/compat';
 import m from 'mithril';
 import StorageUpgrader from '../models/storage-upgrader.js';
 import DismissableOverlayComponent from './dismissable-overlay.jsx';
@@ -36,9 +35,10 @@ class StorageUpgraderComponent {
   // When the Storage Upgrade prompt shows, blur the editor by focusing the
   // prompt
   blurEditor({ dom }) {
-    defer(() => {
+    // Delay focus until the overlay has been attached to the document
+    setTimeout(() => {
       dom.focus();
-    });
+    }, 1);
   }
 
   view() {

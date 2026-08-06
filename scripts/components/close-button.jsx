@@ -1,4 +1,4 @@
-import { omit } from 'es-toolkit/compat';
+import { omit } from 'es-toolkit';
 
 class CloseButtonComponent {
   view({ attrs }) {

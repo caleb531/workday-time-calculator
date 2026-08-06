@@ -1,4 +1,3 @@
-import { fromPairs } from 'es-toolkit/compat';
 import moment from 'moment';
 import appStorage from '../models/app-storage.js';
 
@@ -10,7 +9,7 @@ class ExportComponent {
   async getExportedJson() {
     const entries = await appStorage.entries();
     let exportedData = {
-      logs: fromPairs(
+      logs: Object.fromEntries(
         entries
           // Exclude storage entries which aren't log entries
           .map(([key, value]) => {

@@ -1,5 +1,5 @@
 import * as idbKeyval from 'idb-keyval';
-import { countBy, sortBy } from 'es-toolkit/compat';
+import { countBy, sortBy } from 'es-toolkit';
 
 // A map representing the various algorithms for the autocomplete; each key
 // name is the ID of a specific autocomplete mode, and each value is a function
@@ -95,9 +95,9 @@ function buildCompletions({ keywordStr, completionQuery, autocompleteMode }) {
     const querySubstring = querySubstrings[i];
     // Retrieve all phrases in the keyword string that match the given
     // autocomplete query; we first map the number of occurrences of each match
-    const countPairs = Object.entries(countBy(matchGroup));
+    const countPairs = Object.entries(countBy(matchGroup, (match) => match));
     // Then we sort matches from most occurrences to least
-    const sortedCountPairs = sortBy(countPairs, ([, count]) => -count);
+    const sortedCountPairs = sortBy(countPairs, [([, count]) => -count]);
     // Finally, we discard the count information and just return a list of
     // matching words
     const matches = sortedCountPairs.map(([word]) => word);

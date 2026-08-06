@@ -1,4 +1,4 @@
-import { fromPairs, pick } from 'es-toolkit/compat';
+import { pick } from 'es-toolkit';
 import Emitter from 'tiny-emitter';
 import appStorage from './app-storage.js';
 
@@ -18,7 +18,7 @@ class Preferences extends Emitter {
   // Get a map of default values, where the key is the preference ID and the
   // value is the default value for that preference
   static getDefaultValueMap() {
-    return fromPairs(
+    return Object.fromEntries(
       Preferences.preferences.map((preference) => {
         return [preference.id, preference.defaultValue];
       })

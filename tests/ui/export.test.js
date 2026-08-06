@@ -1,6 +1,5 @@
 import { findByRole, findByText, waitFor } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
-import { fromPairs } from 'es-toolkit/compat';
 import moment from 'moment';
 import Preferences from '../../scripts/models/preferences.js';
 import {
@@ -44,7 +43,7 @@ describe('export functionality', () => {
       // Build an object where the value is a log contents object and the key is
       // a relative date as an integer (representing how many dates from the
       // current date this log entry is)
-      fromPairs(
+      Object.fromEntries(
         testCases.map((testCase, i, testCases) => {
           return [i - Math.floor(testCases.length / 2), testCase.logContents];
         })
@@ -52,7 +51,7 @@ describe('export functionality', () => {
     );
     await renderApp();
     await expectAppToExport({
-      logs: fromPairs(
+      logs: Object.fromEntries(
         testCases.map((testCase, i, testCases) => {
           const daysDiff = i - Math.floor(testCases.length / 2);
           return [
@@ -68,7 +67,7 @@ describe('export functionality', () => {
   it('should not export empty log entries', async () => {
     await applyLogContentsToApp({
       [-Math.floor(testCases.length / 2) - 1]: { ops: [{ insert: '\n' }] },
-      ...fromPairs(
+      ...Object.fromEntries(
         testCases.map((testCase, i, testCases) => {
           return [i - Math.floor(testCases.length / 2), testCase.logContents];
         })
@@ -77,7 +76,7 @@ describe('export functionality', () => {
     await saveToIndexedDB('not_a_log_entry', '{}');
     await renderApp();
     await expectAppToExport({
-      logs: fromPairs(
+      logs: Object.fromEntries(
         testCases.map((testCase, i, testCases) => {
           const daysDiff = i - Math.floor(testCases.length / 2);
           return [
@@ -92,7 +91,7 @@ describe('export functionality', () => {
 
   it('should not export entries which do not belong to app', async () => {
     await applyLogContentsToApp({
-      ...fromPairs(
+      ...Object.fromEntries(
         testCases.map((testCase, i, testCases) => {
           return [i - Math.floor(testCases.length / 2), testCase.logContents];
         })
@@ -101,7 +100,7 @@ describe('export functionality', () => {
     await saveToIndexedDB('not_a_log_entry', 'foo');
     await renderApp();
     await expectAppToExport({
-      logs: fromPairs(
+      logs: Object.fromEntries(
         testCases.map((testCase, i, testCases) => {
           const daysDiff = i - Math.floor(testCases.length / 2);
           return [
@@ -118,7 +117,7 @@ describe('export functionality', () => {
     it('should not export localStorage entries which do not belong to app', async () => {
       await applyLogContentsToApp(
         {
-          ...fromPairs(
+          ...Object.fromEntries(
             testCases.map((testCase, i, testCases) => {
               return [
                 i - Math.floor(testCases.length / 2),
@@ -132,7 +131,7 @@ describe('export functionality', () => {
       await saveToLocalStorage('not_a_log_entry', 'foo', { raw: true });
       await renderApp();
       await expectAppToExport({
-        logs: fromPairs(
+        logs: Object.fromEntries(
           testCases.map((testCase, i, testCases) => {
             const daysDiff = i - Math.floor(testCases.length / 2);
             return [

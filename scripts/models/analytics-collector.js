@@ -1,5 +1,5 @@
 import * as idbKeyval from 'idb-keyval';
-import { orderBy } from 'es-toolkit/compat';
+import { orderBy } from 'es-toolkit';
 import moment from 'moment';
 import Log from './log.js';
 
