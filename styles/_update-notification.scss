@@ -6,6 +6,7 @@
   right: 0;
   z-index: 1000;
   overflow: hidden;
+  --update-notification-state-transition-duration: 350ms;
 }
 
 @keyframes slide-from-right {
@@ -17,26 +18,56 @@
   }
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 .update-notification-bubble {
+  display: grid;
+  box-sizing: border-box;
+  width: 207px;
+  height: 59px;
   margin: 8px;
   border-radius: 4px;
   padding: 10px 15px;
   background-color: var(--color-blue);
   animation: slide-from-right 400ms ease-in-out forwards;
   text-align: left;
+  white-space: nowrap;
   color: #fff;
   cursor: pointer;
   user-select: none;
   box-shadow: 0 1px 3px rgba(#000, 0.5);
+  transition: width var(--update-notification-state-transition-duration)
+    ease-in-out;
+}
+
+.update-notification-bubble-updating {
+  width: 145px;
+  cursor: default;
+
+  .update-notification-message {
+    opacity: 0;
+  }
+
+  .update-notification-updating {
+    opacity: 1;
+  }
+}
+
+.update-notification-message,
+.update-notification-updating {
+  grid-area: 1 / 1;
+  transition: opacity var(--update-notification-state-transition-duration)
+    ease-in-out;
+}
+
+.update-notification-updating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  place-self: center start;
+
+  .update-notification-title {
+    line-height: 24px;
+  }
 }
 
 .update-notification-title {
@@ -53,10 +84,16 @@
 }
 .update-notification-loading {
   stroke: var(--color-blue);
-  animation: fade-in 250ms ease-in-out forwards;
   svg {
-    --icon-size: 12px;
+    --icon-size: 24px;
     stroke: #fff;
     stroke-width: 4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .update-notification-message,
+  .update-notification-updating {
+    transition: none;
   }
 }

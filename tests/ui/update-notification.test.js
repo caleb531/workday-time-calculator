@@ -1,4 +1,9 @@
-import { findByRole, waitFor } from '@testing-library/dom';
+import {
+  findByLabelText,
+  findByRole,
+  queryByRole,
+  waitFor
+} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import { updateSWMock } from '../mocks/register-sw-mock.js';
 import { mockLocationObject, renderApp, unmountApp } from '../utils.js';
@@ -36,15 +41,70 @@ describe('update notification', () => {
     ).toBeInTheDocument();
   });
 
-  it('should reload page when service worker is updated', async () => {
+  it('crossfades the content before activating the updated service worker', async () => {
     await renderApp();
     await userEvent.click(
       await findByRole(document.body, 'heading', {
         name: updateAvailableMessage
       })
     );
+
+    expect(
+      await findByRole(document.body, 'heading', { name: 'Updating...' })
+    ).toBeInTheDocument();
+    expect(
+      await findByLabelText(document.body, 'Loading...')
+    ).toBeInTheDocument();
+    expect(
+      queryByRole(document.body, 'heading', { name: updateAvailableMessage })
+    ).toBeNull();
+    expect(updateSWMock).not.toHaveBeenCalled();
+
     await waitFor(() => {
       expect(updateSWMock).toHaveBeenCalled();
+    });
+  });
+
+  it('activates the updated service worker after the CSS crossfade', async () => {
+    await renderApp();
+    await userEvent.click(
+      await findByRole(document.body, 'heading', {
+        name: updateAvailableMessage
+      })
+    );
+
+    expect(
+      await findByRole(document.body, 'heading', { name: 'Updating...' })
+    ).toBeInTheDocument();
+    expect(updateSWMock).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(updateSWMock).toHaveBeenCalledOnce();
+    });
+    expect(
+      await findByLabelText(document.body, 'Loading...')
+    ).toBeInTheDocument();
+  });
+
+  it('does not show without a service worker in local development', async () => {
+    // Remove the development service-worker opt-in so registration is skipped
+    sessionStorage.removeItem('sw');
+    await renderApp();
+
+    expect(
+      queryByRole(document.body, 'heading', { name: updateAvailableMessage })
+    ).toBeNull();
+    expect(updateSWMock).not.toHaveBeenCalled();
+  });
+
+  it('ignores repeat clicks while the service worker is updating', async () => {
+    await renderApp();
+    const notification = document.querySelector('.update-notification');
+
+    await userEvent.click(notification);
+    await userEvent.click(notification);
+
+    await waitFor(() => {
+      expect(updateSWMock).toHaveBeenCalledOnce();
     });
   });
 });
