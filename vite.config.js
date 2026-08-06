@@ -21,6 +21,19 @@ export default defineConfig({
       pragmaFrag: '_m.Fragment'
     }
   },
+  // Configure the Rolldown dependency scanner with the same Mithril JSX
+  // transform; otherwise its React default produces an unresolved runtime import
+  optimizeDeps: {
+    rolldownOptions: {
+      transform: {
+        jsx: {
+          runtime: 'classic',
+          pragma: '_m',
+          pragmaFrag: '_m.Fragment'
+        }
+      }
+    }
+  },
   test: {
     globals: true,
     environment: 'jsdom',
