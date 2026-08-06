@@ -1,4 +1,4 @@
-import { fromPairs } from 'lodash-es';
+import { fromPairs } from 'es-toolkit/compat';
 import moment from 'moment';
 import appStorage from '../models/app-storage.js';
 

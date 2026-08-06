@@ -1,4 +1,4 @@
-import { omit } from 'lodash-es';
+import { omit } from 'es-toolkit/compat';
 
 class DismissableOverlayComponent {
   view({ attrs }) {

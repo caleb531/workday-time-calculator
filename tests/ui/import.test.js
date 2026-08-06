@@ -6,7 +6,7 @@ import {
 } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import * as idbKeyval from 'idb-keyval';
-import { fromPairs } from 'lodash-es';
+import { fromPairs } from 'es-toolkit/compat';
 import moment from 'moment';
 import {
   getStorageKeyFromDays,

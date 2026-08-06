@@ -1,5 +1,5 @@
 import * as idbKeyval from 'idb-keyval';
-import { countBy, sortBy } from 'lodash-es';
+import { countBy, sortBy } from 'es-toolkit/compat';
 
 // A map representing the various algorithms for the autocomplete; each key
 // name is the ID of a specific autocomplete mode, and each value is a function

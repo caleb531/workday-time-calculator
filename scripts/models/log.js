@@ -1,4 +1,4 @@
-import { first, last, maxBy, orderBy, sortBy, uniqBy } from 'lodash-es';
+import { first, last, maxBy, orderBy, sortBy, uniqBy } from 'es-toolkit/compat';
 import moment from 'moment';
 
 class Log {

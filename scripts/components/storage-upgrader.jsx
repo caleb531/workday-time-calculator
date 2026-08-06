@@ -1,4 +1,4 @@
-import { defer } from 'lodash-es';
+import { defer } from 'es-toolkit/compat';
 import m from 'mithril';
 import StorageUpgrader from '../models/storage-upgrader.js';
 import DismissableOverlayComponent from './dismissable-overlay.jsx';

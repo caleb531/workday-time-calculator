@@ -1,4 +1,4 @@
-import { debounce } from 'lodash-es';
+import { debounce } from 'es-toolkit/compat';
 import Emitter from 'tiny-emitter';
 import AutocompletionWorker from '../autocompletion-worker.js?worker';
 import appStorage from './app-storage.js';

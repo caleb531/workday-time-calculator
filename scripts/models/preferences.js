@@ -1,4 +1,4 @@
-import { fromPairs, pick } from 'lodash-es';
+import { fromPairs, pick } from 'es-toolkit/compat';
 import Emitter from 'tiny-emitter';
 import appStorage from './app-storage.js';
 

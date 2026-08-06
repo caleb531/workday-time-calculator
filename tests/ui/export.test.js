@@ -1,6 +1,6 @@
 import { findByRole, findByText, waitFor } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
-import { fromPairs } from 'lodash-es';
+import { fromPairs } from 'es-toolkit/compat';
 import moment from 'moment';
 import Preferences from '../../scripts/models/preferences.js';
 import {
