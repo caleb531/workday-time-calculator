@@ -1,4 +1,4 @@
-import { head, last, maxBy, orderBy, sortBy, uniqBy } from 'es-toolkit';
+import { maxBy, orderBy, sortBy, uniqBy } from 'es-toolkit';
 import moment from 'moment';
 
 class Log {
@@ -218,8 +218,8 @@ class Log {
       return gaps;
     }
 
-    let firstStartTime = head(ranges).startTime;
-    let lastEndTime = last(ranges).endTime;
+    let firstStartTime = ranges[0].startTime;
+    let lastEndTime = ranges[ranges.length - 1].endTime;
     let currentTime = firstStartTime.clone();
     let endTimeSet = new Set();
     let gapStartTime = null;
