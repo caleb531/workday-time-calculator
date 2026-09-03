@@ -201,7 +201,7 @@ class SummaryComponent {
                       >
                         {category.descriptions.length
                           ? [
-                              <div
+                              <button
                                 className="log-category-descriptions-copy-button"
                                 data-clipboard-target={`#log-category-description-list-${c}`}
                                 data-category-index={c}
@@ -221,7 +221,7 @@ class SummaryComponent {
                                   }
                                   alt="Copy to Clipboard"
                                 />
-                              </div>,
+                              </button>,
                               <ul
                                 className={`log-category-descriptions-list`}
                                 id={`log-category-description-list-${c}`}
