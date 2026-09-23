@@ -106,7 +106,9 @@ class EditorAutocompleter extends Emitter {
       }
       characters.unshift(character);
     }
-    return characters.join('');
+    // Join string and collapse trailing whitespace so that consistent
+    // suggestions are returned if you accidentally type an extra space
+    return characters.join('').replace(/\s+$/g, ' ');
   }
 
   // Receive the top suggestion of the autocompletion that best matches what

@@ -109,6 +109,7 @@ describe('log autocomplete', () => {
   it('should suggest if there is a space following a complete word', async () => {
     await renderApp();
     await checkIfCompletable('Getting ', 'started');
+    await checkIfCompletable('Getting  ', 'started');
   });
 
   it('should be case-sensitive', async () => {
