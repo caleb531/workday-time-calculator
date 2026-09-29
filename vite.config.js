@@ -44,7 +44,8 @@ export default defineConfig({
       'tests/setup.js'
     ],
     coverage: {
-      reporter: ['text', 'lcov', 'html', 'text-summary']
+      reporter: ['text', 'lcov', 'html', 'text-summary'],
+      exclude: ['**/*.json']
     }
   },
   plugins: [
