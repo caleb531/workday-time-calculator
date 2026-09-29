@@ -8,6 +8,9 @@ class EditorComponent {
     this.preferences = preferences;
     this.selectedDate = selectedDate.clone();
     this.onSetLogContents = onSetLogContents;
+    // Keep track of when text-change events are happening so that
+    // selection-change events during typing do not dismiss autocomplete
+    this.isProcessingTextChange = false;
     this.autocompleter = new EditorAutocompleter({
       autocompleteMode: this.preferences.autocompleteMode
     });
@@ -164,32 +167,48 @@ class EditorComponent {
         }
       }
     });
+    // Dismiss suggestions when the user moves the cursor or without typing
     this.editor.on('selection-change', () => {
-      this.autocompleter.cancel();
-    });
-    this.editor.on('text-change', (delta, oldContents, source) => {
-      if (source === 'user') {
-        let logContents = this.editor.getContents();
-        this.onSetLogContents(logContents);
-        this.saveTextLog(logContents);
-        if (delta.ops[delta.ops.length - 1]?.insert === '\n') {
-          // If user enters down to a new line, cancel the current autocomplete
-          this.autocompleter.cancel();
-        } else if (delta.ops[delta.ops.length - 1]?.delete >= 1) {
-          // If the user is deleting any amount of text, then debounce the
-          // updating of the autocomplete placeholder to prevent the placeholder
-          // text from jittering across successive deletes (e.g. if the user
-          // holds down the Delete key)
-          this.autocompleter.cancel();
-          this.autocompleter.fetchCompletions({ debounce: true });
-        } else {
-          // Otherwise, fetch normally
-          this.autocompleter.fetchCompletions();
-        }
-        m.redraw();
+      if (!this.isProcessingTextChange) {
+        this.autocompleter.cancel();
       }
-      // Focus the editor when the page initially loads
-      this.editor.focus();
+    });
+    // Handle edits by updating the log and autocomplete, then focus the editor
+    this.editor.on('text-change', (delta, oldContents, source) => {
+      // Remember whether another text change is still being handled (this
+      // ensures that isProcessingTextChange is reverted to the correct state at
+      // the end of the callback, both for standalone text-change events and for
+      // nested text-change events)
+      const wasProcessingTextChange = this.isProcessingTextChange;
+      this.isProcessingTextChange = true;
+      try {
+        if (source === 'user') {
+          // Read the current log contents to update application state and storage
+          let logContents = this.editor.getContents();
+          this.onSetLogContents(logContents);
+          this.saveTextLog(logContents);
+          if (delta.ops[delta.ops.length - 1]?.insert === '\n') {
+            // If user enters down to a new line, cancel the current autocomplete
+            this.autocompleter.cancel();
+          } else if (delta.ops[delta.ops.length - 1]?.delete >= 1) {
+            // If the user is deleting any amount of text, then debounce the
+            // updating of the autocomplete placeholder to prevent the placeholder
+            // text from jittering across successive deletes (e.g. if the user
+            // holds down the Delete key)
+            this.autocompleter.cancel();
+            this.autocompleter.fetchCompletions({ debounce: true });
+          } else {
+            // Otherwise, fetch normally
+            this.autocompleter.fetchCompletions();
+          }
+          m.redraw();
+        }
+        // Focus the editor when the page initially loads
+        this.editor.focus();
+      } finally {
+        // Restore the previous text-change state even if handling the edit fails
+        this.isProcessingTextChange = wasProcessingTextChange;
+      }
     });
     this.autocompleter.on('receive', (placeholder) => {
       const selection = window.getSelection();
