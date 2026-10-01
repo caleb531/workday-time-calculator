@@ -1,0 +1,19 @@
+// Cover the viewport using the same stacking level as the storage-upgrade prompt
+.app-lock {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+// Keep the blocking message centered within the shared panel layout
+.app-lock-panel {
+  text-align: center;
+}
+
+// Override the body's zero font size so the explanation remains readable
+.app-lock-message {
+  font-size: 16px;
+}

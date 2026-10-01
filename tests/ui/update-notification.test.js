@@ -98,7 +98,12 @@ describe('update notification', () => {
 
   it('ignores repeat clicks while the service worker is updating', async () => {
     await renderApp();
-    const notification = document.querySelector('.update-notification');
+    // Lock acquisition now precedes mounting the update notification
+    const notification = (
+      await findByRole(document.body, 'heading', {
+        name: updateAvailableMessage
+      })
+    ).closest('.update-notification');
 
     await userEvent.click(notification);
     await userEvent.click(notification);

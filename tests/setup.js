@@ -1,5 +1,6 @@
 import BlobMock from './mocks/blob-mock.js';
 import NotificationMock from './mocks/notification-mock.js';
+import LockManagerMock from './mocks/lock-manager-mock.js';
 import registerSWMock from './mocks/register-sw-mock.js';
 import { mockLocationObject } from './utils.js';
 
@@ -10,6 +11,11 @@ vi.mock('virtual:pwa-register', () => {
 });
 
 beforeEach(() => {
+  // Default app tests to a supported browser with an available exclusive lock
+  Object.defineProperty(navigator, 'locks', {
+    configurable: true,
+    value: new LockManagerMock()
+  });
   URL.createObjectURL = vi.fn();
   Object.defineProperty(window, 'matchMedia', {
     configurable: true,
