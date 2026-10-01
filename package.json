@@ -59,16 +59,5 @@
     "vite": "^8.2.0",
     "vitest": "^4.1.10",
     "workbox-build": "^7.4.1"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "esbuild"
-    ],
-    "auditConfig": {
-      "ignoreCves": [
-        "CVE-2025-15056"
-      ]
-    }
   }
 }

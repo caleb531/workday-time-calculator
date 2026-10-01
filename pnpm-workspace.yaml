@@ -1,0 +1,6 @@
+auditConfig:
+  ignoreGhsas:
+    - CVE-2025-15056
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
