@@ -58,9 +58,20 @@ select {
     box-shadow: var(--panel-shadow);
   }
 
-  // Give options comfortable spacing while retaining the native checkmark
+  // Replace the native selection checkmark with the supplied SVG
+  select option::checkmark {
+    content: '';
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    background: url('../icons/check.svg') center / 24px 24px no-repeat;
+  }
+
+  // Give options comfortable spacing while retaining native selection behavior
   select option {
     padding: 10px 12px;
+    // Keep the label close to the checkmark instead of Chrome's default 8px gap
+    gap: 4px;
     // Distinguish the saved selection even when another option is focused
     &:checked {
       background-color: color-mix(in srgb, white 85%, var(--color-blue));
