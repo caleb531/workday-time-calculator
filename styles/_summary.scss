@@ -27,7 +27,8 @@
   margin-bottom: 0.6rem;
   &:hover:not(:empty),
   &.copied-to-clipboard,
-  &:has(.log-category-descriptions-copy-button:focus-within) {
+  // Highlight keyboard focus without retaining the highlight after a mouse click
+  &:has(.log-category-descriptions-copy-button:focus-visible) {
     border-radius: 5px;
     background-color: rgb(from var(--color-black) r g b / 0.1);
   }
