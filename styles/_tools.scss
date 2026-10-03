@@ -31,7 +31,7 @@
   border-width: 0;
   padding: 0;
   background: none;
-  color: #fff;
+  color: var(--color-white);
   &:hover:active,
   &.app-tools-control-active {
     z-index: 100;
@@ -69,8 +69,8 @@
   margin-top: calc(var(--panel-arrow-size) * 1.5);
   padding: 0;
   border-radius: var(--app-border-radius);
-  background-color: #fff;
-  color: #000;
+  background-color: var(--color-white);
+  color: var(--color-black);
   text-align: left;
   box-shadow: var(--panel-shadow);
   font-weight: 400;
@@ -101,7 +101,7 @@
         height: 0;
         border: solid var(--panel-arrow-size) transparent;
         border-top-width: 0;
-        border-bottom-color: #fff;
+        border-bottom-color: var(--color-white);
         @media (min-width: $app-hybrid-max-width) {
           left: var(--menu-padding-x);
           right: auto;
@@ -114,7 +114,7 @@
     }
     &:hover {
       background-color: var(--color-blue);
-      color: #fff;
+      color: var(--color-white);
       &:before {
         border-bottom-color: var(--color-blue);
       }

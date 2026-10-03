@@ -56,7 +56,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(#000, 0.55);
+  color: rgb(from var(--color-black) r g b / 0.55);
 }
 
 .analytics-loading {
@@ -72,7 +72,7 @@
   margin: 40px 0;
   font-size: 15px;
   text-align: center;
-  color: rgba(#000, 0.65);
+  color: rgb(from var(--color-black) r g b / 0.65);
 }
 
 .analytics-chart-layout {
@@ -94,7 +94,7 @@
   font-size: 12px;
   line-height: 1.2;
   text-align: right;
-  color: rgba(#000, 0.75);
+  color: rgb(from var(--color-black) r g b / 0.75);
   white-space: nowrap;
 }
 
@@ -108,15 +108,15 @@
     overflow: visible;
   }
   .ct-label {
-    fill: rgba(#000, 0.75);
-    color: rgba(#000, 0.75);
+    fill: rgb(from var(--color-black) r g b / 0.75);
+    color: rgb(from var(--color-black) r g b / 0.75);
     font-size: 12px;
   }
   .ct-label.ct-horizontal {
     transform: translateY(8px);
   }
   .ct-grid {
-    stroke: rgba(#000, 0.12);
+    stroke: rgb(from var(--color-black) r g b / 0.12);
     stroke-dasharray: 2px;
   }
   .ct-bar {
@@ -130,7 +130,7 @@
 }
 
 .analytics-chart-bar-label {
-  fill: rgba(#000, 0.82);
+  fill: rgb(from var(--color-black) r g b / 0.82);
   font-size: 12px;
   font-weight: 600;
   pointer-events: none;

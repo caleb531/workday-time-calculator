@@ -57,7 +57,7 @@
   margin-bottom: 6px;
   font-size: 14px;
   line-height: 1.5;
-  color: rgba(#000, 0.75);
+  color: rgb(from var(--color-black) r g b / 0.75);
 }
 
 .app-preference-option {

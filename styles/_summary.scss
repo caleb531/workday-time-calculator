@@ -29,7 +29,7 @@
   &.copied-to-clipboard,
   &:has(.log-category-descriptions-copy-button:focus-within) {
     border-radius: 5px;
-    background-color: rgba(#000, 0.1);
+    background-color: rgb(from var(--color-black) r g b / 0.1);
   }
 }
 .log-category-descriptions-copy-button {
@@ -48,7 +48,7 @@
   background-color: var(--color-blue);
   top: var(--button-padding);
   left: -10px;
-  box-shadow: 0 1px 3px rgba(#000, 0.5);
+  box-shadow: 0 1px 3px rgb(from var(--color-black) r g b / 0.5);
   .log-category-descriptions-container:hover &,
   &:focus-visible {
     opacity: 1;
@@ -82,7 +82,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: solid 2px #fff;
+  border-bottom: solid 2px var(--color-white);
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
   overflow: hidden;

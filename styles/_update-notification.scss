@@ -30,10 +30,10 @@
   animation: slide-from-right 400ms ease-in-out forwards;
   text-align: left;
   white-space: nowrap;
-  color: #fff;
+  color: var(--color-white);
   cursor: pointer;
   user-select: none;
-  box-shadow: 0 1px 3px rgba(#000, 0.5);
+  box-shadow: 0 1px 3px rgb(from var(--color-black) r g b / 0.5);
   transition: width var(--update-notification-state-transition-duration)
     ease-in-out;
 }
@@ -86,7 +86,7 @@
   stroke: var(--color-blue);
   svg {
     --icon-size: 24px;
-    stroke: #fff;
+    stroke: var(--color-white);
     stroke-width: 4;
   }
 }

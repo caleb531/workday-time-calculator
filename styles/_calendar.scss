@@ -20,9 +20,9 @@
   margin-bottom: calc(var(--panel-arrow-size) * 1.5);
   padding: var(--calendar-padding-y) var(--calendar-padding-x);
   border-radius: var(--app-border-radius);
-  background-color: #fff;
+  background-color: var(--color-white);
   user-select: none;
-  color: #000;
+  color: var(--color-black);
   filter: drop-shadow(var(--panel-shadow));
   .log-calendar-open & {
     z-index: 100;
@@ -36,7 +36,7 @@
     width: 0;
     height: 0;
     border: solid var(--panel-arrow-size) transparent;
-    border-top-color: #fff;
+    border-top-color: var(--color-white);
     border-bottom-width: 0;
   }
 }
@@ -86,7 +86,7 @@
   height: var(--calendar-date-size);
   font-weight: 700;
   font-size: var(--calendar-date-font-size);
-  color: #999;
+  color: var(--color-gray-mid);
 }
 
 .log-calendar-date {
@@ -100,15 +100,15 @@
     height: var(--calendar-date-size);
     border-radius: 50%;
     font-size: var(--calendar-date-font-size);
-    color: #999;
+    color: var(--color-gray-mid);
   }
   &.is-current-month .log-calendar-date-label {
-    color: #000;
+    color: var(--color-black);
     font-weight: 400;
   }
   &.is-selected .log-calendar-date-label {
-    background-color: rgba(var(--color-blue), 0.6);
-    color: #fff;
+    background-color: rgb(from var(--color-blue) r g b / 0.6);
+    color: var(--color-white);
   }
   &.is-current-month.is-selected .log-calendar-date-label {
     background-color: var(--color-blue);

@@ -7,8 +7,8 @@
   align-items: center;
   border-radius: var(--app-border-radius);
   padding: 10px 46px 10px 12px;
-  background-color: rgba(#000, 0.08);
-  color: #000;
+  background-color: rgb(from var(--color-black) r g b / 0.08);
+  color: var(--color-black);
   font: inherit;
   font-size: 16px;
   font-variant-numeric: tabular-nums;
@@ -36,7 +36,11 @@
     color: inherit;
   }
   &:focus {
-    background-color: color-mix(in srgb, white 50%, var(--color-blue));
+    background-color: color-mix(
+      in srgb,
+      var(--color-white) 50%,
+      var(--color-blue)
+    );
     outline: none;
     box-shadow: none;
   }
@@ -63,7 +67,7 @@
   border-radius: 6px;
   padding: 0;
   background: none;
-  color: rgba(#000, 0.65);
+  color: rgb(from var(--color-black) r g b / 0.65);
   cursor: pointer;
   &:hover:active,
   &:has(+ .log-calendar-open),
@@ -97,7 +101,7 @@
       left: 16px;
       border-top-width: 0;
       border-bottom-width: var(--panel-arrow-size);
-      border-bottom-color: #fff;
+      border-bottom-color: var(--color-white);
     }
   }
 }

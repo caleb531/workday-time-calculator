@@ -12,7 +12,7 @@
   font-family: inherit;
   font-size: var(--editor-font-size);
   font-weight: 300;
-  color: #fff;
+  color: var(--color-white);
   resize: none;
   @media (min-width: $app-hybrid-max-width) {
     width: 380px;
@@ -20,7 +20,7 @@
 }
 .ql-editor {
   border-radius: var(--app-border-radius);
-  background-color: rgba(#000, 0.5);
+  background-color: rgb(from var(--color-black) r g b / 0.5);
   &:focus {
     outline-width: 0;
     box-shadow: inset 0 0 0 1px var(--color-blue);
@@ -37,7 +37,7 @@
 
 .ql-toolbar.ql-snow {
   border-radius: var(--app-border-radius);
-  background-color: rgba(#000, math.div(2, 3));
+  background-color: rgb(from var(--color-black) r g b / math.div(2, 3));
   margin-bottom: 2px;
 }
 
@@ -47,11 +47,11 @@
 }
 
 .ql-snow.ql-toolbar button {
-  color: #fff;
+  color: var(--color-white);
   &:hover,
   &:focus {
     outline-width: 0;
-    color: #fff;
+    color: var(--color-white);
   }
   &.ql-active,
   &:hover:active {
@@ -77,6 +77,6 @@
 }
 
 .ql-editor.ql-blank::before {
-  color: rgba(#fff, 0.4) !important;
+  color: rgb(from var(--color-white) r g b / 0.4) !important;
   font-style: normal !important;
 }

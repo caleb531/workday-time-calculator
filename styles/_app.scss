@@ -12,7 +12,7 @@ body {
     --current-color-theme-color,
     var(--color-theme-color-slate)
   );
-  color: #fff;
+  color: var(--color-white);
   font-size: 0;
   font-style: normal;
   font-weight: 300;
@@ -97,9 +97,9 @@ h1 {
   margin: 0;
   border-width: 0;
   padding: 0;
-  background-color: rgba(#000, 0.5);
+  background-color: rgb(from var(--color-black) r g b / 0.5);
 }
 
 .app-loading {
-  stroke: #fff;
+  stroke: var(--color-white);
 }

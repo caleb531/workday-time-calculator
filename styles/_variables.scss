@@ -12,9 +12,17 @@ $app-hybrid-max-width: 768px;
 
   // Colors
 
+  // Black used for text, shading, and shadows
+  --color-black: #000;
+  // White used for text, panels, and controls
+  --color-white: #fff;
+  // Mid gray used for calendar labels and adjacent-month dates
+  --color-gray-mid: #999;
+
   --color-blue: #5ae;
   --color-red: #c33;
-  --color-gray: #bcd;
+  // Light gray used for unselected radio controls
+  --color-gray-light: #bcd;
 
   // Color Themes
 
@@ -40,7 +48,7 @@ $app-hybrid-max-width: 768px;
 
   // Floating panels
   --panel-arrow-size: 6px;
-  --panel-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  --panel-shadow: 0 1px 5px rgb(from var(--color-black) r g b / 0.3);
 
   // Color swatches
   --color-swatch-swatch-size: 24px;

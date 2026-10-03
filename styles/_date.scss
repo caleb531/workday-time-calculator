@@ -36,8 +36,8 @@
   height: 100%;
   border-width: 0;
   padding: 0;
-  background-color: rgba(#000, math.div(2, 3));
-  color: #fff;
+  background-color: rgb(from var(--color-black) r g b / math.div(2, 3));
+  color: var(--color-white);
   cursor: pointer;
   &:hover:active,
   &.active {

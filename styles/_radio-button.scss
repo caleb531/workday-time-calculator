@@ -14,18 +14,26 @@
   --icon-size: 16px;
   width: var(--icon-size);
   height: var(--icon-size);
-  background-color: var(--color-gray);
+  background-color: var(--color-gray-light);
   border-radius: 50%;
   .radio-button-input:hover:active + &,
   .radio-button-input:focus + & {
-    background-color: color-mix(in srgb, #000 10%, var(--color-gray));
+    background-color: color-mix(
+      in srgb,
+      var(--color-black) 10%,
+      var(--color-gray-light)
+    );
   }
   .radio-button-input:checked + & {
     background-color: var(--color-blue);
   }
   .radio-button-input:checked:hover:active + &,
   .radio-button-input:checked:focus + & {
-    background-color: color-mix(in srgb, #000 10%, var(--color-blue));
+    background-color: color-mix(
+      in srgb,
+      var(--color-black) 10%,
+      var(--color-blue)
+    );
   }
 }
 
@@ -38,7 +46,7 @@
   width: var(--dot-size);
   height: var(--dot-size);
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  background-color: var(--color-white);
   border-radius: 50%;
   .radio-button-input:checked + .radio-button-icon > & {
     display: inline-block;

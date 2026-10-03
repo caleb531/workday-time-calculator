@@ -16,7 +16,7 @@
   box-sizing: content-box;
   &:hover {
     background-color: var(--color-blue);
-    color: #fff;
+    color: var(--color-white);
   }
   &:focus {
     outline-width: 0;

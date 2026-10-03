@@ -11,9 +11,9 @@
   border-radius: var(--app-border-radius);
   padding: 30px 40px;
   margin-bottom: 20px;
-  background-color: #fff;
+  background-color: var(--color-white);
   font-weight: 400;
-  color: #000;
+  color: var(--color-black);
   box-shadow: var(--panel-shadow);
   overflow: hidden;
 }
