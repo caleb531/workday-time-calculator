@@ -33,7 +33,8 @@
   line-height: 1;
 }
 
-// Stack the Analytics sort label above its dropdown
+// Stack the Analytics filter and sort labels above their dropdowns
+.analytics-filter-control,
 .analytics-sort-control {
   display: flex;
   flex-direction: column;

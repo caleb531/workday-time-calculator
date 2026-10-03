@@ -37,6 +37,10 @@ const twentyFourHourTestCase = testCases.find(({ description }) => {
 });
 
 async function openAnalytics() {
+  // Wait for the previous panel to unmount before reopening it
+  await waitFor(() =>
+    expect(queryByTestId(document.body, 'analytics-panel')).toBeNull()
+  );
   const analyticsToggle = await findByRole(document.body, 'button', {
     name: 'Toggle Analytics'
   });
@@ -44,7 +48,18 @@ async function openAnalytics() {
   return findByTestId(document.body, 'analytics-panel');
 }
 
+// Select Custom explicitly before exercising date inputs
+async function selectCustom(analyticsPanel) {
+  // The date filter dropdown becomes editable after saved state loads
+  const filter = await findByRole(analyticsPanel, 'combobox', {
+    name: 'Date Filter'
+  });
+  await waitFor(() => expect(filter).toBeEnabled());
+  await userEvent.selectOptions(filter, 'custom');
+}
+
 async function getDateSegments(analyticsPanel, labelPrefix) {
+  await selectCustom(analyticsPanel);
   return {
     month: await findByLabelText(analyticsPanel, `${labelPrefix} Month`),
     day: await findByLabelText(analyticsPanel, `${labelPrefix} Day`),
@@ -142,7 +157,10 @@ describe('analytics panel', () => {
         await userEvent.selectOptions(sortControl, value);
         await waitFor(() => expect(getVisibleOrder()).toEqual(expectedOrder));
         expect(await appStorage.get('wtc-analytics')).toEqual({
-          categorySortOrder: value
+          categorySortOrder: value,
+          dateFilter: 'last-7-days',
+          startDate: moment().subtract(7, 'days').format('YYYY-MM-DD'),
+          endDate: moment().format('YYYY-MM-DD')
         });
       }
       expect(analyticsFetches).not.toHaveBeenCalled();
@@ -155,7 +173,7 @@ describe('analytics panel', () => {
     }
   );
 
-  it('should restore the sort after reopening and remounting while resetting dates', async () => {
+  it('should restore sorting, Custom, and edited dates after reopening and remounting', async () => {
     await renderApp();
     // The initial panel and its sort selection
     const panel = await openAnalytics();
@@ -168,10 +186,14 @@ describe('analytics panel', () => {
       await getDateSegments(panel, 'Start Date'),
       moment().subtract(20, 'days')
     );
+    setDateSegments(
+      await getDateSegments(panel, 'End Date'),
+      moment().subtract(2, 'days')
+    );
     await userEvent.click(
       await findByRole(panel, 'button', { name: 'Close Analytics' })
     );
-    // The reopened panel should retain sorting but use the default date range
+    // The reopened panel should retain sorting and the saved custom range
     const reopenedPanel = await openAnalytics();
     await waitFor(async () => {
       expect(
@@ -180,7 +202,16 @@ describe('analytics panel', () => {
     });
     expect(
       (await getDateSegments(reopenedPanel, 'Start Date')).day
-    ).toHaveValue(moment().subtract(7, 'days').format('DD'));
+    ).toHaveValue(moment().subtract(20, 'days').format('DD'));
+    expect((await getDateSegments(reopenedPanel, 'End Date')).day).toHaveValue(
+      moment().subtract(2, 'days').format('DD')
+    );
+    expect(await appStorage.get('wtc-analytics')).toEqual({
+      categorySortOrder: 'alphabetical',
+      dateFilter: 'custom',
+      startDate: moment().subtract(20, 'days').format('YYYY-MM-DD'),
+      endDate: moment().subtract(2, 'days').format('YYYY-MM-DD')
+    });
     // Remove the app without clearing storage to simulate a fresh page load
     const main = document.querySelector('main');
     m.mount(main, null);
@@ -193,10 +224,24 @@ describe('analytics panel', () => {
       expect(
         await findByRole(reloadedPanel, 'combobox', { name: 'Category Sort' })
       ).toHaveValue('alphabetical');
+      expect(
+        await findByRole(reloadedPanel, 'combobox', { name: 'Date Filter' })
+      ).toHaveValue('custom');
     });
+    expect(
+      (await getDateSegments(reloadedPanel, 'Start Date')).day
+    ).toHaveValue(moment().subtract(20, 'days').format('DD'));
+    expect((await getDateSegments(reloadedPanel, 'End Date')).day).toHaveValue(
+      moment().subtract(2, 'days').format('DD')
+    );
   });
 
-  it.each([undefined, {}, { categorySortOrder: 'unsupported' }])(
+  it.each([
+    undefined,
+    {},
+    { categorySortOrder: 'unsupported', dateFilter: 'unsupported' },
+    { categorySortOrder: 'duration-desc' }
+  ])(
     'should default missing or unsupported saved state to descending duration (%j)',
     async (savedState) => {
       if (savedState !== undefined) {
@@ -212,6 +257,10 @@ describe('analytics panel', () => {
       await waitFor(() => {
         expect(sortControl).toBeEnabled();
         expect(sortControl).toHaveValue('duration-desc');
+        expect(panel.querySelector('#analytics-date-filter')).toHaveValue(
+          'last-7-days'
+        );
+        expect(queryByLabelText(panel, 'Start Date Month')).toBeNull();
       });
     }
   );
@@ -234,15 +283,29 @@ describe('analytics panel', () => {
     const sortControl = await findByRole(panel, 'combobox', {
       name: 'Category Sort'
     });
+    // No analytics request may run before the persisted range is known
+    const fetches = vi.spyOn(AnalyticsComponent.prototype, 'fetchAnalytics');
+    const filter = await findByRole(panel, 'combobox', { name: 'Date Filter' });
+    expect(filter).toBeDisabled();
     expect(sortControl).toBeDisabled();
-    resolveState({ categorySortOrder: 'duration-asc' });
+    expect(fetches).not.toHaveBeenCalled();
+    resolveState({
+      categorySortOrder: 'duration-asc',
+      dateFilter: 'custom',
+      startDate: '2026-01-01',
+      endDate: '2026-01-02'
+    });
     await waitFor(() => {
       expect(sortControl).toBeEnabled();
       expect(sortControl).toHaveValue('duration-asc');
+      expect(filter).toBeEnabled();
+      expect(filter).toHaveValue('custom');
+      expect(fetches).toHaveBeenCalledTimes(1);
     });
-    await userEvent.click(
-      await findByRole(panel, 'button', { name: 'Open End Date Calendar' })
-    );
+    expect((await getDateSegments(panel, 'Start Date')).day).toHaveValue('01');
+    // Tab from the end-date year through its calendar button to Category Sort
+    await userEvent.click((await getDateSegments(panel, 'End Date')).year);
+    await userEvent.tab();
     await userEvent.tab();
     expect(sortControl).toHaveFocus();
   });
@@ -257,24 +320,23 @@ describe('analytics panel', () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
-    const startDateSegments = await getDateSegments(
-      analyticsPanel,
-      'Start Date'
-    );
-    const endDateSegments = await getDateSegments(analyticsPanel, 'End Date');
-
-    expect(startDateSegments.month).toHaveValue(
-      moment().subtract(7, 'days').format('MM')
-    );
-    expect(startDateSegments.day).toHaveValue(
-      moment().subtract(7, 'days').format('DD')
-    );
-    expect(startDateSegments.year).toHaveValue(
-      moment().subtract(7, 'days').format('YYYY')
-    );
-    expect(endDateSegments.month).toHaveValue(moment().format('MM'));
-    expect(endDateSegments.day).toHaveValue(moment().format('DD'));
-    expect(endDateSegments.year).toHaveValue(moment().format('YYYY'));
+    // Presets hide both segmented date controls and the separator
+    const filter = await findByRole(analyticsPanel, 'combobox', {
+      name: 'Date Filter'
+    });
+    await waitFor(() => expect(filter).toBeEnabled());
+    expect(filter).toHaveValue('last-7-days');
+    expect(Array.from(filter.options).map((option) => option.text)).toEqual([
+      'Last 7 Days',
+      'Last 14 Days',
+      'Last 30 Days',
+      'Custom'
+    ]);
+    expect(queryByLabelText(analyticsPanel, 'Start Date Month')).toBeNull();
+    expect(queryByLabelText(analyticsPanel, 'End Date Month')).toBeNull();
+    expect(
+      analyticsPanel.querySelector('.analytics-range-separator')
+    ).toBeNull();
 
     const analyticsSummary = await findByTestId(
       analyticsPanel,
@@ -288,6 +350,162 @@ describe('analytics panel', () => {
     });
   });
 
+  it.each([
+    [true, 7],
+    [true, 14],
+    [true, 30],
+    [false, 7],
+    [false, 14],
+    [false, 30]
+  ])(
+    'should include both preset boundaries and exclude older and future logs (Worker: %s; days: %s)',
+    async (useWorker, days) => {
+      if (!useWorker) {
+        vi.stubGlobal('Worker', undefined);
+      }
+      await applyLogContentsToApp({
+        [-days - 1]: realWorldTestCase.logContents,
+        [-days]: basicTestCase.logContents,
+        0: basicTestCase.logContents,
+        1: realWorldTestCase.logContents
+      });
+      await renderApp();
+      // The panel and dropdown used to fetch the selected preset
+      const panel = await openAnalytics();
+      const filter = await findByRole(panel, 'combobox', {
+        name: 'Date Filter'
+      });
+      await waitFor(() => expect(filter).toBeEnabled());
+      await userEvent.selectOptions(filter, `last-${days}-days`);
+      await waitFor(() => {
+        expect(
+          panel.querySelector('[data-testid="analytics-chart-summary"]')
+        ).toHaveTextContent('Internal: 7:30');
+        expect(
+          panel.querySelector('[data-testid="analytics-chart-summary"]')
+        ).not.toHaveTextContent('Client A');
+      });
+      expect(queryByLabelText(panel, 'Start Date Month')).toBeNull();
+    }
+  );
+
+  it('should reset custom dates each time Custom is explicitly selected', async () => {
+    await renderApp();
+    // The panel and dropdown used to leave and reenter Custom
+    const panel = await openAnalytics();
+    const filter = await findByRole(panel, 'combobox', { name: 'Date Filter' });
+    // The edited custom bounds before selecting another preset
+    const start = await getDateSegments(panel, 'Start Date');
+    const end = await getDateSegments(panel, 'End Date');
+    setDateSegments(start, moment().subtract(20, 'days'));
+    setDateSegments(end, moment().subtract(2, 'days'));
+    await userEvent.selectOptions(filter, 'last-30-days');
+    await waitFor(() =>
+      expect(queryByLabelText(panel, 'Start Date Month')).toBeNull()
+    );
+    await userEvent.selectOptions(filter, 'custom');
+    await waitFor(async () => {
+      expect(await appStorage.get('wtc-analytics')).toEqual({
+        categorySortOrder: 'duration-desc',
+        dateFilter: 'custom',
+        startDate: moment().subtract(7, 'days').format('YYYY-MM-DD'),
+        endDate: moment().format('YYYY-MM-DD')
+      });
+    });
+    expect((await getDateSegments(panel, 'Start Date')).day).toHaveValue(
+      moment().subtract(7, 'days').format('DD')
+    );
+    expect((await getDateSegments(panel, 'End Date')).day).toHaveValue(
+      moment().format('DD')
+    );
+    expect(panel.querySelector('.analytics-range-separator')).toHaveTextContent(
+      'thru'
+    );
+  });
+
+  it.each(['Start', 'End'])(
+    'should persist a %s Date calendar selection',
+    async (bound) => {
+      await renderApp();
+      // The panel and custom controls used for calendar edits
+      const panel = await openAnalytics();
+      await selectCustom(panel);
+      // Yesterday is visible in both default calendars
+      const selected = moment().subtract(1, 'days');
+      await userEvent.click(
+        await findByRole(panel, 'button', {
+          name: `Open ${bound} Date Calendar`
+        })
+      );
+      // The calendar grid containing yesterday's date
+      const calendar = await findByTestId(document.body, 'log-calendar-dates');
+      fireEvent.mouseDown(
+        calendar.querySelector(`[data-date="${selected.format('l')}"]`)
+      );
+      await waitFor(async () => {
+        expect(await appStorage.get('wtc-analytics')).toMatchObject({
+          dateFilter: 'custom',
+          [bound === 'Start' ? 'startDate' : 'endDate']:
+            selected.format('YYYY-MM-DD')
+        });
+      });
+      await userEvent.click(
+        await findByRole(panel, 'button', { name: 'Close Analytics' })
+      );
+      // The reopened input must display the stored calendar selection
+      const reopened = await openAnalytics();
+      expect(
+        (await getDateSegments(reopened, `${bound} Date`)).day
+      ).toHaveValue(selected.format('DD'));
+    }
+  );
+
+  it.each([7, 14, 30])(
+    'should recalculate saved Last %s Days bounds on reopening',
+    async (days) => {
+      vi.setSystemTime(new Date(2026, 5, 15, 10));
+      await saveToIndexedDB('wtc-analytics', {
+        dateFilter: `last-${days}-days`,
+        startDate: '2000-01-01',
+        endDate: '2000-01-02'
+      });
+      await applyLogContentsToApp({
+        [-days]: basicTestCase.logContents,
+        0: basicTestCase.logContents,
+        1: realWorldTestCase.logContents
+      });
+      await renderApp();
+      // The first range includes its oldest boundary and today
+      const panel = await openAnalytics();
+      await waitFor(() =>
+        expect(
+          panel.querySelector('[data-testid="analytics-chart-summary"]')
+        ).toHaveTextContent('Internal: 7:30')
+      );
+      await userEvent.click(
+        await findByRole(panel, 'button', { name: 'Close Analytics' })
+      );
+      vi.setSystemTime(new Date(2026, 5, 16, 10));
+      // Tomorrow's log becomes today's while the former oldest log leaves the range
+      const reopened = await openAnalytics();
+      await waitFor(() => {
+        expect(reopened.querySelector('#analytics-date-filter')).toHaveValue(
+          `last-${days}-days`
+        );
+        expect(
+          reopened.querySelector('[data-testid="analytics-chart-summary"]')
+        ).toHaveTextContent('Internal: 5:00');
+        expect(
+          reopened.querySelector('[data-testid="analytics-chart-summary"]')
+        ).toHaveTextContent('Client A: 2:30');
+      });
+      expect(await appStorage.get('wtc-analytics')).toMatchObject({
+        startDate: '2000-01-01',
+        endDate: '2000-01-02'
+      });
+    }
+  );
+
   it('should refresh the chart when the date range changes', async () => {
     await applyLogContentsToApp({
       [-7]: basicTestCase.logContents,
@@ -297,6 +515,7 @@ describe('analytics panel', () => {
     await renderApp();
 
     const analyticsPanel = await openAnalytics();
+    await selectCustom(analyticsPanel);
     await userEvent.click(
       await findByRole(analyticsPanel, 'button', {
         name: 'Open Start Date Calendar'
@@ -673,15 +892,16 @@ describe('analytics panel', () => {
       analyticsPanel,
       'Start Date'
     );
-    const closeAnalyticsButton = await findByRole(analyticsPanel, 'button', {
-      name: 'Close Analytics'
+    // The date filter precedes custom date inputs in keyboard order
+    const dateFilter = await findByRole(analyticsPanel, 'combobox', {
+      name: 'Date Filter'
     });
 
     await userEvent.click(startDateSegments.month);
 
     await userEvent.tab({ shift: true });
 
-    expect(closeAnalyticsButton).toHaveFocus();
+    expect(dateFilter).toHaveFocus();
   });
 
   it('should parse logs using the preferred time system', async () => {

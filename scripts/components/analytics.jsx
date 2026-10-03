@@ -24,13 +24,13 @@ class AnalyticsComponent {
     this.chartRenderKey = null;
     this.chartBarPositions = [];
     this.chartYAxisLabelsElement = null;
-    this.setDefaultDates();
-    // The Analytics panel's saved sort selection
+    // The Analytics panel's saved filters and sort selection
     this.analyticsState = new AnalyticsState();
-    // Disable sorting until loading finishes so saved state can't overwrite an edit
+    // Disable controls until loading finishes so saved state can't overwrite an edit
     this.isStateLoading = true;
     this.analyticsState.load().then(() => {
       this.isStateLoading = false;
+      this.fetchAnalytics();
       m.redraw();
     });
 
@@ -52,8 +52,6 @@ class AnalyticsComponent {
         this.fetchAnalytics();
       };
     }
-
-    this.fetchAnalytics();
   }
 
   onremove() {
@@ -61,11 +59,6 @@ class AnalyticsComponent {
     if (this.worker) {
       this.worker.terminate();
     }
-  }
-
-  setDefaultDates() {
-    this.startDate = moment().subtract(7, 'days').format('YYYY-MM-DD');
-    this.endDate = moment().format('YYYY-MM-DD');
   }
 
   destroyChart() {
@@ -78,9 +71,14 @@ class AnalyticsComponent {
     this.renderYAxisLabels([]);
   }
 
+  // Check if the selected date range has valid bounds in chronological order
   get isDateRangeValid() {
-    const startDate = moment(this.startDate, 'YYYY-MM-DD', true);
-    const endDate = moment(this.endDate, 'YYYY-MM-DD', true);
+    // The bounds resolved from the selected filter
+    const range = this.analyticsState.dateRange;
+    // The parsed start of the selected range
+    const startDate = moment(range.startDate, 'YYYY-MM-DD', true);
+    // The parsed end of the selected range
+    const endDate = moment(range.endDate, 'YYYY-MM-DD', true);
     return (
       startDate.isValid() &&
       endDate.isValid() &&
@@ -171,7 +169,13 @@ class AnalyticsComponent {
     return ticks;
   }
 
+  // Fetch logs within the saved custom range or the preset's current bounds
   fetchAnalytics() {
+    if (this.isStateLoading) {
+      return;
+    }
+    // The date bounds shared by the worker and main-thread collector
+    const { startDate, endDate } = this.analyticsState.dateRange;
     this.destroyChart();
     if (!this.isDateRangeValid) {
       this.categories = [];
@@ -187,8 +191,8 @@ class AnalyticsComponent {
 
     if (!this.worker) {
       collectAnalytics({
-        startDate: this.startDate,
-        endDate: this.endDate,
+        startDate: startDate,
+        endDate: endDate,
         preferences: preferences
       }).then((categories) => {
         this.categories = categories;
@@ -201,8 +205,8 @@ class AnalyticsComponent {
     this.workerRequestId += 1;
     this.worker.postMessage({
       requestId: this.workerRequestId,
-      startDate: this.startDate,
-      endDate: this.endDate,
+      startDate: startDate,
+      endDate: endDate,
       preferences: preferences
     });
   }
@@ -213,12 +217,27 @@ class AnalyticsComponent {
     this.analyticsState.save();
   }
 
+  // Save a new filter; entering Custom starts a fresh seven-day range
+  handleDateFilter(value) {
+    if (this.analyticsState.dateFilter === value) {
+      return;
+    }
+    this.analyticsState.dateFilter = value;
+    if (value === 'custom') {
+      this.analyticsState.resetCustomDates();
+    }
+    this.analyticsState.save();
+    this.fetchAnalytics();
+  }
+
+  // Save a changed custom date and refresh the chart
   handleDateInput(name, value) {
-    if (this[name] === value) {
+    if (this.analyticsState[name] === value) {
       return;
     }
 
-    this[name] = value;
+    this.analyticsState[name] = value;
+    this.analyticsState.save();
     this.fetchAnalytics();
   }
 
@@ -368,17 +387,35 @@ class AnalyticsComponent {
           <h2 className="app-analytics-heading">Analytics</h2>
 
           <div className="analytics-range-controls">
-            <DateInputComponent
-              aria-label="Start Date"
-              value={this.startDate}
-              onChange={(value) => this.handleDateInput('startDate', value)}
-            />
-            <span className="analytics-range-separator">thru</span>
-            <DateInputComponent
-              aria-label="End Date"
-              value={this.endDate}
-              onChange={(value) => this.handleDateInput('endDate', value)}
-            />
+            <div className="analytics-filter-control">
+              <label htmlFor="analytics-date-filter">Date Filter</label>
+              <select
+                id="analytics-date-filter"
+                value={this.analyticsState.dateFilter}
+                disabled={this.isStateLoading}
+                onchange={(event) => this.handleDateFilter(event.target.value)}
+              >
+                {AnalyticsState.dateFilterOptions.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </div>
+            {!this.isStateLoading &&
+            this.analyticsState.dateFilter === 'custom' ? (
+              <>
+                <DateInputComponent
+                  aria-label="Start Date"
+                  value={this.analyticsState.startDate}
+                  onChange={(value) => this.handleDateInput('startDate', value)}
+                />
+                <span className="analytics-range-separator">thru</span>
+                <DateInputComponent
+                  aria-label="End Date"
+                  value={this.analyticsState.endDate}
+                  onChange={(value) => this.handleDateInput('endDate', value)}
+                />
+              </>
+            ) : null}
             <div className="analytics-sort-control">
               <label htmlFor="analytics-category-sort">Category Sort</label>
               <select
