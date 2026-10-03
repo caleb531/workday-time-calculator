@@ -17,16 +17,31 @@
 
 .analytics-range-controls {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: flex-end;
   gap: 10px;
-  margin-bottom: 24px;
   flex-wrap: wrap;
+  margin-bottom: 24px;
 }
 
+// Center "thru" against the date controls in the bottom-aligned row
 .analytics-range-separator {
+  display: flex;
+  align-items: center;
+  height: var(--app-input-height);
   font-size: 16px;
   line-height: 1;
+}
+
+// Stack the Analytics sort label above its dropdown
+.analytics-sort-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  label {
+    font-size: 12px;
+    font-weight: 600;
+  }
 }
 
 .analytics-chart-area {

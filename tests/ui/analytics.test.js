@@ -8,10 +8,14 @@ import {
   waitFor
 } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
+import m from 'mithril';
 import moment from 'moment';
+import AnalyticsComponent from '../../scripts/components/analytics.jsx';
+import appStorage from '../../scripts/models/app-storage.js';
 import {
   applyLogContentsToApp,
   renderApp,
+  saveToIndexedDB,
   setPreferences,
   testCases,
   unmountApp
@@ -64,7 +68,183 @@ describe('analytics panel', () => {
   afterEach(async () => {
     // Prevent a fixed-clock test from leaking its mocked time into later scenarios.
     vi.useRealTimers();
+    vi.unstubAllGlobals();
     await unmountApp();
+  });
+
+  it.each([true, false])(
+    'should sort loaded categories from top to bottom with alphabetical duration ties (Worker: %s)',
+    async (useWorker) => {
+      if (!useWorker) {
+        vi.stubGlobal('Worker', undefined);
+      }
+      await setPreferences({ categorySortOrder: 'title' });
+      await applyLogContentsToApp({
+        0: {
+          ops: [
+            { insert: 'Zulu' },
+            { insert: '\n', attributes: { list: 'ordered' } },
+            { insert: '9 to 10' },
+            { insert: '\n', attributes: { list: 'ordered', indent: 1 } },
+            { insert: 'Alpha' },
+            { insert: '\n', attributes: { list: 'ordered' } },
+            { insert: '10 to 11' },
+            { insert: '\n', attributes: { list: 'ordered', indent: 1 } },
+            { insert: 'Beta' },
+            { insert: '\n', attributes: { list: 'ordered' } },
+            { insert: '11 to 1' },
+            { insert: '\n', attributes: { list: 'ordered', indent: 1 } }
+          ]
+        }
+      });
+      await renderApp();
+
+      // The panel and native dropdown used to change the chart order
+      const panel = await openAnalytics();
+      const sortControl = await findByRole(panel, 'combobox', {
+        name: 'Category Sort'
+      });
+      // Return the labels in their actual vertical order in the rendered chart
+      const getVisibleOrder = () =>
+        Array.from(panel.querySelectorAll('.analytics-chart-y-label'))
+          .sort(
+            (left, right) =>
+              parseFloat(left.style.top) - parseFloat(right.style.top)
+          )
+          .map((label) => label.textContent);
+      await waitFor(() => {
+        expect(sortControl).toBeEnabled();
+        expect(getVisibleOrder()).toEqual(['Beta', 'Alpha', 'Zulu']);
+      });
+      expect(
+        Array.from(sortControl.options).map((option) => option.text)
+      ).toEqual(['Duration (Desc)', 'Duration (Asc)', 'Alphabetical']);
+      // Summary continues to use its own alphabetical preference
+      const summaryOrder = Array.from(
+        document.querySelectorAll('.log-category-name')
+      ).map((label) => label.textContent);
+      expect(summaryOrder).toEqual(['Alpha:', 'Beta:', 'Zulu:']);
+      // Count analytics fetches and worker requests after the initial chart has loaded
+      const analyticsFetches = vi.spyOn(
+        AnalyticsComponent.prototype,
+        'fetchAnalytics'
+      );
+      const workerRequests = useWorker
+        ? vi.spyOn(Worker.prototype, 'postMessage')
+        : null;
+      // Check both ascending and alphabetical order, then restore the default
+      const orders = [
+        ['duration-asc', ['Alpha', 'Zulu', 'Beta']],
+        ['alphabetical', ['Alpha', 'Beta', 'Zulu']],
+        ['duration-desc', ['Beta', 'Alpha', 'Zulu']]
+      ];
+      for (const [value, expectedOrder] of orders) {
+        await userEvent.selectOptions(sortControl, value);
+        await waitFor(() => expect(getVisibleOrder()).toEqual(expectedOrder));
+        expect(await appStorage.get('wtc-analytics')).toEqual({
+          categorySortOrder: value
+        });
+      }
+      expect(analyticsFetches).not.toHaveBeenCalled();
+      expect(workerRequests?.mock.calls ?? []).toHaveLength(0);
+      expect(
+        Array.from(document.querySelectorAll('.log-category-name')).map(
+          (label) => label.textContent
+        )
+      ).toEqual(summaryOrder);
+    }
+  );
+
+  it('should restore the sort after reopening and remounting while resetting dates', async () => {
+    await renderApp();
+    // The initial panel and its sort selection
+    const panel = await openAnalytics();
+    const sortControl = await findByRole(panel, 'combobox', {
+      name: 'Category Sort'
+    });
+    await waitFor(() => expect(sortControl).toBeEnabled());
+    await userEvent.selectOptions(sortControl, 'alphabetical');
+    setDateSegments(
+      await getDateSegments(panel, 'Start Date'),
+      moment().subtract(20, 'days')
+    );
+    await userEvent.click(
+      await findByRole(panel, 'button', { name: 'Close Analytics' })
+    );
+    // The reopened panel should retain sorting but use the default date range
+    const reopenedPanel = await openAnalytics();
+    await waitFor(async () => {
+      expect(
+        await findByRole(reopenedPanel, 'combobox', { name: 'Category Sort' })
+      ).toHaveValue('alphabetical');
+    });
+    expect(
+      (await getDateSegments(reopenedPanel, 'Start Date')).day
+    ).toHaveValue(moment().subtract(7, 'days').format('DD'));
+    // Remove the app without clearing storage to simulate a fresh page load
+    const main = document.querySelector('main');
+    m.mount(main, null);
+    main.remove();
+    await waitFor(() => expect(navigator.locks.owner).toBeNull());
+    await renderApp();
+    // The fresh app reads the same persisted selection
+    const reloadedPanel = await openAnalytics();
+    await waitFor(async () => {
+      expect(
+        await findByRole(reloadedPanel, 'combobox', { name: 'Category Sort' })
+      ).toHaveValue('alphabetical');
+    });
+  });
+
+  it.each([undefined, {}, { categorySortOrder: 'unsupported' }])(
+    'should default missing or unsupported saved state to descending duration (%j)',
+    async (savedState) => {
+      if (savedState !== undefined) {
+        await saveToIndexedDB('wtc-analytics', savedState);
+      }
+      await setPreferences({ categorySortOrder: 'title' });
+      await renderApp();
+      // The dropdown must default independently of the Summary preference
+      const panel = await openAnalytics();
+      const sortControl = await findByRole(panel, 'combobox', {
+        name: 'Category Sort'
+      });
+      await waitFor(() => {
+        expect(sortControl).toBeEnabled();
+        expect(sortControl).toHaveValue('duration-desc');
+      });
+    }
+  );
+
+  it('should disable sorting until saved state loads and allow keyboard focus afterward', async () => {
+    await renderApp();
+    // Resolve the delayed state read after checking the disabled dropdown
+    let resolveState;
+    // Preserve normal reads for the rest of the application
+    const originalGet = appStorage.get.bind(appStorage);
+    vi.spyOn(appStorage, 'get').mockImplementation((key) => {
+      return key === 'wtc-analytics'
+        ? new Promise((resolve) => {
+            resolveState = resolve;
+          })
+        : originalGet(key);
+    });
+    // The dropdown remains disabled during the pending storage read
+    const panel = await openAnalytics();
+    const sortControl = await findByRole(panel, 'combobox', {
+      name: 'Category Sort'
+    });
+    expect(sortControl).toBeDisabled();
+    resolveState({ categorySortOrder: 'duration-asc' });
+    await waitFor(() => {
+      expect(sortControl).toBeEnabled();
+      expect(sortControl).toHaveValue('duration-asc');
+    });
+    await userEvent.click(
+      await findByRole(panel, 'button', { name: 'Open End Date Calendar' })
+    );
+    await userEvent.tab();
+    expect(sortControl).toHaveFocus();
   });
 
   it('should default to the last seven days and aggregate matching categories', async () => {

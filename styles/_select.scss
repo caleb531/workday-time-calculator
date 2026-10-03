@@ -1,0 +1,75 @@
+// Style native selects; reserve room for the SVG arrow in fallback browsers
+select {
+  appearance: none;
+  height: var(--app-input-height);
+  border: 0;
+  border-radius: var(--app-border-radius);
+  padding: 0 48px 0 12px;
+  background-color: rgba(#000, 0.08);
+  background-image: url('../icons/arrow-down.svg');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 24px 24px;
+  color: #000;
+  font: inherit;
+  font-size: 16px;
+  // Indicate keyboard focus without changing the control's size
+  &:focus-visible {
+    outline: 2px solid var(--color-blue);
+  }
+}
+
+// Customize the native picker only in browsers that support base-select
+@supports (appearance: base-select) {
+  // Opt both the closed control and its picker into native customization
+  select,
+  select::picker(select) {
+    appearance: base-select;
+  }
+
+  // Let the native picker icon take up space instead of the fallback image
+  select {
+    padding: 0 12px;
+    gap: 8px;
+    align-items: center;
+    background-image: none;
+  }
+
+  // Replace the native arrow with the supplied SVG; keep it clear of the text
+  select::picker-icon {
+    content: '';
+    width: 12px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    background-image: url('../icons/arrow-down.svg');
+    background-repeat: no-repeat;
+    background-position: center 2px;
+  }
+
+  // Match floating app panels with a small gap below the control
+  select::picker(select) {
+    margin-top: 6px;
+    border: 0;
+    border-radius: var(--app-border-radius);
+    background-color: #fff;
+    color: #000;
+    font: inherit;
+    box-shadow: var(--panel-shadow);
+  }
+
+  // Give options comfortable spacing while retaining the native checkmark
+  select option {
+    padding: 10px 12px;
+    // Distinguish the saved selection even when another option is focused
+    &:checked {
+      background-color: color-mix(in srgb, white 85%, var(--color-blue));
+      font-weight: 600;
+    }
+    // Highlight the option under the pointer or reached with the keyboard
+    &:hover,
+    &:focus {
+      background-color: color-mix(in srgb, white 70%, var(--color-blue));
+    }
+  }
+}

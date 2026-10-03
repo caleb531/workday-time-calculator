@@ -98,6 +98,9 @@ describe('export functionality', () => {
       )
     });
     await saveToIndexedDB('not_a_log_entry', 'foo');
+    await saveToIndexedDB('wtc-analytics', {
+      categorySortOrder: 'alphabetical'
+    });
     await renderApp();
     await expectAppToExport({
       logs: Object.fromEntries(
@@ -129,6 +132,9 @@ describe('export functionality', () => {
         saveToLocalStorage
       );
       await saveToLocalStorage('not_a_log_entry', 'foo', { raw: true });
+      await saveToLocalStorage('wtc-analytics', {
+        categorySortOrder: 'duration-asc'
+      });
       await renderApp();
       await expectAppToExport({
         logs: Object.fromEntries(

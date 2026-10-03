@@ -1,9 +1,11 @@
 import { BarChart, FixedScaleAxis } from 'chartist';
 import clsx from 'clsx';
+import { orderBy } from 'es-toolkit';
 import m from 'mithril';
 import moment from 'moment';
 import AnalyticsWorker from '../analytics-worker.js?worker';
 import { collectAnalytics } from '../models/analytics-collector.js';
+import AnalyticsState from '../models/analytics-state.js';
 import { formatDuration } from '../models/duration-formatter.js';
 import CloseButtonComponent from './close-button.jsx';
 import DateInputComponent from './date-input.jsx';
@@ -23,6 +25,14 @@ class AnalyticsComponent {
     this.chartBarPositions = [];
     this.chartYAxisLabelsElement = null;
     this.setDefaultDates();
+    // The Analytics panel's saved sort selection
+    this.analyticsState = new AnalyticsState();
+    // Disable sorting until loading finishes so saved state can't overwrite an edit
+    this.isStateLoading = true;
+    this.analyticsState.load().then(() => {
+      this.isStateLoading = false;
+      m.redraw();
+    });
 
     if (this.worker) {
       this.worker.onmessage = (event) => {
@@ -78,23 +88,32 @@ class AnalyticsComponent {
     );
   }
 
+  // Return categories in the selected top-to-bottom order; break duration ties by name
+  get sortedCategories() {
+    // The selected presentation order for the aggregated categories
+    const sort = this.analyticsState.categorySortOrder;
+    return orderBy(
+      this.categories,
+      sort === 'alphabetical' ? ['name'] : ['totalMinutes', 'name'],
+      sort === 'duration-desc' ? ['desc', 'asc'] : ['asc', 'asc']
+    ).map((category) => {
+      return {
+        ...category,
+        formattedDuration: formatDuration(category.totalMinutes)
+      };
+    });
+  }
+
+  // Reverse the visual order because Chartist draws horizontal bars from bottom to top
   get chartCategories() {
-    return this.categories
-      .slice()
-      .reverse()
-      .map((category) => {
-        return {
-          ...category,
-          formattedDuration: formatDuration(category.totalMinutes)
-        };
-      });
+    return this.sortedCategories.reverse();
   }
 
   get chartSummaryLabel() {
     if (!this.chartCategories.length) {
       return 'No analytics are available for this date range.';
     }
-    return this.chartCategories
+    return this.sortedCategories
       .map((category) => {
         return `${category.name}: ${category.formattedDuration}`;
       })
@@ -161,11 +180,9 @@ class AnalyticsComponent {
     }
 
     this.isLoading = true;
-    // Capture only the preference values the analytics model needs so worker
-    // messages and fallback calls receive the same compact request payload.
+    // Capture the time system needed to parse logs in both worker and fallback calls
     const preferences = {
-      timeSystem: this.preferences.timeSystem,
-      categorySortOrder: this.preferences.categorySortOrder
+      timeSystem: this.preferences.timeSystem
     };
 
     if (!this.worker) {
@@ -188,6 +205,12 @@ class AnalyticsComponent {
       endDate: this.endDate,
       preferences: preferences
     });
+  }
+
+  // Save the selected order; Mithril redraws the existing categories without fetching logs
+  handleCategorySort(value) {
+    this.analyticsState.categorySortOrder = value;
+    this.analyticsState.save();
   }
 
   handleDateInput(name, value) {
@@ -356,6 +379,21 @@ class AnalyticsComponent {
               value={this.endDate}
               onChange={(value) => this.handleDateInput('endDate', value)}
             />
+            <div className="analytics-sort-control">
+              <label htmlFor="analytics-category-sort">Category Sort</label>
+              <select
+                id="analytics-category-sort"
+                value={this.analyticsState.categorySortOrder}
+                disabled={this.isStateLoading}
+                onchange={(event) =>
+                  this.handleCategorySort(event.target.value)
+                }
+              >
+                {AnalyticsState.categorySortOptions.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="analytics-chart-area">
@@ -401,7 +439,7 @@ class AnalyticsComponent {
               className="analytics-chart-summary"
               data-testid="analytics-chart-summary"
             >
-              {this.chartCategories.map((category) => {
+              {this.sortedCategories.map((category) => {
                 return (
                   <li>
                     {category.name}: {category.formattedDuration}
