@@ -1,6 +1,7 @@
 auditConfig:
   ignoreGhsas:
     - CVE-2025-15056
+    - GHSA-v3m3-f69x-jf25
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true
