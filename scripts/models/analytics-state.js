@@ -85,6 +85,8 @@ AnalyticsState.dateFilterOptions = [
   { label: 'Last 7 Days', value: 'last-7-days', days: 7 },
   { label: 'Last 14 Days', value: 'last-14-days', days: 14 },
   { label: 'Last 30 Days', value: 'last-30-days', days: 30 },
+  { label: 'Last 60 Days', value: 'last-60-days', days: 60 },
+  { label: 'Last 90 Days', value: 'last-90-days', days: 90 },
   { label: 'Custom', value: 'custom' }
 ];
 

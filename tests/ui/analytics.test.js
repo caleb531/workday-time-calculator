@@ -330,6 +330,8 @@ describe('analytics panel', () => {
       'Last 7 Days',
       'Last 14 Days',
       'Last 30 Days',
+      'Last 60 Days',
+      'Last 90 Days',
       'Custom'
     ]);
     expect(queryByLabelText(analyticsPanel, 'Start Date Month')).toBeNull();
@@ -354,9 +356,13 @@ describe('analytics panel', () => {
     [true, 7],
     [true, 14],
     [true, 30],
+    [true, 60],
+    [true, 90],
     [false, 7],
     [false, 14],
-    [false, 30]
+    [false, 30],
+    [false, 60],
+    [false, 90]
   ])(
     'should include both preset boundaries and exclude older and future logs (Worker: %s; days: %s)',
     async (useWorker, days) => {
