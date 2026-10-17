@@ -69,9 +69,6 @@
   &:hover:active {
     color: var(--color-blue);
   }
-  &:focus {
-    outline-width: 0;
-  }
   svg {
     width: inherit;
     height: inherit;

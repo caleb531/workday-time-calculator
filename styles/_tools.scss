@@ -29,6 +29,7 @@
   height: var(--icon-size);
   margin: 0;
   border-width: 0;
+  border-radius: 3px;
   padding: 0;
   background: none;
   color: var(--color-white);
@@ -36,9 +37,6 @@
   &.app-tools-control-active {
     z-index: 100;
     color: var(--color-blue);
-  }
-  &:focus {
-    outline-width: 0;
   }
   svg {
     fill: currentColor;

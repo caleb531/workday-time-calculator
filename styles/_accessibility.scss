@@ -1,0 +1,21 @@
+// Remove browser focus outlines from the app's interactive elements
+input:focus,
+button:focus,
+a[href]:focus,
+[contenteditable='true']:focus,
+[tabindex]:focus {
+  outline: none;
+}
+
+// Show a consistent inset focus indicator for keyboard-style navigation
+input:focus-visible,
+button:focus-visible,
+a[href]:focus-visible,
+[contenteditable='true']:focus-visible,
+[tabindex]:focus-visible {
+  z-index: 99;
+  outline-style: solid;
+  outline-width: 1px;
+  outline-color: var(--color-blue);
+  outline-offset: 1px;
+}
