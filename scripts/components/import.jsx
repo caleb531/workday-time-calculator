@@ -34,6 +34,7 @@ class ImportComponent {
     return (
       <label htmlFor="app-control-import-input">
         <input
+          tabindex="-1"
           type="file"
           className="app-control-import-input"
           id="app-control-import-input"
@@ -46,7 +47,16 @@ class ImportComponent {
             window.location.reload();
           }}
         />
-        <span className="app-control-import-label">Import</span>
+        <a
+          href="#"
+          className="app-control-import-label"
+          onclick={(event) => {
+            event.preventDefault();
+            event.target.closest('label').control.click();
+          }}
+        >
+          Import
+        </a>
       </label>
     );
   }

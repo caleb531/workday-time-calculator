@@ -7,7 +7,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Open Sans Variable', sans-serif;
+  font-family: var(--font-family-sans-serif);
   background-color: var(
     --current-color-theme-color,
     var(--color-theme-color-slate)
@@ -64,6 +64,7 @@ h1 {
   font-weight: 400;
 }
 #personal-site-link a {
+  border-radius: var(--focus-border-radius);
   text-decoration: none;
 }
 
@@ -98,6 +99,28 @@ h1 {
   border-width: 0;
   padding: 0;
   background-color: rgb(from var(--color-black) r g b / 0.5);
+}
+
+// Keep the overlay action out of view until the backdrop receives keyboard focus
+.dismissable-overlay-focus-label {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  border-radius: var(--app-border-radius);
+  padding: 8px 12px;
+  background-color: var(--color-blue);
+  color: var(--color-white);
+  font-family: var(--font-family-sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: var(--panel-shadow);
+  pointer-events: none;
+}
+
+// Reveal the action in the top-left corner where overlay panels won't cover it
+.dismissable-overlay:focus-visible .dismissable-overlay-focus-label {
+  display: block;
 }
 
 .app-loading {

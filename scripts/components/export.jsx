@@ -49,14 +49,16 @@ class ExportComponent {
 
   view() {
     return (
-      <span
+      <a
+        href="#"
         className="app-control-export"
-        onclick={() => {
+        onclick={(event) => {
+          event.preventDefault();
           this.downloadExportedJson();
         }}
       >
         Export All
-      </span>
+      </a>
     );
   }
 }

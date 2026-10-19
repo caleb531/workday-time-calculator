@@ -6,8 +6,15 @@
   width: var(--color-swatch-swatch-size);
   height: var(--color-swatch-swatch-size);
   border-radius: 50%;
-  background-color: var(--color-swatch-swatch-color);
-  filter: brightness(1.75);
+  // Brighten only the swatch background so the shared focus outline keeps its color
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: var(--color-swatch-swatch-color);
+    filter: brightness(1.75);
+  }
 }
 .app-preference-option-selected .color-swatch-swatch-dot {
   display: inline-block;

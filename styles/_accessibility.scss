@@ -12,10 +12,14 @@ input:focus-visible,
 button:focus-visible,
 a[href]:focus-visible,
 [contenteditable='true']:focus-visible,
-[tabindex]:focus-visible {
+[tabindex]:focus-visible,
+select:focus,
+.radio-button-input:focus-visible + .radio-button-icon,
+.app-preference-option:has(.radio-button-input:focus-visible)
+  .color-swatch-swatch {
   z-index: 99;
   outline-style: solid;
-  outline-width: 1px;
+  outline-width: 2px;
   outline-color: var(--color-blue);
   outline-offset: 1px;
 }

@@ -6,7 +6,6 @@
   gap: 12px;
   position: relative;
   margin-left: 20px;
-  user-select: none;
   cursor: default;
   .dismissable-overlay {
     display: none;
@@ -29,7 +28,7 @@
   height: var(--icon-size);
   margin: 0;
   border-width: 0;
-  border-radius: 3px;
+  border-radius: var(--focus-border-radius);
   padding: 0;
   background: none;
   color: var(--color-white);
@@ -118,7 +117,7 @@
       }
     }
   }
-  li > * {
+  a {
     display: block;
     padding: var(--menu-padding-y) var(--menu-padding-x);
     color: inherit;

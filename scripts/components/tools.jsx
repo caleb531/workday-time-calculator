@@ -31,18 +31,6 @@ class ToolsComponent {
         >
           <WrenchIconComponent />
         </button>
-        <button
-          aria-label="Toggle Analytics"
-          onclick={() => {
-            this.analyticsOpen = !this.analyticsOpen;
-            this.toolsMenuOpen = false;
-          }}
-          className={clsx('app-tools-analytics-toggle', {
-            'app-tools-control-active': this.analyticsOpen
-          })}
-        >
-          <AnalyticsIconComponent />
-        </button>
         {this.toolsMenuOpen ? (
           <DismissableOverlayComponent
             aria-label="Close Tools Menu"
@@ -65,12 +53,17 @@ class ToolsComponent {
           <li>
             <ExportComponent preferences={preferences} />
           </li>
-          <li
-            onclick={() => {
-              this.preferencesOpen = true;
-            }}
-          >
-            <span className="app-control-preferences">Preferences</span>
+          <li>
+            <a
+              href="#"
+              className="app-control-preferences"
+              onclick={(event) => {
+                event.preventDefault();
+                this.preferencesOpen = true;
+              }}
+            >
+              Preferences
+            </a>
           </li>
         </ul>
         {this.preferencesOpen ? (
@@ -83,6 +76,18 @@ class ToolsComponent {
             }}
           />
         ) : null}
+        <button
+          aria-label="Toggle Analytics"
+          onclick={() => {
+            this.analyticsOpen = !this.analyticsOpen;
+            this.toolsMenuOpen = false;
+          }}
+          className={clsx('app-tools-analytics-toggle', {
+            'app-tools-control-active': this.analyticsOpen
+          })}
+        >
+          <AnalyticsIconComponent />
+        </button>
         {this.analyticsOpen ? (
           <AnalyticsComponent
             preferences={preferences}
