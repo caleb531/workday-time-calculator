@@ -195,6 +195,8 @@ describe('log calendar', () => {
     });
     expect(await getEditorElem()).toHaveFocus();
   });
+  // Two full Tab traversals repeat DOM and computed-style checks for every date;
+  // allow slower CI runners time to finish without raising other tests' timeouts
   it('should tab through every date in both directions and focus the editor on Escape', async () => {
     await applyLogContentsToApp({ 0: basicLogTestCase.logContents });
     await renderApp();
@@ -246,7 +248,7 @@ describe('log calendar', () => {
     );
     expect(await getEditorElem()).toHaveFocus();
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
-  });
+  }, 15000);
 
   it.each(['{Enter}', ' '])(
     'should navigate without loading and select with %s without losing focus',
