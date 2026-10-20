@@ -344,6 +344,56 @@ describe('analytics panel', () => {
     expect(sortControl).toHaveFocus();
   });
 
+  it.each([true, false])(
+    'should combine category names case-insensitively within and across days (Worker: %s)',
+    async (useWorker) => {
+      if (!useWorker) {
+        vi.stubGlobal('Worker', undefined);
+      }
+      await applyLogContentsToApp({
+        [-1]: {
+          ops: [
+            { insert: 'RSCS Display Items By Role' },
+            { insert: '\n', attributes: { list: 'ordered' } },
+            { insert: '9 to 10' },
+            { insert: '\n', attributes: { list: 'ordered', indent: 1 } },
+            { insert: 'RSCS Display Items by Role' },
+            { insert: '\n', attributes: { list: 'ordered' } },
+            { insert: '10 to 10:30' },
+            { insert: '\n', attributes: { list: 'ordered', indent: 1 } }
+          ]
+        },
+        0: {
+          ops: [
+            { insert: 'rscs display items by role' },
+            { insert: '\n', attributes: { list: 'ordered' } },
+            { insert: '9 to 9:15' },
+            { insert: '\n', attributes: { list: 'ordered', indent: 1 } },
+            { insert: 'Other category' },
+            { insert: '\n', attributes: { list: 'ordered' } },
+            { insert: '10 to 10:30' },
+            { insert: '\n', attributes: { list: 'ordered', indent: 1 } }
+          ]
+        }
+      });
+      await renderApp();
+      // The chart and text summary must use the same combined totals
+      const panel = await openAnalytics();
+      // The accessible list of category names and their durations
+      const summary = await findByTestId(panel, 'analytics-chart-summary');
+      await waitFor(() => {
+        expect(
+          Array.from(panel.querySelectorAll('.analytics-chart-y-label'))
+            .map((label) => label.textContent.toLowerCase())
+            .sort()
+        ).toEqual(['other category', 'rscs display items by role']);
+        expect(summary.children).toHaveLength(2);
+        expect(summary).toHaveTextContent(/rscs display items by role: 1:45/i);
+        expect(summary).toHaveTextContent('Other category: 0:30');
+      });
+    }
+  );
+
   it('should default to the last seven days and aggregate matching categories', async () => {
     await applyLogContentsToApp({
       [-8]: basicTestCase.logContents,

@@ -43,13 +43,15 @@ export async function collectAnalytics({ startDate, endDate, preferences }) {
 
     log.categories.forEach((category) => {
       const totalMinutes = category.totalDuration.asMinutes();
-      if (!categoryMap[category.name]) {
-        categoryMap[category.name] = {
+      // Group names without regard to case; keep the first spelling for display
+      const categoryKey = category.name.toLowerCase();
+      if (!categoryMap[categoryKey]) {
+        categoryMap[categoryKey] = {
           name: category.name,
           totalMinutes: 0
         };
       }
-      categoryMap[category.name].totalMinutes += totalMinutes;
+      categoryMap[categoryKey].totalMinutes += totalMinutes;
     });
   });
 
