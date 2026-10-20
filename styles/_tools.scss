@@ -119,6 +119,7 @@
   }
   a {
     display: block;
+    border-radius: var(--focus-border-radius);
     padding: var(--menu-padding-y) var(--menu-padding-x);
     color: inherit;
     text-decoration: none;
