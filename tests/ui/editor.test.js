@@ -1,6 +1,7 @@
-import { findByTestId, waitFor } from '@testing-library/dom';
+import { findByRole, findByTestId, waitFor } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import * as idbKeyval from 'idb-keyval';
+import appStorage from '../../scripts/models/app-storage.js';
 import basicLogTestCase from '../test-cases/basic.json';
 import realWorldTestCase1 from '../test-cases/real-world-1.json';
 import realWorldTestCase2 from '../test-cases/real-world-2.json';
@@ -26,8 +27,55 @@ describe('log editor', () => {
   });
 
   afterEach(async () => {
+    // Finish queued redraws before replacing the clock used by Mithril
+    await vi.advanceTimersByTimeAsync(20);
     vi.useRealTimers();
     await unmountApp();
+  });
+
+  it('should autofocus initially and keep the editor focused after day navigation', async () => {
+    await renderApp();
+    // Initial focus belongs to the editor once its first log has loaded
+    const editor = await getEditorElem();
+    await waitFor(() => expect(editor).toHaveFocus());
+    // Loading a populated previous log must return focus to the editor
+    const previous = await findByRole(document.body, 'button', {
+      name: 'Go To Previous Day'
+    });
+    await userEvent.click(previous);
+    await waitFor(() =>
+      expect(editor).toHaveTextContent(
+        realWorldTestCase2.assertions.categories[1].descriptions[0]
+      )
+    );
+    expect(editor).toHaveFocus();
+  });
+
+  it('should skip initial autofocus if another control receives focus while loading', async () => {
+    // Hold the initial daily log request while preferences load normally
+    let finishLoading;
+    // The deferred contents make the focus race deterministic
+    const contents = new Promise((resolve) => {
+      finishLoading = resolve;
+    });
+    // Other application storage reads retain their normal behavior
+    const get = appStorage.get.bind(appStorage);
+    vi.spyOn(appStorage, 'get').mockImplementation((key) =>
+      key === getStorageKeyFromDays(0) ? contents : get(key)
+    );
+    await renderApp();
+    // The user can reach the calendar toggle before the log finishes loading
+    const toggle = await findByRole(document.body, 'button', {
+      name: 'Toggle Calendar'
+    });
+    toggle.focus();
+    finishLoading(basicLogTestCase.logContents);
+    await waitFor(async () =>
+      expect(await getEditorElem()).toHaveTextContent(
+        basicLogTestCase.assertions.categories[0].descriptions[1]
+      )
+    );
+    expect(toggle).toHaveFocus();
   });
 
   it('should persist contents of editor to indexedDB by default', async () => {

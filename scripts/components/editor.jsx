@@ -74,6 +74,13 @@ class EditorComponent {
   }
 
   async initializeEditor(editorContainer) {
+    // Remember focus changes while the initial log is loading
+    let focusMoved = false;
+    // Any deliberate focus move cancels the initial autofocus
+    const onFocusIn = () => {
+      focusMoved = true;
+    };
+    document.addEventListener('focusin', onFocusIn);
     this.editor = new Quill(editorContainer, {
       theme: 'snow',
       placeholder:
@@ -173,7 +180,7 @@ class EditorComponent {
         this.autocompleter.cancel();
       }
     });
-    // Handle edits by updating the log and autocomplete, then focus the editor
+    // Handle edits by updating the log and autocomplete
     this.editor.on('text-change', (delta, oldContents, source) => {
       // Remember whether another text change is still being handled (this
       // ensures that isProcessingTextChange is reverted to the correct state at
@@ -203,8 +210,6 @@ class EditorComponent {
           }
           m.redraw();
         }
-        // Focus the editor when the page initially loads
-        this.editor.focus();
       } finally {
         // Restore the previous text-change state even if handling the edit fails
         this.isProcessingTextChange = wasProcessingTextChange;
@@ -237,6 +242,15 @@ class EditorComponent {
     const logContents = await this.getLogContentsForSelectedDate();
     this.setEditorText(logContents);
     this.autocompleter.setEditor(this.editor);
+    document.removeEventListener('focusin', onFocusIn);
+    // Autofocus once on startup only if the user has not focused another control
+    if (
+      !focusMoved &&
+      document.activeElement === document.body &&
+      this.editor.root.isConnected
+    ) {
+      this.editor.focus();
+    }
   }
 
   async getLogContentsForSelectedDate() {

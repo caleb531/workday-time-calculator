@@ -5,24 +5,42 @@ import NextIconComponent from './next-icon.jsx';
 import PrevIconComponent from './prev-icon.jsx';
 
 class LogDateComponent {
-  oninit({ attrs: { selectedDate, onSetSelectedDate } }) {
+  oninit({ attrs: { selectedDate, onSetSelectedDate, onFocusEditor } }) {
     this.selectedDate = selectedDate.clone();
     this.onSetSelectedDate = onSetSelectedDate;
+    // Let the app resume editing after day navigation or calendar dismissal
+    this.onFocusEditor = onFocusEditor;
     this.calendarOpen = false;
   }
 
+  // Load the previous day and return focus to the editor
   selectPrevDay() {
     this.selectedDate.subtract(1, 'day');
     this.onSetSelectedDate(this.selectedDate);
+    this.onFocusEditor();
   }
 
+  // Load the next day and return focus to the editor
   selectNextDay() {
     this.selectedDate.add(1, 'day');
     this.onSetSelectedDate(this.selectedDate);
+    this.onFocusEditor();
   }
 
   toggleCalendar() {
-    this.calendarOpen = !this.calendarOpen;
+    if (this.calendarOpen) {
+      this.closeCalendar('toggle');
+    } else {
+      this.calendarOpen = true;
+    }
+  }
+
+  // Resume editing after explicit dismissal while preserving outside-click focus
+  closeCalendar(reason) {
+    this.calendarOpen = false;
+    if (reason !== 'outside') {
+      this.onFocusEditor();
+    }
   }
 
   formatRelativeMessage(message) {
@@ -47,6 +65,9 @@ class LogDateComponent {
           <button
             className={`log-date-control log-date-calendar-control ${this.calendarOpen ? 'active' : ''}`}
             aria-label="Toggle Calendar"
+            aria-haspopup="dialog"
+            aria-expanded={this.calendarOpen ? 'true' : 'false'}
+            aria-controls="daily-log-calendar"
             onclick={() => this.toggleCalendar()}
           >
             <CalendarIconComponent selectedDate={this.selectedDate} />
@@ -72,6 +93,7 @@ class LogDateComponent {
 
         {this.selectedDate && this.calendarOpen ? (
           <CalendarComponent
+            id="daily-log-calendar"
             selectedDate={this.selectedDate}
             calendarOpen={this.calendarOpen}
             onShouldIgnoreOutsideClick={(target) => {
@@ -91,9 +113,7 @@ class LogDateComponent {
               this.selectedDate = selectedDate.clone();
               this.onSetSelectedDate(this.selectedDate);
             }}
-            onCloseCalendar={() => {
-              this.calendarOpen = false;
-            }}
+            onCloseCalendar={(reason) => this.closeCalendar(reason)}
           />
         ) : null}
       </div>

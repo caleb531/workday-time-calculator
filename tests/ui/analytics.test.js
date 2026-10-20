@@ -87,6 +87,40 @@ describe('analytics panel', () => {
     await unmountApp();
   });
 
+  it('should close Analytics with Escape while focus remains on its opening toggle', async () => {
+    await renderApp();
+    await openAnalytics();
+    expect(
+      await findByRole(document.body, 'button', { name: 'Toggle Analytics' })
+    ).toHaveFocus();
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(queryByTestId(document.body, 'analytics-panel')).toBeNull()
+    );
+  });
+
+  it('should dismiss the date picker before Analytics when pressing Escape', async () => {
+    await renderApp();
+    // A calendar inside Analytics handles its own Escape before the overlay
+    const panel = await openAnalytics();
+    await selectCustom(panel);
+    const toggle = await findByRole(panel, 'button', {
+      name: 'Open Start Date Calendar'
+    });
+    await userEvent.click(toggle);
+    await findByTestId(panel, 'log-calendar-selected-date');
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(queryByTestId(panel, 'log-calendar-dates')).toBeNull()
+    );
+    expect(panel).toBeInTheDocument();
+    expect(toggle).toHaveFocus();
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(queryByTestId(document.body, 'analytics-panel')).toBeNull()
+    );
+  });
+
   it.each([true, false])(
     'should sort loaded categories from top to bottom with alphabetical duration ties (Worker: %s)',
     async (useWorker) => {
@@ -445,7 +479,7 @@ describe('analytics panel', () => {
       );
       // The calendar grid containing yesterday's date
       const calendar = await findByTestId(document.body, 'log-calendar-dates');
-      fireEvent.mouseDown(
+      fireEvent.click(
         calendar.querySelector(`[data-date="${selected.format('l')}"]`)
       );
       await waitFor(async () => {
@@ -533,7 +567,7 @@ describe('analytics panel', () => {
       document.body,
       'log-calendar-dates'
     );
-    fireEvent.mouseDown(
+    fireEvent.click(
       calendarDates.querySelector(`[data-date="${dateToSelect}"]`)
     );
 
@@ -927,4 +961,85 @@ describe('analytics panel', () => {
       expect(analyticsSummary).toHaveTextContent('Internal: 1:00');
     });
   });
+  it.each(['Start', 'End'])(
+    'should focus and dismiss the %s calendar without trapping Tab',
+    async (bound) => {
+      await applyLogContentsToApp({
+        0: basicTestCase.logContents,
+        [-7]: basicTestCase.logContents
+      });
+      await renderApp();
+      // The custom range exposes both calendar toggles
+      const panel = await openAnalytics();
+      await selectCustom(panel);
+      const toggle = await findByRole(panel, 'button', {
+        name: `Open ${bound} Date Calendar`
+      });
+      await userEvent.click(toggle);
+      const selected = await findByTestId(panel, 'log-calendar-selected-date');
+      await waitFor(() => expect(selected).toHaveFocus());
+      await waitFor(() => expect(selected).toHaveAccessibleName(/, has log$/));
+      expect(toggle).toHaveAttribute(
+        'aria-controls',
+        selected.closest('[role="dialog"]').id
+      );
+      // Native Tab reaches adjacent empty dates rather than skipping to another saved log
+      await userEvent.tab();
+      expect(document.activeElement).toHaveAttribute(
+        'data-date',
+        moment(selected.getAttribute('data-date'), 'l')
+          .add(1, 'day')
+          .format('l')
+      );
+      expect(document.activeElement).not.toHaveClass('has-log');
+      await userEvent.tab({ shift: true });
+      expect(selected).toHaveFocus();
+      await userEvent.tab({ shift: true });
+      expect(document.activeElement).toHaveAttribute(
+        'data-date',
+        moment(selected.getAttribute('data-date'), 'l')
+          .subtract(1, 'day')
+          .format('l')
+      );
+      // The last visible date allows Tab to leave the nonmodal popup
+      Array.from(panel.querySelectorAll('.log-calendar-date')).at(-1).focus();
+      await userEvent.tab();
+      expect(selected.closest('[role="dialog"]')).not.toContainElement(
+        document.activeElement
+      );
+      selected.focus();
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() =>
+        expect(queryByTestId(panel, 'log-calendar-dates')).toBeNull()
+      );
+      expect(toggle).toHaveFocus();
+    }
+  );
+
+  it.each([true, false])(
+    'should return focus after delayed selection only if it remains in the calendar (%s)',
+    async (stayInside) => {
+      await renderApp();
+      // Analytics selection closes after 250 ms
+      const panel = await openAnalytics();
+      await selectCustom(panel);
+      const toggle = await findByRole(panel, 'button', {
+        name: 'Open End Date Calendar'
+      });
+      await userEvent.click(toggle);
+      await findByTestId(panel, 'log-calendar-selected-date');
+      await userEvent.keyboard('{ArrowLeft}{Enter}');
+      // Moving out before the timer finishes must not cause focus to jump back
+      const outside = await findByRole(panel, 'button', {
+        name: 'Open Start Date Calendar'
+      });
+      if (!stayInside) {
+        outside.focus();
+      }
+      await waitFor(() =>
+        expect(queryByTestId(panel, 'log-calendar-dates')).toBeNull()
+      );
+      expect(stayInside ? toggle : outside).toHaveFocus();
+    }
+  );
 });

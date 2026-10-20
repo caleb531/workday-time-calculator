@@ -125,6 +125,10 @@ class AppComponent {
               <LogDateComponent
                 preferences={this.preferences}
                 selectedDate={this.selectedDate}
+                onFocusEditor={() => {
+                  // Resume editing after day navigation or closing the main calendar
+                  document.querySelector('.log-editor .ql-editor')?.focus();
+                }}
                 onSetSelectedDate={(selectedDate) => {
                   this.selectedDate = selectedDate.clone();
                 }}

@@ -4,7 +4,12 @@ import moment from 'moment';
 import basicLogTestCase from '../test-cases/basic.json';
 import realWorldTestCase1 from '../test-cases/real-world-1.json';
 import realWorldTestCase2 from '../test-cases/real-world-2.json';
-import { applyLogContentsToApp, renderApp, unmountApp } from '../utils.js';
+import {
+  applyLogContentsToApp,
+  getEditorElem,
+  renderApp,
+  unmountApp
+} from '../utils.js';
 
 describe('log date selector', () => {
   afterEach(async () => {
@@ -28,7 +33,7 @@ describe('log date selector', () => {
         basicLogTestCase.assertions.categories[0].descriptions[1]
       )
     ).toBeInTheDocument();
-    userEvent.click(await getControl());
+    await userEvent.click(await getControl());
     expect(
       await findByText(
         document.body,
@@ -42,6 +47,7 @@ describe('log date selector', () => {
         realWorldTestCase1.assertions.categories[1].descriptions[0]
       )
     ).toBeInTheDocument();
+    expect(await getEditorElem()).toHaveFocus();
   });
 
   it('should switch to next date', async () => {
@@ -61,7 +67,7 @@ describe('log date selector', () => {
         basicLogTestCase.assertions.categories[0].descriptions[1]
       )
     ).toBeInTheDocument();
-    userEvent.click(await getControl());
+    await userEvent.click(await getControl());
     expect(
       await findByText(
         document.body,
@@ -75,5 +81,6 @@ describe('log date selector', () => {
         realWorldTestCase2.assertions.categories[1].descriptions[0]
       )
     ).toBeInTheDocument();
+    expect(await getEditorElem()).toHaveFocus();
   });
 });

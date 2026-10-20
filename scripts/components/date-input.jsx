@@ -300,8 +300,16 @@ class DateInputComponent {
     this.calendarOpen = !this.calendarOpen;
   }
 
-  closeCalendar() {
-    // Close immediately, typically after outside clicks.
+  closeCalendar(reason) {
+    // Return focus only for Escape or selection while focus is still inside
+    if (
+      reason === 'escape' ||
+      (reason === 'selection' &&
+        this.calendarElement?.contains(document.activeElement))
+    ) {
+      this.calendarToggle.focus();
+    }
+    // Close immediately, typically after outside clicks
     this.clearCloseCalendarTimeout();
     this.calendarOpen = false;
   }
@@ -319,7 +327,7 @@ class DateInputComponent {
     // feels acknowledged before the popup disappears.
     this.clearCloseCalendarTimeout();
     this.closeCalendarTimeoutId = window.setTimeout(() => {
-      this.calendarOpen = false;
+      this.closeCalendar('selection');
       this.closeCalendarTimeoutId = null;
       m.redraw();
     }, 250);
@@ -524,6 +532,8 @@ class DateInputComponent {
     // The component exposes only an aria-label; styling and behavior are owned
     // internally so consumers cannot accidentally break the segmented UX.
     const ariaLabel = attrs['aria-label'];
+    // Each Analytics bound owns its popup relationship
+    const calendarId = `analytics-${ariaLabel.toLowerCase().replaceAll(' ', '-')}-calendar`;
     return (
       <div className="date-input" role="group" aria-label={ariaLabel}>
         <input
@@ -586,6 +596,11 @@ class DateInputComponent {
           type="button"
           className="date-input-calendar-toggle"
           aria-label={`Open ${ariaLabel} Calendar`}
+          aria-controls={calendarId}
+          oncreate={({ dom }) => {
+            // The opening toggle receives focus when the popup dismisses itself
+            this.calendarToggle = dom;
+          }}
           aria-haspopup="dialog"
           aria-expanded={this.calendarOpen ? 'true' : 'false'}
           onclick={() => this.toggleCalendar()}
@@ -595,6 +610,11 @@ class DateInputComponent {
 
         {this.selectedDate && this.calendarOpen ? (
           <CalendarComponent
+            id={calendarId}
+            oncreate={({ dom }) => {
+              // Keep the popup root to check focus before a delayed close
+              this.calendarElement = dom;
+            }}
             className="date-input-calendar"
             selectedDate={this.selectedDate}
             calendarOpen={this.calendarOpen}
@@ -616,8 +636,8 @@ class DateInputComponent {
             onSetSelectedDate={(selectedDate) => {
               this.setSelectedDate(selectedDate);
             }}
-            onCloseCalendar={() => {
-              this.closeCalendar();
+            onCloseCalendar={(reason) => {
+              this.closeCalendar(reason);
             }}
           />
         ) : null}

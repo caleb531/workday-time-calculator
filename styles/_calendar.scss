@@ -86,8 +86,39 @@
   color: var(--color-gray-mid);
 }
 
+.log-calendar-week {
+  display: flex;
+}
+
 .log-calendar-date {
   display: inline-block;
+  position: relative;
+  padding: 0;
+  border: 0;
+  // Keep the shared blue focus ring circular around every date
+  border-radius: 50%;
+  background: none;
+  font: inherit;
+  vertical-align: top;
+  // Tighten unselected rings while preserving the gap around selected dates
+  &:not(.is-selected):focus-visible {
+    outline-offset: 0;
+  }
+  &.has-log::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    // Center the smaller dot beneath the date
+    left: calc(50% - 1.5px);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--color-blue);
+    pointer-events: none;
+  }
+  &.has-log.is-selected::after {
+    box-shadow: 0 0 0 1px var(--color-white);
+  }
   .log-calendar-date-label {
     pointer-events: none;
     display: inline-flex;
