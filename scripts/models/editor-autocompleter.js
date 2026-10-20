@@ -147,13 +147,20 @@ class EditorAutocompleter extends Emitter {
     // placeholder text, meaning that the full completion will not change;
     // therefore, we can skip calling out to the worker in this case and simply
     // perform the substring math to compute the new placeholder text directly
+    // Keep the match at its original position; searching the new query could
+    // mistake a repeated word for the start of the old completion (e.g. the
+    // second 9 in "9:15 to 9" when the old completion was "9:15 to 10")
     const substringIndex = this.findIndexOfQueryMatch(
-      newCompletionQuery,
+      this.completionQuery,
       this.matchingCompletion
     );
     if (
       substringIndex !== -1 &&
-      newCompletionQuery.length > this.completionQuery.length
+      newCompletionQuery.length > this.completionQuery.length &&
+      newCompletionQuery.startsWith(this.completionQuery) &&
+      this.matchingCompletion.startsWith(
+        newCompletionQuery.slice(substringIndex)
+      )
     ) {
       this.completionQuery = newCompletionQuery;
       this.receiveCompletions({

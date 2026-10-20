@@ -96,6 +96,24 @@ describe('log autocomplete', () => {
     await checkIfCompletable('Getting sta', 'rted');
   });
 
+  // Check if a repeated time prefix triggers a new search in lazy mode
+  it('should not reuse an earlier word when typing past the suggested completion', async () => {
+    await applyLogContentsToApp({
+      '-1': { ops: [{ insert: '9:15 to 10\n' }] }
+    });
+    await renderApp();
+    await checkIfCompletable('9:15 to ', '10');
+    // The second 9 matches the start of the old phrase, but it doesn't
+    // continue the suggested 10; search again instead of repeating the phrase
+    const editorElem = await getEditorElem();
+    await userEvent.type(editorElem, '9');
+    await waitFor(() => {
+      expect(
+        queryByTestId(document.body, autocompleteElemTestId)
+      ).toHaveAttribute('data-autocomplete', ':15');
+    });
+  });
+
   it('should suggest previously-entered (complete) phrase', async () => {
     await renderApp();
     await checkIfCompletable('Getting started with my d', 'ay');
